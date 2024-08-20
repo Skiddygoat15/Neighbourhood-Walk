@@ -2,6 +2,8 @@ package com.comp5703.Neighbourhood.Walk.Entities;
 
 import jakarta.persistence.*;
 
+import java.util.Date;
+
 
 @Entity
 @Table(name = "Users")
@@ -22,6 +24,8 @@ public class Users {
     private String phone;
     @Column(name = "address", nullable = false)
     private String address;
+    @Column(name = "birth_date")
+    private Date birthDate;
 
     public int getId() {
         return id;
@@ -77,6 +81,14 @@ public class Users {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
     }
 
 }
