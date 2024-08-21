@@ -12,7 +12,7 @@
 	<artifactId>Neighbourhood-Walk</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Neighbourhood-Walk</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Neighbourhood-Walk app</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -61,12 +61,7 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-
-		<dependency>
-			<groupId>org.mybatis</groupId>
-			<artifactId>mybatis-spring</artifactId>
-			<version>2.0.7</version>
-		</dependency>
+		
 
 	</dependencies>
 
