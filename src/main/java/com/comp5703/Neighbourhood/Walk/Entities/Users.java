@@ -7,12 +7,12 @@ import java.util.Date;
 
 @Entity
 @Table(name = "Users")
+
 public class Users {
-    // primary key
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "userId")
-    private int userId;
+    @Column(name = "id")
+    private int id;
     @Column(name = "name", nullable = false)
     private String name;
     @Column(name = "surname", nullable = false)
@@ -29,11 +29,11 @@ public class Users {
     private Date birthDate;
 
     public int getId() {
-        return userId;
+        return id;
     }
 
     public void setId(int id) {
-        this.userId = id;
+        this.id = id;
     }
 
     public String getName() {
