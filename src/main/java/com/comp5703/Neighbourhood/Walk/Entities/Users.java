@@ -8,10 +8,11 @@ import java.util.Date;
 @Entity
 @Table(name = "Users")
 public class Users {
+    // primary key
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private int id;
+    @Column(name = "userId")
+    private int userId;
     @Column(name = "name", nullable = false)
     private String name;
     @Column(name = "surname", nullable = false)
@@ -28,11 +29,11 @@ public class Users {
     private Date birthDate;
 
     public int getId() {
-        return id;
+        return userId;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.userId = id;
     }
 
     public String getName() {
