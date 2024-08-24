@@ -8,4 +8,5 @@ public interface RequestService {
     void cancelRequest(int requestId);
     Request acceptRequest(int requestId, int walkerId);
     Request rejectRequest(int requestId, int walkerId);
+    void deleteRequest(int requestId);
 }

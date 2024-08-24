@@ -55,4 +55,10 @@ public class RequestServiceImpl implements RequestService {
         request.setWalkerId(walkerId);
         return requestRepository.save(request);
     }
+
+    @Override
+    public void deleteRequest(int requestId) {
+        requestRepository.deleteById(requestId);
+        return;
+    }
 }

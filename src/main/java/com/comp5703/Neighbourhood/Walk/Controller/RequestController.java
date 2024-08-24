@@ -27,6 +27,7 @@ public class RequestController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity deleteRequest(@PathVariable int id) {
+        requestService.deleteRequest(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
