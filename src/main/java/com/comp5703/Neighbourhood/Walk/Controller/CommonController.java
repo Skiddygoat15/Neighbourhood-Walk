@@ -37,7 +37,7 @@ public class CommonController {
         根据userid获取评论，也可以根据rate筛选
     */
     @GetMapping("/getCommentByUserid/{userId}")
-    public BaseResponse<List<String>> getCommentByUserid(@PathVariable("userId") String userId,
+    public ResponseEntity<List<String>> getCommentByUserid(@PathVariable("userId") String userId,
                                                  @RequestParam(value = "max",required = false, defaultValue = "5.0") double max,
                                                  @RequestParam(value = "min",required = false, defaultValue = "0.0") double min){
 
@@ -49,14 +49,14 @@ public class CommonController {
             System.out.println("获取评论失败");
         }
 //        list.forEach(System.out::println);
-        return BaseResponse.success(list);
+        return new ResponseEntity<>(list,HttpStatus.ALREADY_REPORTED);
     }
 
     /*
     根据userid获取评论，也可以根据rate筛选
 */
     @GetMapping("/getCommentSortedByRate/{userId}")
-    public BaseResponse<List<TwoTuple<Double, String>>> getCommentSortedByRate(@PathVariable("userId") String userId,
+    public ResponseEntity<List<TwoTuple<Double, String>>> getCommentSortedByRate(@PathVariable("userId") String userId,
                                                                                 @RequestParam(value = "ascending", required = false, defaultValue = "true") boolean ascending){
         List<TwoTuple<Double, String>> sortedComments = new ArrayList<>();
 
@@ -68,7 +68,7 @@ public class CommonController {
         }
 //        list.forEach(System.out::println);
         System.out.println(sortedComments);
-        return BaseResponse.success(sortedComments);
+        return new ResponseEntity(sortedComments,HttpStatus.ALREADY_REPORTED);
     }
 
 }
