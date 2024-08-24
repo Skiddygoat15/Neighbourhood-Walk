@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "Comment")
 
-public class Comment {
+public class Comment{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "commentId")
@@ -16,12 +16,13 @@ public class Comment {
     @Column(name = "userId", nullable = false)
     private String userId;
     @Column(name = "rate", nullable = false)
-    private String rate;
+    private double rate;
     @Column(name = "comment", nullable = false)
     private String comment;
     @Column(name = "commentDate", nullable = false)
     @JsonFormat(pattern =  "yyyy-mm-dd hh:mm:ss")
     private String commentDate;
+
 
     public int getCommentId() {
         return commentId;
@@ -47,11 +48,11 @@ public class Comment {
         this.userId = userId;
     }
 
-    public String getRate() {
+    public double getRate() {
         return rate;
     }
 
-    public void setRate(String rate) {
+    public void setRate(double rate) {
         this.rate = rate;
     }
 
@@ -70,4 +71,5 @@ public class Comment {
     public void setCommentDate(String commentDate) {
         this.commentDate = commentDate;
     }
+
 }
