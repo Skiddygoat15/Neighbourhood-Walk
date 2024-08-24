@@ -2,24 +2,20 @@ package com.comp5703.Neighbourhood.Walk.Controller;
 
 
 import com.comp5703.Neighbourhood.Walk.Entities.Comment;
-import com.comp5703.Neighbourhood.Walk.Entities.Users;
 import com.comp5703.Neighbourhood.Walk.Service.CommentService;
 import com.comp5703.Neighbourhood.Walk.Utils.TwoTuple;
-import com.comp5703.Neighbourhood.Walk.domain.BaseResponse;
-import jakarta.annotation.Resource;
+import com.comp5703.Neighbourhood.Walk.domain.dto.RateCommentDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/Comment")
-public class CommonController {
+public class CommentController {
 
     @Autowired
     CommentService commentService;
@@ -56,9 +52,9 @@ public class CommonController {
     根据userid获取评论，也可以根据rate筛选
 */
     @GetMapping("/getCommentSortedByRate/{userId}")
-    public ResponseEntity<List<TwoTuple<Double, String>>> getCommentSortedByRate(@PathVariable("userId") String userId,
+    public ResponseEntity<List<RateCommentDTO>> getCommentSortedByRate(@PathVariable("userId") String userId,
                                                                                 @RequestParam(value = "ascending", required = false, defaultValue = "true") boolean ascending){
-        List<TwoTuple<Double, String>> sortedComments = new ArrayList<>();
+        List<RateCommentDTO> sortedComments = new ArrayList<>();
 
         try {
             sortedComments = commentService.getCommentSortedByRate(userId,ascending);
@@ -67,7 +63,6 @@ public class CommonController {
             System.out.println("获取排序评论失败");
         }
 //        list.forEach(System.out::println);
-        System.out.println(sortedComments);
         return new ResponseEntity(sortedComments,HttpStatus.ALREADY_REPORTED);
     }
 

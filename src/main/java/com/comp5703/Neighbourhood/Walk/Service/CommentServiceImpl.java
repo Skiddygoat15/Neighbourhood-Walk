@@ -3,6 +3,7 @@ package com.comp5703.Neighbourhood.Walk.Service;
 import com.comp5703.Neighbourhood.Walk.Entities.Comment;
 import com.comp5703.Neighbourhood.Walk.Repository.CommentRepository;
 import com.comp5703.Neighbourhood.Walk.Utils.TwoTuple;
+import com.comp5703.Neighbourhood.Walk.domain.dto.RateCommentDTO;
 import jakarta.persistence.Tuple;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,7 +42,7 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
-    public  List<TwoTuple<Double, String>> getCommentSortedByRate(String userId,boolean ascending) {
+    public  List<RateCommentDTO> getCommentSortedByRate(String userId,boolean ascending) {
         List<Comment> comments = commentRepository.findAllByUserId(userId);
 
         if (ascending) {
@@ -56,7 +57,10 @@ public class CommentServiceImpl implements CommentService{
             TwoTuple<Double, String> tuple = new TwoTuple<Double, String>(element.getRate(),element.getComment());
             list.add(tuple);
         }
-        return list;
+        List<RateCommentDTO> result = list.stream()
+                .map(comment -> new RateCommentDTO(comment.first, comment.second))
+                .collect(Collectors.toList());
+        return result;
     }
 
 }
