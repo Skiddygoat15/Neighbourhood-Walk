@@ -39,5 +39,14 @@ public class RoleServiceImpl implements RoleService {
         return roles;
     }
 
+    @Override
+    public List<Role> getRolesByUserId(long userId) {
+        Optional<Users> user = usersRepository.findById(userId);
+        if (!user.isPresent()) {
+            // 抛出异常或处理用户不存在的情况
+            throw new RuntimeException("User not found with id: " + userId);
+        }
+        return roleRepository.findByUserId(user.get());
+    }
 
 }

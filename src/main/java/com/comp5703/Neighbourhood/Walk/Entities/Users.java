@@ -145,6 +145,9 @@ public class Users {
     public void setAvailableDate(List<Date> availableDate) {
         this.availableDate = availableDate;
     }
+    public void setSkill(List<String> skill) {
+        this.skill = skill;
+    }
     public List<String> getSkill() {
         return skill;
     }

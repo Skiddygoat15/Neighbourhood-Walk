@@ -10,5 +10,6 @@ import java.util.ArrayList;
 public interface RoleService {
     Role saveRole(long userId, String roleType);
     List<Role> getAllRoles();
+    List<Role> getRolesByUserId(long userId);
 }
 
