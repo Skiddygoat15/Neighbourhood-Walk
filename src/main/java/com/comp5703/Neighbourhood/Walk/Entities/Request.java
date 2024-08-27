@@ -1,6 +1,7 @@
 package com.comp5703.Neighbourhood.Walk.Entities;
 
 import jakarta.persistence.*;
+import org.apache.catalina.User;
 
 import java.util.Date;
 
@@ -12,11 +13,13 @@ public class Request {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int requestId;
 
-    @Column(name = "walkerId")
-    private int walkerId;
+    @ManyToOne
+    @JoinColumn(name = "walkerId", referencedColumnName = "userId")
+    private Users walker;
 
-    @Column(name = "parentId")
-    private int parentId;
+    @ManyToOne
+    @JoinColumn(name = "parentId", referencedColumnName = "userId")
+    private Users parent;
 
     @Column(name = "publishDate")
     private Date publishDate;
@@ -39,12 +42,20 @@ public class Request {
     @Column(name = "status")
     private String status;
 
-    public int getWalkerId() {
-        return walkerId;
+    public Users getWalker() {
+        return walker;
     }
 
-    public void setWalkerId(int walkerId) {
-        this.walkerId = walkerId;
+    public void setWalker(Users walker) {
+        this.walker = walker;
+    }
+
+    public Users getParent() {
+        return parent;
+    }
+
+    public void setParent(Users parent) {
+        this.parent = parent;
     }
 
     public String getStatus() {
@@ -77,14 +88,6 @@ public class Request {
 
     public void setPublishDate(Date publishDate) {
         this.publishDate = publishDate;
-    }
-
-    public int getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(int parentId) {
-        this.parentId = parentId;
     }
 
     public String getDetails() {
