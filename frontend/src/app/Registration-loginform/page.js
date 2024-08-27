@@ -19,7 +19,7 @@ export default function LoginForm() {
         <div className="w-full max-w-xs space-y-8">
           {/* Back Button */}
           <Link 
-            href={'/login'}
+            href={'/Registration-login'}
             className="text-2xl p-2 focus:outline-none">
             &larr;
           </Link>
@@ -74,3 +74,4 @@ export default function LoginForm() {
     </>
   );
 }
+
