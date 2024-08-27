@@ -14,7 +14,7 @@ public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "userId")
-    private int userId;
+    private long userId;
     @Column(name = "name", nullable = false)
     private String name;
     @Column(name = "surname", nullable = false)
@@ -49,8 +49,10 @@ public class Users {
     private boolean verified;
     @Column(name = "verify_method")
     private String veriMethod;
+    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Role> roles = new ArrayList<>();
 
-    public int getId() {
+    public long getId() {
         return userId;
     }
 
