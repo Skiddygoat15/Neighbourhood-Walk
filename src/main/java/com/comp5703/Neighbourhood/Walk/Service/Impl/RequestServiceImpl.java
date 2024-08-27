@@ -1,7 +1,9 @@
 package com.comp5703.Neighbourhood.Walk.Service.Impl;
 
 import com.comp5703.Neighbourhood.Walk.Entities.Request;
+import com.comp5703.Neighbourhood.Walk.Entities.WalkerRequest;
 import com.comp5703.Neighbourhood.Walk.Repository.RequestRepository;
+import com.comp5703.Neighbourhood.Walk.Repository.WalkerRequestRepository;
 import com.comp5703.Neighbourhood.Walk.Service.RequestService;
 import com.comp5703.Neighbourhood.Walk.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,8 @@ public class RequestServiceImpl implements RequestService {
 
     @Autowired
     private RequestRepository requestRepository;
+    @Autowired
+    private WalkerRequestRepository walkerRequestRepository;
 
 
     @Override
@@ -29,6 +33,8 @@ public class RequestServiceImpl implements RequestService {
         request.setDeparture(updatedRequest.getDeparture());
         request.setDestination(updatedRequest.getDestination());
         request.setDetails(updatedRequest.getDetails());
+        request.setStatus(updatedRequest.getStatus());
+
         return requestRepository.save(request);
 
     }
@@ -41,19 +47,32 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public Request acceptRequest(int requestId, int walkerId) {
-        Request request = requestRepository.findById(requestId).orElseThrow(() -> new ResourceNotFoundException("Request not found"));
-        request.setStatus("Accepted");
-        request.setWalkerId(walkerId);
-        return requestRepository.save(request);
+    public WalkerRequest  acceptWalkerRequest(int requestId, int walkerId) {
+        WalkerRequest walkerRequest = walkerRequestRepository.findByRequestIdAndWalkerId(requestId, walkerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Walker request not found for this walker with id: " + walkerId));
+
+        // update walkerRequest's status
+        walkerRequest.setStatus("Accepted");
+        walkerRequestRepository.save(walkerRequest);
+
+        // update the Request's status
+        Request request = walkerRequest.getRequest();
+        request.setStatus("InProgress");
+        requestRepository.save(request);
+
+        return walkerRequest;
     }
 
     @Override
-    public Request rejectRequest(int requestId, int walkerId) {
-        Request request = requestRepository.findById(requestId).orElseThrow(() -> new ResourceNotFoundException("Request not found"));
-        request.setStatus("Rejected");
-        request.setWalkerId(walkerId);
-        return requestRepository.save(request);
+    public WalkerRequest rejectWalkerRequest(int requestId, int walkerId) {
+        WalkerRequest walkerRequest = walkerRequestRepository.findByRequestIdAndWalkerId(requestId, walkerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Walker request not found for this walker with id: " + walkerId));
+
+        // update walkerRequest's status
+        walkerRequest.setStatus("Rejected");
+        walkerRequestRepository.save(walkerRequest);
+
+        return walkerRequest;
     }
 
     @Override

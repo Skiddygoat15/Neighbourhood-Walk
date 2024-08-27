@@ -1,12 +1,13 @@
 package com.comp5703.Neighbourhood.Walk.Service;
 
 import com.comp5703.Neighbourhood.Walk.Entities.Request;
+import com.comp5703.Neighbourhood.Walk.Entities.WalkerRequest;
 
 public interface RequestService {
     Request createRequest(Request request);
     Request updateRequest(int requestId, Request updatedRequest);
     void cancelRequest(int requestId);
-    Request acceptRequest(int requestId, int walkerId);
-    Request rejectRequest(int requestId, int walkerId);
+    WalkerRequest acceptWalkerRequest(int requestId, int walkerId);
+    WalkerRequest rejectWalkerRequest(int requestId, int walkerId);
     void deleteRequest(int requestId);
 }
