@@ -2,7 +2,9 @@ package com.comp5703.Neighbourhood.Walk.Entities;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 @Entity
@@ -12,7 +14,7 @@ public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "userId")
-    private int userId;
+    private long userId;
     @Column(name = "name", nullable = false)
     private String name;
     @Column(name = "surname", nullable = false)
@@ -27,8 +29,30 @@ public class Users {
     private String address;
     @Column(name = "birth_date")
     private Date birthDate;
+    @Column(name = "preferred_name")
+    private String preferredName;
+    @Column(name = "gender")
+    private String gender;
+    @Column(name = "profile_img_url")
+    private String profImgUrl;
+    @Column(name = "communication_preference")
+    private String communicatePref;
+    @ElementCollection
+    @CollectionTable(name = "available_dates", joinColumns = @JoinColumn(name = "userId"))
+    @Column(name = "available_date")
+    private List<Date> availableDate;  // 使用List接口
+    @ElementCollection
+    @CollectionTable(name = "skills", joinColumns = @JoinColumn(name = "userId"))
+    @Column(name = "skill")
+    private List<String> skill;
+    @Column(name = "verified")
+    private boolean verified;
+    @Column(name = "verify_method")
+    private String veriMethod;
+    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Role> roles = new ArrayList<>();
 
-    public int getId() {
+    public long getId() {
         return userId;
     }
 
@@ -90,6 +114,42 @@ public class Users {
 
     public void setBirthDate(Date birthDate) {
         this.birthDate = birthDate;
+    }
+    public String getPreferredName() {
+        return preferredName;
+    }
+    public void setPreferredName(String preferredName) {
+        this.preferredName = preferredName;
+    }
+    public String getGender() {
+        return gender;
+    }
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+    public String getProfImgUrl() {
+        return profImgUrl;
+    }
+    public void setProfImgUrl(String profImgUrl) {
+        this.profImgUrl = profImgUrl;
+    }
+    public String getCommunicatePref() {
+        return communicatePref;
+    }
+    public void setCommunicatePref(String communicatePref) {
+        this.communicatePref = communicatePref;
+    }
+    public List<Date> getAvailableDate() {
+        return availableDate;
+    }
+    public void setAvailableDate(List<Date> availableDate) {
+        this.availableDate = availableDate;
+    }
+    public void setSkill(List<String> skill) {
+        this.skill = skill;
+    }
+    public List<String> getSkill() {
+        return skill;
     }
 
 }

@@ -1,7 +1,8 @@
-package com.comp5703.Neighbourhood.Walk.Service;
+package com.comp5703.Neighbourhood.Walk.Service.Impl;
 
 import com.comp5703.Neighbourhood.Walk.Entities.Users;
 import com.comp5703.Neighbourhood.Walk.Repository.UsersRepository;
+import com.comp5703.Neighbourhood.Walk.Service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -9,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UsersServiceImpl implements UsersService{
+public class UsersServiceImpl implements UsersService {
     @Autowired
     UsersRepository usersRepository;
 
@@ -24,7 +25,7 @@ public class UsersServiceImpl implements UsersService{
     }
 
     @Override
-    public void deleteUsers(int id) {
+    public void deleteUsers(long id) {
         usersRepository.deleteById(id);
     }
 
