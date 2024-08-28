@@ -24,13 +24,24 @@ public class UsersServiceImpl implements UsersService{
     }
 
     @Override
-    public void deleteUsers(int id) {
+    public void deleteUsers(long id) {
         usersRepository.deleteById(id);
     }
 
     @Override
     public List<Users> getAllUsers() {
         return (List<Users>) usersRepository.findAll();
+    }
+
+    @Override
+    public Users getUserById(long id) {
+        // 确保 Optional 中有值，然后调用 get()
+//        Users user = null;
+//        if (usersRepository.findById(id).isPresent()) {
+//            user = usersRepository.findById(id).get();
+//        }
+
+        return usersRepository.findById(id).get();
     }
 
 }

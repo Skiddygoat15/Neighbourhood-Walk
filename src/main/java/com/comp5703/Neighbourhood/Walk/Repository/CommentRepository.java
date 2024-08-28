@@ -4,15 +4,12 @@ import com.comp5703.Neighbourhood.Walk.Entities.Comment;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 
-public interface CommentRepository extends CrudRepository<Comment, Integer> {
+public interface CommentRepository extends CrudRepository<Comment, Long> {
     <S extends Comment> S save(S entity);
-
-//    @Override
-//    List<Comment> findAllByUserId();
-
-    List<Comment> findAllByUserId(String userId);
-
+    List<Comment> findAllByUserId(long userId);
+    Optional<Comment> findById(Long commentId);
 }
 

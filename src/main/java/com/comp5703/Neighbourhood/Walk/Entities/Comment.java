@@ -10,11 +10,11 @@ public class Comment{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "commentId")
-    private int commentId;
+    private long commentId;
     @Column(name = "requestId", nullable = false)
-    private String requestId;
+    private long requestId;
     @Column(name = "userId", nullable = false)
-    private String userId;
+    private long userId;
     @Column(name = "rate", nullable = false)
     private double rate;
     @Column(name = "comment", nullable = false)
@@ -24,7 +24,7 @@ public class Comment{
     private String commentDate;
 
 
-    public int getCommentId() {
+    public long getCommentId() {
         return commentId;
     }
 
@@ -32,19 +32,19 @@ public class Comment{
         this.commentId = commentId;
     }
 
-    public String getRequestId() {
+    public long getRequestId() {
         return requestId;
     }
 
-    public void setRequestId(String requestId) {
+    public void setRequestId(int requestId) {
         this.requestId = requestId;
     }
 
-    public String getUserId() {
+    public long getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 
