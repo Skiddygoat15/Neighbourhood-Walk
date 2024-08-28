@@ -7,5 +7,4 @@ import java.util.Optional;
 
 public interface WalkerRequestRepository extends JpaRepository<WalkerRequest, Integer> {
     Optional<WalkerRequest> findByRequestIdAndWalkerId(int requestId, int walkerId);
-
 }

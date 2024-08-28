@@ -56,7 +56,9 @@ public class RequestServiceImpl implements RequestService {
         walkerRequestRepository.save(walkerRequest);
 
         // update the Request's status
-        Request request = walkerRequest.getRequest();
+        Request request = requestRepository.findById(requestId)
+                .orElseThrow(() -> new ResourceNotFoundException("Request not found with id: " + requestId));
+
         request.setStatus("InProgress");
         requestRepository.save(request);
 

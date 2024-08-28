@@ -12,16 +12,40 @@ public class WalkerRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int walkerRequestId;
 
-    @ManyToOne
-    @JoinColumn(name = "requestId")
-    private Request request;
+    @Column(name = "requestId")
+    private int requestId;
 
-    @ManyToOne
-    @JoinColumn(name = "walkerId")
-    private Users walker;
+    @Column(name = "walkerId")
+    private int walkerId;
+
+//    @ManyToOne
+//    @JoinColumn(name = "requestId")
+//    private Request request;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "walkerId")
+//    private Users walker;
 
     @Column(name = "status")
     private String status;
+
+
+
+    public int getRequestId() {
+        return requestId;
+    }
+
+    public void setRequestId(int requestId) {
+        this.requestId = requestId;
+    }
+
+    public int getWalkerId() {
+        return walkerId;
+    }
+
+    public void setWalkerId(int walkerId) {
+        this.walkerId = walkerId;
+    }
 
     public int getWalkerRequestId() {
         return walkerRequestId;
@@ -31,21 +55,25 @@ public class WalkerRequest {
         this.walkerRequestId = id;
     }
 
-    public Request getRequest() {
-        return request;
-    }
-
-    public void setRequest(Request request) {
-        this.request = request;
-    }
-
-    public Users getWalker() {
-        return walker;
-    }
-
-    public void setWalker(Users walker) {
-        this.walker = walker;
-    }
+//    public Request getRequest() {
+//        return request;
+//    }
+//
+//    public void setRequest(Request request) {
+//        this.request = request;
+//    }
+//
+//    public Users getWalker() {
+//        return walker;
+//    }
+//
+//    public void setWalker(Users walker) {
+//        this.walker = walker;
+//    }
+//
+//    public Date getRequestDate() {
+//        return request.getPublishDate();
+//    }
 
     public String getStatus() {
         return status;
@@ -55,7 +83,5 @@ public class WalkerRequest {
         this.status = status;
     }
 
-    public Date getRequestDate() {
-        return request.getPublishDate();
-    }
+
 }
