@@ -3,11 +3,14 @@ package com.comp5703.Neighbourhood.Walk.Service.Impl;
 import com.comp5703.Neighbourhood.Walk.Entities.Request;
 import com.comp5703.Neighbourhood.Walk.Entities.WalkerRequest;
 import com.comp5703.Neighbourhood.Walk.Repository.RequestRepository;
+import com.comp5703.Neighbourhood.Walk.Repository.UsersRepository;
 import com.comp5703.Neighbourhood.Walk.Repository.WalkerRequestRepository;
 import com.comp5703.Neighbourhood.Walk.Service.RequestService;
 import com.comp5703.Neighbourhood.Walk.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.sql.Date;
 
 
 @Service
@@ -17,6 +20,8 @@ public class RequestServiceImpl implements RequestService {
     private RequestRepository requestRepository;
     @Autowired
     private WalkerRequestRepository walkerRequestRepository;
+    @Autowired
+    private UsersRepository usersRepository;
 
 
     @Override
@@ -81,5 +86,32 @@ public class RequestServiceImpl implements RequestService {
     public void deleteRequest(int requestId) {
         requestRepository.deleteById(requestId);
         return;
+    }
+
+    @Override
+    public Date getRequestStartTime(String content) {
+//        requestRepository.findByStartTime(content);
+        return null;
+    }
+
+    @Override
+    public Date getRequestArriveTime() {
+        return null;
+    }
+
+    @Override
+    public String getRequestDeparture(Request departure) {
+        requestRepository.findByDeparture(departure);
+        return "";
+    }
+
+    @Override
+    public String getRequestDestination() {
+        return "";
+    }
+
+    @Override
+    public String getParentName() {
+        return "";
     }
 }
