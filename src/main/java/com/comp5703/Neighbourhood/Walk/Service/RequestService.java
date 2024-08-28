@@ -20,4 +20,6 @@ public interface RequestService {
     String getRequestDestination();
     String getParentName();
 
+    WalkerRequest applyRequest(int walkerId, int requestId);
+    void cancelApply(int walkerRequestId);
 }
