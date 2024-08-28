@@ -10,4 +10,6 @@ public interface RequestService {
     WalkerRequest acceptWalkerRequest(int requestId, int walkerId);
     WalkerRequest rejectWalkerRequest(int requestId, int walkerId);
     void deleteRequest(int requestId);
+    WalkerRequest applyRequest(int walkerId, int requestId);
+    void cancelApply(int walkerRequestId);
 }

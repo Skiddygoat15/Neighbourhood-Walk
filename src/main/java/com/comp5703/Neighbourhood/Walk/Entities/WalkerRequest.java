@@ -18,6 +18,9 @@ public class WalkerRequest {
     @Column(name = "walkerId")
     private int walkerId;
 
+    @Column(name = "status")
+    private String status;
+
 //    @ManyToOne
 //    @JoinColumn(name = "requestId")
 //    private Request request;
@@ -25,11 +28,6 @@ public class WalkerRequest {
 //    @ManyToOne
 //    @JoinColumn(name = "walkerId")
 //    private Users walker;
-
-    @Column(name = "status")
-    private String status;
-
-
 
     public int getRequestId() {
         return requestId;

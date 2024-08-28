@@ -79,7 +79,32 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     public void deleteRequest(int requestId) {
-        requestRepository.deleteById(requestId);
-        return;
+        Request request = requestRepository.findById(requestId)
+                .orElseThrow(() -> new ResourceNotFoundException("Request not found with id: " + requestId));
+        requestRepository.delete(request);
+    }
+
+    @Override
+    public WalkerRequest applyRequest(int walkerId, int requestId) {
+        // check if request exists
+        Request request = requestRepository.findById(requestId)
+                .orElseThrow(() -> new ResourceNotFoundException("Request not found with id: " + requestId));
+
+        // create and save WalkerRequest
+        WalkerRequest walkerRequest = new WalkerRequest();
+        walkerRequest.setRequestId(requestId);
+        walkerRequest.setWalkerId(walkerId);
+        walkerRequest.setStatus("Applied");
+        return walkerRequestRepository.save(walkerRequest);
+    }
+
+    @Override
+    public void cancelApply(int walkerRequestId) {
+        // check if request exists
+        WalkerRequest walkerRequest = walkerRequestRepository.findById(walkerRequestId)
+                .orElseThrow(() -> new ResourceNotFoundException("WalkerRequest not found with id: " + walkerRequestId));
+
+        // delete the apply record
+        walkerRequestRepository.delete(walkerRequest);
     }
 }
