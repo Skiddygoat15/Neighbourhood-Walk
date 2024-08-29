@@ -27,9 +27,12 @@ export default function VerificationWalkerUpload() {
     <main className="flex flex-col items-center justify-center min-h-screen bg-white space-y-8">
       <div className="w-full max-w-md space-y-8 text-center">
         {/* Back Button */}
-        <button onClick={() => router.back()} className="text-2xl p-2 focus:outline-none">
-          &larr;
-        </button>
+        {/* 添加 `flex` 和 `justify-start` 类以将返回键靠左对齐 */}
+        <div className="flex justify-start">
+          <button onClick={() => router.back()} className="text-2xl p-2 focus:outline-none">
+            &larr;
+          </button>
+        </div>
 
         {/* Title */}
         <h1 className="text-3xl font-bold">Verification - Walker</h1>

@@ -2,15 +2,13 @@
 
 import { useRouter } from 'next/navigation';
 
-
 export default function VerificationParent() {
   const router = useRouter();
 
   const handleVerificationOption = () => {
     console.log('Button clicked');
-    router.push('/verification-parent-upload');
+    router.push('/Registration-verification-parent-upload');
   };
-  
 
   return (
     <main className="flex items-center justify-center min-h-screen bg-white">

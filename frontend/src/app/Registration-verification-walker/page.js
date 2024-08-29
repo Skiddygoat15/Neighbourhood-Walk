@@ -6,9 +6,8 @@ export default function VerificationWalker() {
   const router = useRouter();
 
   const handleVerificationOption = (option) => {
-    
     console.log(`Selected option: ${option}`);
-    
+    router.push('/Registration-verification-walker-upload');
   };
 
   return (

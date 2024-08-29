@@ -10,8 +10,11 @@ export default function SignUp() {
   const handleSubmit = (event) => {
     event.preventDefault();
     
-    console.log('Form submitted');
-    router.push('/');  
+    if (role === 'Walker') {
+      router.push('/Registration-verification-walker');
+    } else if (role === 'Parent') {
+      router.push('/Registration-verification-parent');
+    }
   };
 
   return (
