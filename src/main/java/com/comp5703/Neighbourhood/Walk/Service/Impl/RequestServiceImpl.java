@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.util.List;
 
 
 @Service
@@ -139,4 +140,10 @@ public class RequestServiceImpl implements RequestService {
     public String getParentName() {
         return "";
     }
+
+    @Override
+    public List<Request> searchRequests(String search) {
+        return requestRepository.searchRequests(search);
+    }
+
 }

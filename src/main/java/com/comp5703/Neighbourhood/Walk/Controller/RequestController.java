@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/requests")
 public class RequestController {
@@ -56,4 +58,11 @@ public class RequestController {
         requestService.cancelRequest(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Request>> searchRequests(@RequestParam String search) {
+        List<Request> requests = requestService.searchRequests(search);
+        return new ResponseEntity<>(requests, HttpStatus.OK);
+    }
+
 }
