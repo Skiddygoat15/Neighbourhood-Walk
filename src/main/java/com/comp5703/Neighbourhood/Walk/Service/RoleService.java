@@ -9,8 +9,8 @@ import java.util.Optional;
 import java.util.ArrayList;
 
 public interface RoleService {
-    Role saveRole(long userId, String roleType);
-    List<Role> getAllRoles();
+    RoleDTO saveRole(long userId, String roleType);
+    List<RoleDTO> getAllRoles();
     List<RoleDTO> getRolesByUserId(long userId);
 }
 

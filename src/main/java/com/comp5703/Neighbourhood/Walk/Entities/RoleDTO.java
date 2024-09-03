@@ -6,14 +6,18 @@ public class RoleDTO {
     private long userId;
     private String phone;
     private String email;
+    private String name;
+    private String surName;
 
     // 构造方法
-    public RoleDTO(int roleId, String roleType, long userId, String phone, String email) {
+    public RoleDTO(int roleId, String roleType, long userId, String phone, String email, String name, String surName) {
         this.roleId = roleId;
         this.roleType = roleType;
         this.userId = userId;
         this.phone = phone;
         this.email = email;
+        this.name = name;
+        this.surName = surName;
     }
 
     // Getter 和 Setter
@@ -55,5 +59,21 @@ public class RoleDTO {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurName() {
+        return surName;
+    }
+
+    public void setSurName(String surName) {
+        this.surName = surName;
     }
 }

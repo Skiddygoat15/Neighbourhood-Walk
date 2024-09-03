@@ -49,7 +49,7 @@ public class Users {
     private boolean verified;
     @Column(name = "verify_method")
     private String veriMethod;
-    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Role> roles = new ArrayList<>();
 
     public long getId() {

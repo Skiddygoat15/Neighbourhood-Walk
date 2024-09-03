@@ -9,6 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -77,7 +78,7 @@ public class UsersServiceImpl implements UsersService{
             throw new IllegalArgumentException("Invalid email format");
         }
 
-        if (user.getGender() != "male" || user.getGender() != "female" || user.getGender() != "other") {
+        if (!(Objects.equals(user.getGender(), "male") || Objects.equals(user.getGender(), "female") || Objects.equals(user.getGender(), "other"))) {
             throw new IllegalArgumentException("Invalid gender");
         }
 

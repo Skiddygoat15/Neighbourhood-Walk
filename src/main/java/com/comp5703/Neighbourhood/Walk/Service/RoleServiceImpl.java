@@ -21,24 +21,60 @@ public class RoleServiceImpl implements RoleService {
 
 
     @Override
-    public Role saveRole(long userId, String roleType) {
-        // ³¢ÊÔ»ñÈ¡ÓÃ»§£¬´¦ÀíÓÃ»§²»´æÔÚµÄÇé¿ö
+    public RoleDTO saveRole(long userId, String roleType) {
         Optional<Users> userOptional = usersRepository.findById(userId);
-        if (!userOptional.isPresent()) {
-            // ¿ÉÒÔÅ×³öÒ»¸ö×Ô¶¨ÒåµÄÒì³££¬»òÕß·µ»Ø null£¬ÊÓÒµÎñĞèÇó¶ø¶¨
-            throw new RuntimeException("User not found with id: " + userId);
+        if (userOptional.isEmpty()) {
+            throw new IllegalArgumentException("User not found with id: " + userId);
         }
 
+        if (!roleType.equals("parent") && !roleType.equals("walker") && !roleType.equals("admin")){
+            throw new IllegalArgumentException("Invalid role type: " + roleType);
+        };
+
         Users user = userOptional.get();
-        Role role = new Role(user, roleType); // ´´½¨Ò»¸öĞÂµÄ Role ÊµÀı
-        return roleRepository.save(role);
+
+        // æ£€æŸ¥ç”¨æˆ·æ˜¯å¦å·²ç»æ‹¥æœ‰ç›¸åŒçš„è§’è‰²ç±»å‹
+        List<Role> existingRoles = roleRepository.findByUser(user);
+        for (Role role : existingRoles) {
+            if (role.getRoleType().equals(roleType)) {
+                throw new IllegalArgumentException("User already has the role type: " + roleType);
+            }
+        }
+
+        Role role = new Role(user, roleType);
+        Role savedRole = roleRepository.save(role);
+
+        // åˆ›å»ºå¹¶è¿”å› RoleDTO
+        return new RoleDTO(
+                savedRole.getRoleId(),
+                savedRole.getRoleType(),
+                user.getId(),
+                user.getPhone(),
+                user.getEmail(),
+                user.getName(),
+                user.getSurname()
+        );
     }
 
     @Override
-    public List<Role> getAllRoles() {
+    public List<RoleDTO> getAllRoles() {
         List<Role> roles = new ArrayList<>();
         roleRepository.findAll().forEach(roles::add);
-        return roles;
+
+        // è½¬æ¢ä¸º RoleDTO åˆ—è¡¨
+        List<RoleDTO> roleDTOs = new ArrayList<>();
+        for (Role role : roles) {
+            roleDTOs.add(new RoleDTO(
+                    role.getRoleId(),
+                    role.getRoleType(),
+                    role.getUser().getId(),  // è·å– userId
+                    role.getUser().getPhone(),   // è·å– phone
+                    role.getUser().getEmail(),    // è·å– email
+                    role.getUser().getName(),
+                    role.getUser().getSurname()
+            ));
+        }
+        return roleDTOs;
     }
 
     @Override
@@ -47,9 +83,8 @@ public class RoleServiceImpl implements RoleService {
         if (user.isEmpty()) {
             throw new IllegalArgumentException("User not found with id: " + userId);
         }
-        List<Role> roles = roleRepository.findByUserId(user.get());
+        List<Role> roles = roleRepository.findByUser(user.get());
 
-        // ×ª»»Îª RoleDTO ÁĞ±í
         List<RoleDTO> roleDTOs = new ArrayList<>();
         for (Role role : roles) {
             roleDTOs.add(new RoleDTO(
@@ -57,7 +92,9 @@ public class RoleServiceImpl implements RoleService {
                     role.getRoleType(),
                     user.get().getId(),
                     user.get().getPhone(),
-                    user.get().getEmail()));
+                    user.get().getEmail(),
+                    user.get().getName(),
+                    user.get().getSurname()));
         }
         return roleDTOs;
     }

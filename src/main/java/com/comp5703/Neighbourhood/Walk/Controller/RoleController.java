@@ -19,19 +19,24 @@ public class RoleController {
 
     // 创建角色
     @PostMapping
-    public ResponseEntity<Role> createRole(@RequestParam long userId, @RequestBody String roleType) {
-        Role newRole = roleService.saveRole(userId, roleType);
-        return new ResponseEntity<>(newRole, HttpStatus.CREATED);
+    public ResponseEntity<?> createRole(@RequestParam long userId, @RequestBody String roleType) {
+        try {
+            RoleDTO newRole = roleService.saveRole(userId, roleType);
+            return new ResponseEntity<>(newRole, HttpStatus.CREATED);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    // 获取所有角色
     @GetMapping
-    public ResponseEntity<List<Role>> getAllRoles() {
-        List<Role> roles = roleService.getAllRoles();
-        if (roles.isEmpty()) {
+    public ResponseEntity<List<RoleDTO>> getAllRoles() {
+        List<RoleDTO> roleDTOs = roleService.getAllRoles();
+        if (roleDTOs.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
-        return new ResponseEntity<>(roles, HttpStatus.OK);
+        return new ResponseEntity<>(roleDTOs, HttpStatus.OK);
     }
 
     // 根据用户ID获取该用户的所有角色
