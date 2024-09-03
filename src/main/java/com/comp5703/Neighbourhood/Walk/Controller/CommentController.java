@@ -5,7 +5,6 @@ import com.comp5703.Neighbourhood.Walk.Entities.Comment;
 import com.comp5703.Neighbourhood.Walk.Entities.Users;
 import com.comp5703.Neighbourhood.Walk.Service.CommentService;
 import com.comp5703.Neighbourhood.Walk.Service.UsersService;
-import com.comp5703.Neighbourhood.Walk.Service.UsersServiceImpl;
 import com.comp5703.Neighbourhood.Walk.Utils.TwoTuple;
 import com.comp5703.Neighbourhood.Walk.domain.dto.RateCommentDTO;
 import com.comp5703.Neighbourhood.Walk.domain.dto.UserIdNameAverateDTO;
@@ -28,8 +27,7 @@ public class CommentController {
     CommentService commentService;
 
     @Autowired
-    UsersServiceImpl usersService;
-
+    UsersService usersService;
     /*
         添加评论
      */
