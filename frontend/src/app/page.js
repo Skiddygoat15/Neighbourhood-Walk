@@ -17,17 +17,13 @@ export default function Home() {
         {/* Buttons */}
         <div className="space-y-6">
           {/* Login Button */}
-          <Link href="/login">
-            <a className="block w-64 py-3 text-center bg-white text-black rounded-md font-semibold hover:bg-gray-200">
+          <Link href="/login" className="block w-64 py-3 text-center bg-white text-black rounded-md font-semibold hover:bg-gray-200">
               Login
-            </a>
           </Link>
           
           {/* Sign Up Button */}
-          <Link href="/register">
-            <a className="block w-64 py-3 text-center bg-white text-black rounded-md font-semibold hover:bg-gray-200">
+          <Link href="/register" className="block w-64 py-3 text-center bg-white text-black rounded-md font-semibold hover:bg-gray-200">
               Sign Up
-            </a>
           </Link>
         </div>
       </main>
