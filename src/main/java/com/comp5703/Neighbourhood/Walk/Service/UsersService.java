@@ -12,4 +12,5 @@ public interface UsersService {
     Optional<Users> getUsersByEmail(String email);
     void deleteUsers(long id);
     List<Users> getAllUsers();
+    Users registerUser(Users user, String roleType);
 }

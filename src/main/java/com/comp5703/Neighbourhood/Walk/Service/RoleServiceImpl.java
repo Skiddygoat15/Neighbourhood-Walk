@@ -1,5 +1,6 @@
 package com.comp5703.Neighbourhood.Walk.Service;
 import com.comp5703.Neighbourhood.Walk.Entities.Role;
+import com.comp5703.Neighbourhood.Walk.Entities.RoleDTO;
 import com.comp5703.Neighbourhood.Walk.Entities.Users;
 import com.comp5703.Neighbourhood.Walk.Repository.RoleRepository;
 import com.comp5703.Neighbourhood.Walk.Repository.UsersRepository;
@@ -18,17 +19,18 @@ public class RoleServiceImpl implements RoleService {
     @Autowired
     UsersRepository usersRepository;
 
+
     @Override
     public Role saveRole(long userId, String roleType) {
-        // å°è¯•è·å–ç”¨æˆ·ï¼Œå¤„ç†ç”¨æˆ·ä¸å­˜åœ¨çš„æƒ…å†µ
+        // ³¢ÊÔ»ñÈ¡ÓÃ»§£¬´¦ÀíÓÃ»§²»´æÔÚµÄÇé¿ö
         Optional<Users> userOptional = usersRepository.findById(userId);
         if (!userOptional.isPresent()) {
-            // å¯ä»¥æŠ›å‡ºä¸€ä¸ªè‡ªå®šä¹‰çš„å¼‚å¸¸ï¼Œæˆ–è€…è¿”å› nullï¼Œè§†ä¸šåŠ¡éœ€æ±‚è€Œå®š
+            // ¿ÉÒÔÅ×³öÒ»¸ö×Ô¶¨ÒåµÄÒì³££¬»òÕß·µ»Ø null£¬ÊÓÒµÎñĞèÇó¶ø¶¨
             throw new RuntimeException("User not found with id: " + userId);
         }
 
         Users user = userOptional.get();
-        Role role = new Role(user, roleType); // åˆ›å»ºä¸€ä¸ªæ–°çš„ Role å®ä¾‹
+        Role role = new Role(user, roleType); // ´´½¨Ò»¸öĞÂµÄ Role ÊµÀı
         return roleRepository.save(role);
     }
 
@@ -40,13 +42,24 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public List<Role> getRolesByUserId(long userId) {
+    public List<RoleDTO> getRolesByUserId(long userId) {
         Optional<Users> user = usersRepository.findById(userId);
-        if (!user.isPresent()) {
-            // æŠ›å‡ºå¼‚å¸¸æˆ–å¤„ç†ç”¨æˆ·ä¸å­˜åœ¨çš„æƒ…å†µ
-            throw new RuntimeException("User not found with id: " + userId);
+        if (user.isEmpty()) {
+            throw new IllegalArgumentException("User not found with id: " + userId);
         }
-        return roleRepository.findByUserId(user.get());
+        List<Role> roles = roleRepository.findByUserId(user.get());
+
+        // ×ª»»Îª RoleDTO ÁĞ±í
+        List<RoleDTO> roleDTOs = new ArrayList<>();
+        for (Role role : roles) {
+            roleDTOs.add(new RoleDTO(
+                    role.getRoleId(),
+                    role.getRoleType(),
+                    user.get().getId(),
+                    user.get().getPhone(),
+                    user.get().getEmail()));
+        }
+        return roleDTOs;
     }
 
 }

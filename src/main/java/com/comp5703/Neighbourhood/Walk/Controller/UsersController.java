@@ -4,13 +4,7 @@ import com.comp5703.Neighbourhood.Walk.Service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -42,6 +36,23 @@ public class UsersController {
     @GetMapping("/allUsers")
     public ResponseEntity<List<Users>> getAllUsers() {
         return new ResponseEntity<>(usersService.getAllUsers(), HttpStatus.OK);
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<String> registerUser(@RequestBody Users user, @RequestParam String roleType) {
+        try {
+            // 调用服务层的 registerUser 方法
+            Users registeredUser = usersService.registerUser(user, roleType);
+
+            // 返回成功响应
+            return new ResponseEntity<>("User registered successfully with ID: " + registeredUser.getId(), HttpStatus.CREATED);
+        } catch (IllegalArgumentException e) {
+            // 返回错误信息，状态码为400 (Bad Request)
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            // 处理其他可能的异常
+            return new ResponseEntity<>("An error occurred during user registration", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 }
