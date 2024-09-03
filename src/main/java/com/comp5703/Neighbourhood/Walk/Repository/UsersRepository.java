@@ -32,5 +32,7 @@ public interface UsersRepository extends JpaRepository<Users, Long>, JpaSpecific
     List<Users> searchWalkers(@Param("search") String search);
 
      */
+    @Override
+    Optional<Users> findById(Long id);
 }
 
