@@ -1,14 +1,13 @@
 package com.comp5703.Neighbourhood.Walk.Repository;
 
 import com.comp5703.Neighbourhood.Walk.Entities.Users;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface UsersRepository extends CrudRepository<Users, Long> {
+public interface UsersRepository extends JpaRepository<Users, Long>, JpaSpecificationExecutor<Users> {
     Optional<Users> findByEmail(String email);
 
     //byron
@@ -21,7 +20,7 @@ public interface UsersRepository extends CrudRepository<Users, Long> {
     如果日期字段格式不同，可能需要调整 DATE_FORMAT 函数的格式化规则
 
     根据输入的search字符串匹配walkers的name，surname，gender，address，prefferedTime
-    */
+
     @Query("SELECT u FROM Users u " +
             "JOIN u.roles r " +
             "WHERE r.roleType = 'walker' " +
@@ -31,5 +30,7 @@ public interface UsersRepository extends CrudRepository<Users, Long> {
             "OR LOWER(u.address) LIKE LOWER(CONCAT('%', :search, '%')) " +
             "OR LOWER(FUNCTION('DATE_FORMAT', u.availableDate, '%Y-%m-%d')) LIKE LOWER(CONCAT('%', :search, '%')))")
     List<Users> searchWalkers(@Param("search") String search);
+
+     */
 }
 

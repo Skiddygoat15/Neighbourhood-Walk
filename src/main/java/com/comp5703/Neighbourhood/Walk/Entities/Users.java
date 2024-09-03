@@ -49,6 +49,12 @@ public class Users {
     private boolean verified;
     @Column(name = "verify_method")
     private String veriMethod;
+    /*
+    @OneToMany(mappedBy = "userId")：表示 Users 和 Role 之间是一对多的关系。
+    mappedBy 指定了在 Role 实体中定义了关系的字段，即 userId。
+    cascade = CascadeType.ALL：表示当对 Users 实体进行持久化操作时，关联的 Role 实体也会同步进行相应的操作（例如保存、更新、删除）。
+    orphanRemoval = true：当从 roles 集合中删除一个 Role 实体时，数据库中对应的记录也会被删除。
+     */
     @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Role> roles = new ArrayList<>();
 
@@ -56,7 +62,7 @@ public class Users {
         return userId;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.userId = id;
     }
 

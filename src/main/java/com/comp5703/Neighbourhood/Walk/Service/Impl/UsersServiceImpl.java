@@ -2,8 +2,10 @@ package com.comp5703.Neighbourhood.Walk.Service.Impl;
 
 import com.comp5703.Neighbourhood.Walk.Entities.Users;
 import com.comp5703.Neighbourhood.Walk.Repository.UsersRepository;
+import com.comp5703.Neighbourhood.Walk.Service.Specification.UsersSpecifications;
 import com.comp5703.Neighbourhood.Walk.Service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -38,7 +40,15 @@ public class UsersServiceImpl implements UsersService {
     //byron
     @Override
     public List<Users> searchWalkers(String search) {
-        return usersRepository.searchWalkers(search);
+        Specification<Users> spec = Specification.where(UsersSpecifications.hasRole("walker"))
+                .and(UsersSpecifications.containsAttribute("name", search)
+                        .or(UsersSpecifications.containsAttribute("surname", search))
+                        .or(UsersSpecifications.containsAttribute("preferredName", search))
+                        .or(UsersSpecifications.containsAttribute("gender", search))
+                        .or(UsersSpecifications.containsAttribute("address", search))
+                        .or(UsersSpecifications.containsAttribute("availableDate", search)));
+
+        return usersRepository.findAll(spec);
     }
 
 }
