@@ -15,7 +15,7 @@ public class Role {
     @ManyToOne
     @JoinColumn(name = "userId", referencedColumnName = "userId", nullable = false)
     @JsonIgnore  // 这个字段在 JSON 输出时会被忽略
-    private Users user;
+    private Users userId;
 
     @Column(name = "roleType", nullable = false)
     private String roleType;
@@ -24,7 +24,7 @@ public class Role {
     public Role() {}
 
     public Role(Users user, String roleType) {
-        this.user = user;
+        this.userId = user;
         this.roleType = roleType;
     }
 
@@ -38,11 +38,11 @@ public class Role {
     }
 
     public Users getUser() {
-        return user;
+        return userId;
     }
 
     public void setUser(Users user) {
-        this.user = user;
+        this.userId = user;
     }
 
     public String getRoleType() {

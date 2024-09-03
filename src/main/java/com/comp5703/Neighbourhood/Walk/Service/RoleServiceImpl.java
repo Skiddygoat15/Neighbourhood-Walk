@@ -34,7 +34,7 @@ public class RoleServiceImpl implements RoleService {
         Users user = userOptional.get();
 
         // 检查用户是否已经拥有相同的角色类型
-        List<Role> existingRoles = roleRepository.findByUser(user);
+        List<Role> existingRoles = roleRepository.findByUserId(user);
         for (Role role : existingRoles) {
             if (role.getRoleType().equals(roleType)) {
                 throw new IllegalArgumentException("User already has the role type: " + roleType);
@@ -83,7 +83,7 @@ public class RoleServiceImpl implements RoleService {
         if (user.isEmpty()) {
             throw new IllegalArgumentException("User not found with id: " + userId);
         }
-        List<Role> roles = roleRepository.findByUser(user.get());
+        List<Role> roles = roleRepository.findByUserId(user.get());
 
         List<RoleDTO> roleDTOs = new ArrayList<>();
         for (Role role : roles) {
@@ -109,13 +109,13 @@ public class RoleServiceImpl implements RoleService {
         Users user = userOptional.get();
 
         // 查找用户是否拥有该角色类型
-        Optional<Role> roleOptional = roleRepository.findByUserAndRoleType(user, roleType);
+        Optional<Role> roleOptional = roleRepository.findByUserIdAndRoleType(user, roleType);
         if (roleOptional.isEmpty()) {
             throw new IllegalArgumentException("Role not found for user with id: " + userId + " and role type: " + roleType);
         }
 
         // 获取用户的所有角色
-        List<Role> roles = roleRepository.findByUser(user);
+        List<Role> roles = roleRepository.findByUserId(user);
         if (roles.size() == 1) {
             throw new IllegalArgumentException("Cannot delete the only role of the user");
         }
