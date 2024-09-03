@@ -6,24 +6,25 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "Comment")
 
-public class Comment {
+public class Comment{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "commentId")
-    private int commentId;
+    private long commentId;
     @Column(name = "requestId", nullable = false)
-    private String requestId;
+    private long requestId;
     @Column(name = "userId", nullable = false)
-    private String userId;
+    private long userId;
     @Column(name = "rate", nullable = false)
-    private String rate;
+    private double rate;
     @Column(name = "comment", nullable = false)
     private String comment;
     @Column(name = "commentDate", nullable = false)
     @JsonFormat(pattern =  "yyyy-mm-dd hh:mm:ss")
     private String commentDate;
 
-    public int getCommentId() {
+
+    public long getCommentId() {
         return commentId;
     }
 
@@ -31,27 +32,27 @@ public class Comment {
         this.commentId = commentId;
     }
 
-    public String getRequestId() {
+    public long getRequestId() {
         return requestId;
     }
 
-    public void setRequestId(String requestId) {
+    public void setRequestId(int requestId) {
         this.requestId = requestId;
     }
 
-    public String getUserId() {
+    public long getUserId() {
         return userId;
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 
-    public String getRate() {
+    public double getRate() {
         return rate;
     }
 
-    public void setRate(String rate) {
+    public void setRate(double rate) {
         this.rate = rate;
     }
 
@@ -70,4 +71,5 @@ public class Comment {
     public void setCommentDate(String commentDate) {
         this.commentDate = commentDate;
     }
+
 }

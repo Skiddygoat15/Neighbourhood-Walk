@@ -16,4 +16,5 @@ public interface UsersService {
     //byron
     List<Users> searchWalkers(String search);
 
+    Users getUserById(long id);
 }
