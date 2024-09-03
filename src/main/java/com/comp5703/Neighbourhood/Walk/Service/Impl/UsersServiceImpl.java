@@ -36,7 +36,6 @@ public class UsersServiceImpl implements UsersService {
         return (List<Users>) usersRepository.findAll();
     }
 
-
     //byron
     @Override
     public List<Users> searchWalkers(String search) {

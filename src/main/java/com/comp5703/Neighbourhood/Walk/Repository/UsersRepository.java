@@ -19,7 +19,7 @@ public interface UsersRepository extends JpaRepository<Users, Long>, JpaSpecific
     使用 DATE_FORMAT 函数将日期字段格式化为字符串，以便在日期字段上进行文本匹配
     如果日期字段格式不同，可能需要调整 DATE_FORMAT 函数的格式化规则
 
-    根据输入的search字符串匹配walkers的name，surname，gender，address，prefferedTime
+    根据输入的search字符串匹配walkers的name，surname，gender，address，prefferedName，availableTime
 
     @Query("SELECT u FROM Users u " +
             "JOIN u.roles r " +
