@@ -56,4 +56,16 @@ public class RoleController {
             return new ResponseEntity<>("An error occurred while fetching roles", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @DeleteMapping
+    public ResponseEntity<String> deleteRole(@RequestParam long userId, @RequestParam String roleType) {
+        try {
+            roleService.deleteRole(userId, roleType);
+            return new ResponseEntity<>("Role deleted successfully", HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>("An error occurred during role deletion", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 }

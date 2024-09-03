@@ -99,4 +99,29 @@ public class RoleServiceImpl implements RoleService {
         return roleDTOs;
     }
 
+    @Override
+    public void deleteRole(long userId, String roleType) {
+        Optional<Users> userOptional = usersRepository.findById(userId);
+        if (userOptional.isEmpty()) {
+            throw new IllegalArgumentException("User not found with id: " + userId);
+        }
+
+        Users user = userOptional.get();
+
+        // 查找用户是否拥有该角色类型
+        Optional<Role> roleOptional = roleRepository.findByUserAndRoleType(user, roleType);
+        if (roleOptional.isEmpty()) {
+            throw new IllegalArgumentException("Role not found for user with id: " + userId + " and role type: " + roleType);
+        }
+
+        // 获取用户的所有角色
+        List<Role> roles = roleRepository.findByUser(user);
+        if (roles.size() == 1) {
+            throw new IllegalArgumentException("Cannot delete the only role of the user");
+        }
+
+        // 删除角色
+        roleRepository.delete(roleOptional.get());
+    }
+
 }

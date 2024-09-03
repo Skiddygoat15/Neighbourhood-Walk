@@ -12,5 +12,6 @@ public interface RoleService {
     RoleDTO saveRole(long userId, String roleType);
     List<RoleDTO> getAllRoles();
     List<RoleDTO> getRolesByUserId(long userId);
+    void deleteRole(long roleId, String roleType);
 }
 

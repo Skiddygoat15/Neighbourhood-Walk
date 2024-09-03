@@ -9,4 +9,5 @@ import java.util.Optional;
 
 public interface RoleRepository extends CrudRepository<Role, Integer>{
     List<Role> findByUser(Users user);  // 根据 userId 查询所有角色
+    Optional<Role> findByUserAndRoleType(Users user, String roleType);
 }
