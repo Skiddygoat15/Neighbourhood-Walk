@@ -5,6 +5,7 @@ import com.comp5703.Neighbourhood.Walk.Entities.Comment;
 import com.comp5703.Neighbourhood.Walk.Entities.Users;
 import com.comp5703.Neighbourhood.Walk.Service.CommentService;
 import com.comp5703.Neighbourhood.Walk.Service.UsersService;
+import com.comp5703.Neighbourhood.Walk.Service.UsersServiceImpl;
 import com.comp5703.Neighbourhood.Walk.Utils.TwoTuple;
 import com.comp5703.Neighbourhood.Walk.domain.dto.RateCommentDTO;
 import com.comp5703.Neighbourhood.Walk.domain.dto.UserIdNameAverateDTO;
@@ -27,7 +28,7 @@ public class CommentController {
     CommentService commentService;
 
     @Autowired
-    UsersService usersService;
+    UsersServiceImpl usersService;
 
     /*
         添加评论
@@ -81,7 +82,8 @@ public class CommentController {
     }
 
     @GetMapping("/getRankByAveRate")
-    public ResponseEntity<List<UserIdNameAverateDTO>> getRankByAveRate(@RequestParam(value = "ascending",required = false,defaultValue = "true") boolean ascending){
+    public ResponseEntity<List<UserIdNameAverateDTO>> getRankByAveRate(
+            @RequestParam(value = "ascending",required = false,defaultValue = "true") boolean ascending){
 
         List<Long> userIdList = commentService.getCommentedUserIds();
         System.out.println(userIdList);
