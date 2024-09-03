@@ -13,4 +13,5 @@ public interface UsersService {
     void deleteUsers(long id);
     List<Users> getAllUsers();
     Users registerUser(Users user, String roleType);
+    Users updateUserProfile(long userId, Users updatedUser);
 }

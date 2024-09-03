@@ -1,5 +1,6 @@
 package com.comp5703.Neighbourhood.Walk.Service;
 
+import com.comp5703.Neighbourhood.Walk.Entities.RoleDTO;
 import com.comp5703.Neighbourhood.Walk.Entities.Users;
 import com.comp5703.Neighbourhood.Walk.Repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,6 +96,54 @@ public class UsersServiceImpl implements UsersService{
         roleService.saveRole(savedUser.getId(), roleType);
 
         return savedUser;
+    }
+    @Override
+    public Users updateUserProfile(long userId, Users updatedUser) {
+        // 获取用户信息
+        Optional<Users> userOptional = usersRepository.findById(userId);
+        if (!userOptional.isPresent()) {
+            throw new IllegalArgumentException("User not found with id: " + userId);
+        }
+
+        Users existingUser = userOptional.get();
+
+        // 获取用户角色
+        List<RoleDTO> roles = roleService.getRolesByUserId(userId);
+        boolean isWalker = roles.stream().anyMatch(role -> role.getRoleType().equalsIgnoreCase("walker"));
+
+        // 验证和更新允许修改的字段
+        if (updatedUser.getPreferredName() != null) {
+            existingUser.setPreferredName(updatedUser.getPreferredName());
+        }
+        if (updatedUser.getEmail() != null) {
+            existingUser.setEmail(updatedUser.getEmail());
+        }
+        if (updatedUser.getPhone() != null) {
+            existingUser.setPhone(updatedUser.getPhone());
+        }
+        if (updatedUser.getCommunicatePref() != null) {
+            existingUser.setCommunicatePref(updatedUser.getCommunicatePref());
+        }
+        if (updatedUser.getProfImgUrl() != null) {
+            existingUser.setProfImgUrl(updatedUser.getProfImgUrl());
+        }
+
+        // 验证和更新仅允许 Walker 角色修改的字段
+        if (updatedUser.getAvailableDate() != null || updatedUser.getSkill() != null) {
+            if (isWalker) {
+                if (updatedUser.getAvailableDate() != null) {
+                    existingUser.setAvailableDate(updatedUser.getAvailableDate());
+                }
+                if (updatedUser.getSkill() != null) {
+                    existingUser.setSkill(updatedUser.getSkill());
+                }
+            } else {
+                throw new IllegalArgumentException("Only users with the 'walker' role can update available dates and skills.");
+            }
+        }
+
+        // 保存更新后的用户信息
+        return usersRepository.save(existingUser);
     }
 
 }

@@ -55,4 +55,16 @@ public class UsersController {
         }
     }
 
+    @PutMapping("/{userId}/profile")
+    public ResponseEntity<?> updateUserProfile(@PathVariable long userId, @RequestBody Users updatedUser) {
+        try {
+            Users savedUser = usersService.updateUserProfile(userId, updatedUser);
+            return new ResponseEntity<>(savedUser, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>("An error occurred while updating user profile.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }
