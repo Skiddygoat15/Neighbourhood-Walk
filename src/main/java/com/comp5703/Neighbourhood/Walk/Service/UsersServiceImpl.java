@@ -56,7 +56,9 @@ public class UsersServiceImpl implements UsersService{
                 user.getPhone() == null || user.getPhone().isEmpty() ||
                 user.getEmail() == null || user.getEmail().isEmpty() ||
                 user.getAddress() == null || user.getAddress().isEmpty() ||
-                user.getPassword() == null || user.getPassword().isEmpty()) {
+                user.getPassword() == null || user.getPassword().isEmpty() ||
+                user.getGender() == null || user.getGender().isEmpty() ||
+                user.getBirthDate() == null) {
             throw new IllegalArgumentException("All required fields must be filled.");
         }
 
@@ -74,6 +76,11 @@ public class UsersServiceImpl implements UsersService{
         if (!user.getEmail().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
             throw new IllegalArgumentException("Invalid email format");
         }
+
+        if (user.getGender() != "male" || user.getGender() != "female" || user.getGender() != "other") {
+            throw new IllegalArgumentException("Invalid gender");
+        }
+
 
         // 验证手机号格式
         if (!user.getPhone().matches("^\\d{1,11}$")) {
