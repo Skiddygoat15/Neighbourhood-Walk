@@ -32,3 +32,4 @@ public interface UsersRepository extends CrudRepository<Users, Long> {
             "OR LOWER(FUNCTION('DATE_FORMAT', u.availableDate, '%Y-%m-%d')) LIKE LOWER(CONCAT('%', :search, '%')))")
     List<Users> searchWalkers(@Param("search") String search);
 }
+
