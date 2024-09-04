@@ -69,5 +69,4 @@ public class RequestController {
         List<Request> requests = requestService.searchRequests(searchTerm, startTime, arriveTime);
         return new ResponseEntity<>(requests, HttpStatus.OK);
     }
-
 }

@@ -32,7 +32,7 @@ public class CommentServiceImpl implements CommentService{
         Iterable<Comment> iterable = commentRepository.findAll();
         Set<Long> set = new HashSet<>();
         //userId去重
-        for (Comment comment : iterable) {set.add(comment.getUserId());}
+        for (Comment comment : iterable) {set.add(comment.getUser().getId());}
         ArrayList<Long> list = new ArrayList<>(set);
         return list;
     }

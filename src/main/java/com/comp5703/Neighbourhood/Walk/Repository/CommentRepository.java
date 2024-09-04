@@ -12,4 +12,3 @@ public interface CommentRepository extends CrudRepository<Comment, Long> {
     List<Comment> findAllByUserId(long userId);
     Optional<Comment> findById(Long commentId);
 }
-
