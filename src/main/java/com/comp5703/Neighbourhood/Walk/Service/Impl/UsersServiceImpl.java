@@ -1,6 +1,7 @@
 package com.comp5703.Neighbourhood.Walk.Service.Impl;
 
 import com.comp5703.Neighbourhood.Walk.Entities.Users;
+import com.comp5703.Neighbourhood.Walk.Repository.RequestRepository;
 import com.comp5703.Neighbourhood.Walk.Repository.UsersRepository;
 import com.comp5703.Neighbourhood.Walk.Service.Specification.UsersSpecifications;
 import com.comp5703.Neighbourhood.Walk.Service.UsersService;
@@ -15,6 +16,8 @@ import java.util.Optional;
 public class UsersServiceImpl implements UsersService {
     @Autowired
     UsersRepository usersRepository;
+    @Autowired
+    private RequestRepository requestRepository;
 
     @Override
     public Users saveUsers(Users user) {
@@ -36,19 +39,6 @@ public class UsersServiceImpl implements UsersService {
         return (List<Users>) usersRepository.findAll();
     }
 
-    //byron
-    @Override
-    public List<Users> searchWalkers(String search) {
-        Specification<Users> spec = Specification.where(UsersSpecifications.hasRole("walker"))
-                .and(UsersSpecifications.containsAttribute("name", search)
-                        .or(UsersSpecifications.containsAttribute("surname", search))
-                        .or(UsersSpecifications.containsAttribute("preferredName", search))
-                        .or(UsersSpecifications.containsAttribute("gender", search))
-                        .or(UsersSpecifications.containsAttribute("address", search))
-                        .or(UsersSpecifications.containsAttribute("availableDate", search)));
-
-        return usersRepository.findAll(spec);
-    }
     @Override
     public Users getUserById(long id) {
         // 确保 Optional 中有值，然后调用 get()
@@ -57,5 +47,31 @@ public class UsersServiceImpl implements UsersService {
 //            user = usersRepository.findById(id).get();
 //        }
         return usersRepository.findById(id).get();
+    }
+
+    @Override
+    public boolean hasPublishedRequest(Long userId) {
+        // 验证当前用户是否发布了请求
+        return requestRepository.existsByParent_UserId(userId);
+    }
+
+    //byron
+    @Override
+    public List<Users> searchWalkers(Long userId, String search) {
+        // 检查是否发布了请求
+        if (!hasPublishedRequest(userId)) {
+            throw new IllegalArgumentException("Only parents who have published a request can search for walkers.");
+        }
+        // 组合 Specification 查询条件
+        Specification<Users> spec = Specification.where(UsersSpecifications.hasRole("walker"))
+                .and(UsersSpecifications.containsAttribute("name", search)
+                        .or(UsersSpecifications.containsAttribute("surname", search))
+                        .or(UsersSpecifications.containsAttribute("preferredName", search))
+                        .or(UsersSpecifications.containsAttribute("gender", search))
+                        .or(UsersSpecifications.containsAttribute("address", search))
+                        .or(UsersSpecifications.containsAttribute("availableDate", search)))
+                        .and(UsersSpecifications.orderByAverageRate());
+
+        return usersRepository.findAll(spec);
     }
 }

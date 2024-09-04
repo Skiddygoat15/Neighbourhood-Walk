@@ -114,32 +114,6 @@ public class RequestServiceImpl implements RequestService {
         walkerRequestRepository.delete(walkerRequest);
     }
 
-    @Override
-    public Date getRequestStartTime(String content) {
-//        requestRepository.findByStartTime(content);
-        return null;
-    }
-
-    @Override
-    public Date getRequestArriveTime() {
-        return null;
-    }
-
-    @Override
-    public String getRequestDeparture(Request departure) {
-        requestRepository.findByDeparture(departure);
-        return "";
-    }
-
-    @Override
-    public String getRequestDestination() {
-        return "";
-    }
-
-    @Override
-    public String getParentName() {
-        return "";
-    }
 
     @Override
     public List<Request> searchRequests(String search) {

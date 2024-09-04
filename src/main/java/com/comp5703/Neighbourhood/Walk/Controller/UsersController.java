@@ -40,8 +40,8 @@ public class UsersController {
 
     //byron
     @GetMapping("/searchWalkers")
-    public ResponseEntity<List<Users>> searchWalkers(@RequestParam String search) {
-        List<Users> walkers = usersService.searchWalkers(search);
+    public ResponseEntity<List<Users>> searchWalkers(@RequestParam Long userId, @RequestParam String search) {
+        List<Users> walkers = usersService.searchWalkers(userId, search);
         return new ResponseEntity<>(walkers, HttpStatus.OK);
     }
 }

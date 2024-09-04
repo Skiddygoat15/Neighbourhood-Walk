@@ -57,6 +57,8 @@ public class Users {
      */
     @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Role> roles = new ArrayList<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
 
     public long getId() {
         return userId;
@@ -154,6 +156,20 @@ public class Users {
     }
     public List<String> getSkill() {
         return skill;
+    }
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
+    }
+
+    public List<Comment> getComments() {
+        return comments;
+    }
+    public void setComments(List<Comment> comments) {
+        this.comments = comments;
     }
 
 }

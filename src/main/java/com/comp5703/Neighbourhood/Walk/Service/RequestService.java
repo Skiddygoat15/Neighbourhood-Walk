@@ -15,11 +15,8 @@ public interface RequestService {
     WalkerRequest acceptWalkerRequest(int requestId, int walkerId);
     WalkerRequest rejectWalkerRequest(int requestId, int walkerId);
     void deleteRequest(int requestId);
-    Date getRequestStartTime();
-    Date getRequestArriveTime();
-    String getRequestDeparture();
-    String getRequestDestination();
-    String getParentName();
+
+    // byron
     List<Request> searchRequests(String search);
 
 

@@ -13,8 +13,9 @@ public interface UsersService {
     void deleteUsers(long id);
     List<Users> getAllUsers();
 
-    //byron
-    List<Users> searchWalkers(String search);
-
     Users getUserById(long id);
+
+    //byron
+    boolean hasPublishedRequest(Long userId);
+    List<Users> searchWalkers(Long userId, String search);
 }

@@ -22,4 +22,13 @@ public interface RequestRepository extends JpaRepository<Request, Integer> {
             "OR LOWER(r.details) LIKE LOWER(CONCAT('%', :search, '%')) " +
             "OR LOWER(r.status) LIKE LOWER(CONCAT('%', :search, '%'))")
     List<Request> searchRequests(@Param("search") String search);
+
+    // 检查指定的 parent 是否发布了请求
+    /*
+    existsBy：这是 Spring Data JPA 的方法前缀，表示要检查某个记录是否存在。
+    Parent：对应 Request 实体中的 parent 字段，该字段是 Users 类型的关联。
+    UserId：对应 Users 实体中的 userId 字段。
+    通过 _ 将关联字段分开，Spring Data JPA 会自动解析并生成相应的查询。
+     */
+    boolean existsByParent_UserId(Long userId);
 }

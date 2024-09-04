@@ -13,8 +13,12 @@ public class Comment{
     private long commentId;
     @Column(name = "requestId", nullable = false)
     private long requestId;
-    @Column(name = "userId", nullable = false)
-    private long userId;
+//    @Column(name = "userId", nullable = false)
+//    private long userId;
+    // 关联 Users 和 Comment 实体
+    @ManyToOne
+    @JoinColumn(name = "userId", nullable = false)
+    private Users user;
     @Column(name = "rate", nullable = false)
     private double rate;
     @Column(name = "comment", nullable = false)
@@ -40,12 +44,12 @@ public class Comment{
         this.requestId = requestId;
     }
 
-    public long getUserId() {
-        return userId;
+    public Users getUser() {
+        return user;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setUser(Users user) {
+        this.user = user;
     }
 
     public double getRate() {
