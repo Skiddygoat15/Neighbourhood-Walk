@@ -3,6 +3,7 @@ package com.comp5703.Neighbourhood.Walk.Security;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
@@ -27,6 +28,7 @@ public class SecurityConfig {
                 .csrf().disable()
                 .authorizeHttpRequests() // Change from authorizeRequests to authorizeHttpRequests
                 .requestMatchers("/h2/**", "/Users", "/Users/*/profile", "/roles", "/Users/register", "/roles/user/*", "/Users/email/", "/Users/allUsers", "/roles/delete").permitAll() // Change from antMatchers to requestMatchers
+                .requestMatchers(HttpMethod.POST, SecurityConstants.REGISTER_PATH).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
