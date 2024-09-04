@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.Date;
 import java.util.List;
 
 @RestController
@@ -60,8 +61,12 @@ public class RequestController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Request>> searchRequests(@RequestParam String search) {
-        List<Request> requests = requestService.searchRequests(search);
+    public ResponseEntity<List<Request>> searchRequests(
+            @RequestParam String searchTerm,
+            @RequestParam(required = false) Date startTime,
+            @RequestParam(required = false) Date arriveTime) {
+
+        List<Request> requests = requestService.searchRequests(searchTerm, startTime, arriveTime);
         return new ResponseEntity<>(requests, HttpStatus.OK);
     }
 

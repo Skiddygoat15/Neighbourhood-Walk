@@ -4,14 +4,15 @@ import com.comp5703.Neighbourhood.Walk.Entities.Request;
 import com.comp5703.Neighbourhood.Walk.Entities.Role;
 import com.comp5703.Neighbourhood.Walk.Entities.Users;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface RequestRepository extends JpaRepository<Request, Integer> {
-    List<Request> findByDeparture(String search);
+public interface RequestRepository extends JpaRepository<Request, Integer>, JpaSpecificationExecutor<Request> {
 
+    /*
     @Query("SELECT r FROM Request r " +
             "JOIN r.parent p " +
             "WHERE LOWER(r.departure) LIKE LOWER(CONCAT('%', :search, '%')) " +
@@ -23,8 +24,6 @@ public interface RequestRepository extends JpaRepository<Request, Integer> {
             "OR LOWER(r.status) LIKE LOWER(CONCAT('%', :search, '%'))")
     List<Request> searchRequests(@Param("search") String search);
 
-    // 检查指定的 parent 是否发布了请求
-    /*
     existsBy：这是 Spring Data JPA 的方法前缀，表示要检查某个记录是否存在。
     Parent：对应 Request 实体中的 parent 字段，该字段是 Users 类型的关联。
     UserId：对应 Users 实体中的 userId 字段。

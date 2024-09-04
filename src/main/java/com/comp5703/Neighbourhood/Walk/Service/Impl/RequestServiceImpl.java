@@ -6,8 +6,10 @@ import com.comp5703.Neighbourhood.Walk.Repository.RequestRepository;
 import com.comp5703.Neighbourhood.Walk.Repository.UsersRepository;
 import com.comp5703.Neighbourhood.Walk.Repository.WalkerRequestRepository;
 import com.comp5703.Neighbourhood.Walk.Service.RequestService;
+import com.comp5703.Neighbourhood.Walk.Service.Specification.RequestSpecifications;
 import com.comp5703.Neighbourhood.Walk.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
@@ -114,10 +116,28 @@ public class RequestServiceImpl implements RequestService {
         walkerRequestRepository.delete(walkerRequest);
     }
 
-
     @Override
-    public List<Request> searchRequests(String search) {
-        return requestRepository.searchRequests(search);
+    public List<Request> searchRequests(String searchTerm, Date startTime, Date arriveTime) {
+        // Combine Specifications
+        Specification<Request> spec = Specification.where(RequestSpecifications.hasDeparture(searchTerm)
+                .or(RequestSpecifications.hasDestination(searchTerm))
+                .or(RequestSpecifications.hasUserNameOrSurname(searchTerm)));
+
+        // Add optional filters based on time if provided
+        if (startTime != null) {
+            spec = spec.and(RequestSpecifications.hasStartTime(startTime));
+        }
+        if (arriveTime != null) {
+            spec = spec.and(RequestSpecifications.hasArriveTime(arriveTime));
+        }
+
+        List<Request> requests = requestRepository.findAll(spec);
+        // check if request exists
+        if (requests.isEmpty()) {
+            throw new ResourceNotFoundException("No matching requests found for the given search criteria.");
+        }
+
+        return requests;
     }
 
 }

@@ -5,6 +5,7 @@ import com.comp5703.Neighbourhood.Walk.Repository.RequestRepository;
 import com.comp5703.Neighbourhood.Walk.Repository.UsersRepository;
 import com.comp5703.Neighbourhood.Walk.Service.Specification.UsersSpecifications;
 import com.comp5703.Neighbourhood.Walk.Service.UsersService;
+import com.comp5703.Neighbourhood.Walk.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -42,11 +43,11 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public Users getUserById(long id) {
         // 确保 Optional 中有值，然后调用 get()
-//        Users user = null;
-//        if (usersRepository.findById(id).isPresent()) {
-//            user = usersRepository.findById(id).get();
-//        }
-        return usersRepository.findById(id).get();
+        Users user = null;
+        if (usersRepository.findById(id).isPresent()) {
+            user = usersRepository.findById(id).get();
+        }
+        return user;
     }
 
     @Override
@@ -72,6 +73,12 @@ public class UsersServiceImpl implements UsersService {
                         .or(UsersSpecifications.containsAttribute("availableDate", search)))
                         .and(UsersSpecifications.orderByAverageRate());
 
-        return usersRepository.findAll(spec);
+        List<Users> users = usersRepository.findAll(spec);
+
+        if (users.isEmpty()) {
+            throw new ResourceNotFoundException("No matching users found for the given search criteria.");
+        }
+
+        return users;
     }
 }
