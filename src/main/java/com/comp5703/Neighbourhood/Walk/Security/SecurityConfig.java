@@ -25,8 +25,8 @@ public class SecurityConfig {
                 .headers().frameOptions().disable()// Delete this when migrate to MySQL
                 .and()// Delete this when migrate to MySQL
                 .csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/h2/**").permitAll()// Delete this when migrate to MySQL
+                .authorizeHttpRequests() // Change from authorizeRequests to authorizeHttpRequests
+                .requestMatchers("/h2/**", "/Users", "/Users/*/profile", "/roles", "/Users/register", "/roles/user/*", "/Users/email/", "/Users/allUsers", "/roles/delete").permitAll() // Change from antMatchers to requestMatchers
                 .anyRequest().authenticated()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
