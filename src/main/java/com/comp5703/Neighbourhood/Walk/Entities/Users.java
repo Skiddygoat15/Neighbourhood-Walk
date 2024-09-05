@@ -61,6 +61,12 @@ public class Users {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Request> Requests_parentId = new ArrayList<>();
+
+    @OneToMany(mappedBy = "walker", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Request> Requests_walkerId = new ArrayList<>();
+
     public long getId() {
         return userId;
     }
