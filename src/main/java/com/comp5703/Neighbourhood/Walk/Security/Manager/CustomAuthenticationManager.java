@@ -2,7 +2,6 @@ package com.comp5703.Neighbourhood.Walk.Security.Manager;
 
 import com.comp5703.Neighbourhood.Walk.Entities.Users;
 import com.comp5703.Neighbourhood.Walk.Service.UsersService;
-import com.comp5703.Neighbourhood.Walk.Service.UsersServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;

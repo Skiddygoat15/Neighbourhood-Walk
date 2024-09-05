@@ -1,8 +1,10 @@
-package com.comp5703.Neighbourhood.Walk.Service;
+package com.comp5703.Neighbourhood.Walk.Service.Impl;
 
 import com.comp5703.Neighbourhood.Walk.Entities.RoleDTO;
 import com.comp5703.Neighbourhood.Walk.Entities.Users;
 import com.comp5703.Neighbourhood.Walk.Repository.UsersRepository;
+import com.comp5703.Neighbourhood.Walk.Service.RoleService;
+import com.comp5703.Neighbourhood.Walk.Service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -13,7 +15,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 @Service
-public class UsersServiceImpl implements UsersService{
+public class UsersServiceImpl implements UsersService {
     @Autowired
     UsersRepository usersRepository;
 

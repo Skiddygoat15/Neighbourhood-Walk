@@ -1,9 +1,10 @@
-package com.comp5703.Neighbourhood.Walk.Service;
+package com.comp5703.Neighbourhood.Walk.Service.Impl;
 import com.comp5703.Neighbourhood.Walk.Entities.Role;
 import com.comp5703.Neighbourhood.Walk.Entities.RoleDTO;
 import com.comp5703.Neighbourhood.Walk.Entities.Users;
 import com.comp5703.Neighbourhood.Walk.Repository.RoleRepository;
 import com.comp5703.Neighbourhood.Walk.Repository.UsersRepository;
+import com.comp5703.Neighbourhood.Walk.Service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
