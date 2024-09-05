@@ -2,6 +2,7 @@ package com.comp5703.Neighbourhood.Walk.Security;
 
 import com.comp5703.Neighbourhood.Walk.Security.Filter.AuthenticationFilter;
 import com.comp5703.Neighbourhood.Walk.Security.Filter.ExceptionHandlerFilter;
+import com.comp5703.Neighbourhood.Walk.Security.Filter.JWTAuthorizationFilter;
 import com.comp5703.Neighbourhood.Walk.Security.Manager.CustomAuthenticationManager;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -29,36 +30,22 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         AuthenticationFilter authenticationFilter = new AuthenticationFilter(customAuthenticationManager);
-        authenticationFilter.setFilterProcessesUrl("/authentication");
+        authenticationFilter.setFilterProcessesUrl("/login");
 
         http
                 .headers().frameOptions().disable()// Delete this when migrate to MySQL
                 .and()// Delete this when migrate to MySQL
                 .csrf().disable()
                 .authorizeHttpRequests() // Change from authorizeRequests to authorizeHttpRequests
-                .requestMatchers("/h2/**", "/Users", "/Users/*/profile", "/roles", "/Users/register", "/roles/user/*", "/Users/email/", "/Users/allUsers", "/roles/delete").permitAll() // Change from antMatchers to requestMatchers
+                .requestMatchers("/h2/**").permitAll() // Change from antMatchers to requestMatchers
                 .requestMatchers(HttpMethod.POST, SecurityConstants.REGISTER_PATH).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new ExceptionHandlerFilter(), AuthenticationFilter.class)
                 .addFilter(authenticationFilter)
+                .addFilterAfter(new JWTAuthorizationFilter(), AuthenticationFilter.class)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         return http.build();
-    }
-
-    @Bean
-    public UserDetailsService users() {
-        UserDetails admin = User.builder()
-                .username("admin")
-                .password(passwordEncoder.encode("admin-pass"))
-                .roles("ADMIN")
-                .build();
-        UserDetails user = User.builder()
-                .username("user")
-                .password(passwordEncoder.encode("user-pass"))
-                .roles("USER")
-                .build();
-        return new InMemoryUserDetailsManager(admin, user);
     }
 }

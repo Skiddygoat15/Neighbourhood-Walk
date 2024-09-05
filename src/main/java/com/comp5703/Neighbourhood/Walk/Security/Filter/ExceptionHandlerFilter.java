@@ -1,5 +1,6 @@
 package com.comp5703.Neighbourhood.Walk.Security.Filter;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -19,8 +20,11 @@ public class ExceptionHandlerFilter extends OncePerRequestFilter {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             response.getWriter().write("Email or Phone doesn't exist");
             response.getWriter().flush();
-        }
-        catch (RuntimeException e) {
+        } catch (JWTVerificationException e) {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            response.getWriter().write("JWT NOT VALID");
+            response.getWriter().flush();
+        } catch (RuntimeException e) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             response.getWriter().write("Please check your JSON request!");
             response.getWriter().flush();

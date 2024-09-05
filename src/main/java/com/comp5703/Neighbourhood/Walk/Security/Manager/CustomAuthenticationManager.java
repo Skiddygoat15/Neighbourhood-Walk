@@ -22,9 +22,18 @@ public class CustomAuthenticationManager implements AuthenticationManager {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        Users user = usersService.getUsersByEmail(authentication.getName());
+        // 通过 email 获取用户
+        Optional<Users> userOptional = usersService.getUsersByEmail(authentication.getName());
+
+        // 检查用户是否存在
+        if (userOptional.isEmpty()) {
+            throw new BadCredentialsException("User not found with email: " + authentication.getName());
+        }
+
+        Users user = userOptional.get();
+
         if (!bCryptPasswordEncoder.matches(authentication.getCredentials().toString(), user.getPassword())) {
-            throw new BadCredentialsException("Wrong password");
+            throw new BadCredentialsException("You Provided a Wrong Password!");
         }
         return new UsernamePasswordAuthenticationToken(authentication.getName(), user.getPassword());
     }
