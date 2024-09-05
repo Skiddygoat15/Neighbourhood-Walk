@@ -13,11 +13,11 @@ public class Comment{
     private long commentId;
 
     @OneToOne
-    @JoinColumn(name = "requestId", nullable = false)
+    @JoinColumn(name = "requestId")
     private Request request;
 
     @ManyToOne
-    @JoinColumn(name = "userId", nullable = false)
+    @JoinColumn(name = "userId")
     private Users user;
 
     @Column(name = "rate", nullable = false)

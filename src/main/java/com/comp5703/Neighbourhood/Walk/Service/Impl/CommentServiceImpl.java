@@ -1,7 +1,12 @@
 package com.comp5703.Neighbourhood.Walk.Service.Impl;
 
 import com.comp5703.Neighbourhood.Walk.Entities.Comment;
+import com.comp5703.Neighbourhood.Walk.Entities.Request;
+import com.comp5703.Neighbourhood.Walk.Entities.Users;
 import com.comp5703.Neighbourhood.Walk.Repository.CommentRepository;
+import com.comp5703.Neighbourhood.Walk.Repository.RequestRepository;
+import com.comp5703.Neighbourhood.Walk.Repository.UsersRepository;
+import com.comp5703.Neighbourhood.Walk.Repository.WalkerRequestRepository;
 import com.comp5703.Neighbourhood.Walk.Service.CommentService;
 import com.comp5703.Neighbourhood.Walk.Utils.TwoTuple;
 import com.comp5703.Neighbourhood.Walk.domain.dto.RateCommentDTO;
@@ -19,8 +24,22 @@ public class CommentServiceImpl implements CommentService {
     @Autowired
     CommentRepository commentRepository;
 
+    @Autowired
+    private RequestRepository requestRepository;
+    @Autowired
+    private WalkerRequestRepository walkerRequestRepository;
+    @Autowired
+    private UsersRepository usersRepository;
+
     @Override
-    public Comment saveComment(Comment comment) {return commentRepository.save(comment);}
+    public Comment saveComment(Comment comment) {
+        Request request = requestRepository.getById(comment.getRequest().getRequestId());
+        Users user = usersRepository.getById(comment.getUser().getId());
+        System.out.println("userId="+comment.getUser().getId());
+        comment.setRequest(request);
+        comment.setUser(user);
+        return commentRepository.save(comment);
+    }
 
     /**
      * 统计曾受到Comment的userIds
