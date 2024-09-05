@@ -2,10 +2,47 @@
 
 import Head from 'next/head';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation'
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 
 export default function LoginForm() {
   const router = useRouter();
+  const [emailOrPhone, setEmailOrPhone] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  const validateEmail = (email) => {
+   
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(email);
+  };
+
+  const validatePhone = (phone) => {
+
+    const re = /^\+?\d{10,15}$/; 
+    return re.test(phone);
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+
+    if (!emailOrPhone || !password) {
+      setError('Phone number, email, and password are required.');
+      return;
+    }
+
+  
+    if (!validateEmail(emailOrPhone) && !validatePhone(emailOrPhone)) {
+      setError('Please enter a valid phone number or email.');
+      return;
+    }
+
+    
+    setError('');
+    // 此处可以调用登录 API
+    console.log("Login successful");
+  };
 
   return (
     <>
@@ -27,20 +64,27 @@ export default function LoginForm() {
           {/* Title */}
           <h1 className="text-3xl font-bold text-center">Login</h1>
 
+          {/* Error Message */}
+          {error && <p className="text-red-500 text-center">{error}</p>}
+
           {/* Form */}
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
               <input 
                 type="text" 
+                value={emailOrPhone}
+                onChange={(e) => setEmailOrPhone(e.target.value)}
                 placeholder="Phone number or Email" 
-                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                className={`w-full p-3 border ${error ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-black`}
               />
             </div>
             <div>
               <input 
                 type="password" 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 placeholder="Password" 
-                className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black"
+                className={`w-full p-3 border ${error ? 'border-red-500' : 'border-gray-300'} rounded-lg focus:outline-none focus:ring-2 focus:ring-black`}
               />
             </div>
 
@@ -74,4 +118,3 @@ export default function LoginForm() {
     </>
   );
 }
-

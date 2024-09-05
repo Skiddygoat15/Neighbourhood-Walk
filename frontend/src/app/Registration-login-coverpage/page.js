@@ -1,3 +1,5 @@
+"use client";
+
 import Head from 'next/head';
 import Link from 'next/link';
 
@@ -31,9 +33,3 @@ export default function Home() {
     </>
   );
 }
-<<<<<<< HEAD:frontend/src/app/Registration-login-coverpage/page.js
-=======
-
-
-
->>>>>>> refs/remotes/origin/main:frontend/src/app/Registration-login/page.js
