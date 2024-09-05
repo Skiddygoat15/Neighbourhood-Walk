@@ -16,7 +16,7 @@ public class WalkerRequest {
     private int requestId;
 
     @Column(name = "walkerId")
-    private int walkerId;
+    private long walkerId;
 
     @Column(name = "status")
     private String status;
@@ -37,7 +37,7 @@ public class WalkerRequest {
         this.requestId = requestId;
     }
 
-    public int getWalkerId() {
+    public long getWalkerId() {
         return walkerId;
     }
 

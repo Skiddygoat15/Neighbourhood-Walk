@@ -1,6 +1,7 @@
 package com.comp5703.Neighbourhood.Walk.Service.Impl;
 
 import com.comp5703.Neighbourhood.Walk.Entities.Request;
+import com.comp5703.Neighbourhood.Walk.Entities.Users;
 import com.comp5703.Neighbourhood.Walk.Entities.WalkerRequest;
 import com.comp5703.Neighbourhood.Walk.Repository.RequestRepository;
 import com.comp5703.Neighbourhood.Walk.Repository.UsersRepository;
@@ -29,10 +30,22 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     public Request createRequest(Request request) {
+        // search parent, walker instance manually
+        System.out.println("Parent ID: " + request.getParent().getId());
+        Users parent = usersRepository.findById(request.getParent().getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Parent not found with id: " + request.getParent().getId()));
+
+        Users walker = usersRepository.findById(request.getWalker().getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Walker not found with id: " + request.getWalker().getId()));
+
+        // set the mapping object
+        request.setParent(parent);
+        request.setWalker(walker);
         request.setStatus("Published");
         return requestRepository.save(request);
     }
 
+    //todo: after accept a walker, parent should not be able to update the request in progress
     @Override
     public Request updateRequest(int requestId, Request updatedRequest) {
         Request request = requestRepository.findById(requestId).orElseThrow(() -> new ResourceNotFoundException("Request not found"));
@@ -93,7 +106,7 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public WalkerRequest applyRequest(int walkerId, int requestId) {
+    public WalkerRequest applyRequest(int requestId, int walkerId) {
         // check if request exists
         Request request = requestRepository.findById(requestId)
                 .orElseThrow(() -> new ResourceNotFoundException("Request not found with id: " + requestId));

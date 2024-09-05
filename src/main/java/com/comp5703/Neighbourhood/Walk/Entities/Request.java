@@ -21,6 +21,12 @@ public class Request {
     @JoinColumn(name = "parentId", referencedColumnName = "userId")
     private Users parent;
 
+//    @Column(name = "walkerId")
+//    private Long walkerId;
+//
+//    @Column(name = "parentId")
+//    private Long parentId;
+
     @Column(name = "publishDate")
     private Date publishDate;
 
@@ -41,6 +47,22 @@ public class Request {
 
     @Column(name = "status")
     private String status;
+
+//    public Long getWalkerId() {
+//        return walkerId;
+//    }
+//
+//    public void setWalkerId(Long walkerId) {
+//        this.walkerId = walkerId;
+//    }
+//
+//    public Long getParentId() {
+//        return parentId;
+//    }
+//
+//    public void setParentId(Long parentId) {
+//        this.parentId = parentId;
+//    }
 
     public Users getWalker() {
         return walker;

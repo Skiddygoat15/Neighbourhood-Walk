@@ -4,6 +4,7 @@ import com.comp5703.Neighbourhood.Walk.Entities.Request;
 import com.comp5703.Neighbourhood.Walk.Entities.WalkerRequest;
 import com.comp5703.Neighbourhood.Walk.Repository.WalkerRequestRepository;
 import com.comp5703.Neighbourhood.Walk.Service.RequestService;
+import com.comp5703.Neighbourhood.Walk.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,8 @@ public class RequestController {
     @Autowired
     private WalkerRequestRepository walkerRequestRepository;
 
+    //todo getRequest(), getAllRequests()
+
     @PostMapping
     public ResponseEntity<Request> addRequest(@RequestBody Request request) {
         return new ResponseEntity<>(requestService.createRequest(request), HttpStatus
@@ -33,9 +36,15 @@ public class RequestController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteRequest(@PathVariable int id) {
-        requestService.deleteRequest(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    public ResponseEntity<String> deleteRequest(@PathVariable int id) {
+        try {
+            requestService.deleteRequest(id);
+            return new ResponseEntity<>("Request with ID " + id + "was successfully deleted", HttpStatus.OK);
+        } catch (ResourceNotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>("other error occurred:" + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PostMapping("/{id}/accept")
