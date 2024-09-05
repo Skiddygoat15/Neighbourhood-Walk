@@ -1,9 +1,13 @@
 package com.comp5703.Neighbourhood.Walk.Security;
 
+import com.comp5703.Neighbourhood.Walk.Security.Filter.AuthenticationFilter;
+import com.comp5703.Neighbourhood.Walk.Security.Filter.ExceptionHandlerFilter;
+import com.comp5703.Neighbourhood.Walk.Security.Manager.CustomAuthenticationManager;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.User;
@@ -20,8 +24,13 @@ public class SecurityConfig {
 
     private BCryptPasswordEncoder passwordEncoder;
 
+    CustomAuthenticationManager customAuthenticationManager;
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        AuthenticationFilter authenticationFilter = new AuthenticationFilter(customAuthenticationManager);
+        authenticationFilter.setFilterProcessesUrl("/authentication");
+
         http
                 .headers().frameOptions().disable()// Delete this when migrate to MySQL
                 .and()// Delete this when migrate to MySQL
@@ -31,6 +40,8 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, SecurityConstants.REGISTER_PATH).permitAll()
                 .anyRequest().authenticated()
                 .and()
+                .addFilterBefore(new ExceptionHandlerFilter(), AuthenticationFilter.class)
+                .addFilter(authenticationFilter)
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         return http.build();

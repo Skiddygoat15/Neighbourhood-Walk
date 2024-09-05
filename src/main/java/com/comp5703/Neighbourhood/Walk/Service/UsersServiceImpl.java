@@ -21,6 +21,8 @@ public class UsersServiceImpl implements UsersService{
     private RoleService roleService;  // 注入 RoleService
 
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public Users saveUsers(Users user) {
@@ -94,8 +96,7 @@ public class UsersServiceImpl implements UsersService{
         }
 
         // 对密码进行bcrypt加密
-        String encryptedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encryptedPassword);
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 
         // 保存用户信息到 Users 表
         Users savedUser = usersRepository.save(user);
