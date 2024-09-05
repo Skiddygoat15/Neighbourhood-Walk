@@ -35,12 +35,12 @@ public class RequestServiceImpl implements RequestService {
         Users parent = usersRepository.findById(request.getParent().getId())
                 .orElseThrow(() -> new ResourceNotFoundException("Parent not found with id: " + request.getParent().getId()));
 
-        Users walker = usersRepository.findById(request.getWalker().getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Walker not found with id: " + request.getWalker().getId()));
+//        Users walker = usersRepository.findById(request.getWalker().getId())
+//                .orElseThrow(() -> new ResourceNotFoundException("Walker not found with id: " + request.getWalker().getId()));
 
         // set the mapping object
         request.setParent(parent);
-        request.setWalker(walker);
+        // request.setWalker(walker);
         request.setStatus("Published");
         return requestRepository.save(request);
     }
