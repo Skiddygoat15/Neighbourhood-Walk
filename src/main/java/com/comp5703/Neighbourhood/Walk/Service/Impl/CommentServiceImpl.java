@@ -1,7 +1,8 @@
-package com.comp5703.Neighbourhood.Walk.Service;
+package com.comp5703.Neighbourhood.Walk.Service.Impl;
 
 import com.comp5703.Neighbourhood.Walk.Entities.Comment;
 import com.comp5703.Neighbourhood.Walk.Repository.CommentRepository;
+import com.comp5703.Neighbourhood.Walk.Service.CommentService;
 import com.comp5703.Neighbourhood.Walk.Utils.TwoTuple;
 import com.comp5703.Neighbourhood.Walk.domain.dto.RateCommentDTO;
 import jakarta.persistence.Tuple;
@@ -13,7 +14,7 @@ import java.util.stream.Collectors;
 
 
 @Service
-public class CommentServiceImpl implements CommentService{
+public class CommentServiceImpl implements CommentService {
 
     @Autowired
     CommentRepository commentRepository;
