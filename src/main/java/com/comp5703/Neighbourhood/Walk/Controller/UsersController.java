@@ -22,6 +22,13 @@ public class UsersController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @GetMapping("/phone/{phone}")
+    public ResponseEntity<Users> getUsersByPhone(@PathVariable String phone) {
+        Optional<Users> user = usersService.getUsersByPhone(phone);
+        return user.map(users -> new ResponseEntity<>(users, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
     @PostMapping
     public ResponseEntity<Users> saveUsers(@RequestBody Users Users) {
         return new ResponseEntity<>(usersService.saveUsers(Users), HttpStatus.CREATED);
@@ -44,4 +51,33 @@ public class UsersController {
         List<Users> walkers = usersService.searchWalkers(userId, search);
         return new ResponseEntity<>(walkers, HttpStatus.OK);
     }
+    @PostMapping("/register")
+    public ResponseEntity<String> registerUser(@RequestBody Users user, @RequestParam String roleType) {
+        try {
+            // 调用服务层的 registerUser 方法
+            Users registeredUser = usersService.registerUser(user, roleType);
+
+            // 返回成功响应
+            return new ResponseEntity<>("User registered successfully with ID: " + registeredUser.getId(), HttpStatus.CREATED);
+        } catch (IllegalArgumentException e) {
+            // 返回错误信息，状态码为400 (Bad Request)
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            // 处理其他可能的异常
+            return new ResponseEntity<>("An error occurred during user registration", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/{userId}/profile")
+    public ResponseEntity<?> updateUserProfile(@PathVariable long userId, @RequestBody Users updatedUser) {
+        try {
+            Users savedUser = usersService.updateUserProfile(userId, updatedUser);
+            return new ResponseEntity<>(savedUser, HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>("An error occurred while updating user profile.", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 }

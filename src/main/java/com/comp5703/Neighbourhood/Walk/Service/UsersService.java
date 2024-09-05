@@ -10,6 +10,7 @@ public interface UsersService {
     Users saveUsers(Users user);
     //something
     Optional<Users> getUsersByEmail(String email);
+    Optional<Users> getUsersByPhone(String phone);
     void deleteUsers(long id);
     List<Users> getAllUsers();
 
@@ -18,4 +19,6 @@ public interface UsersService {
     //byron
     boolean hasPublishedRequest(Long userId);
     List<Users> searchWalkers(Long userId, String search);
+    Users registerUser(Users user, String roleType);
+    Users updateUserProfile(long userId, Users updatedUser);
 }

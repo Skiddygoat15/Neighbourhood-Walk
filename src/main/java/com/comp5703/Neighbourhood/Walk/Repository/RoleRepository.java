@@ -8,5 +8,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface RoleRepository extends CrudRepository<Role, Integer>{
-    List<Role> findByUserId(Users userId);  // 根据 userId 查询所有角色
+    List<Role> findByUserId(Users user);  // 根据 userId 查询所有角色
+    Optional<Role> findByUserIdAndRoleType(Users user, String roleType);
 }

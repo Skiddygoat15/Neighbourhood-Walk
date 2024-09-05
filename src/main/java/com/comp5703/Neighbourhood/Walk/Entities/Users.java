@@ -9,6 +9,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "Users")
+
 public class Users {
     // primary key
     @Id
@@ -68,7 +69,9 @@ public class Users {
         this.userId = id;
     }
 
-    public String getName() {return name;}
+    public String getName() {
+        return name;
+    }
 
     public void setName(String name) {
         this.name = name;
@@ -156,13 +159,6 @@ public class Users {
     }
     public List<String> getSkill() {
         return skill;
-    }
-
-    public List<Role> getRoles() {
-        return roles;
-    }
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
     }
 
     public List<Comment> getComments() {

@@ -5,6 +5,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.repository.CrudRepository;
 import java.util.Optional;
 
 public interface UsersRepository extends JpaRepository<Users, Long>, JpaSpecificationExecutor<Users> {
@@ -34,5 +37,5 @@ public interface UsersRepository extends JpaRepository<Users, Long>, JpaSpecific
      */
     @Override
     Optional<Users> findById(Long id);
+    Optional<Users> findByPhone(String phone);
 }
-
