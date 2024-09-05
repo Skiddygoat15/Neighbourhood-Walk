@@ -21,15 +21,15 @@ export default function RateTrip() {
   return (
     <main className="min-h-screen bg-white">
       <div className="max-w-md mx-auto p-4 space-y-8">
-        {/* Back Button */}
+     
         <button onClick={() => router.back()} className="text-2xl p-2 focus:outline-none">
           &larr;
         </button>
 
-        {/* Title */}
+
         <h1 className="text-2xl font-bold text-center">How was your trip?</h1>
 
-        {/* User Information */}
+   
         <div className="flex flex-col items-center space-y-2">
           <div className="w-16 h-16 rounded-full bg-gray-300 flex items-center justify-center">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-8 h-8 text-white">
@@ -39,7 +39,7 @@ export default function RateTrip() {
           <p className="text-lg font-bold">Lily</p>
         </div>
 
-        {/* Rating Section */}
+     
         <div className="flex justify-center space-x-1">
           {[1, 2, 3, 4, 5].map((star) => (
             <button
@@ -52,7 +52,7 @@ export default function RateTrip() {
           ))}
         </div>
 
-        {/* Feedback Section */}
+      
         <textarea
           value={feedback}
           onChange={(e) => setFeedback(e.target.value)}
@@ -61,7 +61,7 @@ export default function RateTrip() {
           rows="4"
         />
 
-        {/* Submit Button */}
+     
         <button
           onClick={handleSubmit}
           className="w-full py-3 text-center bg-black text-white rounded-full font-semibold hover:bg-gray-800"
