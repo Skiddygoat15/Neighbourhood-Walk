@@ -1,7 +1,7 @@
 package com.comp5703.Neighbourhood.Walk.Entities;
 
 public class RoleDTO {
-    private int roleId;
+    private long roleId;
     private String roleType;
     private long userId;
     private String phone;
@@ -10,7 +10,7 @@ public class RoleDTO {
     private String surName;
 
     // 构造方法
-    public RoleDTO(int roleId, String roleType, long userId, String phone, String email, String name, String surName) {
+    public RoleDTO(long roleId, String roleType, long userId, String phone, String email, String name, String surName) {
         this.roleId = roleId;
         this.roleType = roleType;
         this.userId = userId;
@@ -21,7 +21,7 @@ public class RoleDTO {
     }
 
     // Getter 和 Setter
-    public int getRoleId() {
+    public long getRoleId() {
         return roleId;
     }
 
