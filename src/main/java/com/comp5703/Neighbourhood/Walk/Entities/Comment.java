@@ -11,14 +11,15 @@ public class Comment{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "commentId")
     private long commentId;
-    @Column(name = "requestId", nullable = false)
-    private long requestId;
-//    @Column(name = "userId", nullable = false)
-//    private long userId;
-    // 关联 Users 和 Comment 实体
+
+    @OneToOne
+    @JoinColumn(name = "requestId", nullable = false)
+    private Request request;
+
     @ManyToOne
     @JoinColumn(name = "userId", nullable = false)
     private Users user;
+
     @Column(name = "rate", nullable = false)
     private double rate;
     @Column(name = "comment", nullable = false)
@@ -27,21 +28,20 @@ public class Comment{
     @JsonFormat(pattern =  "yyyy-mm-dd hh:mm:ss")
     private String commentDate;
 
-
     public long getCommentId() {
         return commentId;
     }
 
-    public void setCommentId(int commentId) {
+    public void setCommentId(long commentId) {
         this.commentId = commentId;
     }
 
-    public long getRequestId() {
-        return requestId;
+    public Request getRequest() {
+        return request;
     }
 
-    public void setRequestId(int requestId) {
-        this.requestId = requestId;
+    public void setRequest(Request request) {
+        this.request = request;
     }
 
     public Users getUser() {
@@ -75,5 +75,4 @@ public class Comment{
     public void setCommentDate(String commentDate) {
         this.commentDate = commentDate;
     }
-
 }

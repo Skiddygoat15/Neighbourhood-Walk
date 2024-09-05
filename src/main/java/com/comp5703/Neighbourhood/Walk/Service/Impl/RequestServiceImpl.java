@@ -153,4 +153,9 @@ public class RequestServiceImpl implements RequestService {
         return requests;
     }
 
+    @Override
+    public Request getById(int requestId) {
+        return requestRepository.getById(requestId);
+    }
+
 }

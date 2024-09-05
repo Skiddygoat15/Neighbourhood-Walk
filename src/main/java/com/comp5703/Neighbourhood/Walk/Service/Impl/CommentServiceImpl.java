@@ -20,9 +20,7 @@ public class CommentServiceImpl implements CommentService {
     CommentRepository commentRepository;
 
     @Override
-    public Comment saveComment(Comment comment) {
-        return commentRepository.save(comment);
-    }
+    public Comment saveComment(Comment comment) {return commentRepository.save(comment);}
 
     /**
      * 统计曾受到Comment的userIds

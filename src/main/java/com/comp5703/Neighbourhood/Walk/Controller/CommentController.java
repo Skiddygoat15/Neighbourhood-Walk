@@ -4,6 +4,7 @@ package com.comp5703.Neighbourhood.Walk.Controller;
 import com.comp5703.Neighbourhood.Walk.Entities.Comment;
 import com.comp5703.Neighbourhood.Walk.Entities.Users;
 import com.comp5703.Neighbourhood.Walk.Service.CommentService;
+import com.comp5703.Neighbourhood.Walk.Service.RequestService;
 import com.comp5703.Neighbourhood.Walk.Service.UsersService;
 import com.comp5703.Neighbourhood.Walk.Utils.TwoTuple;
 import com.comp5703.Neighbourhood.Walk.domain.dto.RateCommentDTO;
@@ -28,11 +29,18 @@ public class CommentController {
 
     @Autowired
     UsersService usersService;
+
+    @Autowired
+    RequestService requestService;
     /*
         添加评论
      */
     @PostMapping
     public ResponseEntity<Comment> addComment(@RequestBody Comment comment) {
+        int requestId = comment.getRequest().getRequestId();
+        long userId = comment.getUser().getId();
+        comment.setRequest(requestService.getById(requestId));
+        comment.setUser(usersService.getUserById(userId));
         Comment saveComment = commentService.saveComment(comment);
         return new ResponseEntity<>(saveComment, HttpStatus.CREATED);
     }
