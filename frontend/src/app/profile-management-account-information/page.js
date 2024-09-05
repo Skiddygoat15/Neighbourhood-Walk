@@ -6,10 +6,8 @@ export default function ProfileManagementAccountInformation() {
   const router = useRouter();
 
   const handleEdit = (path) => {
-    if (path !== '/edit/date-of-birth') {
+    if (path !== '/edit/date-of-birth' && path !== '/edit/address') {
       router.push('/profile-attributes-modification');
-    } else {
-      router.push(path);
     }
   };
 
@@ -45,9 +43,6 @@ export default function ProfileManagementAccountInformation() {
             <span>Date of Birth</span>
             <div className="flex items-center">
               <span>xx/xx/xxxx</span>
-              <button onClick={() => handleEdit('/edit/date-of-birth')} className="ml-2 text-gray-500">
-                &gt;
-              </button>
             </div>
           </div>
 
@@ -75,9 +70,6 @@ export default function ProfileManagementAccountInformation() {
             <span>Address</span>
             <div className="flex items-center">
               <span>xxxxxxxx</span>
-              <button onClick={() => handleEdit('/edit/address')} className="ml-2 text-gray-500">
-                &gt;
-              </button>
             </div>
           </div>
 

@@ -37,13 +37,11 @@ export default function ProfileManagementAccountInformationWalker() {
             </div>
           </div>
 
+          {/* Date of Birth - No Edit */}
           <div className="flex justify-between items-center border-b py-2">
             <span>Date of Birth</span>
             <div className="flex items-center">
               <span>xx/xx/xxxx</span>
-              <button onClick={() => handleEdit('/profile-attributes-modification')} className="ml-2 text-gray-500">
-                &gt;
-              </button>
             </div>
           </div>
 
@@ -67,13 +65,11 @@ export default function ProfileManagementAccountInformationWalker() {
             </div>
           </div>
 
+          {/* Address - No Edit */}
           <div className="flex justify-between items-center border-b py-2">
             <span>Address</span>
             <div className="flex items-center">
               <span>xxxxxxxx</span>
-              <button onClick={() => handleEdit('/profile-attributes-modification')} className="ml-2 text-gray-500">
-                &gt;
-              </button>
             </div>
           </div>
 

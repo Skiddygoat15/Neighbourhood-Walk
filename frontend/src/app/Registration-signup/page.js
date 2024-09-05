@@ -1,115 +1,80 @@
-"use client";
+// pages/Registration-signup.js
+import React from 'react';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-
-export default function SignUp() {
-  const router = useRouter();
-  const [role, setRole] = useState('Walker');
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    
-    if (role === 'Walker') {
-      router.push('/Registration-verification-walker');
-    } else if (role === 'Parent') {
-      router.push('/Registration-verification-parent');
-    }
-  };
-
+const RegistrationSignup = () => {
   return (
-    <main className="flex items-center justify-center min-h-screen bg-white">
-      <div className="w-full max-w-xs space-y-8">
-        {/* Back Button */}
-        <button onClick={() => router.back()} className="text-2xl p-2 focus:outline-none">
-          &larr;
-        </button>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      <div className="bg-white shadow-lg rounded-lg w-96 p-8">
+        <h1 className="text-2xl font-bold text-center mb-6">Sign Up</h1>
 
-        {/* Title */}
-        <h1 className="text-3xl font-bold text-center">Sign Up</h1>
-
-        {/* Role Selection */}
-        <div className="flex justify-center space-x-4">
-          <label>
-            <input 
-              type="radio" 
-              name="role" 
-              value="Walker" 
-              checked={role === 'Walker'} 
-              onChange={() => setRole('Walker')} 
-            />
-            Walker
+        {/* Walker or Parent selection */}
+        <div className="flex justify-center mb-6">
+          <label className="inline-flex items-center mr-6">
+            <input type="radio" className="form-radio h-4 w-4 text-blue-600" name="role" value="Walker" defaultChecked />
+            <span className="ml-2">Walker</span>
           </label>
-          <label>
-            <input 
-              type="radio" 
-              name="role" 
-              value="Parent" 
-              checked={role === 'Parent'} 
-              onChange={() => setRole('Parent')} 
-            />
-            Parent
+          <label className="inline-flex items-center">
+            <input type="radio" className="form-radio h-4 w-4 text-blue-600" name="role" value="Parent" />
+            <span className="ml-2">Parent</span>
           </label>
         </div>
 
-        {/* Sign Up Form */}
-        <form className="space-y-4" onSubmit={handleSubmit}>
-          <div>
-            <input 
-              type="text" 
-              placeholder="First name" 
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black" 
-              required 
-            />
+        {/* Form fields */}
+        <form>
+          <div className="mb-4">
+            <label htmlFor="first-name" className="block text-sm font-medium text-gray-700">First name</label>
+            <input id="first-name" type="text" className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
           </div>
-          <div>
-            <input 
-              type="text" 
-              placeholder="Last name" 
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black" 
-              required 
-            />
-          </div>
-          <div>
-            <input 
-              type="text" 
-              placeholder="Phone number" 
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black" 
-              required 
-            />
-          </div>
-          <div>
-            <input 
-              type="email" 
-              placeholder="Email" 
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black" 
-              required 
-            />
-          </div>
-          <div>
-            <input 
-              type="text" 
-              placeholder="Address" 
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black" 
-              required 
-            />
-          </div>
-          <div>
-            <input 
-              type="password" 
-              placeholder="Password" 
-              className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black" 
-              required 
-            />
+          
+          <div className="mb-4">
+            <label htmlFor="last-name" className="block text-sm font-medium text-gray-700">Last name</label>
+            <input id="last-name" type="text" className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
           </div>
 
-          <button 
-            type="submit" 
-            className="block w-full py-3 text-center bg-black text-white rounded-full font-semibold hover:bg-gray-800">
-            Sign Up
-          </button>
+          <div className="mb-4">
+            <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Phone number</label>
+            <input id="phone" type="text" className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">Email</label>
+            <input id="email" type="email" className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="address" className="block text-sm font-medium text-gray-700">Address</label>
+            <input id="address" type="text" className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
+          </div>
+
+          {/* Gender selection with Female, Male, Other */}
+          <div className="mb-4">
+            <label htmlFor="gender" className="block text-sm font-medium text-gray-700">Gender</label>
+            <select id="gender" className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500">
+              <option value="">Select Gender</option>
+              <option value="female">Female</option>
+              <option value="male">Male</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+
+          <div className="mb-4">
+            <label htmlFor="dob" className="block text-sm font-medium text-gray-700">Date of birth</label>
+            <input id="dob" type="date" className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
+          </div>
+
+          <div className="mb-6">
+            <label htmlFor="password" className="block text-sm font-medium text-gray-700">Password</label>
+            <input id="password" type="password" className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500" />
+          </div>
+
+          {/* Sign Up button */}
+          <div className="text-center">
+            <button type="submit" className="w-full bg-black text-white py-2 rounded-md font-semibold hover:bg-gray-800">Sign Up</button>
+          </div>
         </form>
       </div>
-    </main>
+    </div>
   );
-}
+};
+
+export default RegistrationSignup;
