@@ -22,6 +22,13 @@ public class UsersController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @GetMapping("/phone/{phone}")
+    public ResponseEntity<Users> getUsersByPhone(@PathVariable String phone) {
+        Optional<Users> user = usersService.getUsersByPhone(phone);
+        return user.map(users -> new ResponseEntity<>(users, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
     @PostMapping
     public ResponseEntity<Users> saveUsers(@RequestBody Users Users) {
         return new ResponseEntity<>(usersService.saveUsers(Users), HttpStatus.CREATED);

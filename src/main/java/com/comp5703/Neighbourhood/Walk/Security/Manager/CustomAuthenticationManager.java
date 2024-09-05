@@ -22,19 +22,30 @@ public class CustomAuthenticationManager implements AuthenticationManager {
 
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-        // 通过 email 获取用户
-        Optional<Users> userOptional = usersService.getUsersByEmail(authentication.getName());
+        String loginInput = authentication.getName();
+        Optional<Users> userOptional;
+
+        // 判断输入是否为 email 格式
+        if (loginInput.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+            // 如果是 email 格式
+            userOptional = usersService.getUsersByEmail(loginInput);
+        } else {
+            // 否则按照 phone 查询
+            userOptional = usersService.getUsersByPhone(loginInput);
+        }
 
         // 检查用户是否存在
         if (userOptional.isEmpty()) {
-            throw new BadCredentialsException("User not found with email: " + authentication.getName());
+            throw new BadCredentialsException("User not found with input: " + loginInput);
         }
 
         Users user = userOptional.get();
 
+        // 验证密码
         if (!bCryptPasswordEncoder.matches(authentication.getCredentials().toString(), user.getPassword())) {
             throw new BadCredentialsException("You Provided a Wrong Password!");
         }
-        return new UsernamePasswordAuthenticationToken(authentication.getName(), user.getPassword());
+
+        return new UsernamePasswordAuthenticationToken(loginInput, user.getPassword());
     }
 }

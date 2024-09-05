@@ -8,8 +8,8 @@ import java.util.Optional;
 
 public interface UsersService {
     Users saveUsers(Users user);
-    //something
     Optional<Users> getUsersByEmail(String email);
+    Optional<Users> getUsersByPhone(String phone);
     void deleteUsers(long id);
     List<Users> getAllUsers();
     Users registerUser(Users user, String roleType);

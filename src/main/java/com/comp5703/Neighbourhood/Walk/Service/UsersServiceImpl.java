@@ -35,6 +35,9 @@ public class UsersServiceImpl implements UsersService{
     }
 
     @Override
+    public Optional<Users> getUsersByPhone(String phone) { return usersRepository.findByPhone(phone); }
+
+    @Override
     public void deleteUsers(long id) {
         usersRepository.deleteById(id);
     }
