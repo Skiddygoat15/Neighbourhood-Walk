@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 export default function PublishedRequestHistory() {
   const router = useRouter();
 
-  // 示例数据
+
   const historyItems = [
     { location: "Address - School", date: "21st July", duration: "15 mins" },
     { location: "Address - School", date: "16th July", duration: "12 mins" },
