@@ -63,16 +63,6 @@ export default function RequestDetails() {
         </div>
       </div>
 
-
-      <nav className="bg-white border-t py-2 w-full">
-        <div className="flex justify-around max-w-md mx-auto">
-          <button className="focus:outline-none">Home</button>
-          <button className="focus:outline-none">Search</button>
-          <button className="focus:outline-none">Messages</button>
-          <button className="focus:outline-none">Request</button>
-          <button className="focus:outline-none">Profile</button>
-        </div>
-      </nav>
     </div>
   );
 }

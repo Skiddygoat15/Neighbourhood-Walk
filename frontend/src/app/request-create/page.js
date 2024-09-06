@@ -133,7 +133,7 @@ export default function WalkRequestManagementParent() {
 
         {/* Go to History Button */}
         <button 
-          onClick={() => router.push('/history-request-parent')}
+          onClick={() => router.push('/request-my-request')}
           className="w-full py-3 bg-black text-white rounded-full font-semibold hover:bg-gray-800"
         >
           Go to History

@@ -33,7 +33,7 @@ export default function MyRequest() {
         <div className="flex justify-between items-center">
           <h1 className="text-2xl font-bold">My request</h1>
           <button 
-            onClick={() => router.push('/create-new-request')} 
+            onClick={() => router.push('/request-create')}
             className="py-2 px-4 bg-black text-white rounded-full font-semibold"
           >
             Create new request
@@ -58,7 +58,7 @@ export default function MyRequest() {
               <p className="text-xs text-gray-500">Published by {request.publishedTime}</p>
               <div className="flex justify-between mt-2">
                 <button 
-                  onClick={() => router.push('/update-request')} 
+                  onClick={() => router.push('/request-update')}
                   className="py-2 px-4 bg-black text-white rounded-full text-sm font-semibold"
                 >
                   Update

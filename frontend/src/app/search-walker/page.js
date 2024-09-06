@@ -75,16 +75,6 @@ export default function SearchParent() {
         </div>
       </div>
 
-
-      <nav className="fixed bottom-0 w-full bg-white border-t py-2">
-        <div className="flex justify-around">
-          <button className="focus:outline-none">Home</button>
-          <button className="focus:outline-none">Search</button>
-          <button className="focus:outline-none">Messages</button>
-          <button className="focus:outline-none">Request</button>
-          <button className="focus:outline-none">Profile</button>
-        </div>
-      </nav>
     </div>
   );
 }

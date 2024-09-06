@@ -45,7 +45,7 @@ export default function HomeParent() {
             Pre-meet
           </button>
           <button
-            onClick={() => handleNavigation('/request')}
+            onClick={() => handleNavigation('/request-create')}
             className="w-full bg-white border rounded-lg p-4 text-center font-semibold"
           >
             Request
