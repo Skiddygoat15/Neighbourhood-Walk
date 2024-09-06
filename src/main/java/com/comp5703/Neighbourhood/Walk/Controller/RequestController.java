@@ -30,16 +30,16 @@ public class RequestController {
                 .CREATED);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Request> updateRequest(@PathVariable int id, @RequestBody Request request) {
-        return new ResponseEntity<>(requestService.updateRequest(id, request), HttpStatus.OK);
+    @PutMapping("/{requestId}")
+    public ResponseEntity<Request> updateRequest(@PathVariable int requestId, @RequestBody Request request) {
+        return new ResponseEntity<>(requestService.updateRequest(requestId, request), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteRequest(@PathVariable int id) {
+    @DeleteMapping("/{requestId}")
+    public ResponseEntity<String> deleteRequest(@PathVariable int requestId) {
         try {
-            requestService.deleteRequest(id);
-            return new ResponseEntity<>("Request with ID " + id + "was successfully deleted", HttpStatus.OK);
+            requestService.deleteRequest(requestId);
+            return new ResponseEntity<>("Request with ID " + requestId + " was successfully deleted", HttpStatus.OK);
         } catch (ResourceNotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
@@ -47,25 +47,31 @@ public class RequestController {
         }
     }
 
-    @PostMapping("/{id}/accept")
-    public ResponseEntity<WalkerRequest> acceptRequest(@PathVariable int id, @RequestParam int walkerId) {
-        return new ResponseEntity<>(requestService.acceptWalkerRequest(id, walkerId), HttpStatus.OK);
+    @PostMapping("/{requestId}/accept")
+    public ResponseEntity<WalkerRequest> acceptRequest(@PathVariable int requestId, @RequestParam int walkerId) {
+        return new ResponseEntity<>(requestService.acceptWalkerRequest(requestId, walkerId), HttpStatus.OK);
     }
 
-    @PostMapping("/{id}/reject")
-    public ResponseEntity<WalkerRequest> rejectRequest(@PathVariable int id, @RequestParam int walkerId) {
-        return new ResponseEntity<>(requestService.rejectWalkerRequest(id, walkerId), HttpStatus.OK);
+    @PostMapping("/{requestId}/reject")
+    public ResponseEntity<WalkerRequest> rejectRequest(@PathVariable int requestId, @RequestParam int walkerId) {
+        return new ResponseEntity<>(requestService.rejectWalkerRequest(requestId, walkerId), HttpStatus.OK);
     }
 
-    @PostMapping("{id}/apply")
-    public ResponseEntity<WalkerRequest> applyRequest(@PathVariable int id, @RequestParam int walkerId) {
-        WalkerRequest walkerRequest = requestService.applyRequest(id, walkerId);
+    @PostMapping("{requestId}/apply")
+    public ResponseEntity<WalkerRequest> applyRequest(@PathVariable int requestId, @RequestParam int walkerId) {
+        WalkerRequest walkerRequest = requestService.applyRequest(requestId, walkerId);
         return new ResponseEntity<>(walkerRequest, HttpStatus.CREATED);
     }
 
-    @DeleteMapping("/{id}/{walkerRequestId}/cancel")
-    public ResponseEntity<Void> cancelRequest(@PathVariable int id, @PathVariable int walkerRequestId) {
-        requestService.cancelRequest(id);
+    @PostMapping("{requestId}/cancelApply")
+    public ResponseEntity<String> cancelApply(@PathVariable int requestId, @RequestParam int walkerId) {
+        requestService.cancelApply(requestId, walkerId);
+        return new ResponseEntity<>("Walker request cancelled successfully.", HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{requestId}/{walkerRequestId}/cancel")
+    public ResponseEntity<Void> cancelRequest(@PathVariable int requestId, @PathVariable int walkerRequestId) {
+        requestService.cancelRequest(requestId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

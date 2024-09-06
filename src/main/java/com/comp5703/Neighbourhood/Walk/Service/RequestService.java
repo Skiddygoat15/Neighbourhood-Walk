@@ -15,9 +15,10 @@ public interface RequestService {
     WalkerRequest acceptWalkerRequest(int requestId, int walkerId);
     WalkerRequest rejectWalkerRequest(int requestId, int walkerId);
     void deleteRequest(int requestId);
+    void cancelApply(int requestId, int walkerRequestId);
 
     WalkerRequest applyRequest(int walkerId, int requestId);
-    void cancelApply(int walkerRequestId);
+
 
     // byron
     List<Request> searchRequests(String searchTerm, Date startTime, Date arriveTime);

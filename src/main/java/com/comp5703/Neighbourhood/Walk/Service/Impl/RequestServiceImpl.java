@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -49,6 +50,8 @@ public class RequestServiceImpl implements RequestService {
     //todo: after accept a walker, parent should not be able to update the request in progress
     @Override
     public Request updateRequest(int requestId, Request updatedRequest) {
+        Users parent = usersRepository.findById(updatedRequest.getParent().getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Parent not found with id: " + updatedRequest.getParent().getId()));
         Request request = requestRepository.findById(requestId).orElseThrow(() -> new ResourceNotFoundException("Request not found"));
         request.setStartTime(updatedRequest.getStartTime());
         request.setArriveTime(updatedRequest.getArriveTime());
@@ -56,6 +59,7 @@ public class RequestServiceImpl implements RequestService {
         request.setDestination(updatedRequest.getDestination());
         request.setDetails(updatedRequest.getDetails());
         request.setStatus(updatedRequest.getStatus());
+        request.setParent(parent);
 
         return requestRepository.save(request);
 
@@ -106,13 +110,26 @@ public class RequestServiceImpl implements RequestService {
         requestRepository.delete(request);
     }
 
+
     @Override
     public WalkerRequest applyRequest(int requestId, int walkerId) {
         // check if request exists
         Request request = requestRepository.findById(requestId)
                 .orElseThrow(() -> new ResourceNotFoundException("Request not found with id: " + requestId));
+        // same the current walkerRequest
+        Optional<WalkerRequest> existingWalkerRequest = walkerRequestRepository.findByRequestIdAndWalkerId(requestId, walkerId);
+        if (existingWalkerRequest.isPresent()) {
+            WalkerRequest walkerRequest = existingWalkerRequest.get();
+            // check the existing walkerRequest status and decide whether to apply again or cancel
+            if (walkerRequest.getStatus().equals("Applied") || walkerRequest.getStatus().equals("Accepted")) {
+                throw new IllegalStateException("you have already applied for this request."); // cancel this apply
+            } else if (walkerRequest.getStatus().equals("Rejected") || walkerRequest.getStatus().equals("Cancelled")) {
+                walkerRequest.setStatus("Applied");
+                return walkerRequestRepository.save(walkerRequest);
+            }
+        }
 
-        // create and save WalkerRequest
+        // if the same walkerRequest not exist, then create new WalkerRequest
         WalkerRequest walkerRequest = new WalkerRequest();
         walkerRequest.setRequestId(requestId);
         walkerRequest.setWalkerId(walkerId);
@@ -121,13 +138,19 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public void cancelApply(int walkerRequestId) {
-        // check if request exists
-        WalkerRequest walkerRequest = walkerRequestRepository.findById(walkerRequestId)
-                .orElseThrow(() -> new ResourceNotFoundException("WalkerRequest not found with id: " + walkerRequestId));
+    public void cancelApply(int requestId, int walkerId) {
+        // check if walker have ever applied this request
+        Request request = requestRepository.findById(requestId)
+                .orElseThrow(() -> new ResourceNotFoundException("You haven't applied for Request with id: " + requestId));
+
+        WalkerRequest walkerRequest = walkerRequestRepository.findByRequestIdAndWalkerId(requestId, walkerId)
+                .orElseThrow(() -> new ResourceNotFoundException("No WalkerRequest found for walkerId: " + walkerId + " and requestId: " + requestId));
 
         // delete the apply record
-        walkerRequestRepository.delete(walkerRequest);
+        // walkerRequestRepository.delete(walkerRequest);
+        //set cancelled status can store the apply history
+        walkerRequest.setStatus("Cancelled");
+        walkerRequestRepository.save(walkerRequest);
     }
 
     @Override

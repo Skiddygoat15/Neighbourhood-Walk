@@ -6,16 +6,19 @@ import java.util.Date;
 
 //table bind walker and request
 @Entity
+//@Table(name = "WALKER_REQUEST", uniqueConstraints = {
+//        @UniqueConstraint(columnNames = {"requestId", "walkerId"})
+//}) // make sure the combination of requestId and walkerId is unique
 public class WalkerRequest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int walkerRequestId;
 
-    @Column(name = "requestId")
+    @Column(name = "requestId", nullable = false)
     private int requestId;
 
-    @Column(name = "walkerId")
+    @Column(name = "walkerId", nullable = false)
     private long walkerId;
 
     @Column(name = "status")
