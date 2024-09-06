@@ -178,32 +178,23 @@ public class UsersServiceImpl implements UsersService {
         return user;
     }
 
-    @Override
-    public boolean hasPublishedRequest(Long userId) {
-        // 验证当前用户是否发布了请求
-        return requestRepository.existsByParent_UserId(userId);
-    }
-
     //byron
     @Override
-    public List<Users> searchWalkers(Long userId, String search) {
-        // 检查是否发布了请求
-        if (!hasPublishedRequest(userId)) {
-            throw new IllegalArgumentException("Only parents who have published a request can search for walkers.");
-        }
+    public List<Users> searchWalkers(String searchTerm) {
         // 组合 Specification 查询条件
         Specification<Users> spec = Specification.where(UsersSpecifications.hasRole("walker"))
-                .and(UsersSpecifications.containsAttribute("name", search)
-                        .or(UsersSpecifications.containsAttribute("surname", search))
-                        .or(UsersSpecifications.containsAttribute("preferredName", search))
-                        .or(UsersSpecifications.containsAttribute("gender", search))
-                        .or(UsersSpecifications.containsAttribute("address", search))
-                        .or(UsersSpecifications.containsAttribute("availableDate", search)))
+                .and(UsersSpecifications.containsAttribute("name", searchTerm)
+                        .or(UsersSpecifications.containsAttribute("surname", searchTerm))
+                        .or(UsersSpecifications.containsAttribute("preferredName", searchTerm))
+                        .or(UsersSpecifications.containsAttribute("gender", searchTerm))
+                        .or(UsersSpecifications.containsAttribute("address", searchTerm)))
+//                        .or(UsersSpecifications.containsAttribute("availableDate", search)))
                 .and(UsersSpecifications.orderByAverageRate());
 
         List<Users> users = usersRepository.findAll(spec);
 
         if (users.isEmpty()) {
+            System.out.println(users);
             throw new ResourceNotFoundException("No matching users found for the given search criteria.");
         }
 

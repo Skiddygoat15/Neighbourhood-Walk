@@ -133,9 +133,10 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public List<Request> searchRequests(String searchTerm, Date startTime, Date arriveTime) {
         // Combine Specifications
-        Specification<Request> spec = Specification.where(RequestSpecifications.hasDeparture(searchTerm)
-                .or(RequestSpecifications.hasDestination(searchTerm))
-                .or(RequestSpecifications.hasUserNameOrSurname(searchTerm)));
+        Specification<Request> spec = Specification.where(RequestSpecifications.statusIs("Published"))
+                .and(RequestSpecifications.hasDeparture(searchTerm)
+                    .or(RequestSpecifications.hasDestination(searchTerm))
+                    .or(RequestSpecifications.hasUserNameOrSurname(searchTerm)));
 
         // Add optional filters based on time if provided
         if (startTime != null) {

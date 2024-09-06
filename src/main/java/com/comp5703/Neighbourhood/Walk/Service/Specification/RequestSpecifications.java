@@ -10,6 +10,12 @@ import java.util.Date;
 
 public class RequestSpecifications {
 
+    // Specification to match status
+    public static Specification<Request> statusIs(String status) {
+        return (root, query, criteriaBuilder) ->
+                criteriaBuilder.equal(root.get("status"), status);
+    }
+
     // Specification to match departure
     public static Specification<Request> hasDeparture(String searchTerm) {
         return (root, query, criteriaBuilder) ->

@@ -16,9 +16,9 @@ public interface UsersService {
 
     Users getUserById(long id);
 
-    //byron
-    boolean hasPublishedRequest(Long userId);
-    List<Users> searchWalkers(Long userId, String search);
     Users registerUser(Users user, String roleType);
     Users updateUserProfile(long userId, Users updatedUser);
+    //byron
+    List<Users> searchWalkers(String searchTerm);
 }
+

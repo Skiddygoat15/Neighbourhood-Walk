@@ -47,10 +47,11 @@ public class UsersController {
 
     //byron
     @GetMapping("/searchWalkers")
-    public ResponseEntity<List<Users>> searchWalkers(@RequestParam Long userId, @RequestParam String search) {
-        List<Users> walkers = usersService.searchWalkers(userId, search);
+    public ResponseEntity<List<Users>> searchWalkers(@RequestParam String searchTerm) {
+        List<Users> walkers = usersService.searchWalkers(searchTerm);
         return new ResponseEntity<>(walkers, HttpStatus.OK);
     }
+
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody Users user, @RequestParam String roleType) {
         try {

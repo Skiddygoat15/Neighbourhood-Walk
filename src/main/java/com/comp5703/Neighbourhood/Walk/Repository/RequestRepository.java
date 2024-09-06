@@ -29,7 +29,6 @@ public interface RequestRepository extends JpaRepository<Request, Integer>, JpaS
     UserId：对应 Users 实体中的 userId 字段。
     通过 _ 将关联字段分开，Spring Data JPA 会自动解析并生成相应的查询。
      */
-    boolean existsByParent_UserId(Long userId);
 
     @Override
     Request getById(Integer integer);

@@ -69,7 +69,7 @@ public class RequestController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-    @GetMapping("/search")
+    @GetMapping("/searchRequests")
     public ResponseEntity<List<Request>> searchRequests(
             @RequestParam String searchTerm,
             @RequestParam(required = false) Date startTime,
