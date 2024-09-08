@@ -8,11 +8,13 @@ function RequestBox({onAccept,onReject}){
             <div className="border-t border-gray-300 pt-2">
                 <div className="flex justify-between mt-2">
                     <button
-                        className="flex-1 bg-gray-300 text-black py-2 px-4 rounded-l hover:bg-gray-400 transition duration-300 ease-in-out focus:outline-none focus:shadow-outline">
+                        className="flex-1 bg-gray-300 text-black py-2 px-4 rounded-l hover:bg-gray-400
+                        transition duration-300 ease-in-out focus:outline-none focus:shadow-outline">
                         Accept
                     </button>
                     <button
-                        className="flex-1 bg-gray-300 text-black py-2 px-4 rounded-r hover:bg-gray-400 transition duration-300 ease-in-out focus:outline-none focus:shadow-outline">
+                        className="flex-1 bg-gray-300 text-black py-2 px-4 rounded-r hover:bg-gray-400
+                        transition duration-300 ease-in-out focus:outline-none focus:shadow-outline">
                         Reject
                     </button>
                 </div>
