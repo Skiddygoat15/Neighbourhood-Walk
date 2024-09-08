@@ -81,22 +81,34 @@ public class CommentController {
     }
 
     @GetMapping("/getAveRateByUserId/{userId}")
-    public Double getAveRateByUserId(@PathVariable("userId") long userId){
-        return commentService.getAveRateByUserId(userId);
+    public Double getAveRateByUserId(@PathVariable("userId") long userId) throws Exception {
+
+        if (commentService.IsUserHaveComment(userId)){
+            return commentService.getAveRateByUserId(userId);
+        }else {
+            throw new Exception("该用户目前无评论。");
+        }
+
     }
 
     @GetMapping("/getRankByAveRate")
     public ResponseEntity<List<UserIdNameAverateDTO>> getRankByAveRate(
-            @RequestParam(value = "ascending",required = false,defaultValue = "true") boolean ascending){
+            @RequestParam(value = "ascending",required = false,defaultValue = "true") boolean ascending) throws Exception {
 
         List<Long> userIdList = commentService.getCommentedUserIds();
         System.out.println(userIdList);
         List<UserIdNameAverateDTO> list = userIdList.stream().map(userIds -> {
             long userId = userIds;
             String userName = usersService.getUserById(userId).getName();
-            Double AveRate = getAveRateByUserId(userId);
+            Double AveRate = null;
+            try {
+                AveRate = getAveRateByUserId(userId);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
             return new UserIdNameAverateDTO(userId, userName, AveRate);
         }).collect(Collectors.toList());
+        if (list.isEmpty()){throw new Exception("目前无被评论的用户。");}
         if (ascending == true){
             list.sort(Comparator.comparing(UserIdNameAverateDTO::getRate));
         }else {

@@ -21,12 +21,6 @@ public class Request {
     @JoinColumn(name = "parentId", referencedColumnName = "userId")
     private Users parent;
 
-//    @Column(name = "walkerId")
-//    private Long walkerId;
-//
-//    @Column(name = "parentId")
-//    private Long parentId;
-
     @Column(name = "publishDate")
     private Date publishDate;
 

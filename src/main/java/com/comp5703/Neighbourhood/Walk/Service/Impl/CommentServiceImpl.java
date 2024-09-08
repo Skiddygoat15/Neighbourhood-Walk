@@ -57,6 +57,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<Comment> getCommentByUserId(long userId) {
+
         return commentRepository.findAllByUserId(userId);
     }
 
@@ -107,6 +108,7 @@ public class CommentServiceImpl implements CommentService {
      */
     @Override
     public Double getAveRateByUserId(long userid) {
+
         List<Comment> listComment = commentRepository.findAllByUserId(userid);
 
         List<Double> listRate = listComment.stream().map(comment -> {
@@ -125,5 +127,15 @@ public class CommentServiceImpl implements CommentService {
      */
     public List<Double> getAveRateByUserId(List<Long> useridList,boolean ascending) {
         return useridList.stream().map(userId -> getAveRateByUserId(userId)).toList();
+    }
+
+    /**
+     * 判断用户是否有comment
+     * @param userid
+     * @return
+     */
+    @Override
+    public Boolean IsUserHaveComment(long userid) {
+        return !commentRepository.findAllByUserId(userid).isEmpty();
     }
 }
