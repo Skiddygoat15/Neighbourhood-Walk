@@ -9,16 +9,107 @@ export default function WalkRequestManagementParent() {
   const [destination, setDestination] = useState('');
   const [date, setDate] = useState('');
   const [departureTime, setDepartureTime] = useState({ hour: '', minute: '', period: 'AM' });
-  const [arrivalTime, setArrivalTime] = useState({ hour: '', minute: '', period: 'AM' });
+  const [arriveTime, setArriveTime] = useState({ hour: '', minute: '', period: 'AM' });
+  const [details, setDetails] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [sendBody, setSendBody] = useState({
+    parent: {id: 2},
+    publishDate: new Date(),
+    startTime: new Date(),
+    arriveTime: new Date(),
+    departure: '',
+    destination: '',
+    details: ''
+  });
+
+  const addRequestAPI = `http://127.0.0.1:8080/requests`;
+
 
   const handlePublish = () => {
     console.log('Request Published');
     console.log('Departure:', departure);
     console.log('Destination:', destination);
     console.log('Date:', date);
-    console.log('Estimated Departure Time:', departureTime);
-    console.log('Estimated Arrival Time:', arrivalTime);
+    console.log('Estimated Departure Time:', combineDateAndTime(date, departureTime));
+    console.log('Estimated Arrival Time:', combineDateAndTime(date, arriveTime));
+
+    setSendBody({
+      parent: {id: 2},
+      publishDate: new Date(),
+      startTime: combineDateAndTime(date, departureTime),
+      arriveTime: combineDateAndTime(date, arriveTime),
+      departure: departure,
+      destination: destination,
+      details: details
+    })
+
+    fetch(addRequestAPI, {
+      method: 'post', // Method is GET to fetch data
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json', // Set the content type header for JSON data
+        'Authorization': 'Bearer ' + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqb2huLmRvZTMyMTFAa2ouY29tIiwiZXhwIjoxNzI1OTQ5MzY0fQ.7hjY_fTWD52CgVzt5F1YWHoWdW5WBypURfNXnRVC86LFg_D8UkXEP7od6XMnprx-_3_h_oQKvvqfsbmvirnxjQ"   //localStorage.getItem('token')
+      },
+      body: JSON.stringify(sendBody)
+    })
+        .then(response => {
+          if (!response.ok) {
+            if (response.status === 401) {
+              alert('Please log in.');
+              navigate('/Login');
+              return;
+            }
+            return response.json().then(data => {
+              alert(data.message)
+              setError(data.message)
+              throw new Error(data.message || "error posting request");
+            });
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log("post request successful", data)
+          // setContributions(data.data.filter(item =>
+          //     item.status === "Pending" && item.action !== "DeleteCharacter"));
+          // setLoading(false);
+          setError('');
+        })
+        .catch(err => {
+          console.log(err);
+          //setError('Failed to get contribution. Please try again.');
+          setLoading(false);
+        });
+
   };
+
+  function convertTo24HourTime(time) {
+    let { hour, minute, period } = time;
+
+    // 转换hour为数字，确保可以进行加减运算
+    hour = parseInt(hour, 10);
+
+    // 如果时间是PM且小时数小于12，则需要将小时数加12
+    if (period === 'PM' && hour < 12) {
+      hour += 12;
+    }
+
+    // 如果是AM且小时为12（午夜），则将小时设为00
+    if (period === 'AM' && hour === 12) {
+      hour = 0;
+    }
+
+    // 确保小时和分钟是两位数格式
+    const hourStr = String(hour).padStart(2, '0');
+    const minuteStr = String(minute).padStart(2, '0');
+
+    return `${hourStr}:${minuteStr}:00`; // 秒数为00
+  }
+
+  function combineDateAndTime(date, time) {
+    const formattedTime = convertTo24HourTime(time);
+    return `${date}T${formattedTime}`;
+  }
 
   return (
     <main className="min-h-screen bg-white">
@@ -38,7 +129,7 @@ export default function WalkRequestManagementParent() {
             type="text"
             value={departure}
             onChange={(e) => setDeparture(e.target.value)}
-            placeholder="Enter departure"
+            placeholder="Enter walk departure"
             className="w-full p-3 border border-black rounded-lg"
           />
         </div>
@@ -50,8 +141,20 @@ export default function WalkRequestManagementParent() {
             type="text"
             value={destination}
             onChange={(e) => setDestination(e.target.value)}
-            placeholder="Enter destination"
+            placeholder="Enter walk destination"
             className="w-full p-3 border border-black rounded-lg"
+          />
+        </div>
+
+        {/* details Input */}
+        <div>
+          <label className="block text-lg font-semibold">Details:</label>
+          <input
+              type="text"
+              value={details}
+              onChange={(e) => setDetails(e.target.value)}
+              placeholder="Enter walk descriptions"
+              className="w-full p-3 border border-black rounded-lg"
           />
         </div>
 
@@ -99,22 +202,22 @@ export default function WalkRequestManagementParent() {
           <div className="flex space-x-2">
             <input 
               type="number"
-              value={arrivalTime.hour}
-              onChange={(e) => setArrivalTime({ ...arrivalTime, hour: e.target.value })}
+              value={arriveTime.hour}
+              onChange={(e) => setArriveTime({ ...arriveTime, hour: e.target.value })}
               placeholder="HH"
               className="w-16 p-3 border border-black rounded-lg text-center"
             />
             <span className="text-lg">:</span>
             <input 
               type="number"
-              value={arrivalTime.minute}
-              onChange={(e) => setArrivalTime({ ...arrivalTime, minute: e.target.value })}
+              value={arriveTime.minute}
+              onChange={(e) => setArriveTime({ ...arriveTime, minute: e.target.value })}
               placeholder="MM"
               className="w-16 p-3 border border-black rounded-lg text-center"
             />
             <select 
-              value={arrivalTime.period}
-              onChange={(e) => setArrivalTime({ ...arrivalTime, period: e.target.value })}
+              value={arriveTime.period}
+              onChange={(e) => setArriveTime({ ...arriveTime, period: e.target.value })}
               className="p-3 border border-black rounded-lg"
             >
               <option value="AM">AM</option>
