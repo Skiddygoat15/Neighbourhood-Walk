@@ -1,25 +1,99 @@
 "use client";
 
 import { useRouter } from 'next/navigation';
+import {useEffect, useState} from "react";
 
 export default function MyRequest() {
+  const moment = require('moment');
   const router = useRouter();
-
-  
-  const requests = [
-    {
-      departure: "Darling Harbour",
-      destination: "Sydney Opera House",
-      estimatedTime: "8:00 AM Sun 21 July - 8:15 AM Sun 21 July",
-      publishedTime: "1 hour ago",
-    },
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [requestList, setRequestList] = useState([{
+    departure: "Darling Harbour",
+    destination: "Sydney Opera House",
+    estimatedTime: "8:00 AM Sun 21 July - 8:15 AM Sun 21 July",
+    publishedTime: "1 hour ago",
+  },
     {
       departure: "Darling Harbour",
       destination: "Sydney Opera House",
       estimatedTime: "8:00 AM Thur 04 Aug - 8:25 AM Thur 04 Aug",
       publishedTime: "3 days ago",
-    },
-  ];
+    },]);
+  const [formattedStartTime, setFormattedStartTime] = useState("00:00:00");
+  const [formattedArriveTime, setFormattedArriveTime] = useState("00:00:00");
+
+  const [parentId, setParentId] = useState(2);
+  const getRequestsListAPI = `http://127.0.0.1:8080/requests/getRequestsByUserId/${parentId}`
+
+  useEffect(() => {getRequestsList();}, []);
+
+  function getRequestsList() {
+    fetch(getRequestsListAPI, {
+      method: 'get', // Method is GET to fetch data
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json', // Set the content type header for JSON data
+        'Authorization': 'Bearer ' + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqb2huLmRvZTMyMTFAa2ouY29tIiwiZXhwIjoxNzI1OTg2MTg5fQ.pEX9PUkjQdO8uE_8vdfXCUkq_7mP9RiUSiZJTBAxmKNbATKzD6rn6FnKCSpH4Oxt0rPar41tW2giezVml2R8UA"   //localStorage.getItem('token')
+      },
+    })
+        .then(response => {
+          if (!response.ok) {
+            if (response.status === 401) {
+              alert('Please log in.');
+              router.push('/Login');
+              return;
+            }
+            return response.json().then(data => {
+              alert(data.message)
+              setError(data.message)
+              throw new Error(data.message || "error getting requestList");
+            });
+          }
+          return response.json();
+        })
+        .then(data => {
+          console.log("get requestsList successful", data)
+          // setContributions(data.data.filter(item =>
+          //     item.status === "Pending" && item.action !== "DeleteCharacter"));
+          setRequestList(data);
+          setLoading(false);
+          setError('');
+        })
+        .catch(err => {
+          console.log(err);
+          //setError('Failed to get contribution. Please try again.');
+          setLoading(false);
+        });
+  }
+
+  function deleteRequest(requestId) {
+    console.log('requestId', requestId);
+    fetch(`http://127.0.0.1:8080/requests/${requestId}`, {
+      method: 'DELETE', // DELETE 方法用于删除请求
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json', // 设置请求头为 JSON 类型
+        'Authorization': 'Bearer ' + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqb2huLmRvZTMyMTFAa2ouY29tIiwiZXhwIjoxNzI1OTg2MTg5fQ.pEX9PUkjQdO8uE_8vdfXCUkq_7mP9RiUSiZJTBAxmKNbATKzD6rn6FnKCSpH4Oxt0rPar41tW2giezVml2R8UA"  // 在这里添加你的 token
+      },
+    })
+        .then(response => {
+          if (!response.ok) {
+            return response.json().then(data => {
+              alert(data.message);
+              throw new Error(data.message || "error deleting request");
+            });
+          }
+          alert('Request deleted successfully');
+          // 成功删除后，你可以刷新请求列表
+          getRequestsList();
+        })
+        .catch(err => {
+          console.error(err);
+          alert('Failed to delete request');
+        });
+  }
+
 
   return (
     <main className="min-h-screen bg-white">
@@ -42,35 +116,38 @@ export default function MyRequest() {
 
         {/* Request Items */}
         <div className="space-y-4">
-          {requests.map((request, index) => (
-            <div key={index} className="border p-4 rounded-lg space-y-2">
-              <div className="flex justify-between items-center">
-                <h2 className="text-lg font-bold">Trip request</h2>
-                <button>
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 7.89a2 2 0 002.83 0L21 8M5 5h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2z" />
-                  </svg>
-                </button>
+          {requestList.map((request, index) => (
+              <div key={index} className="border p-4 rounded-lg space-y-2">
+                <div className="flex justify-between items-center">
+                  <h2 className="text-lg font-bold">Trip request</h2>
+                  <button>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                         className="w-6 h-6">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                            d="M3 8l7.89 7.89a2 2 0 002.83 0L21 8M5 5h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2z"/>
+                    </svg>
+                  </button>
+                </div>
+                <p className="text-sm"><strong>Departure:</strong> {request.departure}</p>
+                <p className="text-sm"><strong>Destination:</strong> {request.destination}</p>
+                <p className="text-sm"><strong>start time:</strong> {moment(request.startTime).format("MM/DD/YYYY HH:mm:ss")}</p>
+                <p className="text-sm"><strong>arrive time:</strong> {moment(request.arriveTime).format("MM/DD/YYYY HH:mm:ss")}</p>
+                <p className="text-xs text-gray-500">Published by {request.publishedTime}</p>
+                <div className="flex justify-between mt-2">
+                  <button
+                      onClick={() => router.push('/request-update')}
+                      className="py-2 px-4 bg-black text-white rounded-full text-sm font-semibold"
+                  >
+                    Update
+                  </button>
+                  <button
+                      onClick={() => deleteRequest(request.requestId)}
+                      className="py-2 px-4 bg-black text-white rounded-full text-sm font-semibold"
+                  >
+                    Cancel
+                  </button>
+                </div>
               </div>
-              <p className="text-sm"><strong>Departure:</strong> {request.departure}</p>
-              <p className="text-sm"><strong>Destination:</strong> {request.destination}</p>
-              <p className="text-sm"><strong>Estimated time:</strong> {request.estimatedTime}</p>
-              <p className="text-xs text-gray-500">Published by {request.publishedTime}</p>
-              <div className="flex justify-between mt-2">
-                <button 
-                  onClick={() => router.push('/request-update')}
-                  className="py-2 px-4 bg-black text-white rounded-full text-sm font-semibold"
-                >
-                  Update
-                </button>
-                <button 
-                  onClick={() => router.push('/cancel-request')} 
-                  className="py-2 px-4 bg-black text-white rounded-full text-sm font-semibold"
-                >
-                  Cancel
-                </button>
-              </div>
-            </div>
           ))}
         </div>
       </div>

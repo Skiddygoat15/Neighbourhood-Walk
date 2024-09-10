@@ -5,12 +5,12 @@ import { useRouter } from 'next/navigation';
 
 export default function WalkRequestManagementParent() {
   const router = useRouter();
-  const [departure, setDeparture] = useState('');
-  const [destination, setDestination] = useState('');
+  // const [departure, setDeparture] = useState('');
+  // const [destination, setDestination] = useState('');
   const [date, setDate] = useState('');
   const [departureTime, setDepartureTime] = useState({ hour: '', minute: '', period: 'AM' });
   const [arriveTime, setArriveTime] = useState({ hour: '', minute: '', period: 'AM' });
-  const [details, setDetails] = useState('');
+  // const [details, setDetails] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [sendBody, setSendBody] = useState({
@@ -27,29 +27,37 @@ export default function WalkRequestManagementParent() {
 
 
   const handlePublish = () => {
-    console.log('Request Published');
-    console.log('Departure:', departure);
-    console.log('Destination:', destination);
-    console.log('Date:', date);
-    console.log('Estimated Departure Time:', combineDateAndTime(date, departureTime));
-    console.log('Estimated Arrival Time:', combineDateAndTime(date, arriveTime));
-
-    setSendBody({
-      parent: {id: 2},
-      publishDate: new Date(),
+    setSendBody((prevSendBody) => ({
+      ...prevSendBody,  // keep other attributes same
       startTime: combineDateAndTime(date, departureTime),
-      arriveTime: combineDateAndTime(date, arriveTime),
-      departure: departure,
-      destination: destination,
-      details: details
-    })
+      arriveTime: combineDateAndTime(date, arriveTime)
+    }));
+
+    console.log('Request Published');
+    console.log('parent:', sendBody.parent);
+    console.log('Departure:', sendBody.departure);
+    console.log('Destination:', sendBody.destination);
+    console.log('Details:', sendBody.details);
+    console.log('Estimated Departure Time:', sendBody.startTime);
+    console.log('Estimated Arrival Time:', sendBody.arriveTime);
+
+    // setSendBody({
+    //   parent: {id: 2},
+    //   publishDate: new Date(),
+    //   startTime: combineDateAndTime(date, departureTime),
+    //   arriveTime: combineDateAndTime(date, arriveTime),
+    //   departure: departure,
+    //   destination: destination,
+    //   details: details
+    // })
+
 
     fetch(addRequestAPI, {
       method: 'post', // Method is GET to fetch data
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json', // Set the content type header for JSON data
-        'Authorization': 'Bearer ' + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqb2huLmRvZTMyMTFAa2ouY29tIiwiZXhwIjoxNzI1OTQ5MzY0fQ.7hjY_fTWD52CgVzt5F1YWHoWdW5WBypURfNXnRVC86LFg_D8UkXEP7od6XMnprx-_3_h_oQKvvqfsbmvirnxjQ"   //localStorage.getItem('token')
+        'Authorization': 'Bearer ' + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqb2huLmRvZTMyMTFAa2ouY29tIiwiZXhwIjoxNzI1OTg2MTg5fQ.pEX9PUkjQdO8uE_8vdfXCUkq_7mP9RiUSiZJTBAxmKNbATKzD6rn6FnKCSpH4Oxt0rPar41tW2giezVml2R8UA"   //localStorage.getItem('token')
       },
       body: JSON.stringify(sendBody)
     })
@@ -57,7 +65,7 @@ export default function WalkRequestManagementParent() {
           if (!response.ok) {
             if (response.status === 401) {
               alert('Please log in.');
-              navigate('/Login');
+              router.push('/Login');
               return;
             }
             return response.json().then(data => {
@@ -127,8 +135,12 @@ export default function WalkRequestManagementParent() {
           <label className="block text-lg font-semibold">Departure:</label>
           <input 
             type="text"
-            value={departure}
-            onChange={(e) => setDeparture(e.target.value)}
+            value={sendBody.departure}
+            onChange={(e) => setSendBody(
+                (prevSendBody) => ({
+              ...prevSendBody,
+              departure: e.target.value
+            }))}
             placeholder="Enter walk departure"
             className="w-full p-3 border border-black rounded-lg"
           />
@@ -139,8 +151,12 @@ export default function WalkRequestManagementParent() {
           <label className="block text-lg font-semibold">Destination:</label>
           <input 
             type="text"
-            value={destination}
-            onChange={(e) => setDestination(e.target.value)}
+            value={sendBody.destination}
+            onChange={(e) => setSendBody(
+                (prevSendBody) => ({
+                  ...prevSendBody,
+                  destination: e.target.value
+                }))}
             placeholder="Enter walk destination"
             className="w-full p-3 border border-black rounded-lg"
           />
@@ -151,8 +167,12 @@ export default function WalkRequestManagementParent() {
           <label className="block text-lg font-semibold">Details:</label>
           <input
               type="text"
-              value={details}
-              onChange={(e) => setDetails(e.target.value)}
+              value={sendBody.details}
+              onChange={(e) => setSendBody(
+                  (prevSendBody) => ({
+                    ...prevSendBody,
+                    details: e.target.value
+                  }))}
               placeholder="Enter walk descriptions"
               className="w-full p-3 border border-black rounded-lg"
           />
