@@ -20,5 +20,6 @@ public interface UsersService {
     Users updateUserProfile(long userId, Users updatedUser);
     //byron
     List<Users> searchWalkers(String searchTerm);
+    Optional<Users> getUserByEmailOrPhone(String emailOrPhone);
 }
 

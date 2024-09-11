@@ -29,12 +29,13 @@ export default function MyRequest() {
   useEffect(() => {getRequestsList();}, []);
 
   function getRequestsList() {
+    console.log("token: " + localStorage.getItem('token'))
     fetch(getRequestsListAPI, {
       method: 'get', // Method is GET to fetch data
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json', // Set the content type header for JSON data
-        'Authorization': 'Bearer ' + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqb2huLmRvZTMyMTFAa2ouY29tIiwiZXhwIjoxNzI1OTg2MTg5fQ.pEX9PUkjQdO8uE_8vdfXCUkq_7mP9RiUSiZJTBAxmKNbATKzD6rn6FnKCSpH4Oxt0rPar41tW2giezVml2R8UA"   //localStorage.getItem('token')
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
       },
     })
         .then(response => {
@@ -74,7 +75,7 @@ export default function MyRequest() {
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json', // 设置请求头为 JSON 类型
-        'Authorization': 'Bearer ' + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqb2huLmRvZTMyMTFAa2ouY29tIiwiZXhwIjoxNzI1OTg2MTg5fQ.pEX9PUkjQdO8uE_8vdfXCUkq_7mP9RiUSiZJTBAxmKNbATKzD6rn6FnKCSpH4Oxt0rPar41tW2giezVml2R8UA"  // 在这里添加你的 token
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
       },
     })
         .then(response => {
