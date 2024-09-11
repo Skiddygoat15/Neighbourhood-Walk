@@ -1,6 +1,8 @@
 package com.comp5703.Neighbourhood.Walk.Repository.DummyDataLoader;
 
+import com.comp5703.Neighbourhood.Walk.Entities.Role;
 import com.comp5703.Neighbourhood.Walk.Entities.Users;
+import com.comp5703.Neighbourhood.Walk.Repository.RoleRepository;
 import com.comp5703.Neighbourhood.Walk.Repository.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -14,20 +16,21 @@ import java.util.Date;
 public class DummyDataLoader implements CommandLineRunner {
 
     private final UsersRepository usersRepository;
+    private final RoleRepository roleRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public DummyDataLoader(UsersRepository usersRepository, BCryptPasswordEncoder passwordEncoder) {
+    public DummyDataLoader(UsersRepository usersRepository, RoleRepository roleRepository, BCryptPasswordEncoder passwordEncoder) {
         this.usersRepository = usersRepository;
+        this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public void run(String... args) throws Exception {
-        // 清空表中的所有数据（可选）
         usersRepository.deleteAll();
+        roleRepository.deleteAll();
 
-        // 添加4条dummy数据
         Users user1 = new Users();
         user1.setName("John");
         user1.setSurname("Doe");
@@ -71,7 +74,16 @@ public class DummyDataLoader implements CommandLineRunner {
         // 将用户保存到数据库
         usersRepository.saveAll(Arrays.asList(user1, user2, user3, user4));
 
-        System.out.println("Dummy data has been inserted into the Users table.");
+        Role role1 = new Role(user1, "parent");
+        Role role2 = new Role(user2, "walker");
+        Role role3a = new Role(user3, "parent");
+        Role role3b = new Role(user3, "walker");
+        Role role4a = new Role(user4, "parent");
+        Role role4b = new Role(user4, "walker");
+
+        // 保存角色到数据库
+        roleRepository.saveAll(Arrays.asList(role1, role2, role3a, role3b, role4a, role4b));
+
+        System.out.println("Dummy data has been inserted into the Users and Roles tables.");
     }
 }
-
