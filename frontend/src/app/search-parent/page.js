@@ -1,23 +1,86 @@
 // pages/Search-Parent.js
 "use client";
 import { useState } from 'react';
+import { useRouter } from "next/navigation";
 
 export default function SearchParent() {
+  const router = useRouter();
   const [gender, setGender] = useState('');
   const [distance, setDistance] = useState('');
   const [rating, setRating] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [walkers, setWalkers] = useState([]);  // 保存返回的 walkers 列表
+  const [error, setError] = useState(null);    // 用于保存错误信息
+
+  const searchWalkersAPI = `http://127.0.0.1:8080/Users/searchWalkers?searchTerm=${searchTerm}`;
+  const handleSearch = async () => {
+    // 拼接 searchTerm 到 URL 中
+
+    try {
+      const response = await fetch(searchWalkersAPI, {
+        method: 'get',  // 使用 GET 方法
+        credentials: 'include',  // 包含用户凭证
+        headers: {
+          'Authorization': 'Bearer ' + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqb2huLmRvZTMyMTFAa2ouY29tIiwiZXhwIjoxNzI2MDQ3NDI2fQ.KQAbKXJ9aC6KL7MDcctaxrKSXh1-h-42B5pu5ooyd3tXYefcPZB43TvonlaUJsJQoFEP8bgm1BOJFeHgzpjZkw"
+        }
+      });
+      console.log(response);
+
+      // 检查响应的Content-Type是否为application/json
+      const contentType = response.headers.get('Content-Type');
+      if (!response.ok) {
+        if (response.status === 403) {
+          alert('Please log in.');
+          // router.push('/Login');
+          return;
+        }
+
+        if (contentType && contentType.includes('application/json')) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Error fetching walkers');
+        } else {
+          throw new Error('Unexpected non-JSON response');
+        }
+      }
+
+      if (contentType && contentType.includes('application/json')) {
+        const data = await response.json();
+        setWalkers(data);  // 保存返回的 walkers 列表
+        setError(null);    // 清空错误信息
+      } else {
+        throw new Error('Invalid response type, expected JSON');
+      }
+    } catch (error) {
+      console.error("Search request failed:", error);
+      setError(error.message || 'An unknown error occurred.');
+    }
+
+  };
 
   return (
     <div className="min-h-screen bg-gray-100">
       <div className="bg-white p-4 rounded-lg shadow-md max-w-md mx-auto mt-4">
   
         <h1 className="text-2xl font-semibold mb-4">Search</h1>
-    
+
+        {/* 输入框，输入搜索 walker 的关键字 */}
         <input
-          type="text"
-          placeholder="Search walkers.."
-          className="w-full p-2 mb-4 border rounded-lg"
+            type="text"
+            placeholder="Search walkers.."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full p-2 mb-4 border rounded-lg"
         />
+
+        {/* 按钮触发搜索 */}
+        <button
+            onClick={handleSearch}
+            className="w-full bg-blue-500 text-white p-2 rounded-lg"
+        >
+          Search
+        </button>
+
+        {error && <p className="text-red-500 mt-4">{error}</p>}
 
        
         <div className="flex justify-between mb-4">
@@ -65,25 +128,42 @@ export default function SearchParent() {
         </div>
 
 
-        <div className="space-y-4">
-          {[1, 2, 3].map((walker) => (
-            <div
-              key={walker}
-              className="border rounded-lg p-4 flex items-center space-x-4"
-            >
-           
-              <div className="w-16 h-16 bg-gray-200 rounded-lg"></div>
-          
-              <div>
-                <p className="font-semibold">Walker Name: Example {walker}</p>
-                <p>Gender: Female/Male</p>
-                <p>Address: Example Address</p>
-              </div>
-            </div>
-          ))}
+        {/* 显示返回的 walker 列表 */}
+        <div className="space-y-4 mt-4">
+          {walkers.length > 0 ? (
+              walkers.map((walker) => (
+                  <div key={walker.id} className="border rounded-lg p-4 flex items-center space-x-4">
+                    <div className="w-16 h-16 bg-gray-200 rounded-lg"></div>
+                    <div>
+                      <p className="font-semibold">Walker Name: {`${walker.name} ${walker.surname}`}</p>
+                      <p>Gender: {walker.gender}</p>
+                      <p>Address: {walker.address}</p>
+                    </div>
+                  </div>
+              ))
+          ) : (
+              <p>No walkers found</p>
+          )}
         </div>
-      </div>
+        {/*<div className="space-y-4">*/}
+        {/*  {[1, 2, 3].map((walker) => (*/}
+        {/*    <div*/}
+        {/*      key={walker}*/}
+        {/*      className="border rounded-lg p-4 flex items-center space-x-4"*/}
+        {/*    >*/}
+        {/*   */}
+        {/*      <div className="w-16 h-16 bg-gray-200 rounded-lg"></div>*/}
+        {/*  */}
+        {/*      <div>*/}
+        {/*        <p className="font-semibold">Walker Name: Example {walker}</p>*/}
+        {/*        <p>Gender: Female/Male</p>*/}
+        {/*        <p>Address: Example Address</p>*/}
+        {/*      </div>*/}
+        {/*    </div>*/}
+        {/*  ))}*/}
+        {/*</div>*/}
 
+      </div>
     </div>
   );
 }

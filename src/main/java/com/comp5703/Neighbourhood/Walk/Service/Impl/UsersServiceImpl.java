@@ -194,7 +194,6 @@ public class UsersServiceImpl implements UsersService {
         List<Users> users = usersRepository.findAll(spec);
 
         if (users.isEmpty()) {
-            System.out.println(users);
             throw new ResourceNotFoundException("No matching users found for the given search criteria.");
         }
 
