@@ -57,7 +57,7 @@ export default function WalkRequestManagementParent() {
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json', // Set the content type header for JSON data
-        'Authorization': 'Bearer ' + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqb2huLmRvZTMyMTFAa2ouY29tIiwiZXhwIjoxNzI1OTg2MTg5fQ.pEX9PUkjQdO8uE_8vdfXCUkq_7mP9RiUSiZJTBAxmKNbATKzD6rn6FnKCSpH4Oxt0rPar41tW2giezVml2R8UA"   //localStorage.getItem('token')
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
       },
       body: JSON.stringify(sendBody)
     })
