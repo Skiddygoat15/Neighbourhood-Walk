@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.comp5703.Neighbourhood.Walk.Entities.Users;
 import com.comp5703.Neighbourhood.Walk.Security.Manager.CustomAuthenticationManager;
 import com.comp5703.Neighbourhood.Walk.Security.SecurityConstants;
+import com.comp5703.Neighbourhood.Walk.Service.UsersService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -18,11 +19,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.Optional;
 
 @AllArgsConstructor
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private CustomAuthenticationManager authenticationManager;
+    private UsersService usersService;
 
 
     @Override
@@ -58,6 +61,19 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
+        String loginInput = authResult.getName(); // email 或 phone
+
+        // 调用 UsersService 的 getUserByEmailOrPhone 方法
+        Optional<Users> userOptional = usersService.getUserByEmailOrPhone(loginInput);
+
+        // 确保用户存在
+        if (userOptional.isEmpty()) {
+            throw new RuntimeException("User not found.");
+        }
+
+        Users user = userOptional.get();
+        long userId = user.getId();
+
         String token = JWT.create()
                 .withSubject(authResult.getName())
                 .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.TOKEN_EXPIRATION))
@@ -66,7 +82,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         // 将 token 放入响应体
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
-        response.getWriter().write("{\"token\": \"" + token + "\"}");
+        response.getWriter().write("{\"token\": \"" + token + "\", \"userId\": " + userId + "}");
 
         // 如果仍希望在 header 中返回 token
         response.addHeader(SecurityConstants.AUTHORIZATION, SecurityConstants.BEARER + token);

@@ -201,4 +201,18 @@ public class UsersServiceImpl implements UsersService {
         return users;
     }
 
+    @Override
+    public Optional<Users> getUserByEmailOrPhone(String emailOrPhone) {
+        // 首先根据 Email 查找用户
+        Optional<Users> userOptional = usersRepository.findByEmail(emailOrPhone);
+
+        // 如果找不到用户，尝试用 Phone 查找
+        if (userOptional.isEmpty()) {
+            userOptional = usersRepository.findByPhone(emailOrPhone);
+        }
+
+        // 最终返回 Optional<Users>，不论是通过 Email 还是 Phone 查找到的
+        return userOptional;
+    }
+
 }
