@@ -63,26 +63,27 @@ export default function SearchParent() {
   
         <h1 className="text-2xl font-semibold mb-4">Search</h1>
 
-        {/* 输入框，输入搜索 walker 的关键字 */}
-        <input
-            type="text"
-            placeholder="Search walkers.."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full p-2 mb-4 border rounded-lg"
-        />
+        <div className="flex items-center space-x-2 mb-4">
+          {/* 输入框，输入搜索 walker 的关键字 */}
+          <input
+              type="text"
+              placeholder="Search walkers.."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="flex-grow p-2 border rounded-lg"
+          />
 
-        {/* 按钮触发搜索 */}
-        <button
-            onClick={handleSearch}
-            className="w-full bg-blue-500 text-white p-2 rounded-lg"
-        >
-          Search
-        </button>
+          {/* 按钮触发搜索 */}
+          <button
+              onClick={handleSearch}
+              className="bg-blue-500 text-white p-2 rounded-lg"
+          >
+            Search
+          </button>
 
+        </div>
         {error && <p className="text-red-500 mt-4">{error}</p>}
 
-       
         <div className="flex justify-between mb-4">
     
           <div className="relative">
@@ -125,6 +126,7 @@ export default function SearchParent() {
               <option value="1stars">1 stars & up</option>
             </select>
           </div>
+
         </div>
 
 
@@ -142,26 +144,9 @@ export default function SearchParent() {
                   </div>
               ))
           ) : (
-              <p>No walkers found</p>
+              <p className="text-center">No walkers found</p>
           )}
         </div>
-        {/*<div className="space-y-4">*/}
-        {/*  {[1, 2, 3].map((walker) => (*/}
-        {/*    <div*/}
-        {/*      key={walker}*/}
-        {/*      className="border rounded-lg p-4 flex items-center space-x-4"*/}
-        {/*    >*/}
-        {/*   */}
-        {/*      <div className="w-16 h-16 bg-gray-200 rounded-lg"></div>*/}
-        {/*  */}
-        {/*      <div>*/}
-        {/*        <p className="font-semibold">Walker Name: Example {walker}</p>*/}
-        {/*        <p>Gender: Female/Male</p>*/}
-        {/*        <p>Address: Example Address</p>*/}
-        {/*      </div>*/}
-        {/*    </div>*/}
-        {/*  ))}*/}
-        {/*</div>*/}
 
       </div>
     </div>
