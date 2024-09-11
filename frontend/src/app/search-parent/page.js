@@ -12,16 +12,19 @@ export default function SearchParent() {
   const [walkers, setWalkers] = useState([]);  // 保存返回的 walkers 列表
   const [error, setError] = useState(null);    // 用于保存错误信息
 
+  const handleClear = () => { setSearchTerm(''); };// 清空输入框内容
+
   const searchWalkersAPI = `http://127.0.0.1:8080/Users/searchWalkers?searchTerm=${searchTerm}`;
   const handleSearch = async () => {
-    // 拼接 searchTerm 到 URL 中
+    setWalkers([]); // 点击搜索按钮时先清空之前的结果
+    setError(null); // 清空之前的错误消息
 
     try {
       const response = await fetch(searchWalkersAPI, {
         method: 'get',  // 使用 GET 方法
         credentials: 'include',  // 包含用户凭证
         headers: {
-          'Authorization': 'Bearer ' + "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqb2huLmRvZTMyMTFAa2ouY29tIiwiZXhwIjoxNzI2MDQ3NDI2fQ.KQAbKXJ9aC6KL7MDcctaxrKSXh1-h-42B5pu5ooyd3tXYefcPZB43TvonlaUJsJQoFEP8bgm1BOJFeHgzpjZkw"
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
       });
       console.log(response);
@@ -53,6 +56,7 @@ export default function SearchParent() {
     } catch (error) {
       console.error("Search request failed:", error);
       setError(error.message || 'An unknown error occurred.');
+      setWalkers([]); // 如果出错，清空walker列表
     }
 
   };
@@ -63,26 +67,39 @@ export default function SearchParent() {
   
         <h1 className="text-2xl font-semibold mb-4">Search</h1>
 
-        <div className="flex items-center space-x-2 mb-4">
-          {/* 输入框，输入搜索 walker 的关键字 */}
-          <input
-              type="text"
-              placeholder="Search walkers.."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="flex-grow p-2 border rounded-lg"
-          />
+        <div className="relative mb-4">
+          <div className="flex items-center space-x-2 mb-2">
 
-          {/* 按钮触发搜索 */}
-          <button
-              onClick={handleSearch}
-              className="bg-blue-500 text-white p-2 rounded-lg"
-          >
-            Search
-          </button>
+            <div className="relative w-full">
+              {/* 输入框，输入搜索 walker 的关键字 */}
+              <input
+                  type="text"
+                  placeholder="Search walkers.."
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="flex-grow p-2 border rounded-lg w-full"
+              />
+              {/* 清空按钮 */}
+              <button
+                  onClick={handleClear}
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+              >
+                ✕
+              </button>
+            </div>
 
+            {/* 按钮触发搜索 */}
+            <button
+                onClick={handleSearch}
+                className="bg-blue-500 text-white p-2 rounded-lg"
+            >
+              Search
+            </button>
+          </div>
+
+          {error && <p className="text-red-500">{error}</p>}
         </div>
-        {error && <p className="text-red-500 mt-4">{error}</p>}
+
 
         <div className="flex justify-between mb-4">
     

@@ -185,7 +185,8 @@ public class UsersServiceImpl implements UsersService {
         // 检查 searchTerm 是否为空或仅包含空格
         if (searchTerm == null || searchTerm.trim().isEmpty()) {
             // 如果搜索条件为空，则返回所有 Walkers
-            spec = UsersSpecifications.hasRole("walker"); // 只过滤出 walker 角色的用户
+            spec = Specification.where(UsersSpecifications.hasRole("walker"))
+                    .and(UsersSpecifications.orderByAverageRate()); // 只过滤出 walker 角色的用户
         } else {
             // 组合 Specification 查询条件
             spec = Specification.where(UsersSpecifications.hasRole("walker"))
