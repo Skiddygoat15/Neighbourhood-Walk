@@ -73,8 +73,8 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public WalkerRequest  acceptWalkerRequest(int requestId, int walkerId) {
-        WalkerRequest walkerRequest = walkerRequestRepository.findByRequestIdAndWalkerId(requestId, walkerId)
+    public WalkerRequest  acceptWalkerRequest(int requestId, long walkerId) {
+        WalkerRequest walkerRequest = walkerRequestRepository.findByRequestRequestIdAndWalkerUserId(requestId, walkerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Walker request not found for this walker with id: " + walkerId));
 
         // update walkerRequest's status
@@ -92,8 +92,8 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public WalkerRequest rejectWalkerRequest(int requestId, int walkerId) {
-        WalkerRequest walkerRequest = walkerRequestRepository.findByRequestIdAndWalkerId(requestId, walkerId)
+    public WalkerRequest rejectWalkerRequest(int requestId, long walkerId) {
+        WalkerRequest walkerRequest = walkerRequestRepository.findByRequestRequestIdAndWalkerUserId(requestId, walkerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Walker request not found for this walker with id: " + walkerId));
 
         // update walkerRequest's status
@@ -112,12 +112,12 @@ public class RequestServiceImpl implements RequestService {
 
 
     @Override
-    public WalkerRequest applyRequest(int requestId, int walkerId) {
+    public WalkerRequest applyRequest(int requestId, long walkerId) {
         // check if request exists
         Request request = requestRepository.findById(requestId)
                 .orElseThrow(() -> new ResourceNotFoundException("Request not found with id: " + requestId));
         // same the current walkerRequest
-        Optional<WalkerRequest> existingWalkerRequest = walkerRequestRepository.findByRequestIdAndWalkerId(requestId, walkerId);
+        Optional<WalkerRequest> existingWalkerRequest = walkerRequestRepository.findByRequestRequestIdAndWalkerUserId(requestId, walkerId);
         if (existingWalkerRequest.isPresent()) {
             WalkerRequest walkerRequest = existingWalkerRequest.get();
             // check the existing walkerRequest status and decide whether to apply again or cancel
@@ -131,19 +131,21 @@ public class RequestServiceImpl implements RequestService {
 
         // if the same walkerRequest not exist, then create new WalkerRequest
         WalkerRequest walkerRequest = new WalkerRequest();
-        walkerRequest.setRequestId(requestId);
-        walkerRequest.setWalkerId(walkerId);
+        walkerRequest.setRequest(requestRepository.getById(requestId));
+        walkerRequest.setWalker(usersRepository.getById(walkerId));
+//        walkerRequest.setRequestId(requestId);
+//        walkerRequest.setWalkerId(walkerId);
         walkerRequest.setStatus("Applied");
         return walkerRequestRepository.save(walkerRequest);
     }
 
     @Override
-    public void cancelApply(int requestId, int walkerId) {
+    public void cancelApply(int requestId, long walkerId) {
         // check if walker have ever applied this request
         Request request = requestRepository.findById(requestId)
                 .orElseThrow(() -> new ResourceNotFoundException("You haven't applied for Request with id: " + requestId));
 
-        WalkerRequest walkerRequest = walkerRequestRepository.findByRequestIdAndWalkerId(requestId, walkerId)
+        WalkerRequest walkerRequest = walkerRequestRepository.findByRequestRequestIdAndWalkerUserId(requestId, walkerId)
                 .orElseThrow(() -> new ResourceNotFoundException("No WalkerRequest found for walkerId: " + walkerId + " and requestId: " + requestId));
 
         // delete the apply record
@@ -152,6 +154,7 @@ public class RequestServiceImpl implements RequestService {
         walkerRequest.setStatus("Cancelled");
         walkerRequestRepository.save(walkerRequest);
     }
+
 
     @Override
     public List<Request> searchRequests(String searchTerm, Date startTime, Date arriveTime) {

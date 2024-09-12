@@ -36,4 +36,7 @@ public interface UsersRepository extends JpaRepository<Users, Long>, JpaSpecific
 
      */
     Optional<Users> findByPhone(String phone);
+
+    @Override
+    Users getById(Long aLong);
 }

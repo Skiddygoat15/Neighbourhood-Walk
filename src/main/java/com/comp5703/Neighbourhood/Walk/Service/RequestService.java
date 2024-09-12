@@ -12,12 +12,12 @@ public interface RequestService {
     Request createRequest(Request request);
     Request updateRequest(int requestId, Request updatedRequest);
     void cancelRequest(int requestId);
-    WalkerRequest acceptWalkerRequest(int requestId, int walkerId);
-    WalkerRequest rejectWalkerRequest(int requestId, int walkerId);
+    WalkerRequest acceptWalkerRequest(int requestId, long walkerId);
+    WalkerRequest rejectWalkerRequest(int requestId, long walkerId);
     void deleteRequest(int requestId);
-    void cancelApply(int requestId, int walkerRequestId);
+    void cancelApply(int requestId, long walkerId);
 
-    WalkerRequest applyRequest(int walkerId, int requestId);
+    WalkerRequest applyRequest(int requestId, long walkerId);
 
 
     // byron
