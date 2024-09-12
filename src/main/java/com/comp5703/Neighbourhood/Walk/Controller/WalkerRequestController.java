@@ -16,12 +16,12 @@ public class WalkerRequestController {
     private WalkerRequestService walkerRequestService;
 
     @GetMapping("/getWalkerRequest/{walkerId}")
-    public WalkerRequest getWalkerRequest(@PathVariable("walkerId") long walkerId) {
+    public WalkerRequest getWalkerRequestByWalkerId(@PathVariable("walkerId") long walkerId) {
         return walkerRequestService.getWalkerRequest(walkerId);
     }
 
     @GetMapping("/getRequest/{walkerRequestId}")
-    public int getRequest(@PathVariable("walkerRequestId") long walkerRequestId) {
+    public int getRequestByWalkerRequestId(@PathVariable("walkerRequestId") long walkerRequestId) {
         return walkerRequestService.getRequest(walkerRequestId);
     }
 }
