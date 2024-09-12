@@ -29,7 +29,7 @@ export default function Home() {
 
             <div className="flex-1 overflow-y-auto">
                 <TimeBar time={"Today"}/>
-                <RequestBox status={requestStatus}/>
+                <RequestBox status={1}/>
                 <div className="p-4 flex items-center">
                     <div
                         className="rounded-full bg-black w-10 h-10 text-white flex items-center justify-center mr-2">P
