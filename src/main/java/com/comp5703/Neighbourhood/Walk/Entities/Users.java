@@ -58,6 +58,7 @@ public class Users {
      */
     @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Role> roles = new ArrayList<>();
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments = new ArrayList<>();
 
@@ -66,6 +67,16 @@ public class Users {
 
     @OneToMany(mappedBy = "walker", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Request> Requests_walkerId = new ArrayList<>();
+
+    @OneToMany(mappedBy = "walkerRequestId", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<WalkerRequest> walkerRequestId = new ArrayList<>();
+
+    public Users() {
+    }
+
+    public Users(long userId) {
+        this.userId = userId;
+    }
 
     public long getId() {
         return userId;

@@ -1,10 +1,14 @@
 package com.comp5703.Neighbourhood.Walk.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import org.apache.catalina.User;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 @Entity
 @Table(name = "request")
 public class Request {
@@ -42,6 +46,9 @@ public class Request {
     @Column(name = "status")
     private String status;
 
+    @OneToMany(mappedBy = "walkerRequestId", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<WalkerRequest> walkerRequestId = new ArrayList<>();
+
 //    public Long getWalkerId() {
 //        return walkerId;
 //    }
@@ -57,6 +64,23 @@ public class Request {
 //    public void setParentId(Long parentId) {
 //        this.parentId = parentId;
 //    }
+
+
+    public Request(int requestId) {
+        this.requestId = requestId;
+    }
+
+    public Request() {
+
+    }
+
+    public int getRequestId() {
+        return requestId;
+    }
+
+    public void setRequestId(int requestId) {
+        this.requestId = requestId;
+    }
 
     public Users getWalker() {
         return walker;
@@ -74,12 +98,12 @@ public class Request {
         this.parent = parent;
     }
 
-    public String getStatus() {
-        return status;
+    public Date getPublishDate() {
+        return publishDate;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setPublishDate(Date publishDate) {
+        this.publishDate = publishDate;
     }
 
     public Date getStartTime() {
@@ -90,36 +114,12 @@ public class Request {
         this.startTime = startTime;
     }
 
-    public int getRequestId() {
-        return requestId;
+    public Date getArriveTime() {
+        return arriveTime;
     }
 
-    public void setRequestId(int requestId) {
-        this.requestId = requestId;
-    }
-
-    public Date getPublishDate() {
-        return publishDate;
-    }
-
-    public void setPublishDate(Date publishDate) {
-        this.publishDate = publishDate;
-    }
-
-    public String getDetails() {
-        return details;
-    }
-
-    public void setDetails(String details) {
-        this.details = details;
-    }
-
-    public String getDestination() {
-        return destination;
-    }
-
-    public void setDestination(String destination) {
-        this.destination = destination;
+    public void setArriveTime(Date arriveTime) {
+        this.arriveTime = arriveTime;
     }
 
     public String getDeparture() {
@@ -130,11 +130,27 @@ public class Request {
         this.departure = departure;
     }
 
-    public Date getArriveTime() {
-        return arriveTime;
+    public String getDestination() {
+        return destination;
     }
 
-    public void setArriveTime(Date arriveTime) {
-        this.arriveTime = arriveTime;
+    public void setDestination(String destination) {
+        this.destination = destination;
+    }
+
+    public String getDetails() {
+        return details;
+    }
+
+    public void setDetails(String details) {
+        this.details = details;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

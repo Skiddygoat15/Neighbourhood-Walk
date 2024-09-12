@@ -27,8 +27,6 @@ public class CommentServiceImpl implements CommentService {
     @Autowired
     private RequestRepository requestRepository;
     @Autowired
-    private WalkerRequestRepository walkerRequestRepository;
-    @Autowired
     private UsersRepository usersRepository;
 
     @Override

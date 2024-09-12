@@ -13,68 +13,42 @@ public class WalkerRequest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int walkerRequestId;
+    private long walkerRequestId;
 
-    @Column(name = "requestId", nullable = false)
-    private int requestId;
+    @OneToOne
+    @JoinColumn(name = "requestId")
+    private Request request;
 
-    @Column(name = "walkerId", nullable = false)
-    private long walkerId;
+    @OneToOne
+    @JoinColumn(name = "walkerId",referencedColumnName="userId")
+    private Users walker;
 
     @Column(name = "status")
     private String status;
 
-//    @ManyToOne
-//    @JoinColumn(name = "requestId")
-//    private Request request;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "walkerId")
-//    private Users walker;
-
-    public int getRequestId() {
-        return requestId;
-    }
-
-    public void setRequestId(int requestId) {
-        this.requestId = requestId;
-    }
-
-    public long getWalkerId() {
-        return walkerId;
-    }
-
-    public void setWalkerId(int walkerId) {
-        this.walkerId = walkerId;
-    }
-
-    public int getWalkerRequestId() {
+    public long getWalkerRequestId() {
         return walkerRequestId;
     }
 
-    public void setWalkerRequestId(int id) {
-        this.walkerRequestId = id;
+    public void setWalkerRequestId(long walkerRequestId) {
+        this.walkerRequestId = walkerRequestId;
     }
 
-//    public Request getRequest() {
-//        return request;
-//    }
-//
-//    public void setRequest(Request request) {
-//        this.request = request;
-//    }
-//
-//    public Users getWalker() {
-//        return walker;
-//    }
-//
-//    public void setWalker(Users walker) {
-//        this.walker = walker;
-//    }
-//
-//    public Date getRequestDate() {
-//        return request.getPublishDate();
-//    }
+    public Request getRequest() {
+        return request;
+    }
+
+    public void setRequest(Request request) {
+        this.request = request;
+    }
+
+    public Users getWalker() {
+        return walker;
+    }
+
+    public void setWalker(Users walker) {
+        this.walker = walker;
+    }
 
     public String getStatus() {
         return status;
@@ -83,6 +57,4 @@ public class WalkerRequest {
     public void setStatus(String status) {
         this.status = status;
     }
-
-
 }
