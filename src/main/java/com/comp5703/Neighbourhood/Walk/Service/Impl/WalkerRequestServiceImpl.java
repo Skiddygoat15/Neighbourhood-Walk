@@ -3,6 +3,7 @@ package com.comp5703.Neighbourhood.Walk.Service.Impl;
 import com.comp5703.Neighbourhood.Walk.Entities.WalkerRequest;
 import com.comp5703.Neighbourhood.Walk.Repository.WalkerRequestRepository;
 import com.comp5703.Neighbourhood.Walk.Service.WalkerRequestService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -10,6 +11,8 @@ import java.util.Optional;
 
 @Service
 public class WalkerRequestServiceImpl implements WalkerRequestService {
+
+    @Autowired
     private WalkerRequestRepository walkerRequestRepository;
 
     /**
@@ -19,7 +22,7 @@ public class WalkerRequestServiceImpl implements WalkerRequestService {
      */
     @Override
     public WalkerRequest getWalkerRequest(long walkerId) {
-        Optional<WalkerRequest> walkerRequest = walkerRequestRepository.findById(walkerId);
+        Optional<WalkerRequest> walkerRequest = walkerRequestRepository.findByWalkerUserId(walkerId);
         WalkerRequest request = null;
         if (walkerRequest.isPresent()) {
             request = walkerRequest.get();
@@ -35,6 +38,6 @@ public class WalkerRequestServiceImpl implements WalkerRequestService {
      */
     @Override
     public int getRequest(long walkerRequestId) {
-        return walkerRequestRepository.getReferenceById(walkerRequestId).getRequest().getRequestId();
+        return  walkerRequestRepository.findById(walkerRequestId).get().getRequest().getRequestId();
     }
 }

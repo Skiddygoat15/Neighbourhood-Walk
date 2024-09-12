@@ -8,6 +8,8 @@ import java.util.Optional;
 public interface WalkerRequestRepository extends JpaRepository<WalkerRequest, Long> {
     Optional<WalkerRequest> findByRequestRequestIdAndWalkerUserId(int requestId, long walkerId);
 
+    Optional<WalkerRequest> findByWalkerUserId(Long walkerId);
+
     @Override
-    Optional<WalkerRequest> findById(Long walkerId);
+    Optional<WalkerRequest> findById(Long walkerRequestId);
 }
