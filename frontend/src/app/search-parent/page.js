@@ -1,6 +1,6 @@
 // pages/Search-Parent.js
 "use client";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from "next/navigation";
 
 export default function SearchParent() {
@@ -12,12 +12,26 @@ export default function SearchParent() {
   const [walkers, setWalkers] = useState([]);  // 保存返回的 walkers 列表
   const [error, setError] = useState(null);    // 用于保存错误信息
 
-  const handleClear = () => { setSearchTerm(''); };// 清空输入框内容
+  // 第一个参数：() => {} 是一个回调函数，称为副作用函数。当 React 渲染组件时，React 会执行这个函数。
+  // 第二个参数：[依赖项] 是一个依赖数组，当这个数组中的变量发生变化时，useEffect 会重新执行。
+  useEffect(() => {
+    if (searchTerm === '') {
+      handleSearch();  // 如果搜索框清空，执行搜索所有walkers
+    }
+  }, [searchTerm, gender, distance, rating]);
 
-  const searchWalkersAPI = `http://127.0.0.1:8080/Users/searchWalkers?searchTerm=${searchTerm}`;
+  const handleClear = () => {
+    setSearchTerm('');
+    setGender('');
+    setDistance('');
+    setRating('');
+  }; // empty searchTerm and all filters
+
   const handleSearch = async () => {
     setWalkers([]); // 点击搜索按钮时先清空之前的结果
     setError(null); // 清空之前的错误消息
+
+    const searchWalkersAPI = `http://127.0.0.1:8080/Users/searchWalkers?searchTerm=${searchTerm}&gender=${gender}&distance=${distance}&rating=${rating}`;
 
     try {
       const response = await fetch(searchWalkersAPI, {
@@ -61,6 +75,13 @@ export default function SearchParent() {
 
   };
 
+  // 监听键盘按下事件，执行搜索
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch(); // 当按下 Enter 键时执行搜索
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-100">
       <div className="bg-white p-4 rounded-lg shadow-md max-w-md mx-auto mt-4">
@@ -77,6 +98,7 @@ export default function SearchParent() {
                   placeholder="Search walkers.."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
+                  onKeyDown={handleKeyDown}
                   className="flex-grow p-2 border rounded-lg w-full"
               />
               {/* 清空按钮 */}
@@ -105,17 +127,18 @@ export default function SearchParent() {
     
           <div className="relative">
             <select
-              value={gender}
-              onChange={(e) => setGender(e.target.value)}
-              className="block appearance-none w-full bg-white border px-4 py-2 pr-8 rounded-lg leading-tight focus:outline-none focus:shadow-outline"
+                value={gender}
+                onChange={(e) => setGender(e.target.value)}
+                className="block appearance-none w-full bg-white border px-4 py-2 pr-8 rounded-lg leading-tight focus:outline-none focus:shadow-outline"
             >
               <option value="">Gender</option>
-              <option value="female">Female</option>
               <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
             </select>
           </div>
 
-     
+
           <div className="relative">
             <select
               value={distance}
