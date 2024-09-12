@@ -17,7 +17,7 @@ public class WalkerRequestServiceImpl implements WalkerRequestService {
     private WalkerRequestRepository walkerRequestRepository;
 
     /**
-     * 根据walkerId获取他的walkerRequestId
+     * 根据walkerId获取walkerRequestId
      * @param walkerId
      * @return
      */
@@ -33,7 +33,7 @@ public class WalkerRequestServiceImpl implements WalkerRequestService {
     }
 
     /**
-     * 根据walkerRequestId获取requestId
+     * 根据walkerRequestId获取Request
      * @param walkerRequestId
      * @return
      */
@@ -41,4 +41,12 @@ public class WalkerRequestServiceImpl implements WalkerRequestService {
     public Request getRequest(long walkerRequestId) {
         return  walkerRequestRepository.findById(walkerRequestId).get().getRequest();
     }
+
+//    /**
+//     * 根据parentId和walkerId获取Request
+//     */
+//    @Override
+//    public Request getRequestByWalkerIdAndParentId(long walkerRequestId) {
+//        return  walkerRequestRepository.findById(walkerRequestId).get().getRequest();
+//    }
 }

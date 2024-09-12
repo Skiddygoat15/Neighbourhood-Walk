@@ -7,9 +7,6 @@ import java.util.Date;
 
 //table bind walker and request
 @Entity
-//@Table(name = "WALKER_REQUEST", uniqueConstraints = {
-//        @UniqueConstraint(columnNames = {"requestId", "walkerId"})
-//}) // make sure the combination of requestId and walkerId is unique
 public class WalkerRequest {
 
     @Id
