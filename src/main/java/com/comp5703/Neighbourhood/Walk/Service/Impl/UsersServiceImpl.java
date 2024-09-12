@@ -180,25 +180,60 @@ public class UsersServiceImpl implements UsersService {
 
     //byron
     @Override
-    public List<Users> searchWalkers(String searchTerm) {
-        // 组合 Specification 查询条件
-        Specification<Users> spec = Specification.where(UsersSpecifications.hasRole("walker"))
-                .and(UsersSpecifications.containsAttribute("name", searchTerm)
-                        .or(UsersSpecifications.containsAttribute("surname", searchTerm))
-                        .or(UsersSpecifications.containsAttribute("preferredName", searchTerm))
-                        .or(UsersSpecifications.containsAttribute("gender", searchTerm))
-                        .or(UsersSpecifications.containsAttribute("address", searchTerm)))
+    public List<Users> searchWalkers(String searchTerm, String gender, String distance, String rating) {
+        Specification<Users> spec = Specification.where(UsersSpecifications.hasRole("walker"));
+
+        // 检查 searchTerm 是否为空或仅包含空格
+        if (searchTerm == null || searchTerm.trim().isEmpty()) {
+            // 如果搜索条件为空，则返回所有 Walkers
+            spec = spec.and(UsersSpecifications.orderByAverageRate());
+        } else {
+            // 组合 Specification 查询条件
+            spec = spec.and(UsersSpecifications.containsAttribute("name", searchTerm)
+                            .or(UsersSpecifications.containsAttribute("surname", searchTerm))
+                            .or(UsersSpecifications.containsAttribute("preferredName", searchTerm))
+                            .or(UsersSpecifications.containsAttribute("gender", searchTerm))
+                            .or(UsersSpecifications.containsAttribute("address", searchTerm)))
 //                        .or(UsersSpecifications.containsAttribute("availableDate", search)))
-                .and(UsersSpecifications.orderByAverageRate());
+                    .and(UsersSpecifications.orderByAverageRate());
+        }
+
+        // 添加性别过滤
+        if (gender != null && !gender.isEmpty()) {
+            spec = spec.and(UsersSpecifications.hasGender(gender));
+        }
+
+        // 添加距离过滤（假设距离是某种数值字段或分类字段）
+        if (distance != null && !distance.isEmpty()) {
+            spec = spec.and(UsersSpecifications.containsAttribute("distance", distance));
+        }
+
+        // 添加评分过滤
+        if (rating != null && !rating.isEmpty()) {
+            spec = spec.and(UsersSpecifications.containsAttribute("rating", rating));
+        }
 
         List<Users> users = usersRepository.findAll(spec);
 
         if (users.isEmpty()) {
-            System.out.println(users);
             throw new ResourceNotFoundException("No matching users found for the given search criteria.");
         }
 
         return users;
+    }
+
+    @Override
+    public Optional<Users> getUserByEmailOrPhone(String emailOrPhone) {
+        // 首先根据 Email 查找用户
+        Optional<Users> userOptional = usersRepository.findByEmail(emailOrPhone);
+
+        // 如果找不到用户，尝试用 Phone 查找
+        if (userOptional.isEmpty()) {
+            userOptional = usersRepository.findByPhone(emailOrPhone);
+        }
+
+        // 最终返回 Optional<Users>，不论是通过 Email 还是 Phone 查找到的
+        return userOptional;
     }
 
 }

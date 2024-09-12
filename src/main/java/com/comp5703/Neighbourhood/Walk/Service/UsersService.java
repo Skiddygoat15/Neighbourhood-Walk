@@ -19,6 +19,7 @@ public interface UsersService {
     Users registerUser(Users user, String roleType);
     Users updateUserProfile(long userId, Users updatedUser);
     //byron
-    List<Users> searchWalkers(String searchTerm);
+    List<Users> searchWalkers(String searchTerm, String gender, String distance, String rating);
+    Optional<Users> getUserByEmailOrPhone(String emailOrPhone);
 }
 

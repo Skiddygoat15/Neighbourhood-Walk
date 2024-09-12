@@ -4,6 +4,7 @@ import com.comp5703.Neighbourhood.Walk.Security.Filter.AuthenticationFilter;
 import com.comp5703.Neighbourhood.Walk.Security.Filter.ExceptionHandlerFilter;
 import com.comp5703.Neighbourhood.Walk.Security.Filter.JWTAuthorizationFilter;
 import com.comp5703.Neighbourhood.Walk.Security.Manager.CustomAuthenticationManager;
+import com.comp5703.Neighbourhood.Walk.Service.UsersService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,10 +27,11 @@ public class SecurityConfig {
     private BCryptPasswordEncoder passwordEncoder;
 
     CustomAuthenticationManager customAuthenticationManager;
+    UsersService usersService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        AuthenticationFilter authenticationFilter = new AuthenticationFilter(customAuthenticationManager);
+        AuthenticationFilter authenticationFilter = new AuthenticationFilter(customAuthenticationManager, usersService);
         authenticationFilter.setFilterProcessesUrl("/login");
 
         http

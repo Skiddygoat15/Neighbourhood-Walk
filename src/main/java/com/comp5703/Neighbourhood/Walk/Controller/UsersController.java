@@ -1,12 +1,14 @@
 package com.comp5703.Neighbourhood.Walk.Controller;
 import com.comp5703.Neighbourhood.Walk.Entities.Users;
 import com.comp5703.Neighbourhood.Walk.Service.UsersService;
+import com.comp5703.Neighbourhood.Walk.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -47,9 +49,26 @@ public class UsersController {
 
     //byron
     @GetMapping("/searchWalkers")
-    public ResponseEntity<List<Users>> searchWalkers(@RequestParam String searchTerm) {
-        List<Users> walkers = usersService.searchWalkers(searchTerm);
-        return new ResponseEntity<>(walkers, HttpStatus.OK);
+    public ResponseEntity<?> searchWalkers(@RequestParam String searchTerm,
+                                           @RequestParam(required = false) String gender,
+                                           @RequestParam(required = false) String distance,
+                                           @RequestParam(required = false) String rating) {
+        try {
+            List<Users> walkers = usersService.searchWalkers(searchTerm, gender, distance, rating);
+            return new ResponseEntity<>(walkers, HttpStatus.OK);
+        } catch (ResourceNotFoundException e) {
+            // 处理找不到资源的自定义异常
+            return new ResponseEntity<>(
+                    Map.of("message", e.getMessage()),
+                    HttpStatus.NOT_FOUND
+            );
+        } catch (Exception e) {
+            // 捕获所有其他异常，并返回500服务器错误
+            return new ResponseEntity<>(
+                    Map.of("message", "An unexpected error occurred: " + e.getMessage()),
+                    HttpStatus.INTERNAL_SERVER_ERROR
+            );
+        }
     }
 
     @PostMapping("/register")

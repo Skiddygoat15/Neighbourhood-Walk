@@ -9,6 +9,7 @@ import java.util.List;
 
 
 public interface RequestService {
+    List<Request> getRequestsByUserId(Long userId);
     Request createRequest(Request request);
     Request updateRequest(int requestId, Request updatedRequest);
     void cancelRequest(int requestId);

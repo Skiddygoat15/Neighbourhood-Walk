@@ -23,6 +23,15 @@ public class RequestController {
     private WalkerRequestRepository walkerRequestRepository;
 
     //todo getRequest(), getAllRequests()
+    @GetMapping("/getRequestsByUserId/{userId}")
+    public ResponseEntity<List<Request>> getRequestsByUserId(@PathVariable Long userId) {
+        try {
+            List<Request> requests = requestService.getRequestsByUserId(userId);
+            return new ResponseEntity<>(requests, HttpStatus.OK);
+        } catch (ResourceNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 或返回 HttpStatus.NOT_FOUND
+        }
+    }
 
     @PostMapping
     public ResponseEntity<Request> addRequest(@RequestBody Request request) {

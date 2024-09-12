@@ -24,6 +24,13 @@ public class UsersSpecifications {
                 criteriaBuilder.equal(root.join("roles").get("roleType"), roleType);
     }
 
+    // Specification to filter by gender
+    public static Specification<Users> hasGender(String gender) {
+        return (root, query, criteriaBuilder) ->
+                criteriaBuilder.equal(root.get("gender"), gender);
+    }
+
+
     // Specification to check if an attribute contains a value (case-insensitive)
     // 检查输入和数据库的匹配项
     public static Specification<Users> containsAttribute(String attributeName, String value) {

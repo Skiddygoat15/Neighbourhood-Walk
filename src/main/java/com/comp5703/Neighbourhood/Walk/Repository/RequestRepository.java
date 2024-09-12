@@ -11,7 +11,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface RequestRepository extends JpaRepository<Request, Integer>, JpaSpecificationExecutor<Request> {
-
+    List<Request> findByParentId(Long parentId);
     /*
     @Query("SELECT r FROM Request r " +
             "JOIN r.parent p " +
