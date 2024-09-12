@@ -13,12 +13,12 @@ public class WalkerRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long walkerRequestId;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "requestId")
 //    @JsonBackReference
     private Request request;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "walkerId",referencedColumnName="userId")
 //    @JsonBackReference
     private Users walker;

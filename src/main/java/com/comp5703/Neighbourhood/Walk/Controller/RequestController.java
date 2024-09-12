@@ -57,13 +57,21 @@ public class RequestController {
     }
 
     @PostMapping("/{requestId}/accept")
-    public ResponseEntity<WalkerRequest> acceptRequest(@PathVariable int requestId, @RequestParam int walkerId) {
-        return new ResponseEntity<>(requestService.acceptWalkerRequest(requestId, walkerId), HttpStatus.OK);
+    public ResponseEntity<?> acceptRequest(@PathVariable int requestId, @RequestParam int walkerId) {
+        if (requestService.acceptWalkerRequest(requestId, walkerId) == null){
+            return new ResponseEntity<>("The request has been accpetd by some walker.", HttpStatus.BAD_REQUEST);
+        }
+//        return new ResponseEntity<>(requestService.acceptWalkerRequest(requestId, walkerId), HttpStatus.OK);
+        return new ResponseEntity<>("The request has been accpetd successfully by walker, whose walkerid is " + walkerId, HttpStatus.OK);
     }
 
     @PostMapping("/{requestId}/reject")
-    public ResponseEntity<WalkerRequest> rejectRequest(@PathVariable int requestId, @RequestParam int walkerId) {
-        return new ResponseEntity<>(requestService.rejectWalkerRequest(requestId, walkerId), HttpStatus.OK);
+    public ResponseEntity<?> rejectRequest(@PathVariable int requestId, @RequestParam int walkerId) {
+        if (requestService.rejectWalkerRequest(requestId, walkerId) == null){
+            return new ResponseEntity<>("The request has been rejected by this walker", HttpStatus.BAD_REQUEST);
+        }
+//        return new ResponseEntity<>(requestService.rejectWalkerRequest(requestId, walkerId), HttpStatus.OK);
+        return new ResponseEntity<>("The request has been rejected successfully by walker, whose walkerid is  " + walkerId, HttpStatus.OK);
     }
 
     @PostMapping("{requestId}/apply")

@@ -25,7 +25,6 @@ export default function RequestBox({walkerId}){
             }})
         .catch(error => {
             console.error('Error fetching data:', error);
-            setRequestStatus('This walker has not applied the request'); // 在发生错误时更新状态
         });
 
     return (

@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 
@@ -86,13 +87,16 @@ public class RequestServiceImpl implements RequestService {
         WalkerRequest walkerRequest = walkerRequestRepository.findByRequestRequestIdAndWalkerUserId(requestId, walkerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Walker request not found for this walker with id: " + walkerId));
 
+        Request request = requestRepository.findById(requestId)
+                .orElseThrow(() -> new ResourceNotFoundException("Request not found with id: " + requestId));
+        if (Objects.equals(request.getStatus(), "Accepted")){
+            return null;
+        }
+
         // update walkerRequest's status
         walkerRequest.setStatus("Accepted");
         walkerRequestRepository.save(walkerRequest);
 
-        // update the Request's status
-        Request request = requestRepository.findById(requestId)
-                .orElseThrow(() -> new ResourceNotFoundException("Request not found with id: " + requestId));
 
         request.setStatus("Accepted");
         request.setWalker(usersRepository.getById(walkerId));
@@ -105,6 +109,10 @@ public class RequestServiceImpl implements RequestService {
     public WalkerRequest rejectWalkerRequest(int requestId, long walkerId) {
         WalkerRequest walkerRequest = walkerRequestRepository.findByRequestRequestIdAndWalkerUserId(requestId, walkerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Walker request not found for this walker with id: " + walkerId));
+
+        if (Objects.equals(walkerRequest.getStatus(), "Rejected")){
+            return null;
+        }
 
         // update walkerRequest's status
         walkerRequest.setStatus("Rejected");
