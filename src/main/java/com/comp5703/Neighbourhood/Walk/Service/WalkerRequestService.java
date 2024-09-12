@@ -5,5 +5,5 @@ import com.comp5703.Neighbourhood.Walk.Entities.WalkerRequest;
 
 public interface WalkerRequestService {
     WalkerRequest getWalkerRequest(long walkerId);
-    int getRequest(long walkerRequestId);
+    Request getRequest(long walkerRequestId);
 }

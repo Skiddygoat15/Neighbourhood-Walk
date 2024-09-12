@@ -85,7 +85,8 @@ public class RequestServiceImpl implements RequestService {
         Request request = requestRepository.findById(requestId)
                 .orElseThrow(() -> new ResourceNotFoundException("Request not found with id: " + requestId));
 
-        request.setStatus("InProgress");
+        request.setStatus("Accepted");
+        request.setWalker(usersRepository.getById(walkerId));
         requestRepository.save(request);
 
         return walkerRequest;
@@ -99,7 +100,7 @@ public class RequestServiceImpl implements RequestService {
         // update walkerRequest's status
         walkerRequest.setStatus("Rejected");
         walkerRequestRepository.save(walkerRequest);
-
+        
         return walkerRequest;
     }
 

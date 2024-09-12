@@ -1,5 +1,6 @@
 package com.comp5703.Neighbourhood.Walk.Service.Impl;
 
+import com.comp5703.Neighbourhood.Walk.Entities.Request;
 import com.comp5703.Neighbourhood.Walk.Entities.WalkerRequest;
 import com.comp5703.Neighbourhood.Walk.Repository.WalkerRequestRepository;
 import com.comp5703.Neighbourhood.Walk.Service.WalkerRequestService;
@@ -37,7 +38,7 @@ public class WalkerRequestServiceImpl implements WalkerRequestService {
      * @return
      */
     @Override
-    public int getRequest(long walkerRequestId) {
-        return  walkerRequestRepository.findById(walkerRequestId).get().getRequest().getRequestId();
+    public Request getRequest(long walkerRequestId) {
+        return  walkerRequestRepository.findById(walkerRequestId).get().getRequest();
     }
 }

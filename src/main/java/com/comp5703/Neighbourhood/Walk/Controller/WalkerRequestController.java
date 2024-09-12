@@ -26,7 +26,7 @@ public class WalkerRequestController {
     }
 
     @GetMapping("/getRequest/{walkerRequestId}")
-    public ResponseEntity<Integer> getRequestByWalkerRequestId(@PathVariable("walkerRequestId") long walkerRequestId) {
+    public ResponseEntity<Request> getRequestByWalkerRequestId(@PathVariable("walkerRequestId") long walkerRequestId) {
         return new ResponseEntity<>(walkerRequestService.getRequest(walkerRequestId), HttpStatus.OK);
     }
 }
