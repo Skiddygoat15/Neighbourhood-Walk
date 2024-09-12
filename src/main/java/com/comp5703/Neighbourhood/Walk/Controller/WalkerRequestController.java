@@ -25,8 +25,15 @@ public class WalkerRequestController {
         return new ResponseEntity<>(walkerRequestService.getWalkerRequest(walkerId), HttpStatus.OK);
     }
 
-    @GetMapping("/getRequest/{walkerRequestId}")
-    public ResponseEntity<Request> getRequestByWalkerRequestId(@PathVariable("walkerRequestId") long walkerRequestId) {
+    @GetMapping("/getRequestByWalkerRequestId/{walkerRequestId}")
+    public ResponseEntity<Request> getRequestByWalkerRequest(@PathVariable("walkerRequestId") long walkerRequestId) {
         return new ResponseEntity<>(walkerRequestService.getRequest(walkerRequestId), HttpStatus.OK);
+    }
+
+    @GetMapping("/getRequestByWalkerId/{walkerId}")
+    public ResponseEntity<Request> getRequestByWalkerId(@PathVariable("walkerId") long walkerId) {
+        WalkerRequest walkerRequest = walkerRequestService.getWalkerRequest(walkerId);
+        Request request = walkerRequestService.getRequest(walkerRequest.getWalkerRequestId());
+        return new ResponseEntity<>(request, HttpStatus.OK);
     }
 }

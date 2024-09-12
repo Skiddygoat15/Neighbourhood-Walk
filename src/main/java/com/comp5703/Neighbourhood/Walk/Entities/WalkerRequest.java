@@ -1,5 +1,6 @@
 package com.comp5703.Neighbourhood.Walk.Entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.util.Date;
@@ -17,10 +18,12 @@ public class WalkerRequest {
 
     @OneToOne
     @JoinColumn(name = "requestId")
+//    @JsonBackReference
     private Request request;
 
     @OneToOne
     @JoinColumn(name = "walkerId",referencedColumnName="userId")
+//    @JsonBackReference
     private Users walker;
 
     @Column(name = "status")

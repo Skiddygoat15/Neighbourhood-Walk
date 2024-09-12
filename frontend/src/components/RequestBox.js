@@ -2,17 +2,19 @@ import {useState} from "react";
 
 export default function RequestBox({walkerId}){
 
-    const myHeaders = new Headers();
-
+    // const myHeaders = new Headers({
+    //     'Content-Type': 'application/json',
+    //     'Authorization': 'Bearer {{eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqb2huLmRvZTMyMTFAa2ouY29tIiwiZXhwIjoxNzI2MTQ3Njg3fQ.vYzbb-kQNRKwGZQBL6CL_74QV69D94C-QOJNaY8jgRLjfl9PV-fa3fgeoDpkq_Qx5zSNXJkiDaFmmGj1nSG8MQ}}'  // 替换 YOUR_TOKEN_HERE 为实际的 token
+    // });
     const myInit = {
         method: 'GET',
-        headers: myHeaders,
+        headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')},
         mode: 'cors',
         cache: 'default'
     };
     const [requestStatus, setRequestStatus] = useState('Pending...'); // 默认值为 'Pending...'
 
-    const requestURL = new Request('http://127.0.0.1:8080/WalkerRequest/getRequest/{walkerId}', myInit);
+    const requestURL = new Request('http://127.0.0.1:8080/WalkerRequest/getRequestByWalkerId/${walkerId}', myInit);
 
     fetch(requestURL)
         .then(response => response.json())
