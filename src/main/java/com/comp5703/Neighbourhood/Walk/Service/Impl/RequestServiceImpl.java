@@ -93,14 +93,16 @@ public class RequestServiceImpl implements RequestService {
             return null;
         }
 
+        request.setStatus("Accepted");
+        request.setWalker(usersRepository.getById(walkerId));
+        requestRepository.save(request);
+
         // update walkerRequest's status
         walkerRequest.setStatus("Accepted");
         walkerRequestRepository.save(walkerRequest);
 
 
-        request.setStatus("Accepted");
-        request.setWalker(usersRepository.getById(walkerId));
-        requestRepository.save(request);
+
 
         return walkerRequest;
     }
@@ -110,6 +112,9 @@ public class RequestServiceImpl implements RequestService {
         WalkerRequest walkerRequest = walkerRequestRepository.findByRequestRequestIdAndWalkerUserId(requestId, walkerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Walker request not found for this walker with id: " + walkerId));
 
+        Request request = requestRepository.findById(requestId)
+            .orElseThrow(() -> new ResourceNotFoundException("Request not found with id: " + requestId));
+
         if (Objects.equals(walkerRequest.getStatus(), "Rejected")){
             return null;
         }
@@ -117,7 +122,11 @@ public class RequestServiceImpl implements RequestService {
         // update walkerRequest's status
         walkerRequest.setStatus("Rejected");
         walkerRequestRepository.save(walkerRequest);
-        
+
+        if (Objects.equals(request.getStatus(), "Accepted") && request.getWalker().getId() == walkerId){
+            request.setStatus("Rejected");
+            requestRepository.save(request);
+        }
         return walkerRequest;
     }
 
