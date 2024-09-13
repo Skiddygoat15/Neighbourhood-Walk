@@ -15,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -170,7 +171,18 @@ public class UsersServiceImpl implements UsersService {
         if (updatedUser.getAvailableDate() != null || updatedUser.getSkill() != null) {
             if (isWalker) {
                 if (updatedUser.getAvailableDate() != null) {
-                    existingUser.setAvailableDate(updatedUser.getAvailableDate());
+                    List<Date> availableDates = updatedUser.getAvailableDate();
+                    Date currentDate = new Date();
+
+                    // 遍历 availableDates，确保每个日期都在当前时间之后
+                    for (Date date : availableDates) {
+                        if (date.before(currentDate)) {
+                            throw new IllegalArgumentException("All available dates must be later than the current date.");
+                        }
+                    }
+
+                    // 如果验证通过，更新 availableDate 列表
+                    existingUser.setAvailableDate(availableDates);
                 }
                 if (updatedUser.getSkill() != null) {
                     existingUser.setSkill(updatedUser.getSkill());
