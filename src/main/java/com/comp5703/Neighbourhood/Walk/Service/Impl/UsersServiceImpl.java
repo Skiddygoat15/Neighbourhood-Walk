@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 @Service
 public class UsersServiceImpl implements UsersService {
@@ -99,8 +100,8 @@ public class UsersServiceImpl implements UsersService {
 
 
         // 验证手机号格式
-        if (!user.getPhone().matches("^\\d{1,11}$")) {
-            throw new IllegalArgumentException("Phone number must be numeric and up to 11 digits");
+        if (!user.getPhone().matches("^\\d{10,15}$")) {
+            throw new IllegalArgumentException("Phone number must be numeric and up to 15 digits");
         }
 
         // 验证名字和姓氏格式（不包含空格和特殊字符）
@@ -134,13 +135,28 @@ public class UsersServiceImpl implements UsersService {
         boolean isWalker = roles.stream().anyMatch(role -> role.getRoleType().equalsIgnoreCase("walker"));
 
         // 验证和更新允许修改的字段
+        // 正则表达式定义
+        Pattern phonePattern = Pattern.compile("^[0-9]{10,15}$"); // 手机号码必须是10-15位数字
+        Pattern emailPattern = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$"); // 邮箱格式验证
+        Pattern namePattern = Pattern.compile("^[A-Za-z]+$"); // preferredName 不包含特殊字符
+
+        // 验证和更新允许修改的字段
         if (updatedUser.getPreferredName() != null) {
+            if (!namePattern.matcher(updatedUser.getPreferredName()).matches()) {
+                throw new IllegalArgumentException("Preferred name cannot contain special characters and numbers.");
+            }
             existingUser.setPreferredName(updatedUser.getPreferredName());
         }
         if (updatedUser.getEmail() != null) {
+            if (!emailPattern.matcher(updatedUser.getEmail()).matches()) {
+                throw new IllegalArgumentException("Invalid email format.");
+            }
             existingUser.setEmail(updatedUser.getEmail());
         }
         if (updatedUser.getPhone() != null) {
+            if (!phonePattern.matcher(updatedUser.getPhone()).matches()) {
+                throw new IllegalArgumentException("Phone number must be between 10 and 15 digits.");
+            }
             existingUser.setPhone(updatedUser.getPhone());
         }
         if (updatedUser.getCommunicatePref() != null) {
