@@ -43,9 +43,6 @@ export default function Home() {
     };
 
 
-
-
-
     return (
         <div className="flex flex-col h-screen bg-gray-100 p-4">
             <Header title="Emma-parent" navigateTo={"/notification-homepage"}/>
