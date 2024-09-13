@@ -21,10 +21,10 @@ export default function Home() {
 
           {/* Buttons Section */}
           <div className="space-y-4">
-            <Link href="/Registration-loginform" className="block w-64 py-3 text-center bg-black text-white rounded-full font-semibold hover:bg-gray-800">
+            <Link href="/registration-loginform" className="block w-64 py-3 text-center bg-black text-white rounded-full font-semibold hover:bg-gray-800">
               Login
             </Link>
-            <Link href="/Registration-signup" className="block w-64 py-3 text-center bg-black text-white rounded-full font-semibold hover:bg-gray-800">
+            <Link href="/registration-signup" className="block w-64 py-3 text-center bg-black text-white rounded-full font-semibold hover:bg-gray-800">
               Sign up
             </Link>
           </div>
