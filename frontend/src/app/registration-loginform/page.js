@@ -55,8 +55,10 @@ export default function LoginForm() {
       }
 
       const data = await res.json();
-      const token = data.token; // 假设后端返回的token字段
-      localStorage.setItem('token', token); // 存储token
+      const token = data.token;
+      const userId = data.userId;
+      localStorage.setItem('token', token);
+      localStorage.setItem('userId', userId)
       router.push('/home-parent'); // 登录成功后重定向
 
     } catch (err) {
