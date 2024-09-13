@@ -25,12 +25,8 @@ public class RequestController {
     //todo getRequest(), getAllRequests()
     @GetMapping("/getRequestsByUserId/{userId}")
     public ResponseEntity<List<Request>> getRequestsByUserId(@PathVariable Long userId) {
-        try {
-            List<Request> requests = requestService.getRequestsByUserId(userId);
-            return new ResponseEntity<>(requests, HttpStatus.OK);
-        } catch (ResourceNotFoundException e) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT); // 或返回 HttpStatus.NOT_FOUND
-        }
+        List<Request> requests = requestService.getRequestsByUserId(userId);
+        return new ResponseEntity<>(requests, HttpStatus.OK);
     }
 
     /**
@@ -119,12 +115,12 @@ public class RequestController {
     /**
      * parent取消应用request
      * @param requestId
-     * @param parentId
+     * @param walkerId
      * @return
      */
     @PostMapping("{requestId}/cancelApply")
-    public ResponseEntity<String> cancelApply(@PathVariable int requestId, @RequestParam int parentId) {
-        requestService.cancelApply(requestId, parentId);
+    public ResponseEntity<String> cancelApply(@PathVariable int requestId, @RequestParam int walkerId) {
+        requestService.cancelApply(requestId, walkerId);
         return new ResponseEntity<>("Walker request cancelled successfully.", HttpStatus.OK);
     }
 

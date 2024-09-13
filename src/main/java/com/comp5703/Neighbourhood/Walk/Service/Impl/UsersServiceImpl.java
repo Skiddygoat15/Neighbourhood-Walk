@@ -15,9 +15,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.regex.Pattern;
 
 @Service
 public class UsersServiceImpl implements UsersService {
@@ -60,7 +62,7 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public Users registerUser(Users user, String roleType) {
         // 验证角色是否有效
-        if (!roleType.equals("parent") && !roleType.equals("walker") && !roleType.equals("admin")) {
+        if (!roleType.equals("parent") && !roleType.equals("walker")) {
             throw new IllegalArgumentException("Invalid role type: " + roleType);
         }
 
@@ -76,6 +78,12 @@ public class UsersServiceImpl implements UsersService {
                 user.getGender() == null || user.getGender().isEmpty() ||
                 user.getBirthDate() == null) {
             throw new IllegalArgumentException("All required fields must be filled.");
+        }
+
+        // 验证生日不能早于当前系统时间
+        Date currentDate = new Date(); // 获取当前系统时间
+        if (user.getBirthDate().after(currentDate)) {
+            throw new IllegalArgumentException("Birthdate cannot be in the future.");
         }
 
         // 验证邮箱是否已存在
@@ -99,13 +107,18 @@ public class UsersServiceImpl implements UsersService {
 
 
         // 验证手机号格式
-        if (!user.getPhone().matches("^\\d{1,11}$")) {
-            throw new IllegalArgumentException("Phone number must be numeric and up to 11 digits");
+        if (!user.getPhone().matches("^\\d{10}$")) {
+            throw new IllegalArgumentException("Phone number must be numeric and 10 digits");
         }
 
         // 验证名字和姓氏格式（不包含空格和特殊字符）
         if (!user.getName().matches("^[A-Za-z]+$") || !user.getSurname().matches("^[A-Za-z]+$")) {
             throw new IllegalArgumentException("Name and surname must not contain spaces or special characters");
+        }
+
+        // 验证密码长度必须大于6
+        if (user.getPassword().length() <= 6) {
+            throw new IllegalArgumentException("The password length must be at least 6 characters.");
         }
 
         // 对密码进行bcrypt加密
@@ -134,13 +147,28 @@ public class UsersServiceImpl implements UsersService {
         boolean isWalker = roles.stream().anyMatch(role -> role.getRoleType().equalsIgnoreCase("walker"));
 
         // 验证和更新允许修改的字段
+        // 正则表达式定义
+        Pattern phonePattern = Pattern.compile("^[0-9]{10}$");
+        Pattern emailPattern = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$"); // 邮箱格式验证
+        Pattern namePattern = Pattern.compile("^[A-Za-z]+$"); // preferredName 不包含特殊字符
+
+        // 验证和更新允许修改的字段
         if (updatedUser.getPreferredName() != null) {
+            if (!namePattern.matcher(updatedUser.getPreferredName()).matches()) {
+                throw new IllegalArgumentException("Preferred name cannot contain special characters and numbers.");
+            }
             existingUser.setPreferredName(updatedUser.getPreferredName());
         }
         if (updatedUser.getEmail() != null) {
+            if (!emailPattern.matcher(updatedUser.getEmail()).matches()) {
+                throw new IllegalArgumentException("Invalid email format.");
+            }
             existingUser.setEmail(updatedUser.getEmail());
         }
         if (updatedUser.getPhone() != null) {
+            if (!phonePattern.matcher(updatedUser.getPhone()).matches()) {
+                throw new IllegalArgumentException("Phone number must be 10 digits.");
+            }
             existingUser.setPhone(updatedUser.getPhone());
         }
         if (updatedUser.getCommunicatePref() != null) {
@@ -154,7 +182,18 @@ public class UsersServiceImpl implements UsersService {
         if (updatedUser.getAvailableDate() != null || updatedUser.getSkill() != null) {
             if (isWalker) {
                 if (updatedUser.getAvailableDate() != null) {
-                    existingUser.setAvailableDate(updatedUser.getAvailableDate());
+                    List<Date> availableDates = updatedUser.getAvailableDate();
+                    Date currentDate = new Date();
+
+                    // 遍历 availableDates，确保每个日期都在当前时间之后
+                    for (Date date : availableDates) {
+                        if (date.before(currentDate)) {
+                            throw new IllegalArgumentException("All available dates must be later than the current date.");
+                        }
+                    }
+
+                    // 如果验证通过，更新 availableDate 列表
+                    existingUser.setAvailableDate(availableDates);
                 }
                 if (updatedUser.getSkill() != null) {
                     existingUser.setSkill(updatedUser.getSkill());

@@ -51,6 +51,8 @@ public class Users {
     private boolean verified;
     @Column(name = "verify_method")
     private String veriMethod;
+    @Column(name = "avgUserRating")
+    private double avgUserRating;
     /*
     @OneToMany(mappedBy = "userId")：表示 Users 和 Role 之间是一对多的关系。
     mappedBy 指定了在 Role 实体中定义了关系的字段，即 userId。
@@ -179,6 +181,24 @@ public class Users {
     }
     public List<String> getSkill() {
         return skill;
+    }
+    public void setVerified(boolean verified) {
+        this.verified = verified;
+    }
+    public boolean isVerified() {
+        return verified;
+    }
+    public void setVeriMethod(String veriMethod) {
+        this.veriMethod = veriMethod;
+    }
+    public String getVeriMethod() {
+        return veriMethod;
+    }
+    public void setAvgUserRating(double avgUserRating) {
+        this.avgUserRating = avgUserRating;
+    }
+    public double getAvgUserRating() {
+        return avgUserRating;
     }
 
     public List<Comment> getComments() {
