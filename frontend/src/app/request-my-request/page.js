@@ -23,13 +23,25 @@ export default function MyRequest() {
   const [formattedStartTime, setFormattedStartTime] = useState("00:00:00");
   const [formattedArriveTime, setFormattedArriveTime] = useState("00:00:00");
 
-  const [parentId, setParentId] = useState(2);
-  const getRequestsListAPI = `http://127.0.0.1:8080/requests/getRequestsByUserId/${parentId}`
+  const [parentId, setParentId] = useState();
 
-  useEffect(() => {getRequestsList();}, []);
+  useEffect(() => {
+    // 从 localStorage 获取 userId 并更新 parentId
+    const storedUserId = localStorage.getItem('userId');
+    if (storedUserId) {
+      setParentId(storedUserId);
+    }
+  }, []);
+
+  useEffect(() => {
+      if (parentId) {
+        getRequestsList(); // 在 parentId 更新后调用 API
+      }
+    }, [parentId]);
 
   function getRequestsList() {
-    console.log("token: " + localStorage.getItem('token'))
+    const getRequestsListAPI = `http://127.0.0.1:8080/requests/getRequestsByUserId/${parentId}`
+    console.log("current userId: " + parentId)
     fetch(getRequestsListAPI, {
       method: 'get', // Method is GET to fetch data
       credentials: 'include',
@@ -116,41 +128,47 @@ export default function MyRequest() {
         </div>
 
         {/* Request Items */}
-        <div className="space-y-4">
-          {requestList.map((request, index) => (
-              <div key={index} className="border p-4 rounded-lg space-y-2">
-                <div className="flex justify-between items-center">
-                  <h2 className="text-lg font-bold">Trip request</h2>
-                  <button>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                         className="w-6 h-6">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                            d="M3 8l7.89 7.89a2 2 0 002.83 0L21 8M5 5h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2z"/>
-                    </svg>
-                  </button>
+        {loading ? (
+            <p>Loading...</p>
+        ) : requestList.length === 0 ? (
+            <p>You haven't created any requests yet.</p>
+        ) : (
+          <div className="space-y-4">
+            {requestList.map((request, index) => (
+                <div key={index} className="border p-4 rounded-lg space-y-2">
+                  <div className="flex justify-between items-center">
+                    <h2 className="text-lg font-bold">Trip request</h2>
+                    <button>
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                           className="w-6 h-6">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                              d="M3 8l7.89 7.89a2 2 0 002.83 0L21 8M5 5h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2z"/>
+                      </svg>
+                    </button>
+                  </div>
+                  <p className="text-sm"><strong>Departure:</strong> {request.departure}</p>
+                  <p className="text-sm"><strong>Destination:</strong> {request.destination}</p>
+                  <p className="text-sm"><strong>start time:</strong> {moment(request.startTime).format("MM/DD/YYYY HH:mm:ss")}</p>
+                  <p className="text-sm"><strong>arrive time:</strong> {moment(request.arriveTime).format("MM/DD/YYYY HH:mm:ss")}</p>
+                  <p className="text-xs text-gray-500">Published by {request.publishedTime}</p>
+                  <div className="flex justify-between mt-2">
+                    <button
+                        onClick={() => router.push('/request-update')}
+                        className="py-2 px-4 bg-black text-white rounded-full text-sm font-semibold"
+                    >
+                      Update
+                    </button>
+                    <button
+                        onClick={() => deleteRequest(request.requestId)}
+                        className="py-2 px-4 bg-black text-white rounded-full text-sm font-semibold"
+                    >
+                      Cancel
+                    </button>
+                  </div>
                 </div>
-                <p className="text-sm"><strong>Departure:</strong> {request.departure}</p>
-                <p className="text-sm"><strong>Destination:</strong> {request.destination}</p>
-                <p className="text-sm"><strong>start time:</strong> {moment(request.startTime).format("MM/DD/YYYY HH:mm:ss")}</p>
-                <p className="text-sm"><strong>arrive time:</strong> {moment(request.arriveTime).format("MM/DD/YYYY HH:mm:ss")}</p>
-                <p className="text-xs text-gray-500">Published by {request.publishedTime}</p>
-                <div className="flex justify-between mt-2">
-                  <button
-                      onClick={() => router.push('/request-update')}
-                      className="py-2 px-4 bg-black text-white rounded-full text-sm font-semibold"
-                  >
-                    Update
-                  </button>
-                  <button
-                      onClick={() => deleteRequest(request.requestId)}
-                      className="py-2 px-4 bg-black text-white rounded-full text-sm font-semibold"
-                  >
-                    Cancel
-                  </button>
-                </div>
-              </div>
-          ))}
-        </div>
+            ))}
+          </div>
+          )}
       </div>
     </main>
   );
