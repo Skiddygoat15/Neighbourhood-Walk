@@ -101,9 +101,6 @@ public class RequestServiceImpl implements RequestService {
         walkerRequest.setStatus("Accepted");
         walkerRequestRepository.save(walkerRequest);
 
-
-
-
         return walkerRequest;
     }
 

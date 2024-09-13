@@ -88,7 +88,6 @@ public class CommentController {
         }else {
             throw new Exception("该用户目前无评论。");
         }
-
     }
 
     @GetMapping("/getRankByAveRate")
