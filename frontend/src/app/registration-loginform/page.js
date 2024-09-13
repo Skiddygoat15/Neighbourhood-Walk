@@ -132,12 +132,12 @@ export default function LoginForm() {
             <div className="space-y-4">
               <button
                   className="flex items-center justify-center w-full py-3 border border-gray-300 rounded-full font-semibold text-black hover:bg-gray-100">
-                <img src="/next.svg" alt="Google" className="w-6 h-6 mr-2"/>
+                <img src="/google-icon.svg" alt="Google" className="w-6 h-6 mr-2"/>
                 Login with Google
               </button>
               <button
                   className="flex items-center justify-center w-full py-3 border border-gray-300 rounded-full font-semibold text-black hover:bg-gray-100">
-                <img src="/apple-icon.png" alt="Apple" className="w-6 h-6 mr-2"/>
+                <img src="/apple-icon.svg" alt="Apple" className="w-6 h-6 mr-2"/>
                 Login with Apple
               </button>
             </div>

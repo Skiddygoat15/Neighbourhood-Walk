@@ -62,7 +62,7 @@ public class UsersServiceImpl implements UsersService {
     @Override
     public Users registerUser(Users user, String roleType) {
         // 验证角色是否有效
-        if (!roleType.equals("parent") && !roleType.equals("walker") && !roleType.equals("admin")) {
+        if (!roleType.equals("parent") && !roleType.equals("walker")) {
             throw new IllegalArgumentException("Invalid role type: " + roleType);
         }
 
@@ -78,6 +78,12 @@ public class UsersServiceImpl implements UsersService {
                 user.getGender() == null || user.getGender().isEmpty() ||
                 user.getBirthDate() == null) {
             throw new IllegalArgumentException("All required fields must be filled.");
+        }
+
+        // 验证生日不能早于当前系统时间
+        Date currentDate = new Date(); // 获取当前系统时间
+        if (user.getBirthDate().after(currentDate)) {
+            throw new IllegalArgumentException("Birthdate cannot be in the future.");
         }
 
         // 验证邮箱是否已存在
@@ -101,13 +107,18 @@ public class UsersServiceImpl implements UsersService {
 
 
         // 验证手机号格式
-        if (!user.getPhone().matches("^\\d{10,15}$")) {
-            throw new IllegalArgumentException("Phone number must be numeric and up to 15 digits");
+        if (!user.getPhone().matches("^\\d{10}$")) {
+            throw new IllegalArgumentException("Phone number must be numeric and 10 digits");
         }
 
         // 验证名字和姓氏格式（不包含空格和特殊字符）
         if (!user.getName().matches("^[A-Za-z]+$") || !user.getSurname().matches("^[A-Za-z]+$")) {
             throw new IllegalArgumentException("Name and surname must not contain spaces or special characters");
+        }
+
+        // 验证密码长度必须大于6
+        if (user.getPassword().length() <= 6) {
+            throw new IllegalArgumentException("The password length must be at least 6 characters.");
         }
 
         // 对密码进行bcrypt加密
@@ -137,7 +148,7 @@ public class UsersServiceImpl implements UsersService {
 
         // 验证和更新允许修改的字段
         // 正则表达式定义
-        Pattern phonePattern = Pattern.compile("^[0-9]{10,15}$"); // 手机号码必须是10-15位数字
+        Pattern phonePattern = Pattern.compile("^[0-9]{10}$");
         Pattern emailPattern = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$"); // 邮箱格式验证
         Pattern namePattern = Pattern.compile("^[A-Za-z]+$"); // preferredName 不包含特殊字符
 
@@ -156,7 +167,7 @@ public class UsersServiceImpl implements UsersService {
         }
         if (updatedUser.getPhone() != null) {
             if (!phonePattern.matcher(updatedUser.getPhone()).matches()) {
-                throw new IllegalArgumentException("Phone number must be between 10 and 15 digits.");
+                throw new IllegalArgumentException("Phone number must be 10 digits.");
             }
             existingUser.setPhone(updatedUser.getPhone());
         }
