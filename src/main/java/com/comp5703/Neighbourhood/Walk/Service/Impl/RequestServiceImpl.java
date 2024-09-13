@@ -32,10 +32,10 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public List<Request> getRequestsByUserId(Long userId) {
         List<Request> requests = requestRepository.findByParentId(userId);
-        if (requests.isEmpty()) {
-            // 可以选择返回一个自定义的异常，或者在控制器里处理
-            throw new ResourceNotFoundException("No requests found for userId: " + userId);
-        }
+//        if (requests.isEmpty()) {
+//            // 可以选择返回一个自定义的异常，或者在控制器里处理
+//            throw new ResourceNotFoundException("No requests found for userId: " + userId);
+//        }
         return requests;
     }
 
