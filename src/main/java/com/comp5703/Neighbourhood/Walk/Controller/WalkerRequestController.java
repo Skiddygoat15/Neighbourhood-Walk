@@ -25,12 +25,9 @@ public class WalkerRequestController {
     @Autowired
     private WalkerRequestService walkerRequestService;
 
-    @Autowired
-    private RequestService requestService;
-
-    @GetMapping("/getWalkerRequest/{walkerId}")
-    public ResponseEntity<WalkerRequest> getWalkerRequestByWalkerId(@PathVariable("walkerId") long walkerId) {
-        return new ResponseEntity<>(walkerRequestService.getWalkerRequest(walkerId), HttpStatus.OK);
+    @GetMapping("/getWalkerRequestByWalkerId/{walkerId}")
+    public ResponseEntity<List<WalkerRequest>> getWalkerRequestByWalkerId(@PathVariable("walkerId") long walkerId) {
+        return new ResponseEntity<>(walkerRequestService.getWalkerRequestByWalkerId(walkerId), HttpStatus.OK);
     }
 
     @GetMapping("/getRequestByWalkerRequestId/{walkerRequestId}")

@@ -14,7 +14,7 @@ import java.util.Optional;
 @Repository
 public interface WalkerRequestRepository extends JpaRepository<WalkerRequest, Long> {
     Optional<WalkerRequest> findByRequestRequestIdAndWalkerUserId(int requestId, long walkerId);
-    Optional<WalkerRequest> findByWalkerUserId(Long walkerId);
+    List<WalkerRequest> findByWalkerUserId(Long walkerId);
 
     @Query("SELECT wr.walker FROM WalkerRequest wr WHERE wr.request.requestId = :requestId")
     List<Users> findWalkersByRequestId(@Param("requestId") int requestId);

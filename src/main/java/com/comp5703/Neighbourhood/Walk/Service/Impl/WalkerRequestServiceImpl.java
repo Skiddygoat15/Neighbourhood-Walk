@@ -24,14 +24,12 @@ public class WalkerRequestServiceImpl implements WalkerRequestService {
      * @return
      */
     @Override
-    public WalkerRequest getWalkerRequest(long walkerId) {
-        Optional<WalkerRequest> walkerRequest = walkerRequestRepository.findByWalkerUserId(walkerId);
-        WalkerRequest request = null;
-        if (walkerRequest.isPresent()) {
-            request = walkerRequest.get();
-            // 使用 request 对象
+    public List<WalkerRequest> getWalkerRequestByWalkerId(long walkerId) {
+        List<WalkerRequest> walkerRequestList = walkerRequestRepository.findByWalkerUserId(walkerId);
+        if (walkerRequestList != null) {
+            return walkerRequestList;
         }
-        return request;
+        return null;
     }
 
     /**
