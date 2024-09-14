@@ -2,12 +2,9 @@ package com.comp5703.Neighbourhood.Walk.Controller;
 
 
 import com.comp5703.Neighbourhood.Walk.Entities.Comment;
-import com.comp5703.Neighbourhood.Walk.Entities.Request;
-import com.comp5703.Neighbourhood.Walk.Entities.Users;
 import com.comp5703.Neighbourhood.Walk.Service.CommentService;
 import com.comp5703.Neighbourhood.Walk.Service.RequestService;
 import com.comp5703.Neighbourhood.Walk.Service.UsersService;
-import com.comp5703.Neighbourhood.Walk.Utils.TwoTuple;
 import com.comp5703.Neighbourhood.Walk.domain.dto.RateCommentDTO;
 import com.comp5703.Neighbourhood.Walk.domain.dto.UserIdNameAverateDTO;
 import org.hibernate.Hibernate;
@@ -88,7 +85,6 @@ public class CommentController {
         }else {
             throw new Exception("该用户目前无评论。");
         }
-
     }
 
     @GetMapping("/getRankByAveRate")

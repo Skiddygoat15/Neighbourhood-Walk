@@ -28,17 +28,32 @@ public class RequestController {
         return new ResponseEntity<>(requests, HttpStatus.OK);
     }
 
+    /**
+     * walker创建request
+     * @param request
+     * @return
+     */
     @PostMapping
     public ResponseEntity<Request> addRequest(@RequestBody Request request) {
         return new ResponseEntity<>(requestService.createRequest(request), HttpStatus
                 .CREATED);
     }
-
+    /**
+     * walker更新request
+     * @param requestId
+     * @param request
+     * @return
+     */
     @PutMapping("/{requestId}")
     public ResponseEntity<Request> updateRequest(@PathVariable int requestId, @RequestBody Request request) {
         return new ResponseEntity<>(requestService.updateRequest(requestId, request), HttpStatus.OK);
     }
 
+    /**
+     * walker删除request
+     * @param requestId
+     * @return
+     */
     @DeleteMapping("/{requestId}")
     public ResponseEntity<String> deleteRequest(@PathVariable int requestId) {
         try {
@@ -51,17 +66,50 @@ public class RequestController {
         }
     }
 
+    /**
+     * parent接受request
+     * @param requestId
+     * @param parentId
+     * @return
+     */
     @PostMapping("/{requestId}/accept")
-    public ResponseEntity<WalkerRequest> acceptRequest(@PathVariable int requestId, @RequestParam int walkerId) {
-        return new ResponseEntity<>(requestService.acceptWalkerRequest(requestId, walkerId), HttpStatus.OK);
+    public ResponseEntity<?> acceptRequest(@PathVariable int requestId, @RequestParam int parentId) {
+        if (requestService.acceptWalkerRequest(requestId, parentId) == null){
+            return new ResponseEntity<>("The request has been accepted by some walker.", HttpStatus.BAD_REQUEST);
+        }
+//        return new ResponseEntity<>(requestService.acceptWalkerRequest(requestId, walkerId), HttpStatus.OK);
+        ResponseEntity<String> stringResponseEntity =
+                new ResponseEntity<>("The request has been accepted successfully by walker, whose walkerId is "
+                        + parentId, HttpStatus.OK);
+        return stringResponseEntity;
     }
 
+    /**
+     * parent拒绝request
+     * @param requestId
+     * @param parentId
+     * @return
+     */
     @PostMapping("/{requestId}/reject")
-    public ResponseEntity<WalkerRequest> rejectRequest(@PathVariable int requestId, @RequestParam int walkerId) {
-        return new ResponseEntity<>(requestService.rejectWalkerRequest(requestId, walkerId), HttpStatus.OK);
+    public ResponseEntity<?> rejectRequest(@PathVariable int requestId, @RequestParam int parentId) {
+        if (requestService.rejectWalkerRequest(requestId, parentId) == null){
+            return new ResponseEntity<>("The request has been rejected by this walker", HttpStatus.BAD_REQUEST);
+        }
+//        return new ResponseEntity<>(requestService.rejectWalkerRequest(requestId, walkerId), HttpStatus.OK);
+        return new ResponseEntity<>("The request has been rejected successfully by walker, whose walkerId is  " + parentId, HttpStatus.OK);
     }
 
+    /**
+     * parent应用request
+     * @param requestId
+     * @param walkerId
+     * @return
+     */
     @PostMapping("{requestId}/apply")
+//    public ResponseEntity<WalkerRequest> applyRequest(@PathVariable int requestId, @RequestParam int parentId) {
+//        WalkerRequest walkerRequest = requestService.applyRequest(requestId, parentId);
+//        return new ResponseEntity<>(walkerRequest, HttpStatus.CREATED);
+
     public ResponseEntity<?> applyRequest(@PathVariable int requestId, @RequestParam int walkerId) {
         try {
             WalkerRequest walkerRequest = requestService.applyRequest(requestId, walkerId);
@@ -83,10 +131,16 @@ public class RequestController {
         }
     }
 
+    /**
+     * parent取消应用request
+     * @param requestId
+     * @param walkerId
+     * @return
+     */
     @PostMapping("{requestId}/cancelApply")
     public ResponseEntity<String> cancelApply(@PathVariable int requestId, @RequestParam int walkerId) {
-            requestService.cancelApply(requestId, walkerId);
-            return new ResponseEntity<>("Walker request cancelled successfully.", HttpStatus.OK);
+        requestService.cancelApply(requestId, walkerId);
+        return new ResponseEntity<>("Walker request cancelled successfully.", HttpStatus.OK);
     }
 
     @DeleteMapping("/{requestId}/{walkerRequestId}/cancel")

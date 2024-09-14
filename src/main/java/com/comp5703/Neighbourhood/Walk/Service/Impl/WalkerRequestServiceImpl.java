@@ -19,31 +19,36 @@ public class WalkerRequestServiceImpl implements WalkerRequestService {
     private WalkerRequestRepository walkerRequestRepository;
 
     /**
-     * 根据walkerId获取他的walkerRequestId
+     * 根据walkerId获取walkerRequestId
      * @param walkerId
      * @return
      */
     @Override
-    public WalkerRequest getWalkerRequest(long walkerId) {
-        Optional<WalkerRequest> walkerRequest = walkerRequestRepository.findById(walkerId);
-        WalkerRequest request = null;
-        if (walkerRequest.isPresent()) {
-            request = walkerRequest.get();
-            // 使用 request 对象
+    public List<WalkerRequest> getWalkerRequestByWalkerId(long walkerId) {
+        List<WalkerRequest> walkerRequestList = walkerRequestRepository.findByWalkerUserId(walkerId);
+        if (walkerRequestList != null) {
+            return walkerRequestList;
         }
-        return request;
+        return null;
     }
 
     /**
-     * 根据walkerRequestId获取requestId
+     * 根据walkerRequestId获取Request
      * @param walkerRequestId
      * @return
      */
     @Override
-    public int getRequest(long walkerRequestId) {
-        return walkerRequestRepository.getReferenceById(walkerRequestId).getRequest().getRequestId();
+    public Request getRequest(long walkerRequestId) {
+        return  walkerRequestRepository.findById(walkerRequestId).get().getRequest();
     }
 
+//    /**
+//     * 根据parentId和walkerId获取Request
+//     */
+//    @Override
+//    public Request getRequestByWalkerIdAndParentId(long walkerRequestId) {
+//        return  walkerRequestRepository.findById(walkerRequestId).get().getRequest();
+//    }
     @Override
     public List<Users> getWalkersByRequestId(int requestId) {
         return walkerRequestRepository.findWalkersByRequestId(requestId);

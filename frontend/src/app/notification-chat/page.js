@@ -4,40 +4,62 @@ import ChatBar from '../../components/ChatBar';
 import RequestBox from '../../components/RequestBox';
 import Header from '../../components/Header';
 import TimeBar from "@/components/TimeBar";
+import ChatMessage from "@/components/ChatFigure";
 import {useState} from "react";
 
 
 export default function Home() {
+
+    // role 状态可以是 'parent' 或 'walker'
+    const [role, setRole] = useState('parent');
+
+    const [messages, setMessages] = useState([
+        { id: 1, text: "Sent my request", time: "Today 11:05", from: "parent" },
+        { id: 2, text: "Accept", time: "Today 11:25", from: "walker" }
+    ]);
+
+
+
     const handleSendMessage = (message) => {
+
+        const newMessage = {
+            id: messages.length > 0 ? messages[messages.length - 1].id + 1 : 1,
+            text: message,
+            time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
+            from: role
+        };
+
+        setMessages([...messages, newMessage]);
         console.log("Message sent:", message); // 实际项目中，这里可以是调用 API 发送消息
     };
 
-    const handleAccept = () => {
-        console.log('Accepted');
+
+    const getMessageStyle = (messageFrom) => {
+        if ((role === 'parent' && messageFrom === 'walker') || (role === 'walker' && messageFrom === 'parent')) {
+            return "justify-end"; // 将头像放在右边
+        } else {
+            return "justify-start"; // 将头像放在左边
+        }
     };
 
-    const handleReject = () => {
-        console.log('Rejected');
-    };
-
-    const [requestStatus, setRequestStatus] = useState('Accepted');
 
     return (
         <div className="flex flex-col h-screen bg-gray-100 p-4">
-
             <Header title="Emma-parent" navigateTo={"/notification-homepage"}/>
-
             <div className="flex-1 overflow-y-auto">
                 <TimeBar time={"Today"}/>
-                <RequestBox status={requestStatus}/>
-                <div className="p-4 flex items-center">
-                    <div
-                        className="rounded-full bg-black w-10 h-10 text-white flex items-center justify-center mr-2">P
-                    </div>
-                    <div className="flex flex-col">
-                        <div className="text-sm bg-gray-300 p-2 rounded-md">Sent my request</div>
-                        <div className="text-xs text-gray-500">Today 11:05</div>
-                    </div>
+                <RequestBox walkerId={3}/>
+                 <div className="flex flex-col p-4">
+                    {messages.map(message => (
+                        <div key={message.id} className={`flex items-center ${getMessageStyle(message.from)}`}>
+                            <ChatMessage
+                                initials={message.from.charAt(0).toUpperCase()}
+                                message={message.text}
+                                time={message.time}
+                                backgroundColor={message.from === 'parent' ? 'bg-blue-500' : 'bg-black'}
+                            />
+                        </div>
+                    ))}
                 </div>
                 <ChatBar onSendMessage={handleSendMessage}/>
             </div>

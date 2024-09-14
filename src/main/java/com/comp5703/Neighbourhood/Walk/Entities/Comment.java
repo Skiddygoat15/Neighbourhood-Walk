@@ -1,5 +1,6 @@
 package com.comp5703.Neighbourhood.Walk.Entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 
@@ -18,6 +19,7 @@ public class Comment{
 
     @ManyToOne
     @JoinColumn(name = "userId")
+    @JsonBackReference
     private Users user;
 
     @Column(name = "rate", nullable = false)

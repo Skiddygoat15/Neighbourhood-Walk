@@ -8,8 +8,8 @@ import java.util.List;
 
 
 public interface WalkerRequestService {
-    WalkerRequest getWalkerRequest(long walkerId);
-    int getRequest(long walkerRequestId);
+    List<WalkerRequest> getWalkerRequestByWalkerId(long walkerId);
+    Request getRequest(long walkerRequestId);
     List<Users> getWalkersByRequestId(int requestId);
     List<Request> getRequestsByWalkerId(long walkerId);
 }
