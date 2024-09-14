@@ -1,12 +1,14 @@
 package com.comp5703.Neighbourhood.Walk.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.util.Date;
 
 //table bind walker and request
 @Entity
-//@Table(name = "WALKER_REQUEST", uniqueConstraints = {
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
+//@Table(name = "walker_request", uniqueConstraints = {
 //        @UniqueConstraint(columnNames = {"requestId", "walkerId"})
 //}) // make sure the combination of requestId and walkerId is unique
 public class WalkerRequest {
@@ -15,11 +17,11 @@ public class WalkerRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long walkerRequestId;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "requestId")
     private Request request;
 
-    @OneToOne
+    @ManyToOne // 多个 WalkerRequest 可以对应同一个 walker
     @JoinColumn(name = "walkerId",referencedColumnName="userId")
     private Users walker;
 

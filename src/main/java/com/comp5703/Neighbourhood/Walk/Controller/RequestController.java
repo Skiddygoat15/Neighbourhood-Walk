@@ -2,6 +2,7 @@ package com.comp5703.Neighbourhood.Walk.Controller;
 
 import com.comp5703.Neighbourhood.Walk.Entities.Request;
 import com.comp5703.Neighbourhood.Walk.Entities.WalkerRequest;
+import com.comp5703.Neighbourhood.Walk.Entities.WalkerRequestDTO;
 import com.comp5703.Neighbourhood.Walk.Repository.WalkerRequestRepository;
 import com.comp5703.Neighbourhood.Walk.Service.RequestService;
 import com.comp5703.Neighbourhood.Walk.exception.ResourceNotFoundException;
@@ -19,12 +20,10 @@ public class RequestController {
 
     @Autowired
     private RequestService requestService;
-    @Autowired
-    private WalkerRequestRepository walkerRequestRepository;
 
     //todo getRequest(), getAllRequests()
-    @GetMapping("/getRequestsByUserId/{userId}")
-    public ResponseEntity<List<Request>> getRequestsByUserId(@PathVariable Long userId) {
+    @GetMapping("/getRequestsByParentId/{userId}")
+    public ResponseEntity<List<Request>> getRequestsByParentId(@PathVariable Long userId) {
         List<Request> requests = requestService.getRequestsByUserId(userId);
         return new ResponseEntity<>(requests, HttpStatus.OK);
     }
@@ -63,9 +62,25 @@ public class RequestController {
     }
 
     @PostMapping("{requestId}/apply")
-    public ResponseEntity<WalkerRequest> applyRequest(@PathVariable int requestId, @RequestParam int walkerId) {
-        WalkerRequest walkerRequest = requestService.applyRequest(requestId, walkerId);
-        return new ResponseEntity<>(walkerRequest, HttpStatus.CREATED);
+    public ResponseEntity<?> applyRequest(@PathVariable int requestId, @RequestParam int walkerId) {
+        try {
+            WalkerRequest walkerRequest = requestService.applyRequest(requestId, walkerId);
+            WalkerRequestDTO walkerRequestDTO = new WalkerRequestDTO();
+            walkerRequestDTO.setWalkerRequestId(walkerRequest.getWalkerRequestId());
+            walkerRequestDTO.setStatus(walkerRequest.getStatus());
+            walkerRequestDTO.setRequestId(walkerRequest.getRequest().getRequestId());
+            walkerRequestDTO.setWalkerId(walkerRequest.getWalker().getId());
+            return new ResponseEntity<>(walkerRequestDTO, HttpStatus.CREATED);
+        } catch (IllegalStateException  e) {
+            // 409状态码 表示冲突 已经申请过
+            return new ResponseEntity<>("You have already applied for this request.", HttpStatus.CONFLICT);
+        } catch (ResourceNotFoundException e) {
+            // 404 没找到request
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            // 捕获其他异常并返回 400 状态码
+            return new ResponseEntity<>("An error occurred while processing your request: " + e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 
     @PostMapping("{requestId}/cancelApply")
