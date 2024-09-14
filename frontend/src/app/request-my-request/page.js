@@ -141,7 +141,9 @@ export default function MyRequest() {
                   <div className="flex justify-between items-center">
                     <h2 className="text-lg font-bold">Trip request</h2>
                     <button
-                        onClick={() => router.push('/request-my-request-application')}
+                        onClick={() => {localStorage.setItem('clickedRequest', JSON.stringify(request));
+                      router.push('/request-my-request-application');
+                        }}
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                            className="w-6 h-6">
