@@ -69,34 +69,34 @@ public class RequestController {
     /**
      * parent接受request
      * @param requestId
-     * @param parentId
+     * @param walkerId
      * @return
      */
     @PostMapping("/{requestId}/accept")
-    public ResponseEntity<?> acceptRequest(@PathVariable int requestId, @RequestParam int parentId) {
-        if (requestService.acceptWalkerRequest(requestId, parentId) == null){
+    public ResponseEntity<?> acceptRequest(@PathVariable int requestId, @RequestParam int walkerId) {
+        if (requestService.acceptWalkerRequest(requestId, walkerId) == null){
             return new ResponseEntity<>("The request has been accepted by some walker.", HttpStatus.BAD_REQUEST);
         }
 //        return new ResponseEntity<>(requestService.acceptWalkerRequest(requestId, walkerId), HttpStatus.OK);
         ResponseEntity<String> stringResponseEntity =
                 new ResponseEntity<>("The request has been accepted successfully by walker, whose walkerId is "
-                        + parentId, HttpStatus.OK);
+                        + walkerId, HttpStatus.OK);
         return stringResponseEntity;
     }
 
     /**
      * parent拒绝request
      * @param requestId
-     * @param parentId
+     * @param walkerId
      * @return
      */
     @PostMapping("/{requestId}/reject")
-    public ResponseEntity<?> rejectRequest(@PathVariable int requestId, @RequestParam int parentId) {
-        if (requestService.rejectWalkerRequest(requestId, parentId) == null){
+    public ResponseEntity<?> rejectRequest(@PathVariable int requestId, @RequestParam int walkerId) {
+        if (requestService.rejectWalkerRequest(requestId, walkerId) == null){
             return new ResponseEntity<>("The request has been rejected by this walker", HttpStatus.BAD_REQUEST);
         }
 //        return new ResponseEntity<>(requestService.rejectWalkerRequest(requestId, walkerId), HttpStatus.OK);
-        return new ResponseEntity<>("The request has been rejected successfully by walker, whose walkerId is  " + parentId, HttpStatus.OK);
+        return new ResponseEntity<>("The request has been rejected successfully by walker, whose walkerId is  " + walkerId, HttpStatus.OK);
     }
 
     /**
