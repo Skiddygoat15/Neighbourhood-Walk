@@ -18,7 +18,6 @@ public class NotificationServiceImpl implements NotificationService {
     @Autowired
     private WalkerRequestRepository walkerRequestRepository;
 
-
     @Override
     public Notification addNotification(Notification notification) {
         WalkerRequest walkerRequest = walkerRequestRepository.getById(notification.getWalkerRequest().getWalkerRequestId());

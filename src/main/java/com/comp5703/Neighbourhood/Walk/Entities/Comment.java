@@ -2,11 +2,12 @@ package com.comp5703.Neighbourhood.Walk.Entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Comment")
-
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 public class Comment{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,6 +16,7 @@ public class Comment{
 
     @OneToOne
     @JoinColumn(name = "requestId")
+
     private Request request;
 
     @ManyToOne
