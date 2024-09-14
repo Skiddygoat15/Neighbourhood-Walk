@@ -46,8 +46,8 @@ public class Request {
     @Column(name = "status")
     private String status;
 
-    @OneToMany(mappedBy = "walkerRequestId", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<WalkerRequest> walkerRequestId = new ArrayList<>();
+    @OneToMany(mappedBy = "request", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<WalkerRequest> walkerRequests = new ArrayList<>();
 
 //    public Long getWalkerId() {
 //        return walkerId;

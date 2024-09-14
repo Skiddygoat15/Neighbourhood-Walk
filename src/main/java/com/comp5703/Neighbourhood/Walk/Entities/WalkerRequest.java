@@ -1,12 +1,14 @@
 package com.comp5703.Neighbourhood.Walk.Entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.util.Date;
 
 //table bind walker and request
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer","handler"})
 public class WalkerRequest {
 
     @Id
@@ -18,7 +20,7 @@ public class WalkerRequest {
 //    @JsonBackReference
     private Request request;
 
-    @ManyToOne
+    @ManyToOne // 多个 WalkerRequest 可以对应同一个 walker
     @JoinColumn(name = "walkerId",referencedColumnName="userId")
 //    @JsonBackReference
     private Users walker;

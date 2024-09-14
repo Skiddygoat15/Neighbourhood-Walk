@@ -2,24 +2,26 @@
 
 import { useRouter } from 'next/navigation';
 import {useEffect, useState} from "react";
+import moment from "moment/moment";
 
 export default function MyRequest() {
   const moment = require('moment');
   const router = useRouter();
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
-  const [requestList, setRequestList] = useState([{
-    departure: "Darling Harbour",
-    destination: "Sydney Opera House",
-    estimatedTime: "8:00 AM Sun 21 July - 8:15 AM Sun 21 July",
-    publishedTime: "1 hour ago",
-  },
-    {
-      departure: "Darling Harbour",
-      destination: "Sydney Opera House",
-      estimatedTime: "8:00 AM Thur 04 Aug - 8:25 AM Thur 04 Aug",
-      publishedTime: "3 days ago",
-    },]);
+  const [requestList, setRequestList] = useState([]);
+  // {
+  //   departure: "Darling Harbour",
+  //       destination: "Sydney Opera House",
+  //     estimatedTime: "8:00 AM Sun 21 July - 8:15 AM Sun 21 July",
+  //     publishedTime: "1 hour ago",
+  // },
+  // {
+  //   departure: "Darling Harbour",
+  //       destination: "Sydney Opera House",
+  //     estimatedTime: "8:00 AM Thur 04 Aug - 8:25 AM Thur 04 Aug",
+  //     publishedTime: "3 days ago",
+  // },
   const [formattedStartTime, setFormattedStartTime] = useState("00:00:00");
   const [formattedArriveTime, setFormattedArriveTime] = useState("00:00:00");
 
@@ -40,7 +42,7 @@ export default function MyRequest() {
     }, [parentId]);
 
   function getRequestsList() {
-    const getRequestsListAPI = `http://127.0.0.1:8080/requests/getRequestsByUserId/${parentId}`
+    const getRequestsListAPI = `http://127.0.0.1:8080/requests/getRequestsByParentId/${parentId}`
     console.log("current userId: " + parentId)
     fetch(getRequestsListAPI, {
       method: 'get', // Method is GET to fetch data
@@ -138,7 +140,9 @@ export default function MyRequest() {
                 <div key={index} className="border p-4 rounded-lg space-y-2">
                   <div className="flex justify-between items-center">
                     <h2 className="text-lg font-bold">Trip request</h2>
-                    <button>
+                    <button
+                        onClick={() => router.push('/request-my-request-application')}
+                    >
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                            className="w-6 h-6">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
@@ -148,9 +152,9 @@ export default function MyRequest() {
                   </div>
                   <p className="text-sm"><strong>Departure:</strong> {request.departure}</p>
                   <p className="text-sm"><strong>Destination:</strong> {request.destination}</p>
-                  <p className="text-sm"><strong>start time:</strong> {moment(request.startTime).format("MM/DD/YYYY HH:mm:ss")}</p>
-                  <p className="text-sm"><strong>arrive time:</strong> {moment(request.arriveTime).format("MM/DD/YYYY HH:mm:ss")}</p>
-                  <p className="text-xs text-gray-500">Published by {request.publishedTime}</p>
+                  <p className="text-sm"><strong>Estimated time:</strong> {moment(request.startTime).format("MM/DD/YYYY HH:mm")} - {moment(request.arriveTime).format("MM/DD/YYYY HH:mm")}</p>
+                  {/*<p className="text-sm"><strong>arrive time:</strong> {moment(request.arriveTime).format("MM/DD/YYYY HH:mm:ss")}</p>*/}
+                  <p className="text-xs text-gray-500">Published by {moment(request.publishDate).format("MM/DD HH:mm")}</p>
                   <div className="flex justify-between mt-2">
                     <button
                         onClick={() => router.push('/request-update')}

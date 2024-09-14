@@ -1,12 +1,14 @@
 package com.comp5703.Neighbourhood.Walk.Service.Impl;
 
 import com.comp5703.Neighbourhood.Walk.Entities.Request;
+import com.comp5703.Neighbourhood.Walk.Entities.Users;
 import com.comp5703.Neighbourhood.Walk.Entities.WalkerRequest;
 import com.comp5703.Neighbourhood.Walk.Repository.WalkerRequestRepository;
 import com.comp5703.Neighbourhood.Walk.Service.WalkerRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -49,4 +51,13 @@ public class WalkerRequestServiceImpl implements WalkerRequestService {
 //    public Request getRequestByWalkerIdAndParentId(long walkerRequestId) {
 //        return  walkerRequestRepository.findById(walkerRequestId).get().getRequest();
 //    }
+    @Override
+    public List<Users> getWalkersByRequestId(int requestId) {
+        return walkerRequestRepository.findWalkersByRequestId(requestId);
+    }
+
+    @Override
+    public List<Request> getRequestsByWalkerId(long walkerId) {
+        return walkerRequestRepository.findRequestsByWalkerId(walkerId);
+    }
 }
