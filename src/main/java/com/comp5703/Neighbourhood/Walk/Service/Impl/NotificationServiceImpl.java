@@ -9,7 +9,6 @@ import com.comp5703.Neighbourhood.Walk.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 
 @Service
 public class NotificationServiceImpl implements NotificationService {
@@ -34,9 +33,9 @@ public class NotificationServiceImpl implements NotificationService {
      */
     @Override
     public Notification findNotificationByWalkerRequestId(long walkerRequestId) {
-        Notification notification = notificationRepository.findAllByWalkerRequestId(walkerRequestId);
+        Notification notification = notificationRepository.findAllByWalkerRequest_WalkerRequestId(walkerRequestId);
         if (notification != null){
-            return notificationRepository.findAllByWalkerRequestId(walkerRequestId);
+            return notificationRepository.findAllByWalkerRequest_WalkerRequestId(walkerRequestId);
         }else {
             throw new ResourceNotFoundException("Does not have the notification with it's walkerRequestId is " + walkerRequestId);
         }

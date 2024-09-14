@@ -33,7 +33,7 @@ public class CommentServiceImpl implements CommentService {
     public Comment saveComment(Comment comment) {
         Request request = requestRepository.getById(comment.getRequest().getRequestId());
         Users user = usersRepository.getById(comment.getUser().getId());
-        System.out.println("userId="+comment.getUser().getId());
+//        System.out.println("userId="+comment.getUser().getId());
         comment.setRequest(request);
         comment.setUser(user);
         return commentRepository.save(comment);
