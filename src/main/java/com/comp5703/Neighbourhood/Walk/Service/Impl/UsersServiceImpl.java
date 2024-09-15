@@ -15,10 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.regex.Pattern;
 
 @Service
@@ -48,6 +45,17 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public Optional<Users> getUsersByPhone(String phone) { return usersRepository.findByPhone(phone); }
+
+    @Override
+    public Optional<Map<String, String>> getUserNamesById(long id) {
+        return usersRepository.findById(id)
+                .map(user -> {
+                    Map<String, String> userMap = new HashMap<>();
+                    userMap.put("name", user.getName());
+                    userMap.put("preferredName", user.getPreferredName());
+                    return userMap;
+                });
+    }
 
     @Override
     public void deleteUsers(long id) {

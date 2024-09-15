@@ -19,6 +19,7 @@ export default function ClientOnlyNav() {
         "/registration-verification-walker-successful",
         "/registration-verification-walker-upload",
         "/registration-verification-walker-waiting",
+        "/registration-login-identity-select"
     ]; // 在这些页面不显示导航栏
 
     const shouldShowNav = !noNavPaths.includes(pathname); // 判断当前路径是否应显示导航栏

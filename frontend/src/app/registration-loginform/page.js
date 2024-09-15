@@ -41,7 +41,7 @@ export default function LoginForm() {
         : { phone: emailOrPhone, password }; // 如果是手机号，发送 phone
 
     try {
-      // 调用后端 API 进行登录
+      // Call login API
       const res = await fetch('http://localhost:8080/login', {
         method: 'POST',
         headers: {
@@ -58,8 +58,54 @@ export default function LoginForm() {
       const token = data.token;
       const userId = data.userId;
       localStorage.setItem('token', token);
-      localStorage.setItem('userId', userId)
-      router.push('/home-parent'); // 登录成功后重定向
+      localStorage.setItem('userId', userId);
+
+      // Fetch user's roles based on userId
+      const roleRes = await fetch(`http://localhost:8080/roles/user/${userId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`, // If you need to pass the token for authorization
+        }
+      });
+
+      if (!roleRes.ok) {
+        throw new Error('Failed to fetch roles');
+      }
+
+      const rolesData = await roleRes.json();
+      const roles = rolesData.map(role => role.roleType);
+
+      // Store roles in localStorage
+      localStorage.setItem('roles', JSON.stringify(roles));
+
+      // Fetch user's name and preferredName using userId
+      const userNamesRes = await fetch(`http://localhost:8080/Users/userNamesById/${userId}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`, // Passing token for authorization
+        }
+      });
+
+      if (!userNamesRes.ok) {
+        throw new Error('Failed to fetch user names');
+      }
+
+      const userNamesData = await userNamesRes.json();
+      const name = userNamesData.name;
+      const preferredName = userNamesData.preferredName;
+
+      // Store name and preferredName in localStorage
+      localStorage.setItem('name', name);
+      localStorage.setItem('preferredName', preferredName);
+
+      // Determine redirection based on the roles
+      if (roles.length === 1) {
+        if (roles[0] === 'parent') {
+          router.push('/home-parent');
+        } else if (roles[0] === 'walker') {
+          router.push('/home-walker');
+        }
+      } else if (roles.length > 1) {
+        router.push('/registration-login-identity-select');
+      }
 
     } catch (err) {
       setError('Invalid password or phone number/email. Please try again.');
