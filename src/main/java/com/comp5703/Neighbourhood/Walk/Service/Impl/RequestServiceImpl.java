@@ -152,13 +152,10 @@ public class RequestServiceImpl implements RequestService {
                 return walkerRequestRepository.save(walkerRequest);
             }
         }
-
         // if the same walkerRequest not exist, then create new WalkerRequest
         WalkerRequest walkerRequest = new WalkerRequest();
         walkerRequest.setRequest(requestRepository.getById(requestId));
         walkerRequest.setWalker(usersRepository.getById(walkerId));
-//        walkerRequest.setRequestId(requestId);
-//        walkerRequest.setWalkerId(walkerId);
         walkerRequest.setStatus("Applied");
         return walkerRequestRepository.save(walkerRequest);
     }
