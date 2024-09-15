@@ -34,7 +34,7 @@ public class DummyDataLoader implements CommandLineRunner {
         Users user1 = new Users();
         user1.setName("John");
         user1.setSurname("Doe");
-        user1.setEmail("john.doe@example.com");
+        user1.setEmail("test1@test.com");
         user1.setPassword(passwordEncoder.encode("password123")); // 加密密码
         user1.setPhone("1234567890");
         user1.setAddress("123 Maple Street");
@@ -44,7 +44,7 @@ public class DummyDataLoader implements CommandLineRunner {
         Users user2 = new Users();
         user2.setName("Jane");
         user2.setSurname("Smith");
-        user2.setEmail("jane.smith@example.com");
+        user2.setEmail("test2@test.com");
         user2.setPassword(passwordEncoder.encode("password456")); // 加密密码
         user2.setPhone("9876543210");
         user2.setAddress("456 Oak Avenue");
@@ -54,7 +54,7 @@ public class DummyDataLoader implements CommandLineRunner {
         Users user3 = new Users();
         user3.setName("Alice");
         user3.setSurname("Johnson");
-        user3.setEmail("alice.johnson@example.com");
+        user3.setEmail("test3@test.com");
         user3.setPassword(passwordEncoder.encode("password789")); // 加密密码
         user3.setPhone("5555555555");
         user3.setAddress("789 Birch Road");
@@ -64,7 +64,7 @@ public class DummyDataLoader implements CommandLineRunner {
         Users user4 = new Users();
         user4.setName("Bob");
         user4.setSurname("Williams");
-        user4.setEmail("bob.williams@example.com");
+        user4.setEmail("test4@test.com");
         user4.setPassword(passwordEncoder.encode("password101")); // 加密密码
         user4.setPhone("1112223333");
         user4.setAddress("101 Elm Street");
