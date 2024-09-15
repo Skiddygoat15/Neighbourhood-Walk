@@ -12,10 +12,9 @@ const LoginIdentitySelect = () => {
   };
 
   const handleContinue = () => {
-    if (selectedRole === "walker") {
-      router.push("/home-walker"); // replace with actual route for walker
-    } else if (selectedRole === "parent") {
-      router.push("/home-parent"); // replace with actual route for parent
+    if (selectedRole === "walker" || selectedRole === "parent") {
+      localStorage.setItem("currentRole", selectedRole);
+      window.location.href = `/home-${selectedRole}`; // 跳转到对应页面
     } else {
       alert("Please select a role to continue.");
     }

@@ -4,7 +4,6 @@ import { useRouter } from 'next/navigation';
 
 export default function HomeParent() {
   const router = useRouter();
-
   const handleNavigation = (path) => {
     router.push(path);
   };

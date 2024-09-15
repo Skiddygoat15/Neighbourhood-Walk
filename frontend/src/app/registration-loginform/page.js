@@ -99,9 +99,11 @@ export default function LoginForm() {
       // Determine redirection based on the roles
       if (roles.length === 1) {
         if (roles[0] === 'parent') {
-          router.push('/home-parent');
+          localStorage.setItem('currentRole', 'parent')
+          window.location.href = `/home-parent`;
         } else if (roles[0] === 'walker') {
-          router.push('/home-walker');
+          localStorage.setItem('currentRole', 'walker')
+          window.location.href = `/home-walker`;
         }
       } else if (roles.length > 1) {
         router.push('/registration-login-identity-select');
