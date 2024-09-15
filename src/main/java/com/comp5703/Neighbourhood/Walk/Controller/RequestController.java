@@ -69,34 +69,39 @@ public class RequestController {
     /**
      * parent接受request
      * @param requestId
-     * @param parentId
+     * @param walkerId
      * @return
      */
     @PostMapping("/{requestId}/accept")
-    public ResponseEntity<?> acceptRequest(@PathVariable int requestId, @RequestParam int parentId) {
-        if (requestService.acceptWalkerRequest(requestId, parentId) == null){
-            return new ResponseEntity<>("The request has been accepted by some walker.", HttpStatus.BAD_REQUEST);
-        }
+
+    public ResponseEntity<?> acceptRequest(@PathVariable int requestId, @RequestParam int walkerId) {
+        try {
+            if (requestService.acceptWalkerRequest(requestId, walkerId) == null){
+                return new ResponseEntity<>("The request has been accepted by some parent.", HttpStatus.BAD_REQUEST);
+            }
 //        return new ResponseEntity<>(requestService.acceptWalkerRequest(requestId, walkerId), HttpStatus.OK);
-        ResponseEntity<String> stringResponseEntity =
-                new ResponseEntity<>("The request has been accepted successfully by walker, whose walkerId is "
-                        + parentId, HttpStatus.OK);
-        return stringResponseEntity;
+            ResponseEntity<String> stringResponseEntity =
+                    new ResponseEntity<>("The request has been accepted successfully by parent, whose walkerId is "
+                            + walkerId, HttpStatus.OK);
+            return stringResponseEntity;
+        } catch (ResourceNotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
     }
 
     /**
      * parent拒绝request
      * @param requestId
-     * @param parentId
+     * @param walkerId
      * @return
      */
     @PostMapping("/{requestId}/reject")
-    public ResponseEntity<?> rejectRequest(@PathVariable int requestId, @RequestParam int parentId) {
-        if (requestService.rejectWalkerRequest(requestId, parentId) == null){
-        return new ResponseEntity<>("The request has been rejected by this walker", HttpStatus.BAD_REQUEST);
+    public ResponseEntity<?> rejectRequest(@PathVariable int requestId, @RequestParam int walkerId) {
+        if (requestService.rejectWalkerRequest(requestId, walkerId) == null){
+            return new ResponseEntity<>("The request has been rejected by this parent", HttpStatus.BAD_REQUEST);
         }
 //        return new ResponseEntity<>(requestService.rejectWalkerRequest(requestId, walkerId), HttpStatus.OK);
-        return new ResponseEntity<>("The request has been rejected successfully by walker, whose walkerId is  " + parentId, HttpStatus.OK);
+        return new ResponseEntity<>("The request has been rejected successfully by parent, whose walkerId is  " + walkerId, HttpStatus.OK);
     }
 
     /**

@@ -86,11 +86,11 @@ public class RequestServiceImpl implements RequestService {
     public WalkerRequest  acceptWalkerRequest(int requestId, long walkerId) {
         WalkerRequest walkerRequest = walkerRequestRepository.findByRequestRequestIdAndWalkerUserId(requestId, walkerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Walker request not found for this walker with id: " + walkerId));
-
         Request request = requestRepository.findById(requestId)
                 .orElseThrow(() -> new ResourceNotFoundException("Request not found with id: " + requestId));
-        if (Objects.equals(request.getStatus(), "Accepted")){
-            return null;
+
+        if (Objects.equals(walkerRequest.getStatus(), "Accepted")){
+            throw new ResourceNotFoundException("The parent has already accepted the request before.");
         }
 
         request.setStatus("Accepted");
@@ -113,7 +113,7 @@ public class RequestServiceImpl implements RequestService {
             .orElseThrow(() -> new ResourceNotFoundException("Request not found with id: " + requestId));
 
         if (Objects.equals(walkerRequest.getStatus(), "Rejected")){
-            return null;
+            throw new ResourceNotFoundException("The parent has already rejected the request before.");
         }
 
         // update walkerRequest's status
