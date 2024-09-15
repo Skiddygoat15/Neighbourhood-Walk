@@ -1,11 +1,13 @@
 package com.comp5703.Neighbourhood.Walk.Service.Impl;
 
 import com.comp5703.Neighbourhood.Walk.Entities.RoleDTO;
+import com.comp5703.Neighbourhood.Walk.Entities.UserProfileNotification;
 import com.comp5703.Neighbourhood.Walk.Entities.Users;
 import com.comp5703.Neighbourhood.Walk.Repository.RequestRepository;
 import com.comp5703.Neighbourhood.Walk.Repository.UsersRepository;
 import com.comp5703.Neighbourhood.Walk.Service.RoleService;
 import com.comp5703.Neighbourhood.Walk.Service.Specification.UsersSpecifications;
+import com.comp5703.Neighbourhood.Walk.Service.UserProfileNotificationService;
 import com.comp5703.Neighbourhood.Walk.Service.UsersService;
 import com.comp5703.Neighbourhood.Walk.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,9 @@ public class UsersServiceImpl implements UsersService {
 
     @Autowired
     private RoleService roleService;  // 注入 RoleService
+
+    @Autowired
+    private UserProfileNotificationService notificationService;
 
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     @Autowired
@@ -138,6 +143,14 @@ public class UsersServiceImpl implements UsersService {
         // 保存角色信息到 Role 表，并关联到用户
         roleService.saveRole(savedUser.getId(), roleType);
 
+        // 添加通知信息
+        UserProfileNotification notification = new UserProfileNotification(
+                savedUser,
+                "You have successfully registered",
+                "We're thrilled to welcome you! Feel free to explore the app and its features.",
+                new Date());
+        notificationService.saveUserProfileNotification(notification);
+
         return savedUser;
     }
     @Override
@@ -212,7 +225,17 @@ public class UsersServiceImpl implements UsersService {
         }
 
         // 保存更新后的用户信息
-        return usersRepository.save(existingUser);
+        Users savedUser = usersRepository.save(existingUser);
+
+        // 添加通知信息
+        UserProfileNotification notification = new UserProfileNotification(
+                savedUser,
+                "Profile Updated",
+                "You've just updated your profile. Please check it out in your account settings.",
+                new Date());
+        notificationService.saveUserProfileNotification(notification);
+
+        return savedUser;
     }
 
     @Override
