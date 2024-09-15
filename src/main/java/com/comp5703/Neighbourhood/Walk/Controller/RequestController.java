@@ -76,7 +76,7 @@ public class RequestController {
      * @return
      */
     @PostMapping("/{requestId}/accept")
-    public ResponseEntity<?> acceptRequest(@PathVariable int requestId, @RequestParam int walkerId) {
+    public ResponseEntity<?> acceptRequest(@PathVariable int requestId, @RequestParam long walkerId) {
         if (requestService.acceptWalkerRequest(requestId, walkerId) == null){
             return new ResponseEntity<>("The request has been accepted by some walker.", HttpStatus.BAD_REQUEST);
         }
@@ -94,7 +94,7 @@ public class RequestController {
      * @return
      */
     @PostMapping("/{requestId}/reject")
-    public ResponseEntity<?> rejectRequest(@PathVariable int requestId, @RequestParam int walkerId) {
+    public ResponseEntity<?> rejectRequest(@PathVariable int requestId, @RequestParam long walkerId) {
         if (requestService.rejectWalkerRequest(requestId, walkerId) == null){
             return new ResponseEntity<>("The request has been rejected by this walker", HttpStatus.BAD_REQUEST);
         }
