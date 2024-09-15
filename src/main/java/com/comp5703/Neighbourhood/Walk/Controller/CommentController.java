@@ -7,9 +7,8 @@ import com.comp5703.Neighbourhood.Walk.Service.RequestService;
 import com.comp5703.Neighbourhood.Walk.Service.UsersService;
 import com.comp5703.Neighbourhood.Walk.domain.dto.RateCommentDTO;
 import com.comp5703.Neighbourhood.Walk.domain.dto.UserIdNameAverateDTO;
-import jakarta.persistence.EntityNotFoundException;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -36,25 +35,9 @@ public class CommentController {
         添加评论
      */
     @PostMapping
-    @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<?> addComment(@RequestBody Comment comment) throws Exception {
-        Comment saveComment = null;
-        System.out.println("comment.getRequest().getId() is "+comment.getRequest().getRequestId());
-        System.out.println("comment.getRequest().getStatus() is "+comment.getRequest().getStatus());
-        if (!Objects.equals(requestService.getById(comment.getRequest().getRequestId()).getStatus(), "Accepted")){
-            return new ResponseEntity<>("This request has not been Accepted by any walker.", HttpStatus.FAILED_DEPENDENCY);
-        }
-        try {
-            saveComment = commentService.saveComment(comment);
-            return new ResponseEntity<>(saveComment, HttpStatus.CREATED);
-        } catch (EntityNotFoundException e) {
-            return new ResponseEntity<>("There is no user with this userId.", HttpStatus.FAILED_DEPENDENCY);
-        } catch(DataIntegrityViolationException e){
-            return new ResponseEntity<>("The request have already been commented. Please change another request.", HttpStatus.FAILED_DEPENDENCY);
-        } catch (Exception e){
-            System.out.println(e);
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.CREATED);
-        }
+    public ResponseEntity<Comment> addComment(@RequestBody Comment comment) {
+        Comment saveComment = commentService.saveComment(comment);
+        return new ResponseEntity<>(saveComment, HttpStatus.CREATED);
     }
 
     /*

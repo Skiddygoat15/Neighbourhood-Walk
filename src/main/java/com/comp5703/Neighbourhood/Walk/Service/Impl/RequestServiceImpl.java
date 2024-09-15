@@ -11,7 +11,6 @@ import com.comp5703.Neighbourhood.Walk.Service.Specification.RequestSpecificatio
 import com.comp5703.Neighbourhood.Walk.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -83,63 +82,48 @@ public class RequestServiceImpl implements RequestService {
         requestRepository.save(request);
     }
 
-    /**
-     * parent accept the walkerRequest
-     * @param requestId
-     * @param walkerId
-     * @return
-     */
     @Override
     public WalkerRequest  acceptWalkerRequest(int requestId, long walkerId) {
-
-        Request request = requestRepository.findById(requestId)
-                .orElseThrow(() -> new ResourceNotFoundException("There is no Request with this requestId: " + requestId));
-
-        if (Objects.equals(request.getStatus(), "Accepted")){
-            throw new ResourceNotFoundException("The request has been accepted by anyone before.");
-        }
-
         WalkerRequest walkerRequest = walkerRequestRepository.findByRequestRequestIdAndWalkerUserId(requestId, walkerId)
                 .orElseThrow(() -> new ResourceNotFoundException("Walker request not found for this walker with id: " + walkerId));
 
-        if (Objects.equals(walkerRequest.getStatus(), "Accepted")){
-            throw new ResourceNotFoundException("The walker has already accepted the request before.");
+        Request request = requestRepository.findById(requestId)
+                .orElseThrow(() -> new ResourceNotFoundException("Request not found with id: " + requestId));
+        if (Objects.equals(request.getStatus(), "Accepted")){
+            return null;
         }
-
-        walkerRequest.setStatus("Accepted");
-        walkerRequest.setWalker(usersRepository.getById(walkerId));
-        walkerRequestRepository.save(walkerRequest);
 
         request.setStatus("Accepted");
         request.setWalker(usersRepository.getById(walkerId));
         requestRepository.save(request);
 
+        // update walkerRequest's status
+        walkerRequest.setStatus("Accepted");
+        walkerRequestRepository.save(walkerRequest);
+
         return walkerRequest;
     }
 
-    /**
-     * parent reject the walkerRequest
-     * @param requestId
-     * @param walkerId
-     * @return
-     */
     @Override
     public WalkerRequest rejectWalkerRequest(int requestId, long walkerId) {
+        WalkerRequest walkerRequest = walkerRequestRepository.findByRequestRequestIdAndWalkerUserId(requestId, walkerId)
+                .orElseThrow(() -> new ResourceNotFoundException("Walker request not found for this walker with id: " + walkerId));
 
         Request request = requestRepository.findById(requestId)
-                .orElseThrow(() -> new ResourceNotFoundException("There is no Request with this requestId: " + requestId));
-
-        WalkerRequest walkerRequest = walkerRequestRepository.findByRequestRequestIdAndWalkerUserId(requestId, walkerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Walker request not found for this walker with walkerId: " + walkerId));
+            .orElseThrow(() -> new ResourceNotFoundException("Request not found with id: " + requestId));
 
         if (Objects.equals(walkerRequest.getStatus(), "Rejected")){
-            throw new ResourceNotFoundException("The walker has already rejected the request before.");
+            return null;
         }
 
         // update walkerRequest's status
         walkerRequest.setStatus("Rejected");
         walkerRequestRepository.save(walkerRequest);
 
+        if (Objects.equals(request.getStatus(), "Accepted") && request.getWalker().getId() == walkerId){
+            request.setStatus("Rejected");
+            requestRepository.save(request);
+        }
         return walkerRequest;
     }
 
@@ -156,7 +140,6 @@ public class RequestServiceImpl implements RequestService {
         // check if request exists
         Request request = requestRepository.findById(requestId)
                 .orElseThrow(() -> new ResourceNotFoundException("Request not found with id: " + requestId));
-
         // same the current walkerRequest
         Optional<WalkerRequest> existingWalkerRequest = walkerRequestRepository.findByRequestRequestIdAndWalkerUserId(requestId, walkerId);
         if (existingWalkerRequest.isPresent()) {
@@ -174,6 +157,8 @@ public class RequestServiceImpl implements RequestService {
         WalkerRequest walkerRequest = new WalkerRequest();
         walkerRequest.setRequest(requestRepository.getById(requestId));
         walkerRequest.setWalker(usersRepository.getById(walkerId));
+//        walkerRequest.setRequestId(requestId);
+//        walkerRequest.setWalkerId(walkerId);
         walkerRequest.setStatus("Applied");
         return walkerRequestRepository.save(walkerRequest);
     }

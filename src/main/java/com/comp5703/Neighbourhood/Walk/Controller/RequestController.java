@@ -14,9 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.Date;
 import java.util.List;
 
-/**
- * parent: addRequest => walker: AcceptRequest || RejectRequest => patent: applyRequest??
- */
 @RestController
 @RequestMapping("/requests")
 public class RequestController {
@@ -26,8 +23,8 @@ public class RequestController {
 
     //todo getRequest(), getAllRequests()
     @GetMapping("/getRequestsByParentId/{userId}")
-    public ResponseEntity<List<Request>> getRequestsByParentId(@PathVariable Long parentId) {
-        List<Request> requests = requestService.getRequestsByUserId(parentId);
+    public ResponseEntity<List<Request>> getRequestsByParentId(@PathVariable Long userId) {
+        List<Request> requests = requestService.getRequestsByUserId(userId);
         return new ResponseEntity<>(requests, HttpStatus.OK);
     }
 
@@ -72,34 +69,34 @@ public class RequestController {
     /**
      * parent接受request
      * @param requestId
-     * @param walkerId
+     * @param parentId
      * @return
      */
     @PostMapping("/{requestId}/accept")
-    public ResponseEntity<?> acceptRequest(@PathVariable int requestId, @RequestParam long walkerId) {
-        if (requestService.acceptWalkerRequest(requestId, walkerId) == null){
+    public ResponseEntity<?> acceptRequest(@PathVariable int requestId, @RequestParam int parentId) {
+        if (requestService.acceptWalkerRequest(requestId, parentId) == null){
             return new ResponseEntity<>("The request has been accepted by some walker.", HttpStatus.BAD_REQUEST);
         }
 //        return new ResponseEntity<>(requestService.acceptWalkerRequest(requestId, walkerId), HttpStatus.OK);
         ResponseEntity<String> stringResponseEntity =
                 new ResponseEntity<>("The request has been accepted successfully by walker, whose walkerId is "
-                        + walkerId, HttpStatus.OK);
+                        + parentId, HttpStatus.OK);
         return stringResponseEntity;
     }
 
     /**
      * parent拒绝request
      * @param requestId
-     * @param walkerId
+     * @param parentId
      * @return
      */
     @PostMapping("/{requestId}/reject")
-    public ResponseEntity<?> rejectRequest(@PathVariable int requestId, @RequestParam long walkerId) {
-        if (requestService.rejectWalkerRequest(requestId, walkerId) == null){
+    public ResponseEntity<?> rejectRequest(@PathVariable int requestId, @RequestParam int parentId) {
+        if (requestService.rejectWalkerRequest(requestId, parentId) == null){
             return new ResponseEntity<>("The request has been rejected by this walker", HttpStatus.BAD_REQUEST);
         }
 //        return new ResponseEntity<>(requestService.rejectWalkerRequest(requestId, walkerId), HttpStatus.OK);
-        return new ResponseEntity<>("The request has been rejected successfully by walker, whose walkerId is  " + walkerId, HttpStatus.OK);
+        return new ResponseEntity<>("The request has been rejected successfully by walker, whose walkerId is  " + parentId, HttpStatus.OK);
     }
 
     /**
@@ -113,7 +110,7 @@ public class RequestController {
 //        WalkerRequest walkerRequest = requestService.applyRequest(requestId, parentId);
 //        return new ResponseEntity<>(walkerRequest, HttpStatus.CREATED);
 
-    public ResponseEntity<?> applyRequest(@PathVariable int requestId, @RequestParam long walkerId) {
+    public ResponseEntity<?> applyRequest(@PathVariable int requestId, @RequestParam int walkerId) {
         try {
             WalkerRequest walkerRequest = requestService.applyRequest(requestId, walkerId);
             WalkerRequestDTO walkerRequestDTO = new WalkerRequestDTO();
@@ -141,7 +138,7 @@ public class RequestController {
      * @return
      */
     @PostMapping("{requestId}/cancelApply")
-    public ResponseEntity<String> cancelApply(@PathVariable int requestId, @RequestParam long walkerId) {
+    public ResponseEntity<String> cancelApply(@PathVariable int requestId, @RequestParam int walkerId) {
         requestService.cancelApply(requestId, walkerId);
         return new ResponseEntity<>("Walker request cancelled successfully.", HttpStatus.OK);
     }
