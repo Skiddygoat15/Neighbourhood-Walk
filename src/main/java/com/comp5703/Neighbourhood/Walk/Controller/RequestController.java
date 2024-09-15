@@ -93,7 +93,7 @@ public class RequestController {
     @PostMapping("/{requestId}/reject")
     public ResponseEntity<?> rejectRequest(@PathVariable int requestId, @RequestParam int parentId) {
         if (requestService.rejectWalkerRequest(requestId, parentId) == null){
-            return new ResponseEntity<>("The request has been rejected by this walker", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("The request has been rejected by this walker", HttpStatus.BAD_REQUEST);
         }
 //        return new ResponseEntity<>(requestService.rejectWalkerRequest(requestId, walkerId), HttpStatus.OK);
         return new ResponseEntity<>("The request has been rejected successfully by walker, whose walkerId is  " + parentId, HttpStatus.OK);
