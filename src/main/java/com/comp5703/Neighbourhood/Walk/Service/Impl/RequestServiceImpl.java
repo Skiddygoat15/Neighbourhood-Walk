@@ -103,7 +103,7 @@ public class RequestServiceImpl implements RequestService {
                 .orElseThrow(() -> new ResourceNotFoundException("Walker request not found for this walker with id: " + walkerId));
 
         if (Objects.equals(walkerRequest.getStatus(), "Accepted")){
-            throw new ResourceNotFoundException("The walker has already accepted the request before.");
+            throw new ResourceNotFoundException("The parent has already accepted the request before.");
         }
 
         walkerRequest.setStatus("Accepted");
@@ -133,7 +133,7 @@ public class RequestServiceImpl implements RequestService {
                 .orElseThrow(() -> new ResourceNotFoundException("Walker request not found for this walker with walkerId: " + walkerId));
 
         if (Objects.equals(walkerRequest.getStatus(), "Rejected")){
-            throw new ResourceNotFoundException("The walker has already rejected the request before.");
+            throw new ResourceNotFoundException("The parent has already rejected the request before.");
         }
 
         // update walkerRequest's status
