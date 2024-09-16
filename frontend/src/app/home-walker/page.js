@@ -44,6 +44,13 @@ export default function HomeWalker() {
             Request Respond
           </button>
         </div>
+
+        <div className="mt-4">
+          <button onClick={() => handleNavigation('/notification-walker')}
+              className="w-full bg-white border rounded-lg p-4 text-center font-semibold">
+            Notification
+          </button>
+        </div>
       </div>
 
       <div className="fixed bottom-0 w-full bg-white border-t">

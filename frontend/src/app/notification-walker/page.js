@@ -116,8 +116,9 @@ export default function Home() {
                 if (!response.ok) {throw new Error('Network response was not ok1');}
                 return response.json();})
             .then(data => {
-                // console.info(data)
-                setStatusCards(data);})// 设置整个返回数据为状态卡片
+                // console.info(data);
+                setStatusCards(data);
+            })// 设置整个返回数据为状态卡片
             .catch(error => {
                 console.error('Error fetching data:', error);});
         },[userId]);
@@ -176,7 +177,7 @@ export default function Home() {
         },[walkerRequestId]);
 
     return (
-        <div className="flex flex-col h-screen bg-gray-100 p-4">
+        <div className="flex flex-col h-screen bg-gray-100 p-4" style={{ overflowY: 'auto' }}>
             <Header title="Emma-parent" navigateTo={"/message"}/>
             {/* 保护性检查，只有当statusCards是非空数组时，才渲染 */}
 
@@ -194,12 +195,12 @@ export default function Home() {
     );
     // {statusCards && statusCards.length > 0 && statusCards.map((card, index) => {
     //     // 直接在 map 回调中执行 console.log
-    //     console.log('Card Details:', card);
+    //     console.log(new Date(card.time));
     //     return (
     //         <StatusCard
     //             key={index}
-    //             parentId={card.parentId}
-    //             walkerId={card.walkerRequest}
+    //             parentId={parentId}
+    //             walkerId={walkerId}
     //             statusPrevious={card.statusPrevious}
     //             statusChanged={card.statusChanged}
     //             time={card.time}

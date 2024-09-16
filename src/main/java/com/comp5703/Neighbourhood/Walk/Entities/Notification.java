@@ -31,7 +31,7 @@ public class Notification {
     private String statusChanged;
 
     @CreationTimestamp
-    @JsonFormat(pattern =  "yyyy-mm-dd hh:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", timezone = "UTC")
     @TableField(fill = FieldFill.INSERT) //标明该字段，在什么时候需要被填充
     private Date Time;
 
