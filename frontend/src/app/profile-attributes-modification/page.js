@@ -13,9 +13,6 @@ export default function ProfileAttributesModification() {
 
   const countryCodes = [
     { code: '+61', country: 'Australia' },
-    { code: '+1', country: 'United States' },
-    { code: '+44', country: 'United Kingdom' },
-    { code: '+86', country: 'China' },
     
   ];
 
