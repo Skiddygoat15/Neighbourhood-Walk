@@ -24,11 +24,36 @@
 import React, {useState} from 'react';
 import StatusCard from '../../components/StatusCard';
 import Header from "../../components/Header";
-import NotificationWebSocket from "@/components/NotificationWebSocket";
+import {replace} from "react-router-dom";
 
 export default function Home() {
 
     const [statusCards, setStatusCards] = useState([]);
+
+    const myInit = {
+        method: 'GET',
+        headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')},
+        mode: 'cors',
+        cache: 'default'
+    };
+    const walkerRequestId = 1;
+    const requestURL = new Request(`http://127.0.0.1:8080/Notification/findNotificationByWalkerRequestId/${walkerRequestId}`, myInit);
+
+    fetch(requestURL)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            // console.info(response.json())
+            return response.json();
+        })
+        .then(data => {
+            if (data.status === "Accepted" || data.status === "Rejected" || data.status === "Pending...") {
+                setRequestStatus(data.status);
+            }})
+        .catch(error => {
+            console.error('Error fetching data:', error);
+        });
 
     // 处理新通知，将其添加到 statusCards 列表
     const handleNewNotification = (notification) => {
@@ -42,7 +67,7 @@ export default function Home() {
             <Header title="Emma-parent" navigateTo={"/notification-homepage"}/>
 
             {/* 使用 NotificationWebSocket 组件来接收 WebSocket 消息 */}
-            <NotificationWebSocket onNewNotification={handleNewNotification} />
+            {/*<NotificationWebSocket onNewNotification={handleNewNotification} />*/}
 
             {statusCards.map((card, index) => (
                 <StatusCard

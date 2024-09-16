@@ -58,7 +58,7 @@ export default function ClientOnlyNav() {
                         <span className="text-xs">Search</span>
                     </button>
                 </Link>
-                <Link href="/messages" className="text-center">
+                <Link href="/notification-homepage" className="text-center">
                     <button className="text-center">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"

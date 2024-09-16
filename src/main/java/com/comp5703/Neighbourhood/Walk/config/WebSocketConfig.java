@@ -11,7 +11,7 @@ import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry
 import org.springframework.web.socket.server.standard.ServerEndpointExporter;
 
 @Configuration
-@EnableWebSocket
+
 public class WebSocketConfig implements WebSocketConfigurer {
 
     @Autowired
@@ -19,6 +19,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(notificationWebSocketHandler, "/ws/notifications").setAllowedOrigins("*");
+        registry.addHandler(notificationWebSocketHandler, "/ws/notifications")
+                .setAllowedOrigins("*");
     }
 }

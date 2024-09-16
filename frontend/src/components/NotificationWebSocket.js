@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 const NotificationWebSocket = ({ onNewNotification }) => {
     useEffect(() => {
         // 创建 WebSocket 连接
-        const ws = new WebSocket('ws://localhost:8080/ws');
+        const ws = new WebSocket('ws://localhost:8080/ws/notifications');
 
         ws.onmessage = (event) => {
             const notification = JSON.parse(event.data);

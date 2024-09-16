@@ -13,7 +13,9 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -28,6 +30,8 @@ public class NotificationServiceImpl implements NotificationService {
     @Autowired
     private WalkerRequestRepository walkerRequestRepository;
 
+    @Autowired
+    private WalkerRequestServiceImpl walkerRequestService;
 
     @Override
     public Notification addNotification(Notification notification) {
@@ -71,5 +75,17 @@ public class NotificationServiceImpl implements NotificationService {
         }
     }
 
+    @Override
+    public List<Notification> findNotificationByWalkerId(long walkerId) {
+        List<WalkerRequest> walkerRequestList = walkerRequestService.getWalkerRequestByWalkerId(walkerId);
+
+        List<Notification> notificationList = walkerRequestList.stream().map(walkerRequest -> {
+            Notification notification = null;
+            notification = findNotificationByWalkerRequestId(walkerRequest.getWalkerRequestId());
+            return notification;
+        }).collect(Collectors.toList());
+
+       return notificationList;
+    }
 
 }

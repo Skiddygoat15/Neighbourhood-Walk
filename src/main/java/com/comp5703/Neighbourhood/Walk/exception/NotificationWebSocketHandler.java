@@ -19,15 +19,20 @@ public class NotificationWebSocketHandler extends TextWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) {
+
         sessions.add(session);
+        System.out.println("1");
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) {
+
         sessions.remove(session);
+        System.out.println("2");
     }
 
     public void broadcast(Map<String, Object> notificationData) throws IOException {
+        System.out.println("3");
         ObjectMapper mapper = new ObjectMapper();
         String payload = mapper.writeValueAsString(notificationData);
         TextMessage message = new TextMessage(payload);
@@ -37,5 +42,6 @@ public class NotificationWebSocketHandler extends TextWebSocketHandler {
                 session.sendMessage(message);
             }
         }
+        System.out.println("3");
     }
 }

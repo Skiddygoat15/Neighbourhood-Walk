@@ -2,16 +2,28 @@
 
 import Head from 'next/head'
 import ChattingStatus from "@/components/ChattingStatus";
+import {useRouter} from "next/navigation";
 
 export default function Home() {
+    const userId = localStorage.getItem('userId'); // 假设的用户ID，你需要根据你的应用逻辑来获取或定义这个值
     // 假设的用户数据
+    console.info("userId="+userId)
+    const token = localStorage.getItem('token');
+    console.info("token="+token)
     const users = ['Emma', 'Ava', 'Sophia', 'Amelia'];
+
     const messages = [
-        { name: 'Abigail', text: 'Accept', time: '23 min', walkerId: '1'},
-        { name: 'Elizabeth', text: 'Ok, see you then.', time: '27 min', walkerId: '2'},
-        { name: 'Penelope', text: 'You: Hey! What\'s up, long time.', time: '33 min', walkerId: '3'},
-        { name: 'Chloe', text: 'You: Hello how are you?', time: '50 min', walkerId: '4'}
+        { name: 'Abigail', text: 'Accept', time: '23 min', parentId: '1'},
+        { name: 'Elizabeth', text: 'Ok, see you then.', time: '27 min', parentId: '2'},
+        { name: 'Penelope', text: 'You: Hey! What\'s up, long time.', time: '33 min', parentId: '3'},
+        { name: 'Chloe', text: 'You: Hello how are you?', time: '50 min', parentId: '4'}
     ];
+    const router = useRouter();  // 使用 useRouter
+
+    const goToNotificationPage = () => {
+        // router.push(`/notification-chat/${parentId}`);  // 使用 router.push 进行导航
+        router.push(`/notification-page`);
+    };
 
     return (
         <div style={{padding: 20, backgroundColor: '#fff', minHeight: '100vh'}}>
@@ -32,6 +44,17 @@ export default function Home() {
             }}>9:41
             </div>
             <h1 style={{color: '#333', fontSize: '24px', margin: '20px 0'}}>Notifications</h1>
+            <button onClick={goToNotificationPage} style={{
+                padding: '8px 16px',
+                background: '#0070f3',
+                color: 'white',
+                borderRadius: '8px',
+                cursor: 'pointer',
+                border: 'none',
+                fontSize: '14px'
+            }}>
+                Go to My Notification
+            </button>
             <div style={{margin: '10px 20px'}}>
                 <input type="text" placeholder="Search notifications..." style={{
                     width: 'calc(100% - 20px)',
@@ -60,7 +83,8 @@ export default function Home() {
 
             <div style={{marginTop: '20px'}}>
                 {messages.map(msg =>
-                    <ChattingStatus key={msg.name} name={msg.name} walkerId={msg.walkerId} text={msg.text} time={msg.time}/>)}
+                    <ChattingStatus key={msg.name} name={msg.name} parentId={msg.parentId} text={msg.text}
+                                    time={msg.time}/>)}
             </div>
 
         </div>

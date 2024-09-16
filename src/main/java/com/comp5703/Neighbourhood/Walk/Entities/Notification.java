@@ -42,7 +42,4 @@ public class Notification {
         this.statusPrevious = statusPrevious;
         this.statusChanged = statusChanged;
     }
-
-
-
 }

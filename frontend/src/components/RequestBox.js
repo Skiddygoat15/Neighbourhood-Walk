@@ -3,10 +3,12 @@ import {useState} from "react";
 export default function RequestBox({walkerId}){
 
     const myInit = {
-        method: 'GET',
-        headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')},
-        mode: 'cors',
-        cache: 'default'
+        method: 'get', // Method is GET to fetch data
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json', // Set the content type header for JSON data
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        },
     };
     const [requestStatus, setRequestStatus] = useState('Pending...'); // 默认值为 'Pending...'
 
