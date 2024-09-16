@@ -13,6 +13,7 @@ export default function ClientOnlyNav_Parent() {
         "/registration-signup",
         "/registration-verification-parent",
         "/registration-verification-parent-successful",
+
         "/registration-verification-parent-upload",
         "/registration-verification-parent-waiting",
         "/registration-verification-walker",
@@ -33,71 +34,31 @@ export default function ClientOnlyNav_Parent() {
             <div className="flex justify-around py-2">
                 <Link href="/home-parent" className="text-center">
                     <button className="text-center">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            className="w-6 h-6"
-                        >
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3v18h18V3H3z" />
-                        </svg>
+                        <img src="/Navigation-icons/home.png" alt="Home" className="w-6 h-6 ml-1.5"/>
                         <span className="text-xs">Home</span>
                     </button>
                 </Link>
                 <Link href="/search-parent" className="text-center">
                     <button className="text-center">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            className="w-6 h-6"
-                        >
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v8m-4-4h8" />
-                        </svg>
+                        <img src="/Navigation-icons/lsearch.png" alt="Home" className="w-6 h-6 ml-1.5"/>
                         <span className="text-xs">Search</span>
                     </button>
                 </Link>
                 <Link href="/messages" className="text-center">
                     <button className="text-center">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            className="w-6 h-6"
-                        >
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 10H7v10h14V10z" />
-                        </svg>
+                        <img src="/Navigation-icons/envelope.png" alt="Home" className="w-6 h-6 ml-4"/>
                         <span className="text-xs">Messages</span>
                     </button>
                 </Link>
                 <Link href="/request-my-request" className="text-center">
                     <button className="text-center">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            className="w-6 h-6"
-                        >
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8h18M3 16h18" />
-                        </svg>
+                        <img src="/Navigation-icons/request.png" alt="Home" className="w-6 h-6 ml-2.5"/>
                         <span className="text-xs">Request</span>
                     </button>
                 </Link>
                 <Link href="/home-parent" className="text-center">
                     <button className="text-center">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            className="w-6 h-6"
-                        >
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 14l-4-4-4 4" />
-                        </svg>
+                        <img src="/Navigation-icons/profile.png" alt="Home" className="w-6 h-6 ml-1.5"/>
                         <span className="text-xs">Profile</span>
                     </button>
                 </Link>
