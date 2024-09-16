@@ -209,7 +209,7 @@ public class RequestServiceImpl implements RequestService {
         List<Request> requests = requestRepository.findAll(spec);
         // check if request exists
         if (requests.isEmpty()) {
-            throw new ResourceNotFoundException("No matching requests found for the given search criteria.");
+            throw new ResourceNotFoundException("No requests found for the given search criteria.");
         }
 
         return requests;
