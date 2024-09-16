@@ -5,10 +5,21 @@ import RequestBox from '../../components/RequestBox';
 import Header from '../../components/Header';
 import TimeBar from "@/components/TimeBar";
 import ChatMessage from "@/components/ChatFigure";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {useRouter} from "next/router";
 
 
 export default function Home() {
+
+    const router = useRouter();
+    const { parentId } = router.query;  // 从 URL 中获取 parentId
+
+    useEffect(() => {
+        if (parentId) {
+            console.log(`Parent ID: ${parentId}`);
+            // 在此处可以进行与 parentId 相关的逻辑
+        }
+    }, [parentId]);
 
     // role 状态可以是 'parent' 或 'walker'
     const [role, setRole] = useState('parent');
@@ -17,8 +28,6 @@ export default function Home() {
         { id: 1, text: "Sent my request", time: "Today 11:05", from: "parent" },
         { id: 2, text: "Accept", time: "Today 11:25", from: "walker" }
     ]);
-
-
 
     const handleSendMessage = (message) => {
 
@@ -33,7 +42,6 @@ export default function Home() {
         console.log("Message sent:", message); // 实际项目中，这里可以是调用 API 发送消息
     };
 
-
     const getMessageStyle = (messageFrom) => {
         if ((role === 'parent' && messageFrom === 'walker') || (role === 'walker' && messageFrom === 'parent')) {
             return "justify-end"; // 将头像放在右边
@@ -42,14 +50,13 @@ export default function Home() {
         }
     };
 
-
     return (
         <div className="flex flex-col h-screen bg-gray-100 p-4">
             <Header title="Emma-parent" navigateTo={"/notification-homepage"}/>
             <div className="flex-1 overflow-y-auto">
                 <TimeBar time={"Today"}/>
-                <RequestBox walkerId={3}/>
-                 <div className="flex flex-col p-4">
+                <RequestBox walkerId={2}/>
+                <div className="flex flex-col p-4">
                     {messages.map(message => (
                         <div key={message.id} className={`flex items-center ${getMessageStyle(message.from)}`}>
                             <ChatMessage
@@ -68,5 +75,6 @@ export default function Home() {
                 <input type="text" placeholder="Do you want to pre-meet?" className="form-input w-full p-3 rounded-md"/>
             </div>
         </div>
+        // <p>Post: {parentId}</p>
     );
 }
