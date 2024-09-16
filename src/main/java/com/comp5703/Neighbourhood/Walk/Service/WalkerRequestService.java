@@ -12,4 +12,5 @@ public interface WalkerRequestService {
     Request getRequest(long walkerRequestId);
     List<Users> getWalkersByRequestId(int requestId);
     List<Request> getRequestsByWalkerId(long walkerId);
+    Users getParentIdByWalkerRequestId(long walkerRequestId);
 }

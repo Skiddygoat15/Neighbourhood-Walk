@@ -54,4 +54,10 @@ public class WalkerRequestController {
         List<Request> requests = walkerRequestService.getRequestsByWalkerId(walkerId);
         return ResponseEntity.ok(requests);
     }
+
+    @GetMapping("/getParentIdByWalkerRequestId/{walkerRequestId}")
+    public Users getParentIdByWalkerRequestId(@PathVariable long walkerRequestId) {
+        Users parent = walkerRequestService.getParentIdByWalkerRequestId(walkerRequestId);
+        return parent;
+    }
 }

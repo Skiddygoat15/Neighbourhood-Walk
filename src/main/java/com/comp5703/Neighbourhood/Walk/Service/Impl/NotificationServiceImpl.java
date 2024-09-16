@@ -39,7 +39,13 @@ public class NotificationServiceImpl implements NotificationService {
         notification.setWalkerRequest(walkerRequest);
 
         // 保存通知到数据库
-        Notification savedNotification = notificationRepository.save(notification);
+        Notification savedNotification = null;
+        try {
+            savedNotification = notificationRepository.save(notification);
+        } catch (Exception e) {
+            throw new RuntimeException("The status of request can not change once it was decided.");
+        } finally {
+        }
 
         // 将 Notification 中的字段转换为前端需要的字段名
         Map<String, Object> notificationData = new HashMap<>();

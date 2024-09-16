@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -57,5 +56,11 @@ public class WalkerRequestServiceImpl implements WalkerRequestService {
     @Override
     public List<Request> getRequestsByWalkerId(long walkerId) {
         return walkerRequestRepository.findRequestsByWalkerId(walkerId);
+    }
+
+    @Override
+    public Users getParentIdByWalkerRequestId(long walkerRequestId) {
+        Users parent = walkerRequestRepository.getById(walkerRequestId).getRequest().getParent();
+        return parent;
     }
 }

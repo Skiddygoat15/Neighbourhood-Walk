@@ -1,9 +1,9 @@
 // components/StatusCard.js
 import React, {useState} from 'react';
 
-export default function StatusCard({ notificationId, walkerRequest, statusPrevious, statusChanged, time }) {
+export default function StatusCard({ parentId, walkerId, statusPrevious, statusChanged, time }) {
 
-    const userId = localStorage.getItem('roles');
+    const userId = localStorage.getItem('userId');
     const [role, setRole] = useState(localStorage.getItem('roles'));
     const [RequestStatus,setRequestStatus] = useState("Pending...");
     // const [parentId, setparentId] = useState();
@@ -30,24 +30,6 @@ export default function StatusCard({ notificationId, walkerRequest, statusPrevio
         .catch(error => {
             console.error('Error fetching data:', error);
         });
-
-    // const requestURL_parentId = new Request(`http://127.0.0.1:8080/WalkerRequest/getWalkerRequestByWalkerId/${userId}`, myInit);
-    // fetch(requestURL)
-    //     .then(response => {
-    //         if (!response.ok) {
-    //             throw new Error('Network response was not ok');
-    //         }
-    //         console.info(response.json())
-    //         return response.json();
-    //     })
-    //     .then(data => {
-    //         if (data.status === "Accepted" || data.status === "Rejected" || data.status === "Pending...") {
-    //             setRequestStatus(data.status);
-    //         }})
-    //     .catch(error => {
-    //         console.error('Error fetching data:', error);
-    //     });
-
 
     const [showDot, setShowDot] = useState(true);  // 初始状态为显示小红点
     // 点击事件处理函数，用于隐藏小红点
@@ -92,10 +74,10 @@ export default function StatusCard({ notificationId, walkerRequest, statusPrevio
             )}
 
             <div style={{marginBottom: '8px'}}>
-                <strong>Notification ID:</strong> {notificationId}
+                <strong>Parent ID:</strong> {parentId}
             </div>
             <div style={{marginBottom: '8px'}}>
-                <strong>WalkerRequest:</strong> {walkerRequest}
+                <strong>Walker ID:</strong> {walkerId}
             </div>
             <div style={{marginBottom: '8px'}}>
                 <strong>StatusPrevious: </strong>

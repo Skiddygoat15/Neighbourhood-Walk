@@ -87,7 +87,42 @@ import Header from "../../components/Header";
 
 export default function Home() {
     const [statusCards, setStatusCards] = useState([]); // 初始化为空数组
+    const [parentId, setparentId] = useState(0); // 初始化为空数组
+    const [walkerRequestId, setwalkerRequestId] = useState(0); // 初始化为空数组
 
+    const userId = localStorage.getItem('userId');
+    const role = localStorage.getItem('roles');
+    // const token = localStorage.getItem('token');
+    if (!role.includes("walker")) {
+        console.error('Not a walker, no fetch executed');
+        return; // 如果不是 walker 角色，直接返回
+    }
+    const walkerId = parseInt(userId, 10); // 直接将 userId 设置为 walkerId
+    console.info("Walker ID set to: " + walkerId);
+    console.info("Walker role set to: " + role);
+    //根据walkerId获取notification
+
+    useEffect(() => {
+
+        const myInit = {
+            method: 'GET',
+            headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')},
+            mode: 'cors',
+            cache: 'default'
+        };
+        const requestURL = `http://127.0.0.1:8080/Notification/findNotificationByWalkerId/${walkerId}`;
+        fetch(requestURL, myInit)
+            .then(response => {
+                if (!response.ok) {throw new Error('Network response was not ok1');}
+                return response.json();})
+            .then(data => {
+                // console.info(data)
+                setStatusCards(data);})// 设置整个返回数据为状态卡片
+            .catch(error => {
+                console.error('Error fetching data:', error);});
+        },[userId]);
+
+    //根据walkerId获取walkerRequestId
     useEffect(() => {
         const myInit = {
             method: 'GET',
@@ -95,37 +130,50 @@ export default function Home() {
             mode: 'cors',
             cache: 'default'
         };
-
-        const userId = localStorage.getItem('userId');
-        const role = localStorage.getItem('roles');
-        console.log(`Role from storage: ${role}`);
-
-        if (!role.includes("walker")){
-            console.error('Not a walker, no fetch executed');
-            return; // 如果不是 walker 角色，直接返回
-        }
-
-        const walkerId = parseInt(userId, 10); // 直接将 userId 设置为 walkerId
-        console.info("Walker ID set to: " + walkerId);
-
-        const requestURL = `http://127.0.0.1:8080/Notification/findNotificationByWalkerId/${walkerId}`;
-
-        fetch(requestURL, myInit)
+        const requestURL_walkerRequestId = new Request(`http://127.0.0.1:8080/WalkerRequest/getWalkerRequestByWalkerId/${walkerId}`, myInit);
+        fetch(requestURL_walkerRequestId)
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    throw new Error('Network response was not ok2');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // console.info(data);
+                // console.info("upupup")
+                setwalkerRequestId(data[0].walkerRequestId);
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+        },[userId]);
+
+    //根据walkerRequestId获取parentId
+    useEffect(() => {
+        const myInit = {
+            method: 'GET',
+            headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')},
+            mode: 'cors',
+            cache: 'default'
+        };
+        const requestURL_parentId = `http://127.0.0.1:8080/WalkerRequest/getParentIdByWalkerRequestId/${walkerRequestId}`;
+        fetch(requestURL_parentId, myInit)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok3');
                 }
                 return response.json();
             })
             .then(data => {
                 // 假设 data 是数组
-                setStatusCards(data); // 设置整个返回数据为状态卡片
-                console.info("userId = "+ userId+"  role = "+role)
+                // console.info(data);
+                // console.info("upupup");
+                setparentId(data.id); // 设置整个返回数据为状态卡片
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
             });
-    }, []); // 空依赖数组确保只在组件加载时执行一次
+        },[walkerRequestId]);
 
     return (
         <div className="flex flex-col h-screen bg-gray-100 p-4">
@@ -135,8 +183,8 @@ export default function Home() {
             {statusCards && statusCards.length > 0 && statusCards.map((card, index) => (
                 <StatusCard
                     key={index}
-                    notificationId={card.notificationId}
-                    walkerReuqestId={card.walkerReuqestId}
+                    parentId={parentId}
+                    walkerId={walkerId}
                     statusPrevious={card.statusPrevious}
                     statusChanged={card.statusChanged}
                     time={card.time}
