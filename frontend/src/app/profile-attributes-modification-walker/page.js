@@ -35,7 +35,7 @@ export default function ProfileManagementSelectTimeWalker() {
 
   return (
     <main className="min-h-screen bg-white">
-      <div className="max-w-md mx-auto p-4 space-y-8">
+      <div className="max-w-md mx-auto p-4 space-y-8 overflow-y-auto" style={{maxHeight: 'calc(100vh - 80px)'}}>
         {/* Back Button */}
         <button onClick={() => router.back()} className="text-2xl p-2 focus:outline-none">
           &larr;
@@ -50,7 +50,8 @@ export default function ProfileManagementSelectTimeWalker() {
           {/* Phone Number */}
           <div>
             <label className="block text-sm font-medium text-gray-700">Phone Number</label>
-            <p className="text-xs text-gray-500">You will use this number to receive notifications and to log in and restore your account</p>
+            <p className="text-xs text-gray-500">You will use this number to receive notifications and to log in and
+              restore your account</p>
             <div className="flex items-center mt-2">
               <select
                   className="border border-gray-300 p-2 rounded-l-md"
@@ -115,9 +116,9 @@ export default function ProfileManagementSelectTimeWalker() {
           <div>
             <label className="block text-sm font-medium text-gray-700">Working Days</label>
             <select
-              className="border border-gray-300 p-2 rounded-md w-full mt-2"
-              value={workingDays}
-              onChange={(e) => setWorkingDays(e.target.value)}
+                className="border border-gray-300 p-2 rounded-md w-full mt-2"
+                value={workingDays}
+                onChange={(e) => setWorkingDays(e.target.value)}
             >
               <option value="">Select a day</option>
               <option value="Monday">Monday</option>
@@ -134,9 +135,9 @@ export default function ProfileManagementSelectTimeWalker() {
           <div>
             <label className="block text-sm font-medium text-gray-700">Times</label>
             <select
-              className="border border-gray-300 p-2 rounded-md w-full mt-2"
-              value={times}
-              onChange={(e) => setTimes(e.target.value)}
+                className="border border-gray-300 p-2 rounded-md w-full mt-2"
+                value={times}
+                onChange={(e) => setTimes(e.target.value)}
             >
               <option value="">Select a time</option>
               <option value="08:00 - 09:00">08:00 - 09:00</option>
@@ -155,19 +156,19 @@ export default function ProfileManagementSelectTimeWalker() {
           <div>
             <label className="block text-sm font-medium text-gray-700">Skills (Multi)</label>
             <input
-              type="text"
-              className="border border-gray-300 p-2 rounded-md w-full mt-2"
-              value={skills}
-              onChange={(e) => setSkills(e.target.value)}
-              placeholder="Enter your skills"
+                type="text"
+                className="border border-gray-300 p-2 rounded-md w-full mt-2"
+                value={skills}
+                onChange={(e) => setSkills(e.target.value)}
+                placeholder="Enter your skills"
             />
           </div>
         </div>
 
         {/* Update Button */}
         <button
-          onClick={handleUpdate}
-          className="w-full py-3 text-center bg-black text-white rounded-full font-semibold hover:bg-gray-800 mt-8"
+            onClick={handleUpdate}
+            className="w-full py-3 text-center bg-black text-white rounded-full font-semibold hover:bg-gray-800 mt-8"
         >
           Update
         </button>

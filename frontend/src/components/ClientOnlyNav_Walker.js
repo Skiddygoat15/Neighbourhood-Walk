@@ -55,7 +55,7 @@ export default function ClientOnlyNav_Parent() {
                         <span className="text-xs">Request</span>
                     </button>
                 </Link>
-                <Link href="/home-walker" className="text-center">
+                <Link href="/profile-management-account-information-walker" className="text-center">
                     <button className="text-center">
                         <img src="/Navigation-icons/profile.png" alt="Home" className="w-6 h-6 ml-1.5"/>
                         <span className="text-xs">Profile</span>
