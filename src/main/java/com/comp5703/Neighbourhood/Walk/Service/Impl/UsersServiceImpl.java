@@ -210,7 +210,7 @@ public class UsersServiceImpl implements UsersService {
                     // 遍历 availableDates，确保每个日期都在当前时间之后
                     for (Date date : availableDates) {
                         if (date.before(currentDate)) {
-                            throw new IllegalArgumentException("All available dates must be later than the current date.");
+                            throw new IllegalArgumentException("Start date or end date must be later than the current date.");
                         }
                     }
 

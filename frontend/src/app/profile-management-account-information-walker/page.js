@@ -212,11 +212,11 @@ export default function ProfileManagementAccountInformationWalker() {
             <div className="flex justify-between items-center border-b py-2">
             <span>Available Dates</span>
             <div className="flex items-center">
-              <span>{startDate} - {endDate}</span>
+              <span className="text-sm opacity-70">{startDate} - {endDate}</span>
             </div>
             </div>
 
-          <div className="flex justify-between items-center border-b py-2">
+            <div className="flex justify-between items-center border-b py-2">
             <span>Skills (Multi)</span>
             <div className="flex items-center">
               <span>{skill}</span>

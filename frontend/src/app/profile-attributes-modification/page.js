@@ -1,10 +1,11 @@
 "use client";
 
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function ProfileAttributesModification() {
   const router = useRouter();
+  const [error, setError] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [countryCode, setCountryCode] = useState('+61');
   const [emailAddress, setEmailAddress] = useState('');
@@ -16,15 +17,93 @@ export default function ProfileAttributesModification() {
     
   ];
 
+
+  useEffect(() => {
+    const userId = localStorage.getItem('userId');
+    const token = localStorage.getItem('token');
+
+    if (!userId || !token) {
+      console.error('User ID or token not found in localStorage');
+      return;
+    }
+
+    // 获取用户的现有个人信息
+    const fetchUserProfile = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/Users/getUserProfileByUserId/${userId}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+
+          // 填充输入框的初始值
+          setPhoneNumber(data.phone || 'N/A');
+          setEmailAddress(data.email || 'N/A');
+          setCommunicationPreference(data.communicatePref || 'N/A');
+          setPreferredName(data.preferredName || 'N/A');
+        } else {
+          console.error('Failed to fetch user profile:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error fetching user profile:', error);
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
+
+
   const handleCountryChange = (e) => {
     setCountryCode(e.target.value);
   };
 
-  const handleUpdate = () => {
-    console.log('Phone Number:', countryCode + phoneNumber);
-    console.log('Email Address:', emailAddress);
-    console.log('Communication Preference:', communicationPreference);
-    console.log('Preferred Name:', preferredName);
+  const handleUpdate = async () => {
+    // 从localStorage获取userId和token
+    const userId = localStorage.getItem('userId');
+    const token = localStorage.getItem('token');
+
+
+    if (!userId || !token) {
+      console.error('User ID or token not found in localStorage');
+      return;
+    }
+
+    // 准备要传递到数据库的data
+    const updatedProfileData = {
+      phone: phoneNumber,
+      email: emailAddress,
+      communicatePref: communicationPreference,
+      preferredName: preferredName
+    };
+
+    try {
+      // 调用API将数据传入数据库
+      const response = await fetch(`http://localhost:8080/Users/${userId}/profile`, {
+        method: 'PUT', // 使用PUT方法更新用户数据
+        headers: {
+          'Authorization': `Bearer ${token}`, // 传入token进行身份验证
+          'Content-Type': 'application/json', // 发送JSON数据
+        },
+        body: JSON.stringify(updatedProfileData),
+      });
+
+      if (response.ok) {
+        console.log('Profile updated successfully');
+        localStorage.setItem('preferredName', preferredName);
+        // 更新成功后跳转到 profile-management-account-information 页面
+        router.push('/profile-management-account-information');
+      } else {
+        const errorMessage = await response.text(); // 捕获后端返回的错误消息
+        setError(errorMessage || 'Registration failed'); // 直接设置错误信息
+        console.error('Failed to update profile:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error updating profile:', error);
+    }
   };
 
   return (
@@ -37,6 +116,7 @@ export default function ProfileAttributesModification() {
 
         {/* Title */}
         <h1 className="text-2xl font-bold text-center">Profile Attributes Modification</h1>
+        {error && <p className="text-red-500 text-center">{error}</p>}
 
         {/* Form Fields */}
         <div className="space-y-4">
@@ -64,7 +144,7 @@ export default function ProfileAttributesModification() {
                 onChange={(e) => setPhoneNumber(e.target.value)}
               />
             </div>
-            <p className="text-xs text-gray-500">The system will send you a verification code</p>
+            {/*<p className="text-xs text-gray-500">The system will send you a verification code</p>*/}
           </div>
 
           {/* Email Address */}
@@ -77,7 +157,7 @@ export default function ProfileAttributesModification() {
               value={emailAddress}
               onChange={(e) => setEmailAddress(e.target.value)}
             />
-            <p className="text-xs text-gray-500">The system will send you a verification code</p>
+            {/*<p className="text-xs text-gray-500">The system will send you a verification code</p>*/}
           </div>
 
           {/* Communication Preference */}
@@ -89,8 +169,8 @@ export default function ProfileAttributesModification() {
               onChange={(e) => setCommunicationPreference(e.target.value)}
             >
               <option value="">Select an option</option>
-              <option value="email">Email</option>
-              <option value="phone">Phone</option>
+              <option value="Email">Email</option>
+              <option value="Phone">Phone</option>
             </select>
           </div>
 

@@ -1,12 +1,13 @@
 "use client";
 
-import { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function ProfileManagementSelectTimeWalker() {
   const router = useRouter();
-  const [workingDays, setWorkingDays] = useState('');
-  const [times, setTimes] = useState('');
+  const [error, setError] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
   const [skills, setSkills] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [countryCode, setCountryCode] = useState('+61');
@@ -18,20 +19,113 @@ export default function ProfileManagementSelectTimeWalker() {
     { code: '+61', country: 'Australia' },
   ];
 
+  useEffect(() => {
+    const userId = localStorage.getItem('userId');
+    const token = localStorage.getItem('token');
+
+    if (!userId || !token) {
+      console.error('User ID or token not found in localStorage');
+      return;
+    }
+
+    // 获取用户的现有个人信息
+    const fetchUserProfile = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/Users/getUserProfileByUserId/${userId}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+
+          // 将 availableDate 转换为符合 datetime-local 格式的值
+          // 检查 availableDate 是否存在且有两个日期
+          const startDateFormatted = data.availableDate && data.availableDate.length >= 2
+              ? new Date(data.availableDate[0]).toISOString().slice(0, 16)
+              : ''; // 如果没有日期，设置为空字符串
+          const endDateFormatted = data.availableDate && data.availableDate.length >= 2
+              ? new Date(data.availableDate[1]).toISOString().slice(0, 16)
+              : ''; // 如果没有日期，设置为空字符串
+          const skill = data.skill && data.skill.length > 0 ? data.skill[0] : 'N/A';
+          // 填充输入框的初始值
+          setPhoneNumber(data.phone || 'N/A');
+          setEmailAddress(data.email || 'N/A');
+          setCommunicationPreference(data.communicatePref || 'N/A');
+          setPreferredName(data.preferredName || 'N/A');
+          setStartDate(startDateFormatted);
+          setEndDate(endDateFormatted);
+          setSkills(skill)
+        } else {
+          console.error('Failed to fetch user profile:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error fetching user profile:', error);
+      }
+    };
+
+
+    fetchUserProfile();
+  }, []);
+
   const handleCountryChange = (e) => {
     setCountryCode(e.target.value);
   };
 
-  const handleUpdate = () => {
-    console.log('Phone Number:', countryCode + phoneNumber);
-    console.log('Email Address:', emailAddress);
-    console.log('Communication Preference:', communicationPreference);
-    console.log('Preferred Name:', preferredName);
-    console.log('Working Days:', workingDays);
-    console.log('Times:', times);
-    console.log('Skills:', skills);
- 
+  const handleUpdate = async () => {
+    const userId = localStorage.getItem('userId');
+    const token = localStorage.getItem('token');
+
+    if (!userId || !token) {
+      console.error('User ID or token not found in localStorage');
+      return;
+    }
+
+    // 将startDate和endDate放入availableDate数组中
+    const availableDate = [startDate, endDate];
+
+    // 将skills放入skill数组中，保证只有一个技能
+    const skillArray = [skills];
+
+    // 准备要传递到数据库的data
+    const updatedProfileData = {
+      preferredName,
+      email: emailAddress,
+      phone: phoneNumber,
+      communicatePref: communicationPreference,
+      availableDate,
+      skill: skillArray,
+    };
+
+    try {
+      // 调用API将数据传入数据库
+      const response = await fetch(`http://localhost:8080/Users/${userId}/profile`, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`, // 传入token进行身份验证
+          'Content-Type': 'application/json', // 发送JSON数据
+        },
+        body: JSON.stringify(updatedProfileData),
+      });
+
+      if (response.ok) {
+        console.log('Profile updated successfully');
+        // 将 preferredName 写入 localStorage
+        localStorage.setItem('preferredName', preferredName);
+        // 更新成功后跳转到profile-management-account-information页面
+        router.push('/profile-management-account-information-walker');
+      } else {
+        const errorMessage = await response.text(); // 捕获后端返回的错误消息
+        setError(errorMessage || 'Registration failed'); // 直接设置错误信息
+        console.error('Failed to update profile:', errorMessage);
+      }
+    } catch (error) {
+      console.error('Error updating profile:', error);
+    }
   };
+
 
   return (
     <main className="min-h-screen bg-white">
@@ -43,6 +137,7 @@ export default function ProfileManagementSelectTimeWalker() {
 
         {/* Title */}
         <h1 className="text-2xl font-bold text-center">Profile Attributes Modification</h1>
+        {error && <p className="text-red-500 text-center">{error}</p>}
 
         {/* Form Fields */}
         <div className="space-y-4">
@@ -72,7 +167,7 @@ export default function ProfileManagementSelectTimeWalker() {
                   onChange={(e) => setPhoneNumber(e.target.value)}
               />
             </div>
-            <p className="text-xs text-gray-500">The system will send you a verification code</p>
+            {/*<p className="text-xs text-gray-500">The system will send you a verification code</p>*/}
           </div>
 
           {/* Email Address */}
@@ -85,7 +180,7 @@ export default function ProfileManagementSelectTimeWalker() {
                 value={emailAddress}
                 onChange={(e) => setEmailAddress(e.target.value)}
             />
-            <p className="text-xs text-gray-500">The system will send you a verification code</p>
+            {/*<p className="text-xs text-gray-500">The system will send you a verification code</p>*/}
           </div>
 
           {/* Communication Preference */}
@@ -97,8 +192,8 @@ export default function ProfileManagementSelectTimeWalker() {
                 onChange={(e) => setCommunicationPreference(e.target.value)}
             >
               <option value="">Select an option</option>
-              <option value="email">Email</option>
-              <option value="phone">Phone</option>
+              <option value="Email">Email</option>
+              <option value="Phone">Phone</option>
             </select>
           </div>
 
@@ -112,44 +207,28 @@ export default function ProfileManagementSelectTimeWalker() {
                 onChange={(e) => setPreferredName(e.target.value)}
             />
           </div>
-          {/* Working Days */}
+          {/* StartDate */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Working Days</label>
-            <select
+            <label className="block text-sm font-medium text-gray-700">Start Date</label>
+            <p className="text-xs text-gray-500">Here you will select the start date of your available dates</p>
+            <input
+                type="datetime-local"  // 使用HTML5的日期时间选择器
                 className="border border-gray-300 p-2 rounded-md w-full mt-2"
-                value={workingDays}
-                onChange={(e) => setWorkingDays(e.target.value)}
-            >
-              <option value="">Select a day</option>
-              <option value="Monday">Monday</option>
-              <option value="Tuesday">Tuesday</option>
-              <option value="Wednesday">Wednesday</option>
-              <option value="Thursday">Thursday</option>
-              <option value="Friday">Friday</option>
-              <option value="Saturday">Saturday</option>
-              <option value="Sunday">Sunday</option>
-            </select>
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+            />
           </div>
 
-          {/* Times */}
+          {/* EndDate */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Times</label>
-            <select
+            <label className="block text-sm font-medium text-gray-700">End Date</label>
+            <p className="text-xs text-gray-500">Here you will select the end date of your available dates</p>
+            <input
+                type="datetime-local"  // 使用HTML5的日期时间选择器
                 className="border border-gray-300 p-2 rounded-md w-full mt-2"
-                value={times}
-                onChange={(e) => setTimes(e.target.value)}
-            >
-              <option value="">Select a time</option>
-              <option value="08:00 - 09:00">08:00 - 09:00</option>
-              <option value="09:00 - 10:00">09:00 - 10:00</option>
-              <option value="10:00 - 11:00">10:00 - 11:00</option>
-              <option value="11:00 - 12:00">11:00 - 12:00</option>
-              <option value="12:00 - 13:00">12:00 - 13:00</option>
-              <option value="13:00 - 14:00">13:00 - 14:00</option>
-              <option value="14:00 - 15:00">14:00 - 15:00</option>
-              <option value="15:00 - 16:00">15:00 - 16:00</option>
-              <option value="16:00 - 17:00">16:00 - 17:00</option>
-            </select>
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+            />
           </div>
 
           {/* Skills */}
