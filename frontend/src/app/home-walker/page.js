@@ -9,6 +9,25 @@ export default function HomeWalker() {
   const handleNavigation = (path) => {
     router.push(path);
   };
+
+  const handleLogOut = () => {
+    // 清除localStorage中的用户信息
+    localStorage.removeItem('userId');
+    localStorage.removeItem('token');
+    localStorage.removeItem('roles');
+    localStorage.removeItem('preferredName');
+    localStorage.removeItem('name');
+    localStorage.removeItem('currentRole');
+    localStorage.removeItem('clickedRequest');
+
+    // 将isLogin和isAdmin设置为false
+    localStorage.setItem('isLogin', 'false');
+    localStorage.setItem('isAdmin', 'false');
+
+    // 重定向到登录页面
+    window.location.href = `/registration-login-coverpage`;
+  };
+
   const [name, setName] = useState('');
   const [preferredName, setPreferredName] = useState('');
   const [greeting, setGreeting] = useState('');
@@ -63,7 +82,7 @@ export default function HomeWalker() {
 
       <div className="mt-8 w-full px-6">
         <div className="grid grid-cols-2 gap-4">
-        <div className="bg-white border rounded-lg p-4 text-center">
+          <div className="bg-white border rounded-lg p-4 text-center">
             <p className="font-semibold">Stars</p>
             <p className="text-xl">⭐ -/5</p>
           </div>
@@ -93,36 +112,21 @@ export default function HomeWalker() {
 
         <div className="mt-4">
           <button onClick={() => handleNavigation('/notification-walker')}
-              className="w-full bg-white border rounded-lg p-4 text-center font-semibold">
+                  className="w-full bg-white border rounded-lg p-4 text-center font-semibold">
             Notification
+          </button>
+        </div>
+
+        <div className="mt-4">
+          <button
+              onClick={() => handleLogOut()}
+              className="w-full bg-white border rounded-lg p-4 text-center font-semibold"
+          >
+            Log out
           </button>
         </div>
       </div>
 
-      <div className="fixed bottom-0 w-full bg-white border-t">
-        <div className="flex justify-around py-2">
-          <button className="text-center">
-            <p>🏠</p>
-            <p className="text-xs">Home</p>
-          </button>
-          <button className="text-center">
-            <p>🔍</p>
-            <p className="text-xs">Search</p>
-          </button>
-          <button className="text-center">
-            <p>✉️</p>
-            <p className="text-xs">Messages</p>
-          </button>
-          <button className="text-center">
-            <p>📄</p>
-            <p className="text-xs">Request</p>
-          </button>
-          <button className="text-center">
-            <p>👤</p>
-            <p className="text-xs">Profile</p>
-          </button>
-        </div>
-      </div>
     </div>
   );
 }

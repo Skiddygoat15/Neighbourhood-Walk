@@ -11,6 +11,24 @@ export default function HomeParent() {
     router.push(path);
   };
 
+  const handleLogOut = () => {
+    // 清除localStorage中的用户信息
+    localStorage.removeItem('userId');
+    localStorage.removeItem('token');
+    localStorage.removeItem('roles');
+    localStorage.removeItem('preferredName');
+    localStorage.removeItem('name');
+    localStorage.removeItem('currentRole');
+    localStorage.removeItem('clickedRequest');
+
+    // 将isLogin和isAdmin设置为false
+    localStorage.setItem('isLogin', 'false');
+    localStorage.setItem('isAdmin', 'false');
+
+    // 重定向到登录页面
+    window.location.href = `/registration-login-coverpage`;
+  };
+
   const [name, setName] = useState('');
   const [preferredName, setPreferredName] = useState('');
   const [greeting, setGreeting] = useState('');
@@ -98,10 +116,16 @@ export default function HomeParent() {
             >
               Request
             </button>
+            <button
+                onClick={() => handleLogOut()}
+                className="w-full bg-white border rounded-lg p-4 text-center font-semibold"
+            >
+              Log out
+            </button>
           </div>
         </div>
 
-</main>
-)
-  ;
+      </main>
+  )
+      ;
 }
