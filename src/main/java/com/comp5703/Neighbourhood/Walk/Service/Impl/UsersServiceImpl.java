@@ -1,11 +1,13 @@
 package com.comp5703.Neighbourhood.Walk.Service.Impl;
 
 import com.comp5703.Neighbourhood.Walk.Entities.RoleDTO;
+import com.comp5703.Neighbourhood.Walk.Entities.UserProfileNotification;
 import com.comp5703.Neighbourhood.Walk.Entities.Users;
 import com.comp5703.Neighbourhood.Walk.Repository.RequestRepository;
 import com.comp5703.Neighbourhood.Walk.Repository.UsersRepository;
 import com.comp5703.Neighbourhood.Walk.Service.RoleService;
 import com.comp5703.Neighbourhood.Walk.Service.Specification.UsersSpecifications;
+import com.comp5703.Neighbourhood.Walk.Service.UserProfileNotificationService;
 import com.comp5703.Neighbourhood.Walk.Service.UsersService;
 import com.comp5703.Neighbourhood.Walk.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +17,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.regex.Pattern;
 
 @Service
@@ -31,6 +30,9 @@ public class UsersServiceImpl implements UsersService {
 
     @Autowired
     private RoleService roleService;  // 注入 RoleService
+
+    @Autowired
+    private UserProfileNotificationService notificationService;
 
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     @Autowired
@@ -48,6 +50,17 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public Optional<Users> getUsersByPhone(String phone) { return usersRepository.findByPhone(phone); }
+
+    @Override
+    public Optional<Map<String, String>> getUserNamesById(long id) {
+        return usersRepository.findById(id)
+                .map(user -> {
+                    Map<String, String> userMap = new HashMap<>();
+                    userMap.put("name", user.getName());
+                    userMap.put("preferredName", user.getPreferredName());
+                    return userMap;
+                });
+    }
 
     @Override
     public void deleteUsers(long id) {
@@ -130,6 +143,14 @@ public class UsersServiceImpl implements UsersService {
         // 保存角色信息到 Role 表，并关联到用户
         roleService.saveRole(savedUser.getId(), roleType);
 
+        // 添加通知信息
+        UserProfileNotification notification = new UserProfileNotification(
+                savedUser,
+                "You have successfully registered",
+                "We're thrilled to welcome you! Feel free to explore the app and its features.",
+                new Date());
+        notificationService.saveUserProfileNotification(notification);
+
         return savedUser;
     }
     @Override
@@ -204,7 +225,17 @@ public class UsersServiceImpl implements UsersService {
         }
 
         // 保存更新后的用户信息
-        return usersRepository.save(existingUser);
+        Users savedUser = usersRepository.save(existingUser);
+
+        // 添加通知信息
+        UserProfileNotification notification = new UserProfileNotification(
+                savedUser,
+                "Profile Updated",
+                "You've just updated your profile. Please check it out in your account settings.",
+                new Date());
+        notificationService.saveUserProfileNotification(notification);
+
+        return savedUser;
     }
 
     @Override
@@ -227,7 +258,7 @@ public class UsersServiceImpl implements UsersService {
             // 如果搜索条件为空，则返回所有 Walkers
             spec = spec.and(UsersSpecifications.orderByAverageRate());
         } else {
-            // 组合 Specification 查询条件
+            // Combine Specifications
             spec = spec.and(UsersSpecifications.containsAttribute("name", searchTerm)
                             .or(UsersSpecifications.containsAttribute("surname", searchTerm))
                             .or(UsersSpecifications.containsAttribute("preferredName", searchTerm))

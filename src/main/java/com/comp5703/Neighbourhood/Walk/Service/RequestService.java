@@ -22,6 +22,6 @@ public interface RequestService {
 
 
     // byron
-    List<Request> searchRequests(String searchTerm, Date startTime, Date arriveTime);
+    List<Request> searchRequests(String searchTerm, String distance, Date startTime, Date arriveTime);
     Request getById(int requestId);
 }

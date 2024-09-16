@@ -4,6 +4,7 @@ import com.comp5703.Neighbourhood.Walk.Entities.Users;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public interface UsersService {
@@ -11,6 +12,8 @@ public interface UsersService {
     //something
     Optional<Users> getUsersByEmail(String email);
     Optional<Users> getUsersByPhone(String phone);
+    Optional<Map<String, String>> getUserNamesById(long id);
+
     void deleteUsers(long id);
     List<Users> getAllUsers();
 

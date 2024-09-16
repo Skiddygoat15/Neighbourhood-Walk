@@ -1,34 +1,37 @@
-"use client"; // 确保这是一个客户端组件
+"use client"; // 这个组件是客户端组件
 
-import { useEffect, useState } from "react";
-import ClientOnlyNav_Parents from "../components/ClientOnlyNav_Parent";
-import ClientOnlyNav_Walker from "../components/ClientOnlyNav_Walker";
-import Link from "next/link"; // 假设你有一个针对 Walker 的导航栏组件
+import Link from "next/link";
+import { usePathname } from "next/navigation"; // 只能在客户端组件中使用
 
-const ClientOnlyNav = () => {
-    const [currentRole, setCurrentRole] = useState(null);
+export default function ClientOnlyNav_Parent() {
+    const pathname = usePathname(); // 获取当前页面路径
 
-    useEffect(() => {
-        // 从 localStorage 获取 currentRole
-        const role = localStorage.getItem("currentRole");
-        setCurrentRole(role);
-    }, []);
+    // 不显示底部导航栏的页面列表
+    const noNavPaths = [
+        "/registration-login-coverpage",
+        "/registration-loginform",
+        "/registration-signup",
+        "/registration-verification-parent",
+        "/registration-verification-parent-successful",
+        "/registration-verification-parent-upload",
+        "/registration-verification-parent-waiting",
+        "/registration-verification-walker",
+        "/registration-verification-walker-successful",
+        "/registration-verification-walker-upload",
+        "/registration-verification-walker-waiting",
+        "/registration-login-identity-select"
+    ]; // 在这些页面不显示导航栏
 
-    // 根据 currentRole 渲染不同的导航栏
-    if (currentRole === "parent") {
-        return <ClientOnlyNav_Parents />;
-    } else if (currentRole === "walker") {
-        return <ClientOnlyNav_Walker />;
-    } else {
-        return null; // 如果没有角色，或者角色还未加载完成，可以不显示任何东西，或者显示一个默认的内容
+    const shouldShowNav = !noNavPaths.includes(pathname); // 判断当前路径是否应显示导航栏
+
+    if (!shouldShowNav) {
+        return null; // 不显示导航栏
     }
-};
-
 
     return (
         <nav className="fixed bottom-0 left-0 right-0 bg-white border-t">
             <div className="flex justify-around py-2">
-                <Link href="/home-parent" className="text-center">
+                <Link href="/home-walker" className="text-center">
                     <button className="text-center">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -42,7 +45,7 @@ const ClientOnlyNav = () => {
                         <span className="text-xs">Home</span>
                     </button>
                 </Link>
-                <Link href="/search-parent" className="text-center">
+                <Link href="/search-walker" className="text-center">
                     <button className="text-center">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -56,7 +59,7 @@ const ClientOnlyNav = () => {
                         <span className="text-xs">Search</span>
                     </button>
                 </Link>
-                <Link href="/notification-homepage" className="text-center">
+                <Link href="/messages" className="text-center">
                     <button className="text-center">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -84,7 +87,7 @@ const ClientOnlyNav = () => {
                         <span className="text-xs">Request</span>
                     </button>
                 </Link>
-                <Link href="/home-parent" className="text-center">
+                <Link href="/home-walker" className="text-center">
                     <button className="text-center">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
@@ -101,6 +104,4 @@ const ClientOnlyNav = () => {
             </div>
         </nav>
     );
-    
-export default ClientOnlyNav;
-
+}

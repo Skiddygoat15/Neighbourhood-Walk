@@ -1,6 +1,14 @@
-import React from 'react';
+"use client";
+
+import { useRouter } from 'next/navigation';
 
 export default function HomeWalker() {
+  const router = useRouter();
+
+  const handleNavigation = (path) => {
+    router.push(path);
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center">
       <div className="mt-4 text-center">
@@ -19,7 +27,8 @@ export default function HomeWalker() {
         </div>
 
         <div className="mt-8">
-          <button className="w-full bg-white border rounded-lg p-4 text-center font-semibold">
+          <button onClick={() => handleNavigation('/search-walker')}
+                  className="w-full bg-white border rounded-lg p-4 text-center font-semibold">
             Search Request
           </button>
         </div>

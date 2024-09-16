@@ -10,6 +10,7 @@ import com.comp5703.Neighbourhood.Walk.Repository.UsersRepository;
 import com.comp5703.Neighbourhood.Walk.Repository.WalkerRequestRepository;
 import com.comp5703.Neighbourhood.Walk.Service.RequestService;
 import com.comp5703.Neighbourhood.Walk.Service.Specification.RequestSpecifications;
+import com.comp5703.Neighbourhood.Walk.Service.Specification.UsersSpecifications;
 import com.comp5703.Neighbourhood.Walk.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
@@ -189,13 +190,19 @@ public class RequestServiceImpl implements RequestService {
 
 
     @Override
-    public List<Request> searchRequests(String searchTerm, Date startTime, Date arriveTime) {
-        // Combine Specifications
+    public List<Request> searchRequests(String searchTerm, String distance, Date startTime, Date arriveTime) {
         Specification<Request> spec = Specification.where(RequestSpecifications.statusIs("Published"))
-                .and(RequestSpecifications.hasDeparture(searchTerm)
+                .or(RequestSpecifications.statusIs("Applied"));
+
+        // 检查 searchTerm 是否为空或仅包含空格
+        if (searchTerm == null || searchTerm.trim().isEmpty()) {
+            // 如果搜索条件为空，则返回所有 requests
+        } else {
+            // Combine Specifications
+            spec = spec.and(RequestSpecifications.hasDeparture(searchTerm)
                     .or(RequestSpecifications.hasDestination(searchTerm))
                     .or(RequestSpecifications.hasUserNameOrSurname(searchTerm)));
-
+        }
         // Add optional filters based on time if provided
         if (startTime != null) {
             spec = spec.and(RequestSpecifications.hasStartTime(startTime));
@@ -203,11 +210,14 @@ public class RequestServiceImpl implements RequestService {
         if (arriveTime != null) {
             spec = spec.and(RequestSpecifications.hasArriveTime(arriveTime));
         }
+//        if (distance != null && !distance.isEmpty()) {
+//            spec = spec.and(UsersSpecifications.containsAttribute("distance", distance));
+//        }
 
         List<Request> requests = requestRepository.findAll(spec);
         // check if request exists
         if (requests.isEmpty()) {
-            throw new ResourceNotFoundException("No matching requests found for the given search criteria.");
+            throw new ResourceNotFoundException("No requests found for the given search criteria.");
         }
 
         return requests;

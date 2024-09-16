@@ -1,6 +1,7 @@
 package com.comp5703.Neighbourhood.Walk.Controller;
 
 import com.comp5703.Neighbourhood.Walk.Entities.Request;
+import com.comp5703.Neighbourhood.Walk.Entities.Users;
 import com.comp5703.Neighbourhood.Walk.Entities.WalkerRequest;
 import com.comp5703.Neighbourhood.Walk.Entities.WalkerRequestDTO;
 import com.comp5703.Neighbourhood.Walk.Repository.WalkerRequestRepository;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/requests")
@@ -155,12 +157,25 @@ public class RequestController {
     }
 
     @GetMapping("/searchRequests")
-    public ResponseEntity<List<Request>> searchRequests(
-            @RequestParam String searchTerm,
-            @RequestParam(required = false) Date startTime,
-            @RequestParam(required = false) Date arriveTime) {
-
-        List<Request> requests = requestService.searchRequests(searchTerm, startTime, arriveTime);
-        return new ResponseEntity<>(requests, HttpStatus.OK);
+    public ResponseEntity<?> searchRequests(@RequestParam String searchTerm,
+                                            @RequestParam(required = false) String distance,
+                                            @RequestParam(required = false) Date startTime,
+                                            @RequestParam(required = false) Date arriveTime) {
+        try {
+            List<Request> requests = requestService.searchRequests(searchTerm, distance, startTime, arriveTime);
+            return new ResponseEntity<>(requests, HttpStatus.OK);
+        } catch (ResourceNotFoundException e) {
+            // 处理找不到资源的自定义异常
+            return new ResponseEntity<>(
+                    Map.of("message", e.getMessage()),
+                    HttpStatus.NOT_FOUND
+            );
+        } catch (Exception e) {
+            // 捕获所有其他异常，并返回500服务器错误
+            return new ResponseEntity<>(
+                    Map.of("message", "An unexpected error occurred: " + e.getMessage()),
+                    HttpStatus.INTERNAL_SERVER_ERROR
+            );
+        }
     }
 }
