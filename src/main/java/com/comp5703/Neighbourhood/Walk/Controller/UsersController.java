@@ -1,4 +1,5 @@
 package com.comp5703.Neighbourhood.Walk.Controller;
+import com.comp5703.Neighbourhood.Walk.Entities.UserProfileDTO;
 import com.comp5703.Neighbourhood.Walk.Entities.Users;
 import com.comp5703.Neighbourhood.Walk.Service.UsersService;
 import com.comp5703.Neighbourhood.Walk.exception.ResourceNotFoundException;
@@ -16,6 +17,12 @@ import java.util.Optional;
 public class UsersController {
     @Autowired
     UsersService usersService;
+
+    @GetMapping("/getUserProfileByUserId/{userId}")
+    public ResponseEntity<UserProfileDTO> getUserProfileByUserId(@PathVariable long userId){
+        UserProfileDTO userProfileDTO = usersService.getUserProfileById(userId);
+        return new ResponseEntity<>(userProfileDTO, HttpStatus.OK);
+    }
 
     @GetMapping("/getUserById/{userId}")
     public ResponseEntity<Users> getUserById(@PathVariable long userId){

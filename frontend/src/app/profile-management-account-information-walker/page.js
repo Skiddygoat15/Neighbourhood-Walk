@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 export default function ProfileManagementAccountInformationWalker() {
   const router = useRouter();
 
-  const handleEdit = (path) => {
+  const handleNavigation = (path) => {
     router.push(path);
   };
 
@@ -31,9 +31,6 @@ export default function ProfileManagementAccountInformationWalker() {
             <span>Preferred Name</span>
             <div className="flex items-center">
               <span>xxxx</span>
-              <button onClick={() => handleEdit('/profile-attributes-modification')} className="ml-2 text-gray-500">
-                &gt;
-              </button>
             </div>
           </div>
 
@@ -49,9 +46,6 @@ export default function ProfileManagementAccountInformationWalker() {
             <span>Phone Number</span>
             <div className="flex items-center">
               <span>+61 xxxxxx</span>
-              <button onClick={() => handleEdit('/profile-attributes-modification')} className="ml-2 text-gray-500">
-                &gt;
-              </button>
             </div>
           </div>
 
@@ -59,9 +53,6 @@ export default function ProfileManagementAccountInformationWalker() {
             <span>E-mail Address</span>
             <div className="flex items-center">
               <span>xxxxxx</span>
-              <button onClick={() => handleEdit('/profile-attributes-modification')} className="ml-2 text-gray-500">
-                &gt;
-              </button>
             </div>
           </div>
 
@@ -77,9 +68,6 @@ export default function ProfileManagementAccountInformationWalker() {
             <span>Communication Preference</span>
             <div className="flex items-center">
               <span>xxxxxxxx</span>
-              <button onClick={() => handleEdit('/profile-attributes-modification')} className="ml-2 text-gray-500">
-                &gt;
-              </button>
             </div>
           </div>
 
@@ -87,21 +75,23 @@ export default function ProfileManagementAccountInformationWalker() {
             <span>Available Dates/ Times</span>
             <div className="flex items-center">
               <span>Monday 08:00 - 09:00</span>
-              <button onClick={() => handleEdit('/profile-management-select-time-walker')} className="ml-2 text-gray-500">
-                &gt;
-              </button>
             </div>
           </div>
 
           <div className="flex justify-between items-center border-b py-2">
             <span>Skills (Multi)</span>
             <div className="flex items-center">
-              <button onClick={() => handleEdit('/profile-attributes-modification')} className="ml-2 text-gray-500">
-                &gt;
-              </button>
             </div>
           </div>
         </div>
+
+        {/* Change Button */}
+        <button
+            onClick={() => handleNavigation('/profile-attributes-modification-walker')}
+            className="w-full py-3 text-center bg-black text-white rounded-full font-semibold hover:bg-gray-800 mt-8"
+        >
+          Change Profile
+        </button>
       </div>
 
     </main>

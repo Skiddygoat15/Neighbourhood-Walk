@@ -5,6 +5,10 @@ import { useRouter } from 'next/navigation';
 export default function ProfileManagementAccountInformation() {
   const router = useRouter();
 
+  const handleNavigation = (path) => {
+    router.push(path);
+  };
+
   const handleEdit = (path) => {
     if (path !== '/edit/date-of-birth' && path !== '/edit/address') {
       router.push('/profile-attributes-modification');
@@ -71,6 +75,13 @@ export default function ProfileManagementAccountInformation() {
             </div>
           </div>
         </div>
+        {/* Change Button */}
+        <button
+            onClick={() => handleNavigation('/profile-attributes-modification')}
+            className="w-full py-3 text-center bg-black text-white rounded-full font-semibold hover:bg-gray-800 mt-8"
+        >
+          Change Profile
+        </button>
       </div>
     </main>
   );
