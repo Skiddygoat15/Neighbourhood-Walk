@@ -11,7 +11,7 @@ function ChattingStatus({ name, text, time, parentId }) {
 
     const goToNotificationChatPage = () => {
         // router.push(`/notification-chat/${parentId}`);  // 使用 router.push 进行导航
-        router.push(`/notification-chat`);
+        router.push(`/message-chat`);
     };
 
     const myInit = {

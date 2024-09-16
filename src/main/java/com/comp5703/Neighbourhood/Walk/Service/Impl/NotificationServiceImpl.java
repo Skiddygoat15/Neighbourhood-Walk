@@ -80,8 +80,7 @@ public class NotificationServiceImpl implements NotificationService {
         List<WalkerRequest> walkerRequestList = walkerRequestService.getWalkerRequestByWalkerId(walkerId);
 
         List<Notification> notificationList = walkerRequestList.stream().map(walkerRequest -> {
-            Notification notification = null;
-            notification = findNotificationByWalkerRequestId(walkerRequest.getWalkerRequestId());
+            Notification notification = findNotificationByWalkerRequestId(walkerRequest.getWalkerRequestId());
             return notification;
         }).collect(Collectors.toList());
 

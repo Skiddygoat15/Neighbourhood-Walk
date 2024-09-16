@@ -6,20 +6,20 @@ import Header from '../../components/Header';
 import TimeBar from "@/components/TimeBar";
 import ChatMessage from "@/components/ChatFigure";
 import {useEffect, useState} from "react";
-import {useRouter} from "next/router";
+import {useRouter} from "next/navigation";
 
 
 export default function Home() {
 
     const router = useRouter();
-    const { parentId } = router.query;  // 从 URL 中获取 parentId
+    // const { parentId } = router.query;
 
-    useEffect(() => {
-        if (parentId) {
-            console.log(`Parent ID: ${parentId}`);
-            // 在此处可以进行与 parentId 相关的逻辑
-        }
-    }, [parentId]);
+    // useEffect(() => {
+    //     if (parentId) {
+    //         console.log(`Parent ID: ${parentId}`);
+    //         // 在此处可以进行与 parentId 相关的逻辑
+    //     }
+    // }, [parentId]);
 
     // role 状态可以是 'parent' 或 'walker'
     const [role, setRole] = useState('parent');
@@ -52,7 +52,7 @@ export default function Home() {
 
     return (
         <div className="flex flex-col h-screen bg-gray-100 p-4">
-            <Header title="Emma-parent" navigateTo={"/notification-homepage"}/>
+            <Header title="Emma-parent" navigateTo={"/message-homepage"}/>
             <div className="flex-1 overflow-y-auto">
                 <TimeBar time={"Today"}/>
                 <RequestBox walkerId={2}/>

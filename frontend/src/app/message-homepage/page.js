@@ -3,6 +3,7 @@
 import Head from 'next/head'
 import ChattingStatus from "@/components/ChattingStatus";
 import {useRouter} from "next/navigation";
+import {useEffect} from "react";
 
 export default function Home() {
     const userId = localStorage.getItem('userId'); // 假设的用户ID，你需要根据你的应用逻辑来获取或定义这个值
@@ -18,12 +19,8 @@ export default function Home() {
         { name: 'Penelope', text: 'You: Hey! What\'s up, long time.', time: '33 min', parentId: '3'},
         { name: 'Chloe', text: 'You: Hello how are you?', time: '50 min', parentId: '4'}
     ];
-    const router = useRouter();  // 使用 useRouter
 
-    const goToNotificationPage = () => {
-        // router.push(`/notification-chat/${parentId}`);  // 使用 router.push 进行导航
-        router.push(`/message`);
-    };
+    const router = useRouter();  // 使用 useRouter
 
     return (
         <div style={{padding: 20, backgroundColor: '#fff', minHeight: '100vh'}}>

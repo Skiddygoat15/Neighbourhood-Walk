@@ -95,8 +95,20 @@ export default function Home() {
             mode: 'cors',
             cache: 'default'
         };
-        const walkerRequestId = 1;
-        const requestURL = `http://127.0.0.1:8080/Notification/findNotificationByWalkerRequestId/${walkerRequestId}`;
+
+        const userId = localStorage.getItem('userId');
+        const role = localStorage.getItem('roles')?.trim().toLowerCase();
+        console.log(`Role from storage: ${role}`);
+
+        if (role !== "walker"){
+            console.error('Not a walker, no fetch executed');
+            return; // 如果不是 walker 角色，直接返回
+        }
+        console.info("111111")
+        const walkerId = parseInt(userId, 10); // 直接将 userId 设置为 walkerId
+        console.info("Walker ID set to: " + walkerId);
+
+        const requestURL = `http://127.0.0.1:8080/Notification/findNotificationByWalkerId/${walkerId}`;
 
         fetch(requestURL, myInit)
             .then(response => {
@@ -108,6 +120,7 @@ export default function Home() {
             .then(data => {
                 // 假设 data 是数组
                 setStatusCards(data); // 设置整个返回数据为状态卡片
+                console.info("userId = "+ userId+"  role = "+role)
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
@@ -116,7 +129,7 @@ export default function Home() {
 
     return (
         <div className="flex flex-col h-screen bg-gray-100 p-4">
-            <Header title="Emma-parent" navigateTo={"/notification-homepage"}/>
+            <Header title="Emma-parent" navigateTo={"/message"}/>
             {/* 保护性检查，只有当statusCards是非空数组时，才渲染 */}
             {statusCards && statusCards.length > 0 && statusCards.map((card, index) => (
                 <StatusCard
