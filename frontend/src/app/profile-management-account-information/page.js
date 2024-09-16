@@ -33,9 +33,6 @@ export default function ProfileManagementAccountInformation() {
             <span>Preferred Name</span>
             <div className="flex items-center">
               <span>xxxx</span>
-              <button onClick={() => handleEdit('/edit/preferred-name')} className="ml-2 text-gray-500">
-                &gt;
-              </button>
             </div>
           </div>
 
@@ -50,9 +47,6 @@ export default function ProfileManagementAccountInformation() {
             <span>Phone Number</span>
             <div className="flex items-center">
               <span>+61 xxxxxx</span>
-              <button onClick={() => handleEdit('/edit/phone-number')} className="ml-2 text-gray-500">
-                &gt;
-              </button>
             </div>
           </div>
 
@@ -60,9 +54,6 @@ export default function ProfileManagementAccountInformation() {
             <span>E-mail Address</span>
             <div className="flex items-center">
               <span>xxxxxx</span>
-              <button onClick={() => handleEdit('/edit/email-address')} className="ml-2 text-gray-500">
-                &gt;
-              </button>
             </div>
           </div>
 
@@ -77,9 +68,6 @@ export default function ProfileManagementAccountInformation() {
             <span>Communication Preference</span>
             <div className="flex items-center">
               <span>xxxxxxxx</span>
-              <button onClick={() => handleEdit('/edit/communication-preference')} className="ml-2 text-gray-500">
-                &gt;
-              </button>
             </div>
           </div>
         </div>
