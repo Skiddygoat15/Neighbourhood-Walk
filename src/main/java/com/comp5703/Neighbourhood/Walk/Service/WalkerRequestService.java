@@ -5,6 +5,7 @@ import com.comp5703.Neighbourhood.Walk.Entities.Users;
 import com.comp5703.Neighbourhood.Walk.Entities.WalkerRequest;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public interface WalkerRequestService {
@@ -12,4 +13,6 @@ public interface WalkerRequestService {
     Request getRequest(long walkerRequestId);
     List<Users> getWalkersByRequestId(int requestId);
     List<Request> getRequestsByWalkerId(long walkerId);
+
+    Optional<?> getRequestDetailByRequestIdAndWalkerId(int requestId, long walkerId);
 }

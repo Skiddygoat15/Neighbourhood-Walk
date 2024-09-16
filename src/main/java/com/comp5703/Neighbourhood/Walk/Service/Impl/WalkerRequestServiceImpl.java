@@ -3,6 +3,7 @@ package com.comp5703.Neighbourhood.Walk.Service.Impl;
 import com.comp5703.Neighbourhood.Walk.Entities.Request;
 import com.comp5703.Neighbourhood.Walk.Entities.Users;
 import com.comp5703.Neighbourhood.Walk.Entities.WalkerRequest;
+import com.comp5703.Neighbourhood.Walk.Repository.RequestRepository;
 import com.comp5703.Neighbourhood.Walk.Repository.WalkerRequestRepository;
 import com.comp5703.Neighbourhood.Walk.Service.WalkerRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,9 @@ public class WalkerRequestServiceImpl implements WalkerRequestService {
 
     @Autowired
     private WalkerRequestRepository walkerRequestRepository;
+    @Autowired
+    private RequestRepository requestRepository;
+
 
     /**
      * 根据walkerId获取walkerRequestId
@@ -60,10 +64,18 @@ public class WalkerRequestServiceImpl implements WalkerRequestService {
     }
 
     @Override
-    public Optional<WalkerRequest> getWalkRequestByRequestIdAndWalkerId(int requestId, long walkerId) {
+    public Optional<?> getRequestDetailByRequestIdAndWalkerId(int requestId, long walkerId) {
         // 首先根据 Email 查找用户
         Optional<WalkerRequest> walkerRequestOptional = walkerRequestRepository.findByRequestRequestIdAndWalkerUserId(requestId, walkerId);
-        return walkerRequestRepository.findRequestsByWalkerId(walkerId);
+        if (walkerRequestOptional.isEmpty()) {
+            Optional<Request> requestOptional = requestRepository.findById(requestId);
+            if (requestOptional.isPresent()) {
+                return requestOptional;
+            } else {
+                throw new IllegalArgumentException("Request not found with id: " + requestId);
+            }
+        }
+        return walkerRequestOptional;
     }
 
 }
