@@ -93,14 +93,17 @@ public class RequestServiceImpl implements RequestService {
         if (Objects.equals(walkerRequest.getStatus(), "Accepted")){
             throw new ResourceNotFoundException("The parent has already accepted the request before.");
         }
+        if (Objects.equals(request.getStatus(), "Accepted")){
+            throw new ResourceNotFoundException("The request has been accepted by anyone before.");
+        }
+
+        walkerRequest.setStatus("Accepted");
+        walkerRequest.setWalker(usersRepository.getById(walkerId));
+        walkerRequestRepository.save(walkerRequest);
 
         request.setStatus("Accepted");
         request.setWalker(usersRepository.getById(walkerId));
         requestRepository.save(request);
-
-        // update walkerRequest's status
-        walkerRequest.setStatus("Accepted");
-        walkerRequestRepository.save(walkerRequest);
 
         return walkerRequest;
     }
@@ -121,10 +124,6 @@ public class RequestServiceImpl implements RequestService {
         walkerRequest.setStatus("Rejected");
         walkerRequestRepository.save(walkerRequest);
 
-        if (Objects.equals(request.getStatus(), "Accepted") && request.getWalker().getId() == walkerId){
-            request.setStatus("Rejected");
-            requestRepository.save(request);
-        }
         return walkerRequest;
     }
 
@@ -158,8 +157,6 @@ public class RequestServiceImpl implements RequestService {
         WalkerRequest walkerRequest = new WalkerRequest();
         walkerRequest.setRequest(requestRepository.getById(requestId));
         walkerRequest.setWalker(usersRepository.getById(walkerId));
-//        walkerRequest.setRequestId(requestId);
-//        walkerRequest.setWalkerId(walkerId);
         walkerRequest.setStatus("Applied");
         return walkerRequestRepository.save(walkerRequest);
     }

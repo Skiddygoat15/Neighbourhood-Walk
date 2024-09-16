@@ -16,6 +16,9 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * parent: addRequest => walker: AcceptRequest || RejectRequest => patent: applyRequest??
+ */
 @RestController
 @RequestMapping("/requests")
 public class RequestController {
@@ -24,9 +27,9 @@ public class RequestController {
     private RequestService requestService;
 
     //todo getRequest(), getAllRequests()
-    @GetMapping("/getRequestsByParentId/{userId}")
-    public ResponseEntity<List<Request>> getRequestsByParentId(@PathVariable Long userId) {
-        List<Request> requests = requestService.getRequestsByUserId(userId);
+    @GetMapping("/getRequestsByParentId/{parentId}")
+    public ResponseEntity<List<Request>> getRequestsByParentId(@PathVariable Long parentId) {
+        List<Request> requests = requestService.getRequestsByUserId(parentId);
         return new ResponseEntity<>(requests, HttpStatus.OK);
     }
 
@@ -76,7 +79,7 @@ public class RequestController {
      */
     @PostMapping("/{requestId}/accept")
 
-    public ResponseEntity<?> acceptRequest(@PathVariable int requestId, @RequestParam int walkerId) {
+    public ResponseEntity<?> acceptRequest(@PathVariable int requestId, @RequestParam long walkerId) {
         try {
             if (requestService.acceptWalkerRequest(requestId, walkerId) == null){
                 return new ResponseEntity<>("The request has been accepted by some parent.", HttpStatus.BAD_REQUEST);
@@ -98,7 +101,7 @@ public class RequestController {
      * @return
      */
     @PostMapping("/{requestId}/reject")
-    public ResponseEntity<?> rejectRequest(@PathVariable int requestId, @RequestParam int walkerId) {
+    public ResponseEntity<?> rejectRequest(@PathVariable int requestId, @RequestParam long walkerId) {
         if (requestService.rejectWalkerRequest(requestId, walkerId) == null){
             return new ResponseEntity<>("The request has been rejected by this parent", HttpStatus.BAD_REQUEST);
         }
@@ -117,7 +120,7 @@ public class RequestController {
 //        WalkerRequest walkerRequest = requestService.applyRequest(requestId, parentId);
 //        return new ResponseEntity<>(walkerRequest, HttpStatus.CREATED);
 
-    public ResponseEntity<?> applyRequest(@PathVariable int requestId, @RequestParam int walkerId) {
+    public ResponseEntity<?> applyRequest(@PathVariable int requestId, @RequestParam long walkerId) {
         try {
             WalkerRequest walkerRequest = requestService.applyRequest(requestId, walkerId);
             WalkerRequestDTO walkerRequestDTO = new WalkerRequestDTO();
@@ -145,13 +148,13 @@ public class RequestController {
      * @return
      */
     @PostMapping("{requestId}/cancelApply")
-    public ResponseEntity<String> cancelApply(@PathVariable int requestId, @RequestParam int walkerId) {
+    public ResponseEntity<String> cancelApply(@PathVariable int requestId, @RequestParam long walkerId) {
         requestService.cancelApply(requestId, walkerId);
         return new ResponseEntity<>("Walker request cancelled successfully.", HttpStatus.OK);
     }
 
     @DeleteMapping("/{requestId}/{walkerRequestId}/cancel")
-    public ResponseEntity<Void> cancelRequest(@PathVariable int requestId, @PathVariable int walkerRequestId) {
+    public ResponseEntity<Void> cancelRequest(@PathVariable int requestId, @PathVariable long walkerRequestId) {
         requestService.cancelRequest(requestId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
