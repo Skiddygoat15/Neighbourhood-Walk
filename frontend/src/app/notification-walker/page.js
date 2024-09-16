@@ -84,6 +84,7 @@
 import React, {useState, useEffect} from 'react';
 import StatusCard from '../../components/StatusCard';
 import Header from "../../components/Header";
+import { format } from 'date-fns';
 
 export default function Home() {
     const [statusCards, setStatusCards] = useState([]); // 初始化为空数组
@@ -176,6 +177,11 @@ export default function Home() {
             });
         },[walkerRequestId]);
 
+    // const isoString = ;
+    // const date = new Date(isoString);
+    //
+    // console.log(date.toString());
+
     return (
         <div className="flex flex-col h-screen bg-gray-100 p-4" style={{ overflowY: 'auto' }}>
             <Header title="Emma-parent" navigateTo={"/message"}/>
@@ -188,7 +194,7 @@ export default function Home() {
                     walkerId={walkerId}
                     statusPrevious={card.statusPrevious}
                     statusChanged={card.statusChanged}
-                    time={card.time}
+                    time={format(card.time, 'EEEE, MMMM do, yyyy, hh:mm:ss a')}
                 />
             ))}
         </div>

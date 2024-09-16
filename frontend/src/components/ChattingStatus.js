@@ -3,15 +3,14 @@
 import {useState} from "react";
 import {useRouter} from "next/navigation";
 
-function ChattingStatus({ name, text, time, parentId }) {
+function ChattingStatus({ name, text, time, parentId, path }) {
 
 
 
     const router = useRouter();  // 使用 useRouter
 
     const goToNotificationChatPage = () => {
-        // router.push(`/notification-chat/${parentId}`);  // 使用 router.push 进行导航
-        router.push(`/message-chat`);
+        router.push(path || `/message-chat`); // Use provided path or default to `/message-chat`
     };
 
     const myInit = {

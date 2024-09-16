@@ -52,7 +52,7 @@ export default function Home() {
 
     return (
         <div className="flex flex-col h-screen bg-gray-100 p-4">
-            <Header title="Emma-parent" navigateTo={"/message-homepage"}/>
+            <Header title="Emma-parent" navigateTo={"/message-homepage-parent"}/>
             <div className="flex-1 overflow-y-auto">
                 <TimeBar time={"Today"}/>
                 <RequestBox walkerId={2}/>
