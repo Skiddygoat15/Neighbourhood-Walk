@@ -1,7 +1,12 @@
 // components/StatusCard.js
 import React, {useState} from 'react';
 
-export default function StatusCard({ parentId, walkerId, status, time }) {
+export default function StatusCard({ notificationId, walkerRequest, statusPrevious, statusChanged, time }) {
+
+    const userId = localStorage.getItem('roles');
+    const [role, setRole] = useState(localStorage.getItem('roles'));
+    const [RequestStatus,setRequestStatus] = useState("Pending...");
+    // const [parentId, setparentId] = useState();
     const myInit = {
         method: 'GET',
         headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')},
@@ -9,9 +14,7 @@ export default function StatusCard({ parentId, walkerId, status, time }) {
         cache: 'default'
     };
 
-    const [role, setRole] = useState('parent');
-
-    const requestURL = new Request(`http://127.0.0.1:8080/WalkerRequest/getWalkerRequestByWalkerId/${walkerId}`, myInit);
+    const requestURL = new Request(`http://127.0.0.1:8080/WalkerRequest/getWalkerRequestByWalkerId/${userId}`, myInit);
     fetch(requestURL)
         .then(response => {
             if (!response.ok) {
@@ -28,8 +31,25 @@ export default function StatusCard({ parentId, walkerId, status, time }) {
             console.error('Error fetching data:', error);
         });
 
-    const [showDot, setShowDot] = useState(true);  // 初始状态为显示小红点
+    // const requestURL_parentId = new Request(`http://127.0.0.1:8080/WalkerRequest/getWalkerRequestByWalkerId/${userId}`, myInit);
+    // fetch(requestURL)
+    //     .then(response => {
+    //         if (!response.ok) {
+    //             throw new Error('Network response was not ok');
+    //         }
+    //         console.info(response.json())
+    //         return response.json();
+    //     })
+    //     .then(data => {
+    //         if (data.status === "Accepted" || data.status === "Rejected" || data.status === "Pending...") {
+    //             setRequestStatus(data.status);
+    //         }})
+    //     .catch(error => {
+    //         console.error('Error fetching data:', error);
+    //     });
 
+
+    const [showDot, setShowDot] = useState(true);  // 初始状态为显示小红点
     // 点击事件处理函数，用于隐藏小红点
     const handleClick = () => {
         setShowDot(false);  // 点击后设置状态为不显示
@@ -71,15 +91,19 @@ export default function StatusCard({ parentId, walkerId, status, time }) {
                 }}></span>
             )}
 
-            <div style={{ marginBottom: '8px' }}>
-                <strong>Parent ID:</strong> {parentId}
+            <div style={{marginBottom: '8px'}}>
+                <strong>Notification ID:</strong> {notificationId}
             </div>
-            <div style={{ marginBottom: '8px' }}>
-                <strong>Walker ID:</strong> {walkerId}
+            <div style={{marginBottom: '8px'}}>
+                <strong>WalkerRequest:</strong> {walkerRequest}
             </div>
-            <div style={{ marginBottom: '8px' }}>
-                <strong>Status: </strong>
-                <span style={getStatusStyle(status)}>{status}</span>
+            <div style={{marginBottom: '8px'}}>
+                <strong>StatusPrevious: </strong>
+                <span style={getStatusStyle(statusPrevious)}>{statusPrevious}</span>
+            </div>
+            <div style={{marginBottom: '8px'}}>
+                <strong>StatusChanged: </strong>
+                <span style={getStatusStyle(statusChanged)}>{statusChanged}</span>
             </div>
             <div>
                 <strong>Time:</strong> {time}

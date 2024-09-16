@@ -97,14 +97,14 @@ export default function Home() {
         };
 
         const userId = localStorage.getItem('userId');
-        const role = localStorage.getItem('roles')?.trim().toLowerCase();
+        const role = localStorage.getItem('roles');
         console.log(`Role from storage: ${role}`);
 
-        if (role !== "walker"){
+        if (!role.includes("walker")){
             console.error('Not a walker, no fetch executed');
             return; // 如果不是 walker 角色，直接返回
         }
-        console.info("111111")
+
         const walkerId = parseInt(userId, 10); // 直接将 userId 设置为 walkerId
         console.info("Walker ID set to: " + walkerId);
 
@@ -131,15 +131,32 @@ export default function Home() {
         <div className="flex flex-col h-screen bg-gray-100 p-4">
             <Header title="Emma-parent" navigateTo={"/message"}/>
             {/* 保护性检查，只有当statusCards是非空数组时，才渲染 */}
+
             {statusCards && statusCards.length > 0 && statusCards.map((card, index) => (
                 <StatusCard
                     key={index}
-                    parentId={card.parentId}
-                    walkerId={card.walkerId}
-                    status={card.status}
+                    notificationId={card.notificationId}
+                    walkerReuqestId={card.walkerReuqestId}
+                    statusPrevious={card.statusPrevious}
+                    statusChanged={card.statusChanged}
                     time={card.time}
                 />
             ))}
         </div>
     );
+    // {statusCards && statusCards.length > 0 && statusCards.map((card, index) => {
+    //     // 直接在 map 回调中执行 console.log
+    //     console.log('Card Details:', card);
+    //     return (
+    //         <StatusCard
+    //             key={index}
+    //             parentId={card.parentId}
+    //             walkerId={card.walkerRequest}
+    //             statusPrevious={card.statusPrevious}
+    //             statusChanged={card.statusChanged}
+    //             time={card.time}
+    //         />
+    //     );
+    // })}
 }
+
