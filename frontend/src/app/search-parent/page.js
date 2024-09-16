@@ -50,10 +50,12 @@ export default function SearchParent() {
           alert('Please log in.');
           router.push('/login');
           return;
-        } else if (response.status === 404) {
-          alert('404 Not Found');
-          return;
-        } else if (contentType && contentType.includes('application/json')) {
+        }
+        // else if (response.status === 404) {
+        //   setError('');
+        //   return;
+        // } else
+        if (contentType && contentType.includes('application/json')) {
           const errorData = await response.json();
           throw new Error(errorData.message || 'Error fetching walkers');
         } else {
