@@ -58,4 +58,12 @@ public class WalkerRequestServiceImpl implements WalkerRequestService {
     public List<Request> getRequestsByWalkerId(long walkerId) {
         return walkerRequestRepository.findRequestsByWalkerId(walkerId);
     }
+
+    @Override
+    public Optional<WalkerRequest> getWalkRequestByRequestIdAndWalkerId(int requestId, long walkerId) {
+        // 首先根据 Email 查找用户
+        Optional<WalkerRequest> walkerRequestOptional = walkerRequestRepository.findByRequestRequestIdAndWalkerUserId(requestId, walkerId);
+        return walkerRequestRepository.findRequestsByWalkerId(walkerId);
+    }
+
 }

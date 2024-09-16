@@ -4,7 +4,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation'; 
 
-export default function RequestDetails() {
+export default function RequestDetails({ params }) {
   const router = useRouter();
   const { id } = params;  // obtain dynamic route param
   const [request, setRequest] = useState(null);  // store walker details
