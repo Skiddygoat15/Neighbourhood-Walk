@@ -22,7 +22,7 @@ export default function Home() {
 
     const goToNotificationPage = () => {
         // router.push(`/notification-chat/${parentId}`);  // 使用 router.push 进行导航
-        router.push(`/notification-page`);
+        router.push(`/message`);
     };
 
     return (
@@ -43,18 +43,18 @@ export default function Home() {
                 zIndex: 1000
             }}>9:41
             </div>
-            <h1 style={{color: '#333', fontSize: '24px', margin: '20px 0'}}>Notifications</h1>
-            <button onClick={goToNotificationPage} style={{
-                padding: '8px 16px',
-                background: '#0070f3',
-                color: 'white',
-                borderRadius: '8px',
-                cursor: 'pointer',
-                border: 'none',
-                fontSize: '14px'
-            }}>
-                Go to My Notification
-            </button>
+            <h1 style={{color: '#333', fontSize: '24px', margin: '20px 0'}}>Messages</h1>
+            {/*<button onClick={goToNotificationPage} style={{*/}
+            {/*    padding: '8px 16px',*/}
+            {/*    background: '#0070f3',*/}
+            {/*    color: 'white',*/}
+            {/*    borderRadius: '8px',*/}
+            {/*    cursor: 'pointer',*/}
+            {/*    border: 'none',*/}
+            {/*    fontSize: '14px'*/}
+            {/*}}>*/}
+            {/*    Go to My Notification*/}
+            {/*</button>*/}
             <div style={{margin: '10px 20px'}}>
                 <input type="text" placeholder="Search notifications..." style={{
                     width: 'calc(100% - 20px)',
