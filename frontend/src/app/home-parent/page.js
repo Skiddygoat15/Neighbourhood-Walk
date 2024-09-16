@@ -33,7 +33,7 @@ export default function HomeParent() {
         {/* Navigation Buttons */}
         <div className="mt-8 space-y-4">
           <button
-            onClick={() => handleNavigation('/search-walker')}
+            onClick={() => handleNavigation('/search-parent')}
             className="w-full bg-white border rounded-lg p-4 text-center font-semibold"
           >
             Search Walker

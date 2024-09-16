@@ -227,7 +227,7 @@ public class UsersServiceImpl implements UsersService {
             // 如果搜索条件为空，则返回所有 Walkers
             spec = spec.and(UsersSpecifications.orderByAverageRate());
         } else {
-            // 组合 Specification 查询条件
+            // Combine Specifications
             spec = spec.and(UsersSpecifications.containsAttribute("name", searchTerm)
                             .or(UsersSpecifications.containsAttribute("surname", searchTerm))
                             .or(UsersSpecifications.containsAttribute("preferredName", searchTerm))

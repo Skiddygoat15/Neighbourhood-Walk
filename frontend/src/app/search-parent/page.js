@@ -9,8 +9,8 @@ export default function SearchParent() {
   const [distance, setDistance] = useState('');
   const [rating, setRating] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
-  const [walkers, setWalkers] = useState([]);  // 保存返回的 walkers 列表
-  const [error, setError] = useState(null);    // 用于保存错误信息
+  const [walkers, setWalkers] = useState([]);  // store walkers list
+  const [error, setError] = useState(null);    // store error message
 
   // 第一个参数：() => {} 是一个回调函数，称为副作用函数。当 React 渲染组件时，React 会执行这个函数。
   // 第二个参数：[依赖项] 是一个依赖数组，当这个数组中的变量发生变化时，useEffect 会重新执行。
@@ -48,11 +48,12 @@ export default function SearchParent() {
       if (!response.ok) {
         if (response.status === 403) {
           alert('Please log in.');
-          // router.push('/Login');
+          router.push('/login');
           return;
-        }
-
-        if (contentType && contentType.includes('application/json')) {
+        } else if (response.status === 404) {
+          alert('404 Not Found');
+          return;
+        } else if (contentType && contentType.includes('application/json')) {
           const errorData = await response.json();
           throw new Error(errorData.message || 'Error fetching walkers');
         } else {
@@ -68,7 +69,7 @@ export default function SearchParent() {
         throw new Error('Invalid response type, expected JSON');
       }
     } catch (error) {
-      console.error("Search request failed:", error);
+      console.error("Search Walkers failed:", error);
       setError(error.message || 'An unknown error occurred.');
       setWalkers([]); // 如果出错，清空walker列表
     }
@@ -80,6 +81,10 @@ export default function SearchParent() {
     if (e.key === 'Enter') {
       handleSearch(); // 当按下 Enter 键时执行搜索
     }
+  };
+
+  const handleWalkerClick = (id) => {
+    router.push(`/search-parent-walker-details/${id}`);  // 跳转到 walker 详情页，并携带 walker 的 id
   };
 
   return (
@@ -99,8 +104,24 @@ export default function SearchParent() {
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  className="flex-grow p-2 border rounded-lg w-full"
+                  className="flex-grow p-2 border rounded-lg w-full pl-10"
               />
+
+              <svg
+                  className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M21 21l-4.35-4.35M5 11a6 6 0 1112 0 6 6 0 01-12 0z"
+                />
+              </svg>
+
               {/* 清空按钮 */}
               <button
                   onClick={handleClear}
@@ -124,7 +145,7 @@ export default function SearchParent() {
 
 
         <div className="flex justify-between mb-4">
-    
+
           <div className="relative">
             <select
                 value={gender}
@@ -169,13 +190,16 @@ export default function SearchParent() {
 
         </div>
 
-
         {/* 显示返回的 walker 列表 */}
         <div className="space-y-4 mt-4">
           {walkers.length > 0 ? (
               walkers.map((walker) => (
-                  <div key={walker.id} className="border rounded-lg p-4 flex items-center space-x-4">
+                  <div key={walker.id}
+                       className="border rounded-lg p-4 flex items-center space-x-4 cursor-pointer"
+                       onClick={() => handleWalkerClick(walker.id)}>
+
                     <div className="w-16 h-16 bg-gray-200 rounded-lg"></div>
+
                     <div>
                       <p className="font-semibold">Walker Name: {`${walker.name} ${walker.surname}`}</p>
                       <p>Gender: {walker.gender}</p>

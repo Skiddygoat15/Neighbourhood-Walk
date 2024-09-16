@@ -1,10 +1,47 @@
 // src/app/Search-Walker-request-information-details/page.js
-"use client"; 
+"use client";
 
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation'; 
 
 export default function RequestDetails() {
-  const router = useRouter(); 
+  const router = useRouter();
+  const { id } = params;  // obtain dynamic route param
+  const [request, setRequest] = useState(null);  // store walker details
+  const [error, setError] = useState(null);    // store error message
+  const getRequestByIdAPI = `http://127.0.0.1:8080/`;
+
+  // get request details info by request's id
+  useEffect(() => {
+    if (id) {
+      fetchRequestDetails();
+    }
+  }, [id]);
+
+  const fetchRequestDetails = async () => {
+    try {
+      const response = await fetch(getRequestByIdAPI, {
+        method: 'get',
+        credentials: 'include',
+        headers: {
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to fetch request details');
+      }
+
+      const data = await response.json();
+      setRequest(data);  // store returned request info
+    } catch (err) {
+      setError(err.message);
+    }
+  };
+
+  const handleBack = () => {
+    router.push(`/search-walker`);  // back to search requests page
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-between">

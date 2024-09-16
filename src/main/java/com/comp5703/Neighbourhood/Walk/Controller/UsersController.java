@@ -47,6 +47,11 @@ public class UsersController {
         return new ResponseEntity<>(usersService.getAllUsers(), HttpStatus.OK);
     }
 
+    @GetMapping("/getUserById/{id}")
+    public ResponseEntity<Users> getUserById(@PathVariable long id) {
+        return new ResponseEntity<>(usersService.getUserById(id), HttpStatus.OK);
+    }
+
     //byron
     @GetMapping("/searchWalkers")
     public ResponseEntity<?> searchWalkers(@RequestParam String searchTerm,
