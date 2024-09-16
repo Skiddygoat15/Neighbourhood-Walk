@@ -17,6 +17,21 @@ public class UsersController {
     @Autowired
     UsersService usersService;
 
+    @GetMapping("/getUserById/{userId}")
+    public ResponseEntity<Users> getUserById(@PathVariable long userId){
+        Users user = usersService.getUserById(userId);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @GetMapping("/userNamesById/{userId}")
+    public ResponseEntity<Map<String, String>> getUserNamesById(@PathVariable long userId) {
+        Optional<Map<String, String>> userMap = usersService.getUserNamesById(userId);
+
+        return userMap
+                .map(map -> new ResponseEntity<>(map, HttpStatus.OK))  // 返回 name 和 preferredName
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));  // 如果用户不存在，返回 404
+    }
+
     @GetMapping("/email/{email}")
     public ResponseEntity<Users> getUsersByEmail(@PathVariable String email) {
         Optional<Users> user = usersService.getUsersByEmail(email);

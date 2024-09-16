@@ -10,11 +10,9 @@ import com.comp5703.Neighbourhood.Walk.Repository.WalkerRequestRepository;
 import com.comp5703.Neighbourhood.Walk.Service.CommentService;
 import com.comp5703.Neighbourhood.Walk.Utils.TwoTuple;
 import com.comp5703.Neighbourhood.Walk.domain.dto.RateCommentDTO;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.Tuple;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -32,7 +30,6 @@ public class CommentServiceImpl implements CommentService {
     private UsersRepository usersRepository;
 
     @Override
-
     public Comment saveComment(Comment comment){
 
         Request request = requestRepository.getById(comment.getRequest().getRequestId());

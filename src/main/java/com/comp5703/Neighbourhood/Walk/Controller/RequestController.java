@@ -16,9 +16,6 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
-/**
- * parent: addRequest => walker: AcceptRequest || RejectRequest => patent: applyRequest??
- */
 @RestController
 @RequestMapping("/requests")
 public class RequestController {
@@ -28,8 +25,8 @@ public class RequestController {
 
     //todo getRequest(), getAllRequests()
     @GetMapping("/getRequestsByParentId/{userId}")
-    public ResponseEntity<List<Request>> getRequestsByParentId(@PathVariable Long parentId) {
-        List<Request> requests = requestService.getRequestsByUserId(parentId);
+    public ResponseEntity<List<Request>> getRequestsByParentId(@PathVariable Long userId) {
+        List<Request> requests = requestService.getRequestsByUserId(userId);
         return new ResponseEntity<>(requests, HttpStatus.OK);
     }
 
@@ -78,6 +75,7 @@ public class RequestController {
      * @return
      */
     @PostMapping("/{requestId}/accept")
+
     public ResponseEntity<?> acceptRequest(@PathVariable int requestId, @RequestParam int walkerId) {
         try {
             if (requestService.acceptWalkerRequest(requestId, walkerId) == null){
@@ -119,7 +117,7 @@ public class RequestController {
 //        WalkerRequest walkerRequest = requestService.applyRequest(requestId, parentId);
 //        return new ResponseEntity<>(walkerRequest, HttpStatus.CREATED);
 
-    public ResponseEntity<?> applyRequest(@PathVariable int requestId, @RequestParam long walkerId) {
+    public ResponseEntity<?> applyRequest(@PathVariable int requestId, @RequestParam int walkerId) {
         try {
             WalkerRequest walkerRequest = requestService.applyRequest(requestId, walkerId);
             WalkerRequestDTO walkerRequestDTO = new WalkerRequestDTO();
@@ -147,7 +145,7 @@ public class RequestController {
      * @return
      */
     @PostMapping("{requestId}/cancelApply")
-    public ResponseEntity<String> cancelApply(@PathVariable int requestId, @RequestParam long walkerId) {
+    public ResponseEntity<String> cancelApply(@PathVariable int requestId, @RequestParam int walkerId) {
         requestService.cancelApply(requestId, walkerId);
         return new ResponseEntity<>("Walker request cancelled successfully.", HttpStatus.OK);
     }

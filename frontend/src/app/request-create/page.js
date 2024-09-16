@@ -1,6 +1,6 @@
 "use client";
 
-import {useEffect, useState} from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function WalkRequestManagementParent() {
@@ -13,27 +13,8 @@ export default function WalkRequestManagementParent() {
   // const [details, setDetails] = useState('');
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [parentId, setParentId] = useState();
-
-  useEffect(() => {
-    // 从 localStorage 获取 userId 并更新 parentId
-    const storedUserId = localStorage.getItem('userId');
-    if (storedUserId) {
-      setParentId(storedUserId);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (parentId) {
-      setSendBody((prevSendBody) => ({
-        ...prevSendBody,
-        parent: { id: parentId }
-      }));
-    }
-  }, [parentId]);
-
   const [sendBody, setSendBody] = useState({
-    parent: {id: parentId},
+    parent: {id: 2},
     publishDate: new Date(),
     startTime: new Date(),
     arriveTime: new Date(),
@@ -42,10 +23,10 @@ export default function WalkRequestManagementParent() {
     details: ''
   });
 
+  const addRequestAPI = `http://127.0.0.1:8080/requests`;
+
 
   const handlePublish = () => {
-    console.log('UserId: ', parentId);
-    const addRequestAPI = `http://127.0.0.1:8080/requests`;
     setSendBody((prevSendBody) => ({
       ...prevSendBody,  // keep other attributes same
       startTime: combineDateAndTime(date, departureTime),
@@ -97,8 +78,6 @@ export default function WalkRequestManagementParent() {
         })
         .then(data => {
           console.log("post request successful", data)
-          alert("post request successful")
-          router.push('/request-my-request')
           // setContributions(data.data.filter(item =>
           //     item.status === "Pending" && item.action !== "DeleteCharacter"));
           // setLoading(false);
