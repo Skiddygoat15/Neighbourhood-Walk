@@ -2,17 +2,63 @@
 
 import { useRouter } from 'next/navigation';
 import Image from "next/image";
+import { useEffect, useState } from 'react';
 
 export default function HomeParent() {
   const router = useRouter();
+
   const handleNavigation = (path) => {
     router.push(path);
   };
 
+  const [name, setName] = useState('');
+  const [preferredName, setPreferredName] = useState('');
+  const [greeting, setGreeting] = useState('');
+
+  useEffect(() => {
+    // 从localStorage获取name和preferredName
+    const storedName = localStorage.getItem('name') || 'Guest'; // 默认值为 'Guest'
+    const storedPreferredName = localStorage.getItem('preferredName') || null;
+    setName(storedName);
+    setPreferredName(storedPreferredName);
+
+    // 获取系统当前时间并设置问候语
+    const currentTime = new Date();
+    const currentHour = currentTime.getHours();
+
+    if (currentHour >= 6 && currentHour < 12) {
+      if (!storedPreferredName || storedPreferredName === 'null') {
+        setGreeting(`Good morning, ${storedName}!`);
+      } else {
+        setGreeting(`Good morning, ${storedPreferredName}!`);
+      }
+    } else if (currentHour >= 12 && currentHour < 17) {
+      if (!storedPreferredName || storedPreferredName === 'null') {
+        setGreeting(`Good afternoon, ${storedName}!`);
+      } else {
+        setGreeting(`Good afternoon, ${storedPreferredName}!`);
+      }
+    } else if (currentHour >= 17 && currentHour < 24) {
+      if (!storedPreferredName || storedPreferredName === 'null') {
+        setGreeting(`Good evening, ${storedName}!`);
+      } else {
+        setGreeting(`Good evening, ${storedPreferredName}!`);
+      }
+    } else {
+      if (!storedPreferredName || storedPreferredName === 'null') {
+        setGreeting(`Hi ${storedName}, It's already midnight!`);
+        console.log("preferredName == null")
+      } else {
+        setGreeting(`Hi ${storedPreferredName}, It's already midnight!`);
+        console.log("preferredName != null")
+      }
+    }
+  }, []);
+
   return (
       <main className="min-h-screen bg-white flex flex-col items-center">
         <div className="mt-4 text-center">
-          <h1 className="text-lg font-semibold">Good morning, Emma! ☀️</h1>
+          <h1 className="text-lg font-semibold">{greeting}</h1>
         </div>
 
         {/* Stars and History */}
@@ -42,7 +88,7 @@ export default function HomeParent() {
                 onClick={() => handleNavigation('/pre-meet-parent')}
                 className="w-full bg-white border rounded-lg p-4 text-center font-semibold"
             >
-              Messages
+              Arrange Pre-meet
             </button>
             <button
                 onClick={() => handleNavigation('/request-create')}
@@ -53,31 +99,6 @@ export default function HomeParent() {
           </div>
         </div>
 
-        {/* Bottom Navigation */}
-        <nav className="fixed bottom-0 left-0 right-0 bg-white border-t">
-          <div className="fixed bottom-0 w-full bg-white flex justify-between py-2 border-t shadow-md">
-            <button onClick={() => router.push('/home')} className="flex-1 flex flex-col items-center text-center">
-              <Image src="/Navigation-icons/home.png" alt="Home" width={24} height={24}/>
-              <span className="text-xs mt-1">Home</span>
-            </button>
-            <button onClick={() => router.push('/search')} className="flex-1 flex flex-col items-center text-center">
-              <Image src="/Navigation-icons/lsearch.png" alt="Search" width={24} height={24}/>
-              <span className="text-xs mt-1">Search</span>
-            </button>
-            <button onClick={() => router.push('/messages')} className="flex-1 flex flex-col items-center text-center">
-              <Image src="/Navigation-icons/envelope.png" alt="Messages" width={24} height={24}/>
-              <span className="text-xs mt-1">Messages</span>
-            </button>
-            <button onClick={() => router.push('/request')} className="flex-1 flex flex-col items-center text-center">
-              <Image src="/Navigation-icons/request.png" alt="Request" width={24} height={24}/>
-              <span className="text-xs mt-1">Request</span>
-            </button>
-            <button onClick={() => router.push('/profile')} className="flex-1 flex flex-col items-center text-center">
-              <Image src="/Navigation-icons/profile.png" alt="Profile" width={24} height={24}/>
-              <span className="text-xs mt-1">Profile</span>
-            </button>
-          </div>
-      </nav>
 </main>
 )
   ;
