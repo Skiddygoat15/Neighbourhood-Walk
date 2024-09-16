@@ -59,6 +59,8 @@ export default function HomeParent() {
       <main className="min-h-screen bg-white flex flex-col items-center">
         <div className="mt-4 text-center">
           <h1 className="text-lg font-semibold">{greeting}</h1>
+          <div className="w-16 h-0.5 bg-black opacity-0 mx-auto mt-1"></div>
+          <p className="text-base font-normal text-opacity-60 text-black">You are logged in as a parent</p>
         </div>
 
         {/* Stars and History */}
