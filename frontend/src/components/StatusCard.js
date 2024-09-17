@@ -1,7 +1,7 @@
 // components/StatusCard.js
 import React, {useState} from 'react';
 
-export default function StatusCard({ parentId, walkerId, statusPrevious, statusChanged, time }) {
+export default function StatusCard({ title, statusChanged, time }) {
 
     const userId = localStorage.getItem('userId');
     const [role, setRole] = useState(localStorage.getItem('roles'));
@@ -72,23 +72,26 @@ export default function StatusCard({ parentId, walkerId, statusPrevious, statusC
                     backgroundColor: 'red',  // 小红点为红色
                 }}></span>
             )}
-
             <div style={{marginBottom: '8px'}}>
-                <strong>Parent ID:</strong> {parentId}
+                <strong>{title}</strong>
             </div>
+            {/*<div style={{marginBottom: '8px'}}>*/}
+            {/*    <strong>ParentSurname:</strong> {parentSurname}*/}
+            {/*</div>*/}
+            {/*<div style={{marginBottom: '8px'}}>*/}
+            {/*    <strong>Walker ID:</strong> {walkerId}*/}
+            {/*</div>*/}
+            {/*<div style={{marginBottom: '8px'}}>*/}
+            {/*    <strong>StatusPrevious: </strong>*/}
+            {/*    <span style={getStatusStyle(statusPrevious)}>{statusPrevious}</span>*/}
+            {/*</div>*/}
             <div style={{marginBottom: '8px'}}>
-                <strong>Walker ID:</strong> {walkerId}
-            </div>
-            <div style={{marginBottom: '8px'}}>
-                <strong>StatusPrevious: </strong>
-                <span style={getStatusStyle(statusPrevious)}>{statusPrevious}</span>
-            </div>
-            <div style={{marginBottom: '8px'}}>
-                <strong>StatusChanged: </strong>
+                {/*<strong>StatusChanged: </strong>*/}
                 <span style={getStatusStyle(statusChanged)}>{statusChanged}</span>
             </div>
             <div>
-                <strong>Time:</strong> {time}
+                {/*<strong>Time:</strong> */}
+                {time}
             </div>
         </div>
     );

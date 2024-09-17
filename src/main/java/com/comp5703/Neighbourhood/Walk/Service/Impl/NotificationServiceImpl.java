@@ -1,6 +1,8 @@
 package com.comp5703.Neighbourhood.Walk.Service.Impl;
 
 import com.comp5703.Neighbourhood.Walk.Entities.Notification;
+import com.comp5703.Neighbourhood.Walk.Entities.Request;
+import com.comp5703.Neighbourhood.Walk.Entities.Users;
 import com.comp5703.Neighbourhood.Walk.Entities.WalkerRequest;
 import com.comp5703.Neighbourhood.Walk.Repository.NotificationRepository;
 import com.comp5703.Neighbourhood.Walk.Repository.WalkerRequestRepository;
@@ -35,32 +37,30 @@ public class NotificationServiceImpl implements NotificationService {
 
     @Override
     public Notification addNotification(Notification notification) {
-        WalkerRequest walkerRequest = walkerRequestRepository.getById(notification.getWalkerRequest().getWalkerRequestId());
-        notification.setWalkerRequest(walkerRequest);
 
+        WalkerRequest  walkerRequest = walkerRequestRepository.getById(notification.getWalkerRequest().getWalkerRequestId());
+        System.out.println(notification.getWalkerRequest());
+        if(notification.getWalkerRequest().getWalker() == null){
+            notification.getWalkerRequest().setWalker(walkerRequest.getWalker());
+        }
+        System.out.println(notification.getWalkerRequest());
         // 保存通知到数据库
-        Notification savedNotification = null;
-        try {
-            savedNotification = notificationRepository.save(notification);
-        } catch (Exception e) {
-            throw new RuntimeException("The status of request can not change once it was decided.");
-        } finally {
-        }
+        Notification savedNotification = notificationRepository.save(notification);
 
-        // 将 Notification 中的字段转换为前端需要的字段名
-        Map<String, Object> notificationData = new HashMap<>();
-        notificationData.put("parentId", walkerRequest.getRequest().getParent().getId());  // 假设 walkerRequest 有 getParentId 方法
-        notificationData.put("walkerId", walkerRequest.getWalker().getId());  // 假设 walkerRequest 有 getWalkerId 方法
-        notificationData.put("statusPrevious", savedNotification.getStatusPrevious());// 假设 walkerRequest 有 getWalkerId 方法
-        notificationData.put("statusChanged", savedNotification.getStatusChanged()); // 使用 statusChanged 作为 status
-        notificationData.put("time", savedNotification.getTime().toString()); // 使用创建时间
-
-        // 通过 WebSocket 推送通知消息给客户端
-        try {
-            notificationWebSocketHandler.broadcast(notificationData);;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        // 将 Notification 中的字段转换为前端需要的字段名
+//        Map<String, Object> notificationData = new HashMap<>();
+//        notificationData.put("parentId", walkerRequest.getRequest().getParent().getId());  // 假设 walkerRequest 有 getParentId 方法
+//        notificationData.put("walkerId", walkerRequest.getWalker().getId());  // 假设 walkerRequest 有 getWalkerId 方法
+//        notificationData.put("statusPrevious", savedNotification.getStatusPrevious());// 假设 walkerRequest 有 getWalkerId 方法
+//        notificationData.put("statusChanged", savedNotification.getStatusChanged()); // 使用 statusChanged 作为 status
+//        notificationData.put("time", savedNotification.getTime().toString()); // 使用创建时间
+//
+//        // 通过 WebSocket 推送通知消息给客户端
+//        try {
+//            notificationWebSocketHandler.broadcast(notificationData);;
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 
         return savedNotification;
     }
@@ -77,7 +77,8 @@ public class NotificationServiceImpl implements NotificationService {
         if (notification != null){
             return notificationRepository.findAllByWalkerRequest_WalkerRequestId(walkerRequestId);
         }else {
-            throw new ResourceNotFoundException("Does not have the notification with it's walkerRequestId is " + walkerRequestId);
+//            throw new ResourceNotFoundException("Does not have the notification with it's walkerRequestId is " + walkerRequestId);
+            return null;
         }
     }
 
@@ -93,4 +94,21 @@ public class NotificationServiceImpl implements NotificationService {
        return notificationList;
     }
 
+    @Override
+    public List<Notification> findNotificationByRequestId(int requestId) {
+        List<WalkerRequest> walkerRequestList = walkerRequestService.getWalkerRequestByRequestId(requestId);
+        List<Notification> notificationList = walkerRequestList.stream().map(walkerRequest -> {
+            Notification notification = notificationRepository.findAllByWalkerRequest_WalkerRequestId(walkerRequest.getWalkerRequestId());
+            return notification;
+        }).collect(Collectors.toList());
+
+        return notificationList;
+    }
+
+    @Override
+    public Users findWalkerByNotification(long notificationId) {
+        Notification notification = notificationRepository.findById(notificationId).get();
+        WalkerRequest walkerRequest = notification.getWalkerRequest();
+        return walkerRequest.getWalker();
+    }
 }

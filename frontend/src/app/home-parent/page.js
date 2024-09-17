@@ -98,10 +98,15 @@ export default function HomeParent() {
             >
               Request
             </button>
+
+            <button onClick={() => handleNavigation('/notification-parent')}
+                    className="w-full bg-white border rounded-lg p-4 text-center font-semibold">
+              Notification
+            </button>
           </div>
         </div>
 
-</main>
-)
-  ;
+      </main>
+  )
+      ;
 }
