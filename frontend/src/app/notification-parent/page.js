@@ -118,13 +118,18 @@ export default function Home() {
                 return response.json();})
             .then(data => {
                 // console.info(data);
+                // console.info(data.map(item => item.requestId));
                 setrequestIds(data.map(item => item.requestId));
             })// 设置整个返回数据为状态卡片
             .catch(error => {
                 console.error('Error fetching data:', error);});
         },[parentId]);
 
+    useEffect(() => {
+        console.log("Current requestIds:", requestIds); // 每次 Notifications 更新时输出当前值
+    }, [requestIds]); // 监控 Notifications 变化
 
+// =======检查到这里了
     function fetchData(requestId) {
         return fetch(`http://127.0.0.1:8080/Notification/findNotificationByRequestId/${requestId}`, {
             method: 'GET',
@@ -137,15 +142,22 @@ export default function Home() {
                     throw new Error(`Failed to fetch data for requestId ${requestId}`);
                 }
                 return response.json();
+            }).then(data => {
+                // console.log(`Data received for requestId ${requestId}:`, data);
+                return data;
+            })
+            .catch(error => {
+                console.error(`Error fetching data for requestId ${requestId}:`, error);
             });
     }
 
     function fetchAllData(requestIds) {
+        // console.log("Request IDs to fetch data for:", requestIds);
         const promises = requestIds.map(fetchData); // 创建一个promise数组
         Promise.all(promises)
             .then(results => {
-                // Flatten results if necessary and set to state
                 setNotifications(results.flat());
+                // console.info("Notifications updated:", results.flat()); // 检查 Notifications 是否正确更新
             })
             .catch(error => {
                 console.error('Error fetching all data:', error);
@@ -158,8 +170,12 @@ export default function Home() {
         }
     }, [requestIds]); // 当 requestIds 更新时，再次调用 fetchAllData
 
+    // useEffect(() => {
+    //     console.log("Current Notifications:", Notifications); // 每次 Notifications 更新时输出当前值
+    // }, [Notifications]); // 监控 Notifications 变化
 
-//获取notification对应walker的surname
+
+    //获取notification对应walker的surname
     function fetchWalkerByNotification(notificationId) {
         return fetch(`http://127.0.0.1:8080/Notification/findWalkerByNotification/${notificationId}`, {
             method: 'GET',
@@ -178,27 +194,55 @@ export default function Home() {
                 console.error('Error fetching walker data:', error);
             },[notificationId]);
     }
-//
-    function fetchAllData(requestIds) {
-        const promises = Notifications.map(notification =>
-            fetchData(notification).then(notification =>
-                fetchWalkerByNotification(notification.id).then(surname => ({
-                    ...notification,
-                    walkerSurname: surname
-                }))
-            )
-        );
+
+    // function fetchAllWalkers() {
+    //     console.log("Fetching all data for current Notifications:", Notifications);
+    //     const promises = Notifications.map(notification =>
+    //         fetchData(notification).
+    //         then(notification =>
+    //             fetchWalkerByNotification(notification.notificationId).
+    //             then(surname => ({
+    //                 ...notification,
+    //                 walkerSurname: surname
+    //             }))
+    //         )
+    //     );
+    //     Promise.all(promises)
+    //         .then(results => {
+    //             console.log("All notifications with walker data:", results);
+    //             setNotifications(results);
+    //         })
+    //         .catch(error => {
+    //             console.error('Error fetching all data:', error);
+    //         });
+    // }
+    function fetchAllWalkers() {
+        console.log("Fetching all data for current Notifications:", Notifications); // 输出当前 Notifications
+        const promises = Notifications.map(notification => {
+            // console.log(`Fetching walker data for notificationId: ${notification.notificationId}`); // 输出当前处理的 notificationId
+            return fetchWalkerByNotification(notification.notificationId)
+                .then(surname => {
+                    // console.log(`Walker surname for notificationId ${notification.notificationId}:`, surname); // 输出获取到的 walker 姓氏
+                    return {
+                        ...notification,
+                        walkerSurname: surname
+                    };
+                });
+        });
+
+        // 等待所有异步操作完成
         Promise.all(promises)
             .then(results => {
-                setNotifications(results);
+                console.log("All notifications with walker data:", results); // 输出合并后的通知数据
+                setNotifications(results); // 更新状态
             })
             .catch(error => {
-                console.error('Error fetching all data:', error);
+                console.error('Error fetching all data:', error); // 错误处理
             });
     }
 
     useEffect(() => {
-        fetchAllData();
+        fetchAllWalkers();
     },[Notifications.length]); // 依赖于Notifications数组的变化
 
     useEffect(() => {
