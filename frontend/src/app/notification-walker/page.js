@@ -94,10 +94,10 @@ export default function Home() {
     const userId = localStorage.getItem('userId');
     const role = localStorage.getItem('roles');
     // const token = localStorage.getItem('token');
-    if (!role.includes("walker")) {
-        console.error('Not a walker, no fetch executed');
-        return; // 如果不是 walker 角色，直接返回
-    }
+    // if (!role.includes("walker")) {
+    //     console.error('Not a walker, no fetch executed');
+    //     return; // 如果不是 walker 角色，直接返回
+    // }
     const walkerId = parseInt(userId, 10); // 直接将 userId 设置为 walkerId
     console.info("Walker ID set to: " + walkerId);
     console.info("Walker role set to: " + role);

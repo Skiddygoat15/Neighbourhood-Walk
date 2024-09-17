@@ -1,7 +1,7 @@
 // components/StatusCard.js
 import React, {useState} from 'react';
 
-export default function StatusCard({ title, statusChanged, time }) {
+export default function StatusCard({ title, statusChanged, time}) {
 
     const userId = localStorage.getItem('userId');
     const [role, setRole] = useState(localStorage.getItem('roles'));
@@ -93,6 +93,10 @@ export default function StatusCard({ title, statusChanged, time }) {
                 {/*<strong>Time:</strong> */}
                 {time}
             </div>
+            {/*<button onClick={onDelete} className="delete-button"*/}
+            {/*        style={{position: 'absolute', right: '10px', top: '10px'}}>*/}
+            {/*    X*/}
+            {/*</button>*/}
         </div>
     );
 }

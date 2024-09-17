@@ -92,10 +92,10 @@ export default function Home() {
     const userId = localStorage.getItem('userId');
     const role = localStorage.getItem('roles');
 
-    if (!role.includes("parent")) {
-        console.error('Not a parent, no fetch executed');
-        return; // 如果不是 walker 角色，直接返回
-    }
+    // if (!role.includes("parent")) {
+    //     console.error('Not a parent, no fetch executed');
+    //     return; // 如果不是 walker 角色，直接返回
+    // }
     const parentId = parseInt(userId, 10); // 直接将 userId 设置为 parentId
 
     // console.info("parentId ID set to: " + parentId);
@@ -260,6 +260,7 @@ export default function Home() {
                     title = {"Application Status Change"}
                     statusChanged={`${notification.walkerSurname} has applied your application!`}
                     time={format(notification.time, 'EEEE, MMMM do, yyyy, hh:mm:ss a')}
+                    // onDelete={() => handleDelete(index)}  // 将删除函数传递给 StatusCard
                 />
             ))}
         </div>
