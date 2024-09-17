@@ -1,92 +1,131 @@
 "use client";
 
 import { useRouter } from 'next/navigation';
+import Image from "next/image";
+import { useEffect, useState } from 'react';
 
 export default function HomeParent() {
   const router = useRouter();
+
   const handleNavigation = (path) => {
     router.push(path);
   };
 
+  const handleLogOut = () => {
+    // 清除localStorage中的用户信息
+    localStorage.removeItem('userId');
+    localStorage.removeItem('token');
+    localStorage.removeItem('roles');
+    localStorage.removeItem('preferredName');
+    localStorage.removeItem('name');
+    localStorage.removeItem('currentRole');
+    localStorage.removeItem('clickedRequest');
+
+    // 将isLogin和isAdmin设置为false
+    localStorage.setItem('isLogin', 'false');
+    localStorage.setItem('isAdmin', 'false');
+
+    // 重定向到登录页面
+    window.location.href = `/registration-login-coverpage`;
+  };
+
+  const [name, setName] = useState('');
+  const [preferredName, setPreferredName] = useState('');
+  const [greeting, setGreeting] = useState('');
+
+  useEffect(() => {
+    // 从localStorage获取name和preferredName
+    const storedName = localStorage.getItem('name') || 'Guest'; // 默认值为 'Guest'
+    const storedPreferredName = localStorage.getItem('preferredName') || null;
+    setName(storedName);
+    setPreferredName(storedPreferredName);
+
+    // 获取系统当前时间并设置问候语
+    const currentTime = new Date();
+    const currentHour = currentTime.getHours();
+
+    if (currentHour >= 6 && currentHour < 12) {
+      if (!storedPreferredName || storedPreferredName === 'null') {
+        setGreeting(`Good morning, ${storedName}!`);
+      } else {
+        setGreeting(`Good morning, ${storedPreferredName}!`);
+      }
+    } else if (currentHour >= 12 && currentHour < 17) {
+      if (!storedPreferredName || storedPreferredName === 'null') {
+        setGreeting(`Good afternoon, ${storedName}!`);
+      } else {
+        setGreeting(`Good afternoon, ${storedPreferredName}!`);
+      }
+    } else if (currentHour >= 17 && currentHour < 24) {
+      if (!storedPreferredName || storedPreferredName === 'null') {
+        setGreeting(`Good evening, ${storedName}!`);
+      } else {
+        setGreeting(`Good evening, ${storedPreferredName}!`);
+      }
+    } else {
+      if (!storedPreferredName || storedPreferredName === 'null') {
+        setGreeting(`Hi ${storedName}, It's already midnight!`);
+        console.log("preferredName == null")
+      } else {
+        setGreeting(`Hi ${storedPreferredName}, It's already midnight!`);
+        console.log("preferredName != null")
+      }
+    }
+  }, []);
+
   return (
-    <main className="min-h-screen bg-white flex flex-col items-center">
-      <div className="mt-4 text-center">
-        <h1 className="text-lg font-semibold">Good morning, Emma! ☀️</h1>
-      </div>
+      <main className="min-h-screen bg-white flex flex-col items-center">
+        <div className="mt-4 text-center">
+          <h1 className="text-lg font-semibold">{greeting}</h1>
+          <div className="w-16 h-0.5 bg-black opacity-0 mx-auto mt-1"></div>
+          <p className="text-base font-normal text-opacity-60 text-black">You are logged in as a parent</p>
+        </div>
 
-      {/* Stars and History */}
-      <div className="mt-8 w-full px-6">
-        <div className="grid grid-cols-2 gap-4">
-          <div className="bg-white border rounded-lg p-4 text-center">
-            <p className="font-semibold">Stars</p>
-            <p className="text-xl">⭐ -/5</p>
+        {/* Stars and History */}
+        <div className="mt-8 w-full px-6">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="bg-white border rounded-lg p-4 text-center">
+              <p className="font-semibold">Stars</p>
+              <p className="text-xl">⭐ -/5</p>
+            </div>
+            <div
+                className="bg-white border rounded-lg p-4 text-center cursor-pointer"
+                onClick={() => handleNavigation('/home-history-request-parent')}
+            >
+              <p className="font-semibold">History</p>
+            </div>
           </div>
-          <div
-            className="bg-white border rounded-lg p-4 text-center cursor-pointer"
-            onClick={() => handleNavigation('/home-history-request-parent')}
-          >
-            <p className="font-semibold">History</p>
+
+          {/* Navigation Buttons */}
+          <div className="mt-8 space-y-4">
+            <button
+                onClick={() => handleNavigation('/search-parent')}
+                className="w-full bg-white border rounded-lg p-4 text-center font-semibold"
+            >
+              Search Walker
+            </button>
+            <button
+                onClick={() => handleNavigation('/pre-meet-parent')}
+                className="w-full bg-white border rounded-lg p-4 text-center font-semibold"
+            >
+              Arrange Pre-meet
+            </button>
+            <button
+                onClick={() => handleNavigation('/request-create')}
+                className="w-full bg-white border rounded-lg p-4 text-center font-semibold"
+            >
+              Request
+            </button>
+            <button
+                onClick={() => handleLogOut()}
+                className="w-full bg-white border rounded-lg p-4 text-center font-semibold"
+            >
+              Log out
+            </button>
           </div>
         </div>
 
-        {/* Navigation Buttons */}
-        <div className="mt-8 space-y-4">
-          <button
-            onClick={() => handleNavigation('/search-parent')}
-            className="w-full bg-white border rounded-lg p-4 text-center font-semibold"
-          >
-            Search Walker
-          </button>
-          <button
-            onClick={() => handleNavigation('/pre-meet-parent')}
-            className="w-full bg-white border rounded-lg p-4 text-center font-semibold"
-          >
-            Pre-meet
-          </button>
-          <button
-            onClick={() => handleNavigation('/request-create')}
-            className="w-full bg-white border rounded-lg p-4 text-center font-semibold"
-          >
-            Request
-          </button>
-        </div>
-      </div>
-
-      {/* Bottom Navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t">
-        <div className="flex justify-around py-2">
-          <button className="text-center" onClick={() => handleNavigation('/')}>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3v18h18V3H3z" />
-            </svg>
-            <span className="text-xs">Home</span>
-          </button>
-          <button className="text-center" onClick={() => handleNavigation('/search')}>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v8m-4-4h8" />
-            </svg>
-            <span className="text-xs">Search</span>
-          </button>
-          <button className="text-center" onClick={() => handleNavigation('/messages')}>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 10H7v10h14V10z" />
-            </svg>
-            <span className="text-xs">Messages</span>
-          </button>
-          <button className="text-center" onClick={() => handleNavigation('/request')}>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8h18M3 16h18" />
-            </svg>
-            <span className="text-xs">Request</span>
-          </button>
-          <button className="text-center" onClick={() => handleNavigation('/profile')}>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 14l-4-4-4 4" />
-            </svg>
-            <span className="text-xs">Profile</span>
-          </button>
-        </div>
-      </nav>
-    </main>
-  );
+      </main>
+  )
+      ;
 }

@@ -1,8 +1,10 @@
 package com.comp5703.Neighbourhood.Walk.Service.Impl;
 
+import com.comp5703.Neighbourhood.Walk.Entities.Notification;
 import com.comp5703.Neighbourhood.Walk.Entities.Request;
 import com.comp5703.Neighbourhood.Walk.Entities.Users;
 import com.comp5703.Neighbourhood.Walk.Entities.WalkerRequest;
+import com.comp5703.Neighbourhood.Walk.Repository.NotificationRepository;
 import com.comp5703.Neighbourhood.Walk.Repository.RequestRepository;
 import com.comp5703.Neighbourhood.Walk.Repository.UsersRepository;
 import com.comp5703.Neighbourhood.Walk.Repository.WalkerRequestRepository;
@@ -30,6 +32,8 @@ public class RequestServiceImpl implements RequestService {
     private WalkerRequestRepository walkerRequestRepository;
     @Autowired
     private UsersRepository usersRepository;
+    @Autowired
+    private NotificationServiceImpl notificationService;
 
     @Override
     public List<Request> getRequestsByUserId(Long userId) {
@@ -90,18 +94,24 @@ public class RequestServiceImpl implements RequestService {
         Request request = requestRepository.findById(requestId)
                 .orElseThrow(() -> new ResourceNotFoundException("Request not found with id: " + requestId));
 
+        String previousStatus = walkerRequest.getStatus();
         if (Objects.equals(walkerRequest.getStatus(), "Accepted")){
             throw new ResourceNotFoundException("The parent has already accepted the request before.");
         }
+        if (Objects.equals(request.getStatus(), "Accepted")){
+            throw new ResourceNotFoundException("The request has been accepted by anyone before.");
+        }
+
+        walkerRequest.setStatus("Accepted");
+        walkerRequest.setWalker(usersRepository.getById(walkerId));
+        walkerRequestRepository.save(walkerRequest);
 
         request.setStatus("Accepted");
         request.setWalker(usersRepository.getById(walkerId));
         requestRepository.save(request);
 
-        // update walkerRequest's status
-        walkerRequest.setStatus("Accepted");
-        walkerRequestRepository.save(walkerRequest);
-
+        // add a new notification
+        notificationService.addNotification(new Notification(walkerRequest,previousStatus,"Accepted"));
         return walkerRequest;
     }
 
@@ -113,6 +123,7 @@ public class RequestServiceImpl implements RequestService {
         Request request = requestRepository.findById(requestId)
             .orElseThrow(() -> new ResourceNotFoundException("Request not found with id: " + requestId));
 
+        String previousStatus = walkerRequest.getStatus();
         if (Objects.equals(walkerRequest.getStatus(), "Rejected")){
             throw new ResourceNotFoundException("The parent has already rejected the request before.");
         }
@@ -121,10 +132,8 @@ public class RequestServiceImpl implements RequestService {
         walkerRequest.setStatus("Rejected");
         walkerRequestRepository.save(walkerRequest);
 
-        if (Objects.equals(request.getStatus(), "Accepted") && request.getWalker().getId() == walkerId){
-            request.setStatus("Rejected");
-            requestRepository.save(request);
-        }
+        // add a new notification
+        notificationService.addNotification(new Notification(walkerRequest,previousStatus,"Rejected"));
         return walkerRequest;
     }
 
@@ -153,13 +162,10 @@ public class RequestServiceImpl implements RequestService {
                 return walkerRequestRepository.save(walkerRequest);
             }
         }
-
         // if the same walkerRequest not exist, then create new WalkerRequest
         WalkerRequest walkerRequest = new WalkerRequest();
         walkerRequest.setRequest(requestRepository.getById(requestId));
         walkerRequest.setWalker(usersRepository.getById(walkerId));
-//        walkerRequest.setRequestId(requestId);
-//        walkerRequest.setWalkerId(walkerId);
         walkerRequest.setStatus("Applied");
         return walkerRequestRepository.save(walkerRequest);
     }

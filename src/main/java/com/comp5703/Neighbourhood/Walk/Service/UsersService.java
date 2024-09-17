@@ -1,5 +1,6 @@
 package com.comp5703.Neighbourhood.Walk.Service;
 
+import com.comp5703.Neighbourhood.Walk.Entities.UserProfileDTO;
 import com.comp5703.Neighbourhood.Walk.Entities.Users;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ public interface UsersService {
     Optional<Users> getUsersByEmail(String email);
     Optional<Users> getUsersByPhone(String phone);
     Optional<Map<String, String>> getUserNamesById(long id);
+    UserProfileDTO getUserProfileById(long id);
 
     void deleteUsers(long id);
     List<Users> getAllUsers();

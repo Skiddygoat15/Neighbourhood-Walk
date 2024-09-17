@@ -76,6 +76,10 @@ const RegistrationSignup = () => {
   return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
         <div className="bg-white shadow-lg rounded-lg w-96 p-8">
+          {/* Back Button */}
+          <button onClick={() => router.back()} className="text-2xl p-2 focus:outline-none">
+            &larr;
+          </button>
           <h1 className="text-2xl font-bold text-center mb-6">Sign Up</h1>
 
           {error && <p className="text-red-500 text-center">{error}</p>}

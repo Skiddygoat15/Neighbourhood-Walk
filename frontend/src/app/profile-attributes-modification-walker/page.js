@@ -1,11 +1,14 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, {useEffect, useState} from 'react';
 import { useRouter } from 'next/navigation';
 
-export default function ProfileAttributesModification() {
+export default function ProfileManagementSelectTimeWalker() {
   const router = useRouter();
   const [error, setError] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [skills, setSkills] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [countryCode, setCountryCode] = useState('+61');
   const [emailAddress, setEmailAddress] = useState('');
@@ -14,9 +17,7 @@ export default function ProfileAttributesModification() {
 
   const countryCodes = [
     { code: '+61', country: 'Australia' },
-    
   ];
-
 
   useEffect(() => {
     const userId = localStorage.getItem('userId');
@@ -40,11 +41,23 @@ export default function ProfileAttributesModification() {
         if (response.ok) {
           const data = await response.json();
 
+          // 将 availableDate 转换为符合 datetime-local 格式的值
+          // 检查 availableDate 是否存在且有两个日期
+          const startDateFormatted = data.availableDate && data.availableDate.length >= 2
+              ? new Date(data.availableDate[0]).toISOString().slice(0, 16)
+              : ''; // 如果没有日期，设置为空字符串
+          const endDateFormatted = data.availableDate && data.availableDate.length >= 2
+              ? new Date(data.availableDate[1]).toISOString().slice(0, 16)
+              : ''; // 如果没有日期，设置为空字符串
+          const skill = data.skill && data.skill.length > 0 ? data.skill[0] : 'N/A';
           // 填充输入框的初始值
           setPhoneNumber(data.phone || 'N/A');
           setEmailAddress(data.email || 'N/A');
           setCommunicationPreference(data.communicatePref || 'N/A');
           setPreferredName(data.preferredName || 'N/A');
+          setStartDate(startDateFormatted);
+          setEndDate(endDateFormatted);
+          setSkills(skill)
         } else {
           console.error('Failed to fetch user profile:', response.statusText);
         }
@@ -53,37 +66,43 @@ export default function ProfileAttributesModification() {
       }
     };
 
+
     fetchUserProfile();
   }, []);
-
 
   const handleCountryChange = (e) => {
     setCountryCode(e.target.value);
   };
 
   const handleUpdate = async () => {
-    // 从localStorage获取userId和token
     const userId = localStorage.getItem('userId');
     const token = localStorage.getItem('token');
-
 
     if (!userId || !token) {
       console.error('User ID or token not found in localStorage');
       return;
     }
 
+    // 将startDate和endDate放入availableDate数组中
+    const availableDate = [startDate, endDate];
+
+    // 将skills放入skill数组中，保证只有一个技能
+    const skillArray = [skills];
+
     // 准备要传递到数据库的data
     const updatedProfileData = {
-      phone: phoneNumber,
+      preferredName,
       email: emailAddress,
+      phone: phoneNumber,
       communicatePref: communicationPreference,
-      preferredName: preferredName
+      availableDate,
+      skill: skillArray,
     };
 
     try {
       // 调用API将数据传入数据库
       const response = await fetch(`http://localhost:8080/Users/${userId}/profile`, {
-        method: 'PUT', // 使用PUT方法更新用户数据
+        method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`, // 传入token进行身份验证
           'Content-Type': 'application/json', // 发送JSON数据
@@ -93,22 +112,24 @@ export default function ProfileAttributesModification() {
 
       if (response.ok) {
         console.log('Profile updated successfully');
+        // 将 preferredName 写入 localStorage
         localStorage.setItem('preferredName', preferredName);
-        // 更新成功后跳转到 profile-management-account-information 页面
-        router.push('/profile-management-account-information');
+        // 更新成功后跳转到profile-management-account-information页面
+        router.push('/profile-management-account-information-walker');
       } else {
         const errorMessage = await response.text(); // 捕获后端返回的错误消息
         setError(errorMessage || 'Registration failed'); // 直接设置错误信息
-        console.error('Failed to update profile:', response.statusText);
+        console.error('Failed to update profile:', errorMessage);
       }
     } catch (error) {
       console.error('Error updating profile:', error);
     }
   };
 
+
   return (
     <main className="min-h-screen bg-white">
-      <div className="max-w-md mx-auto p-4 space-y-8">
+      <div className="max-w-md mx-auto p-4 space-y-8 overflow-y-auto" style={{maxHeight: 'calc(100vh - 80px)'}}>
         {/* Back Button */}
         <button onClick={() => router.back()} className="text-2xl p-2 focus:outline-none">
           &larr;
@@ -120,28 +141,30 @@ export default function ProfileAttributesModification() {
 
         {/* Form Fields */}
         <div className="space-y-4">
+
           {/* Phone Number */}
           <div>
             <label className="block text-sm font-medium text-gray-700">Phone Number</label>
-            <p className="text-xs text-gray-500">You will use this number to receive notifications and to log in and restore your account</p>
+            <p className="text-xs text-gray-500">You will use this number to receive notifications and to log in and
+              restore your account</p>
             <div className="flex items-center mt-2">
               <select
-                className="border border-gray-300 p-2 rounded-l-md"
-                value={countryCode}
-                onChange={handleCountryChange}
+                  className="border border-gray-300 p-2 rounded-l-md"
+                  value={countryCode}
+                  onChange={handleCountryChange}
               >
                 {countryCodes.map((item, index) => (
-                  <option key={index} value={item.code}>
-                    {item.country} ({item.code})
-                  </option>
+                    <option key={index} value={item.code}>
+                      {item.country} ({item.code})
+                    </option>
                 ))}
               </select>
               <input
-                type="text"
-                className="border border-gray-300 p-2 rounded-r-md w-full"
-                placeholder="Enter your phone number"
-                value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
+                  type="text"
+                  className="border border-gray-300 p-2 rounded-r-md w-full"
+                  placeholder="Enter your phone number"
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
               />
             </div>
             {/*<p className="text-xs text-gray-500">The system will send you a verification code</p>*/}
@@ -152,10 +175,10 @@ export default function ProfileAttributesModification() {
             <label className="block text-sm font-medium text-gray-700">E-mail Address</label>
             <p className="text-xs text-gray-500">You will use this mailbox to receive messages</p>
             <input
-              type="email"
-              className="border border-gray-300 p-2 rounded-md w-full mt-2"
-              value={emailAddress}
-              onChange={(e) => setEmailAddress(e.target.value)}
+                type="email"
+                className="border border-gray-300 p-2 rounded-md w-full mt-2"
+                value={emailAddress}
+                onChange={(e) => setEmailAddress(e.target.value)}
             />
             {/*<p className="text-xs text-gray-500">The system will send you a verification code</p>*/}
           </div>
@@ -164,9 +187,9 @@ export default function ProfileAttributesModification() {
           <div>
             <label className="block text-sm font-medium text-gray-700">Communication Preference</label>
             <select
-              className="border border-gray-300 p-2 rounded-md w-full mt-2"
-              value={communicationPreference}
-              onChange={(e) => setCommunicationPreference(e.target.value)}
+                className="border border-gray-300 p-2 rounded-md w-full mt-2"
+                value={communicationPreference}
+                onChange={(e) => setCommunicationPreference(e.target.value)}
             >
               <option value="">Select an option</option>
               <option value="Email">Email</option>
@@ -178,22 +201,58 @@ export default function ProfileAttributesModification() {
           <div>
             <label className="block text-sm font-medium text-gray-700">Preferred Name</label>
             <input
-              type="text"
-              className="border border-gray-300 p-2 rounded-md w-full mt-2"
-              value={preferredName}
-              onChange={(e) => setPreferredName(e.target.value)}
+                type="text"
+                className="border border-gray-300 p-2 rounded-md w-full mt-2"
+                value={preferredName}
+                onChange={(e) => setPreferredName(e.target.value)}
+            />
+          </div>
+          {/* StartDate */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Start Date</label>
+            <p className="text-xs text-gray-500">Here you will select the start date of your available dates</p>
+            <input
+                type="datetime-local"  // 使用HTML5的日期时间选择器
+                className="border border-gray-300 p-2 rounded-md w-full mt-2"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+            />
+          </div>
+
+          {/* EndDate */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">End Date</label>
+            <p className="text-xs text-gray-500">Here you will select the end date of your available dates</p>
+            <input
+                type="datetime-local"  // 使用HTML5的日期时间选择器
+                className="border border-gray-300 p-2 rounded-md w-full mt-2"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+            />
+          </div>
+
+          {/* Skills */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700">Skills (Multi)</label>
+            <input
+                type="text"
+                className="border border-gray-300 p-2 rounded-md w-full mt-2"
+                value={skills}
+                onChange={(e) => setSkills(e.target.value)}
+                placeholder="Enter your skills"
             />
           </div>
         </div>
 
         {/* Update Button */}
         <button
-          onClick={handleUpdate}
-          className="w-full py-3 text-center bg-black text-white rounded-full font-semibold hover:bg-gray-800 mt-8"
+            onClick={handleUpdate}
+            className="w-full py-3 text-center bg-black text-white rounded-full font-semibold hover:bg-gray-800 mt-8"
         >
           Update
         </button>
       </div>
+
     </main>
   );
 }

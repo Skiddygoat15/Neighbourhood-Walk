@@ -41,3 +41,8 @@ body {
   border-radius: 5px;
 }
 
+.flex.flex-col {
+  max-height: 100vh; /* 确保不超过视口高度 */
+  overflow-y: auto; /* 启用滚动 */
+}
+

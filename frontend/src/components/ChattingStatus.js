@@ -3,7 +3,15 @@
 import {useState} from "react";
 import {useRouter} from "next/navigation";
 
-function ChattingStatus({ name, text, time, walkerId }) {
+function ChattingStatus({ name, text, time, parentId, path }) {
+
+
+
+    const router = useRouter();  // 使用 useRouter
+
+    const goToNotificationChatPage = () => {
+        router.push(path || `/message-chat`); // Use provided path or default to `/message-chat`
+    };
 
     const myInit = {
         method: 'GET',
@@ -12,15 +20,7 @@ function ChattingStatus({ name, text, time, walkerId }) {
         cache: 'default'
     };
 
-    const router = useRouter();  // 使用 useRouter
-
-    const geToNotificationChatPage = () => {
-        router.push('/notification-chat');  // 使用 router.push 进行导航
-    };
-
-    const [requestStatus, setRequestStatus] = useState('Pending...'); // 默认值为 'Pending...'
-
-    const requestURL = new Request(`http://127.0.0.1:8080/WalkerRequest/getWalkerRequest/${walkerId}`, myInit);
+    const requestURL = new Request(`http://127.0.0.1:8080/WalkerRequest/getWalkerRequestByWalkerId/${parentId}`, myInit);
 
     fetch(requestURL)
         .then(response => {
@@ -37,6 +37,8 @@ function ChattingStatus({ name, text, time, walkerId }) {
             console.error('Error fetching data:', error);
         });
 
+    const [requestStatus, setRequestStatus] = useState('Pending...'); // 默认值为 'Pending...'
+
     const getStatusStyle = (status) => {
         switch(status) {
             case 'Accepted':
@@ -51,7 +53,7 @@ function ChattingStatus({ name, text, time, walkerId }) {
     };
 
     return (
-        <div onClick={geToNotificationChatPage} style={{
+        <div onClick={goToNotificationChatPage} style={{
             display: 'flex',
             alignItems: 'center',
             padding: '10px 0',

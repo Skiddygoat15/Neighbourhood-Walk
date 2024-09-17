@@ -1,6 +1,7 @@
 package com.comp5703.Neighbourhood.Walk.Service.Impl;
 
 import com.comp5703.Neighbourhood.Walk.Entities.RoleDTO;
+import com.comp5703.Neighbourhood.Walk.Entities.UserProfileDTO;
 import com.comp5703.Neighbourhood.Walk.Entities.UserProfileNotification;
 import com.comp5703.Neighbourhood.Walk.Entities.Users;
 import com.comp5703.Neighbourhood.Walk.Repository.RequestRepository;
@@ -209,7 +210,7 @@ public class UsersServiceImpl implements UsersService {
                     // 遍历 availableDates，确保每个日期都在当前时间之后
                     for (Date date : availableDates) {
                         if (date.before(currentDate)) {
-                            throw new IllegalArgumentException("All available dates must be later than the current date.");
+                            throw new IllegalArgumentException("Start date or end date must be later than the current date.");
                         }
                     }
 
@@ -246,6 +247,34 @@ public class UsersServiceImpl implements UsersService {
             user = usersRepository.findById(id).get();
         }
         return user;
+    }
+
+    @Override
+    public UserProfileDTO getUserProfileById(long id) {
+        Users user = null;
+        if (usersRepository.findById(id).isPresent()) {
+            user = usersRepository.findById(id).get();
+
+            // 将 Users 实体的数据映射到 UserProfileDTO
+            UserProfileDTO userProfileDTO = new UserProfileDTO();
+            userProfileDTO.setName(user.getName());
+            userProfileDTO.setSurname(user.getSurname());
+            userProfileDTO.setEmail(user.getEmail());
+            userProfileDTO.setPhone(user.getPhone());
+            userProfileDTO.setAddress(user.getAddress());
+            userProfileDTO.setBirthDate(user.getBirthDate());
+            userProfileDTO.setPreferredName(user.getPreferredName());
+            userProfileDTO.setGender(user.getGender());
+            userProfileDTO.setProfImgUrl(user.getProfImgUrl());
+            userProfileDTO.setCommunicatePref(user.getCommunicatePref());
+            userProfileDTO.setAvailableDate(user.getAvailableDate());  // 假设你在 Users 实体中也有 List<Date> availableDate
+            userProfileDTO.setSkill(user.getSkill());  // 假设你有一个 List<String> skill 的字段
+            userProfileDTO.setVerified(user.isVerified());
+
+            return userProfileDTO;
+        }
+
+        throw new IllegalArgumentException("User with ID " + id + " not found");
     }
 
     //byron
