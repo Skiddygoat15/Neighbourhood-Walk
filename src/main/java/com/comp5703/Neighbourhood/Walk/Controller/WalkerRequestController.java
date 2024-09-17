@@ -58,6 +58,8 @@ public class WalkerRequestController {
     @GetMapping("/getRequestDetailByRequestIdAndWalkerId/{requestId}/{walkerId}")
     public ResponseEntity<?> getRequestDetailByRequestIdAndWalkerId(@PathVariable("requestId") int requestId, @PathVariable("walkerId") long walkerId) {
         return ResponseEntity.ok(walkerRequestService.getRequestDetailByRequestIdAndWalkerId(requestId, walkerId));
+    }
+
     @GetMapping("/getParentIdByWalkerRequestId/{walkerRequestId}")
     public Users getParentIdByWalkerRequestId(@PathVariable long walkerRequestId) {
         Users parent = walkerRequestService.getParentIdByWalkerRequestId(walkerRequestId);
