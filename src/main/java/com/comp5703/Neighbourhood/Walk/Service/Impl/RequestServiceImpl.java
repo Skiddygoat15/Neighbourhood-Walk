@@ -46,6 +46,12 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
+    public Request getRequestById(int requestId) {
+        Request request = requestRepository.findById(requestId).orElseThrow(() -> new ResourceNotFoundException("Request not found"));
+        return request;
+    }
+
+    @Override
     public Request createRequest(Request request) {
         // search parent, walker instance manually
         System.out.println("Parent ID: " + request.getParent().getId());

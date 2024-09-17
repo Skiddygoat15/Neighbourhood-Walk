@@ -13,13 +13,20 @@ import java.util.Optional;
 
 @Repository
 public interface WalkerRequestRepository extends JpaRepository<WalkerRequest, Long> {
+
     Optional<WalkerRequest> findByRequestRequestIdAndWalkerUserId(int requestId, long walkerId);
+
     List<WalkerRequest> findByWalkerUserId(Long walkerId);
 
-    @Query("SELECT wr.walker FROM WalkerRequest wr WHERE wr.request.requestId = :requestId")
+    // 查询已经被接受的 Walker
+    @Query("SELECT w.walker FROM WalkerRequest w WHERE w.request.requestId = :requestId AND w.status = 'Accepted' ")
+    Users findAcceptedWalkerByRequestId(@Param("requestId") int requestId);
+
+    // find all walker applied this request excluding the walker being rejected
+    @Query("SELECT wr.walker FROM WalkerRequest wr WHERE wr.request.requestId = :requestId AND wr.status != 'Rejected'")
     List<Users> findWalkersByRequestId(@Param("requestId") int requestId);
 
-    @Query("SELECT wr.request FROM WalkerRequest wr WHERE wr.walker.id = :walkerId")
+    @Query("SELECT wr.request FROM WalkerRequest wr WHERE wr.walker.userId = :walkerId")
     List<Request> findRequestsByWalkerId(@Param("walkerId") long walkerId);
 
     @Override

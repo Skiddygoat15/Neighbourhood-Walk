@@ -6,10 +6,14 @@ import com.comp5703.Neighbourhood.Walk.Entities.WalkerRequest;
 import com.comp5703.Neighbourhood.Walk.Repository.RequestRepository;
 import com.comp5703.Neighbourhood.Walk.Repository.WalkerRequestRepository;
 import com.comp5703.Neighbourhood.Walk.Service.WalkerRequestService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 
 @Service
@@ -54,9 +58,19 @@ public class WalkerRequestServiceImpl implements WalkerRequestService {
 //    }
     @Override
     public List<Users> getWalkersByRequestId(int requestId) {
+        // 1. 首先检查该请求是否已经有被接受的 Walker
+        Users acceptedWalker = walkerRequestRepository.findAcceptedWalkerByRequestId(requestId);
+        // System.out.println("acceptedWalker: "+acceptedWalker);
+        // 2. 如果有被接受的 Walker，返回该 Walker 的信息
+        if (acceptedWalker != null) {
+            return Collections.singletonList(acceptedWalker); // 返回只有该 Walker 的列表
+        }
+
+        // 3. 如果没有被接受的 Walker，返回所有候选的 Walkers
         return walkerRequestRepository.findWalkersByRequestId(requestId);
     }
 
+    // todo: 只显示applied和accepted的
     @Override
     public List<Request> getRequestsByWalkerId(long walkerId) {
         return walkerRequestRepository.findRequestsByWalkerId(walkerId);

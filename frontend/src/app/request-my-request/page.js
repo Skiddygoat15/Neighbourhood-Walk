@@ -141,7 +141,9 @@ export default function MyRequest() {
                   <div className="flex justify-between items-center">
                     <h2 className="text-lg font-bold">Trip request</h2>
                     <button
-                        onClick={() => router.push('/request-my-request-application')}
+                        onClick={() => {localStorage.setItem('clickedRequest', JSON.stringify(request));
+                          router.push('/request-my-request-application');
+                        }}
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
                            className="w-6 h-6">
@@ -157,9 +159,7 @@ export default function MyRequest() {
                   <p className="text-xs text-gray-500">Published by {moment(request.publishDate).format("MM/DD HH:mm")}</p>
                   <div className="flex justify-between mt-2">
                     <button
-                        onClick={() => {localStorage.setItem('clickedRequest', JSON.stringify(request));
-                          router.push('/request-my-request-application');
-                        }}
+                        onClick={() => router.push('/request-update')}
                         className="py-2 px-4 bg-black text-white rounded-full text-sm font-semibold"
                     >
                       Update

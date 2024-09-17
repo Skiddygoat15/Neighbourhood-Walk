@@ -16,6 +16,7 @@ export default function MyRequestApplication() {
   // 第一次渲染时，获取 localStorage 中的 request 数据
   useEffect(() => {
     const storedRequest = localStorage.getItem('clickedRequest');
+    //console.log("storedRequest: ", storedRequest);
     if (storedRequest) {
       setRequest(JSON.parse(storedRequest));
       console.log("clickedRequest", request);
@@ -30,9 +31,50 @@ export default function MyRequestApplication() {
       return;
     }
 
+    const getRequestDetailsAPI = `http://127.0.0.1:8080/requests/getRequestByRequestId/${request.requestId}`;
+    fetch(getRequestDetailsAPI, {
+      method: 'get',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      }
+    })
+        .then(response => {
+          if (!response.ok) {
+            if (response.status === 401) {
+              alert('Please log in.');
+              router.push('/Login');
+              return;
+            }
+            return response.json().then(data => {
+              alert(data.message);
+              setError(data.message);
+              throw new Error(data.message || "Error getting request details");
+            });
+          }
+          return response.json();
+        })
+        .then(data => {
+          setRequest(data); // 更新 request 数据
+          if (data.walker) {
+            setAcceptedWalker(data.walker); // 设置被接受的 walker
+          }
+        })
+        .catch(err => {
+          console.log(err);
+          setError('Failed to get request details. Please try again.');
+          setLoading(false);
+        });
+  }, [request?.requestId]); // 根据 requestId 触发
+
+  // 获取申请者列表
+  useEffect(() => {
+    if (!request || !request.requestId || acceptedWalker) {
+      return;
+    }
+
     const getWalkersAPI = `http://127.0.0.1:8080/WalkerRequest/getWalkersByRequestId/${request.requestId}`;
-    console.log("getWalkersAPI: " + getWalkersAPI)
-    // 调用 API 获取申请该 request 的所有 walkers
     fetch(getWalkersAPI, {
       method: 'get',
       credentials: 'include',
@@ -57,18 +99,15 @@ export default function MyRequestApplication() {
           return response.json();
         })
         .then(data => {
-          console.log("applied walkers: ", data)
           setWalkers(data); // 设置 walkers 数据
-          console.log("now walkers: ", walkers)
           setLoading(false);
-          setError('');
         })
         .catch(err => {
           console.log(err);
           setError('Failed to get walker list. Please try again.');
           setLoading(false);
         });
-  }, [request]);
+  }, [request, acceptedWalker]); // 根据 request 和 acceptedWalker 触发
 
   // 监听 walkers 状态的变化
   useEffect(() => {
