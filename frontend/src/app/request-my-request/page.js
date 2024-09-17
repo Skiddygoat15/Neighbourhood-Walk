@@ -159,7 +159,9 @@ export default function MyRequest() {
                   <p className="text-xs text-gray-500">Published by {moment(request.publishDate).format("MM/DD HH:mm")}</p>
                   <div className="flex justify-between mt-2">
                     <button
-                        onClick={() => router.push('/request-update')}
+                        onClick={() => {localStorage.setItem('updateRequest', JSON.stringify(request));
+                          router.push('/request-update');
+                        }}
                         className="py-2 px-4 bg-black text-white rounded-full text-sm font-semibold"
                     >
                       Update

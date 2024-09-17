@@ -59,7 +59,7 @@ public class RequestController {
      * @param request
      * @return
      */
-    @PutMapping("/{requestId}")
+    @PutMapping("/update/{requestId}")
     public ResponseEntity<Request> updateRequest(@PathVariable int requestId, @RequestBody Request request) {
         return new ResponseEntity<>(requestService.updateRequest(requestId, request), HttpStatus.OK);
     }

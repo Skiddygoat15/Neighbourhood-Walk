@@ -71,16 +71,16 @@ public class RequestServiceImpl implements RequestService {
     //todo: after accept a walker, parent should not be able to update the request in progress
     @Override
     public Request updateRequest(int requestId, Request updatedRequest) {
-        Users parent = usersRepository.findById(updatedRequest.getParent().getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Parent not found with id: " + updatedRequest.getParent().getId()));
+//        Users parent = usersRepository.findById(updatedRequest.getParent().getId())
+//                .orElseThrow(() -> new ResourceNotFoundException("Parent not found with id: " + updatedRequest.getParent().getId()));
         Request request = requestRepository.findById(requestId).orElseThrow(() -> new ResourceNotFoundException("Request not found"));
         request.setStartTime(updatedRequest.getStartTime());
         request.setArriveTime(updatedRequest.getArriveTime());
         request.setDeparture(updatedRequest.getDeparture());
         request.setDestination(updatedRequest.getDestination());
         request.setDetails(updatedRequest.getDetails());
-        request.setStatus(updatedRequest.getStatus());
-        request.setParent(parent);
+        //request.setStatus(updatedRequest.getStatus());
+        //request.setParent(parent);
 
         return requestRepository.save(request);
 
