@@ -111,7 +111,7 @@ export default function SearchWalker() {
             const hourText = hours === 1 ? '1 Hour' : `${hours} Hours`;
             const minuteText = minutes === 1 ? '1 Minute' : `${minutes} Minutes`;
 
-            return minutes > 0 ? `${hourText} and ${minuteText}` : hourText;
+            return minutes > 0 ? `${hourText} ${minuteText}` : hourText;
         }
     };
 
@@ -196,9 +196,10 @@ export default function SearchWalker() {
 
                                 <div>
                                     <p><strong>Parent Name:</strong> {request.parent.name}</p>
-                                    <p><strong>Location:</strong> {`${request.departure} - ${request.destination}`}</p>
+                                    <p><strong>From:</strong> {request.departure}</p>
+                                    <p><strong>To:</strong> {request.destination}</p>
                                     <p><strong>Start Time:</strong> {formatDateTime(request.startTime)}</p>
-                                    <p><strong>Arrive Time:</strong> {formatDateTime(request.arriveTime)}</p>
+                                    {/*<p><strong>Arrive Time:</strong> {formatDateTime(request.arriveTime)}</p>*/}
                                     <p><strong>Duration:</strong> {getDuration(request.startTime, request.arriveTime)}
                                     </p>
                                 </div>

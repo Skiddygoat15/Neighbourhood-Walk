@@ -183,8 +183,7 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     public List<Request> searchRequests(String searchTerm, String distance, Date startTime, Date arriveTime) {
-        Specification<Request> spec = Specification.where(RequestSpecifications.statusIs("Published"))
-                .or(RequestSpecifications.statusIs("Applied"));
+        Specification<Request> spec = Specification.where(RequestSpecifications.statusIs("Published"));
 
         // 检查 searchTerm 是否为空或仅包含空格
         if (searchTerm == null || searchTerm.trim().isEmpty()) {

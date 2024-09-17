@@ -10,7 +10,8 @@ export default function RequestDetails({params}) {
     const walkerId = localStorage.getItem('userId');
     const [requestDetails, setRequestDetails] = useState(null); // store request details
     const [error, setError] = useState(null);    // store error message
-    const getRequestByIdAPI = `http://127.0.0.1:8080/WalkerRequest/getRequestDetailByRequestIdAndWalkerId/${requestId}/${walkerId}`;
+    const getRequestInfoAPI = `http://127.0.0.1:8080/WalkerRequest/getRequestDetailByRequestIdAndWalkerId/${requestId}/${walkerId}`;
+    const applyRequestAPI = `http://127.0.0.1:8080/requests/${requestId}/apply?walkerId=${walkerId}`;
 
     // get request details info by request's id
     useEffect(() => {
@@ -22,15 +23,14 @@ export default function RequestDetails({params}) {
 
     const fetchRequestDetails = async () => {
         try {
-            console.log(requestId, '---', walkerId);
-            const response = await fetch(getRequestByIdAPI, {
+            const response = await fetch(getRequestInfoAPI, {
                 method: 'get',
                 credentials: 'include',
                 headers: {
                     'Authorization': 'Bearer ' + localStorage.getItem('token')
                 }
             });
-            console.log(requestId, '---', walkerId);
+
             if (!response.ok) {
                 throw new Error('Failed to fetch request details');
             }
@@ -42,22 +42,75 @@ export default function RequestDetails({params}) {
         }
     };
 
+    const applyRequest = async () => {
+        try {
+            const response = await fetch(applyRequestAPI, {
+                method: 'post',
+                credentials: 'include',
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                }
+            });
+            console.log(response);
+
+            if (response.status === 201) {
+                // 成功响应，表示已经成功申请了 request
+                const data = await response.json();
+                alert('Request successfully applied!');
+                // refresh page content
+                fetchRequestDetails();
+            } else if (response.status === 409) {
+                // 409 冲突，表示已经申请过这个 request
+                const errorData = await response.text();
+                setError('You have already applied for this request.');
+                alert('You have already applied for this request.');
+            } else if (response.status === 404) {
+                // 404 请求未找到
+                const errorData = await response.text();
+                setError(errorData);  // 显示请求未找到的错误信息
+                alert('Request not found: ' + errorData);
+            } else if (response.status === 400) {
+                // 其他异常情况
+                const errorData = await response.text();
+                setError(errorData);  // 显示请求处理错误信息
+                alert('An error occurred: ' + errorData);
+            } else {
+                // 处理未知的错误情况
+                // throw new Error('Unexpected error occurred');
+                const errorData = await response.text();
+                setError(errorData);
+                alert(errorData);
+            }
+        } catch (err) {
+            setError(err.message);
+            alert('Error: ' + err.message);
+        }
+    };
+
     const handleBack = () => {
         router.push(`/search-walker`);  // back to search requests page
     };
 
+    const refreshPage = () => {
+        router.push(`/search-walker-request-details/${requestId}`);  // back to search requests page
+    };
+
     // format the start and end times
-    const formatTime = (startTime, arriveTime) => {
-        const startDate = new Date(startTime);
-        const arriveDate = new Date(arriveTime);
+    const formatDateTime = (inputDateTime) => {
+        const dateTime = new Date(inputDateTime);
         // options is a configuration object, as parameter of Intl.DateTimeFormat
-        // numeric represent number format, short represent abbreviation
-        const options = {hour: 'numeric', minute: 'numeric', weekday: 'short', day: 'numeric', month: 'short'};
-
-        const formattedStart = new Intl.DateTimeFormat('en-US', options).format(startDate);
-        const formattedArrive = new Intl.DateTimeFormat('en-US', options).format(arriveDate);
-
-        return `${formattedStart} - ${formattedArrive}`;
+        const options = {
+            year: 'numeric',      // Display the full year (e.g., 2024)
+            month: 'short',       // Display the abbreviated month name (e.g., Sept)
+            day: 'numeric',       // Display the numeric day of the month (e.g., 16)
+            weekday: 'short',     // Display the abbreviated weekday name (e.g., Mon)
+            hour: 'numeric',      // Display the hour
+            minute: 'numeric',    // Display the minutes
+            hour12: true          // Display 12-hour time format (AM/PM)
+        };
+        // Using en-AU (Australia) locale
+        const formattedDateTime = new Intl.DateTimeFormat('en-AU', options).format(dateTime);
+        return `${formattedDateTime}`;
     };
 
     // calculate time difference between start and arrive
@@ -109,9 +162,30 @@ export default function RequestDetails({params}) {
                 // extract request object from walkerRequest object
                 const {request} = walkerRequest;
 
+                const statusCheck = () => {
+                    if (walkerRequest.status === 'Cancelled' || walkerRequest.status === 'Rejected') {
+                        return <button
+                            onClick={applyRequest}
+                            className="bg-black text-white px-4 py-2 rounded-lg w-full">
+                            Apply
+                        </button>
+                    } else if (walkerRequest.status === 'Applied') {
+                        return <div className="mb-4">
+                            <p className="text-yellow-600 text-lg">Your application has been sent</p>
+                            <p className="text-yellow-600 text-lg">Waiting for response...</p>
+                        </div>
+                    } else {
+                        return <p className="text-yellow-600">Your application status to this request is:
+                            "{walkerRequest.status}"</p>
+                    }
+                }
+
                 return (
                     <div className="p-4 bg-white rounded-lg shadow-md">
-                        <p className="text-gray-600">Status: {walkerRequest.status}</p>
+                        <div className="mb-4">
+                            <p className="text-gray-600">Parent Name:</p>
+                            <p className="text-black text-lg">{request.parent.name}</p>
+                        </div>
 
                         <div className="mb-4">
                             <p className="text-gray-600">Departure:</p>
@@ -124,22 +198,36 @@ export default function RequestDetails({params}) {
                         </div>
 
                         <div className="mb-4">
-                            <p className="text-gray-600">Estimated time:</p>
+                            <p className="text-gray-600">Start Time:</p>
                             <p className="text-black text-lg">
-                                {formatTime(request.startTime, request.arriveTime)}
+                                {formatDateTime(request.startTime)}
+                            </p>
+                        </div>
+
+                        <div className="mb-4">
+                            <p className="text-gray-600">Arrive Time:</p>
+                            <p className="text-black text-lg">
+                                {formatDateTime(request.arriveTime)}
                             </p>
                         </div>
 
                         <div className="mb-4">
                             <p className="text-gray-600">Duration:</p>
                             <p className="text-black text-lg">
-                                {formatTime(request.startTime, request.arriveTime)}
+                                {getDuration(request.startTime, request.arriveTime)}
                             </p>
+                        </div>
+
+                        <div className="mb-4">
+                            <p className="text-gray-600">Details:</p>
+                            <p className="text-black text-lg">{request.details}</p>
                         </div>
 
                         <div className="mb-4 text-gray-500">
                             {timeSince(request.publishDate)}
                         </div>
+
+                        {statusCheck()}
                     </div>
                 );
             } else {
@@ -167,14 +255,14 @@ export default function RequestDetails({params}) {
                         <div className="mb-4">
                             <p className="text-gray-600">Start Time:</p>
                             <p className="text-black text-lg">
-                                {formatTime(request.startTime, request.arriveTime)}
+                                {formatDateTime(request.startTime)}
                             </p>
                         </div>
 
                         <div className="mb-4">
                             <p className="text-gray-600">Arrive Time:</p>
                             <p className="text-black text-lg">
-                                {formatTime(request.startTime, request.arriveTime)}
+                                {formatDateTime(request.arriveTime)}
                             </p>
                         </div>
 
@@ -186,16 +274,17 @@ export default function RequestDetails({params}) {
                         </div>
 
                         <div className="mb-4">
-                            <p className="text-gray-600">Duration:</p>
-                            <p className="text-black text-lg">
-                                {getDuration(request.startTime, request.arriveTime)}
-                            </p>
+                            <p className="text-gray-600">Details:</p>
+                            <p className="text-black text-lg">{request.details}</p>
                         </div>
+
                         <div className="mb-4 text-gray-500">
                             {timeSince(request.publishDate)}
                         </div>
 
-                        <button className="bg-black text-white px-4 py-2 rounded-lg w-full">
+                        <button
+                            onClick={applyRequest}
+                            className="bg-black text-white px-4 py-2 rounded-lg w-full">
                             Apply
                         </button>
                     </div>
