@@ -10,4 +10,6 @@ public interface NotificationRepository extends CrudRepository<Notification, Lon
 
     Notification findAllByWalkerRequest_WalkerRequestId(long walkerRequestId);
 
+
+
 }

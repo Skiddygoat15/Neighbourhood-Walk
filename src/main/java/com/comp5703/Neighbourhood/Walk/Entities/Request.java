@@ -66,6 +66,13 @@ public class Request {
 //    }
 
 
+    @Override
+    public String toString() {
+        return "Request{" +
+                "walker=" + walker +
+                '}';
+    }
+
     public Request(int requestId) {
         this.requestId = requestId;
     }

@@ -95,4 +95,8 @@ public class WalkerRequestServiceImpl implements WalkerRequestService {
         Users parent = walkerRequestRepository.getById(walkerRequestId).getRequest().getParent();
         return parent;
     }
+
+    public List<WalkerRequest> getWalkerRequestByRequestId(int requestId){
+        return walkerRequestRepository.getByRequestRequestId(requestId);
+    }
 }

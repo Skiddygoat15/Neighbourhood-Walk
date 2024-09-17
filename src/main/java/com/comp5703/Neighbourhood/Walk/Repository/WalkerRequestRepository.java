@@ -31,4 +31,8 @@ public interface WalkerRequestRepository extends JpaRepository<WalkerRequest, Lo
 
     @Override
     Optional<WalkerRequest> findById(Long walkerRequestId);
+
+    WalkerRequest getByRequestRequestIdAndWalkerUserId(int requestId, long walkerId);
+
+    List<WalkerRequest> getByRequestRequestId(int requestId);
 }

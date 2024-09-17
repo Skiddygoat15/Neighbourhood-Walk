@@ -23,6 +23,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 
+
 @Service
 public class RequestServiceImpl implements RequestService {
 
@@ -34,6 +35,8 @@ public class RequestServiceImpl implements RequestService {
     private UsersRepository usersRepository;
     @Autowired
     private NotificationServiceImpl notificationService;
+    @Autowired
+    private NotificationRepository notificationRepository;
 
     @Override
     public List<Request> getRequestsByUserId(Long userId) {
@@ -42,6 +45,7 @@ public class RequestServiceImpl implements RequestService {
 //            // 可以选择返回一个自定义的异常，或者在控制器里处理
 //            throw new ResourceNotFoundException("No requests found for userId: " + userId);
 //        }
+
         return requests;
     }
 
@@ -107,17 +111,29 @@ public class RequestServiceImpl implements RequestService {
         if (Objects.equals(request.getStatus(), "Accepted")){
             throw new ResourceNotFoundException("The request has been accepted by anyone before.");
         }
-
-        walkerRequest.setStatus("Accepted");
-        walkerRequest.setWalker(usersRepository.getById(walkerId));
-        walkerRequestRepository.save(walkerRequest);
+        if (walkerRequest.getStatus().equals("Applied")){
+            walkerRequest.setStatus("Accepted");
+            walkerRequestRepository.save(walkerRequest);
+        }
+//        walkerRequest.setStatus("Accepted");
+//        walkerRequest.setWalker(usersRepository.getById(walkerId));
+//        walkerRequestRepository.save(walkerRequest);
 
         request.setStatus("Accepted");
         request.setWalker(usersRepository.getById(walkerId));
         requestRepository.save(request);
 
+
         // add a new notification
-        notificationService.addNotification(new Notification(walkerRequest,previousStatus,"Accepted"));
+        System.out.println("Accept");
+        Notification notification = notificationRepository.findAllByWalkerRequest_WalkerRequestId(walkerRequest.getWalkerRequestId());
+        if (Objects.equals(notification.getStatusPrevious(), "Published") && Objects.equals(notification.getStatusChanged(), "Applied")){
+            notification.setStatusChanged("Accepted");
+            notification.setStatusPrevious("Applied");
+            notificationService.addNotification(notification);
+        }else{
+            notificationService.addNotification(new Notification(walkerRequest,previousStatus,"Accepted"));
+        }
         return walkerRequest;
     }
 
@@ -135,11 +151,21 @@ public class RequestServiceImpl implements RequestService {
         }
 
         // update walkerRequest's status
+
         walkerRequest.setStatus("Rejected");
         walkerRequestRepository.save(walkerRequest);
 
+
         // add a new notification
-        notificationService.addNotification(new Notification(walkerRequest,previousStatus,"Rejected"));
+        System.out.println("Reject");
+        Notification notification = notificationRepository.findAllByWalkerRequest_WalkerRequestId(walkerRequest.getWalkerRequestId());
+        if (Objects.equals(notification.getStatusPrevious(), "Published") && Objects.equals(notification.getStatusChanged(), "Applied")){
+            notification.setStatusChanged("Rejected");
+            notification.setStatusPrevious("Applied");
+            notificationService.addNotification(notification);
+        }else{
+            notificationService.addNotification(new Notification(walkerRequest,previousStatus,"Rejected"));
+        }
         return walkerRequest;
     }
 
@@ -173,6 +199,12 @@ public class RequestServiceImpl implements RequestService {
         walkerRequest.setRequest(requestRepository.getById(requestId));
         walkerRequest.setWalker(usersRepository.getById(walkerId));
         walkerRequest.setStatus("Applied");
+        walkerRequestRepository.save(walkerRequest);
+
+        // add a new notification
+        String previousStatus = request.getStatus();
+        System.out.println("Apply");
+        notificationService.addNotification(new Notification(walkerRequest,previousStatus,"Applied"));
         return walkerRequestRepository.save(walkerRequest);
     }
 
@@ -190,6 +222,10 @@ public class RequestServiceImpl implements RequestService {
         //set cancelled status can store the apply history
         walkerRequest.setStatus("Cancelled");
         walkerRequestRepository.save(walkerRequest);
+
+        // add a new notification
+        String previousStatus = request.getStatus();
+        notificationService.addNotification(new Notification(walkerRequest,previousStatus,"Cancelled"));
     }
 
 
