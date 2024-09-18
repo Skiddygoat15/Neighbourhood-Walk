@@ -108,7 +108,7 @@ export default function ProfileAttributesModification() {
 
   return (
     <main className="min-h-screen bg-white">
-      <div className="max-w-md mx-auto p-4 space-y-8">
+      <div className="max-w-md mx-auto p-4 space-y-8" style={{ height: 'calc(100vh - 55px)', overflowY: 'auto' }}>
         {/* Back Button */}
         <button onClick={() => router.back()} className="text-2xl p-2 focus:outline-none">
           &larr;
