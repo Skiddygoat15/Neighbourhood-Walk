@@ -19,6 +19,7 @@ export default function HomeWalker() {
     localStorage.removeItem('name');
     localStorage.removeItem('currentRole');
     localStorage.removeItem('clickedRequest');
+    localStorage.removeItem('updateRequest');
 
     // 将isLogin和isAdmin设置为false
     localStorage.setItem('isLogin', 'false');
