@@ -42,6 +42,26 @@ export default function SearchParentWalkerDetails({ params }) {
     router.push(`/search-parent`);  // back to search walkers page
   };
 
+  // format the available times
+  const formatDateTime = (inputDateTime) => {
+    console.log(inputDateTime);
+    const dateTime = new Date(inputDateTime);
+    console.log(inputDateTime);
+    // options is a configuration object, as parameter of Intl.DateTimeFormat
+    const options = {
+      year: 'numeric',      // Display the full year (e.g., 2024)
+      month: 'short',       // Display the abbreviated month name (e.g., Sept)
+      day: 'numeric',       // Display the numeric day of the month (e.g., 16)
+      weekday: 'short',     // Display the abbreviated weekday name (e.g., Mon)
+      hour: 'numeric',      // Display the hour
+      minute: 'numeric',    // Display the minutes
+      hour12: true          // Display 12-hour time format (AM/PM)
+    };
+    // Using en-AU (Australia) locale
+    const formattedDateTime = new Intl.DateTimeFormat('en-AU', options).format(dateTime);
+    return `${formattedDateTime}`;
+  };
+
   return (
     <main className="min-h-screen bg-white">
       <div className="max-w-md mx-auto p-4 space-y-8">
@@ -66,7 +86,8 @@ export default function SearchParentWalkerDetails({ params }) {
               <p><strong>Email:</strong> {walker.email}</p>
               <p><strong>Phone:</strong> {walker.phone}</p>
               <p><strong>Communication Preference:</strong> {walker.communicatePref}</p>
-              <p><strong>Preferred time:</strong> {walker.availableDate}</p>
+              <p><strong>Preferred time:</strong> {formatDateTime(walker.availableDate[0])}</p>
+              <p><strong>Preferred time:</strong> {formatDateTime(walker.availableDate[1])}</p>
               <p><strong>Skill:</strong> {walker.skill}</p>
               <p><strong>Average Rating:</strong> {walker.avgUserRating}</p>
             </div>
