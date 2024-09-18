@@ -47,6 +47,7 @@ const RegistrationSignup = () => {
       password: formData.password,
       gender: formData.gender,
       birthDate: new Date(formData.birthDate).toISOString(),
+      avgUserRating: 5.0
     };
 
     const apiUrl = `http://localhost:8080/Users/register?roleType=${roleType}`;
