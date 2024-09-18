@@ -54,7 +54,7 @@ public class UsersSpecifications {
                 // Group by userId to calculate the average rate
                 query.groupBy(root.get("userId"));
                 // Order by the average rate in descending order
-                query.orderBy(criteriaBuilder.desc(criteriaBuilder.avg(comments.get("rate"))));
+                query.orderBy(criteriaBuilder.asc(criteriaBuilder.avg(comments.get("rate"))));
             }
             // Return null as no additional where clause is needed
             return null;

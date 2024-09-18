@@ -19,7 +19,7 @@ public class Comment{
 
     @ManyToOne
     @JoinColumn(name = "userId")
-    @JsonBackReference
+    @JsonBackReference(value = "user-comments")
     private Users user;
 
     @Column(name = "rate", nullable = false)
