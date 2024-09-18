@@ -206,7 +206,7 @@ export default function SearchParent() {
                       <p className="font-semibold">Walker Name: {`${walker.name} ${walker.surname}`}</p>
                       <p>Gender: {walker.gender}</p>
                       <p>Address: {walker.address}</p>
-                      <p>Rating: {walker.avgUserRating}</p>
+                      <p>Rating: ⭐ {walker.avgUserRating} / 5</p>
                     </div>
                   </div>
               ))

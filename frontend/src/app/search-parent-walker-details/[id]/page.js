@@ -93,7 +93,7 @@ export default function SearchParentWalkerDetails({ params }) {
               <p><strong>Preferred time To:</strong> </p>
               <p>{walker.availableDate[0] ? formatDateTime(walker.availableDate[1]) : 'N/A'}</p>
               <p><strong>Skill:</strong> {walker.skill}</p>
-              <p><strong>Average Rating:</strong> {walker.avgUserRating}</p>
+              <p><strong>Average Rating:</strong> ⭐ {walker.avgUserRating} / 5</p>
             </div>
         )}
 

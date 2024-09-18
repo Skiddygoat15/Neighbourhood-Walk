@@ -50,11 +50,11 @@ public class UsersSpecifications {
             // Make sure query is not null before using groupBy and orderBy
             if (query != null) {
                 // Perform a left join with the comments
-                Join<Users, Comment> comments = root.join("comments", JoinType.LEFT);
+//                Join<Users, Comment> comments = root.join("comments", JoinType.LEFT);
                 // Group by userId to calculate the average rate
                 query.groupBy(root.get("userId"));
                 // Order by the average rate in descending order
-                query.orderBy(criteriaBuilder.asc(criteriaBuilder.avg(comments.get("rate"))));
+                query.orderBy(criteriaBuilder.desc(root.get("avgUserRating")));
             }
             // Return null as no additional where clause is needed
             return null;
