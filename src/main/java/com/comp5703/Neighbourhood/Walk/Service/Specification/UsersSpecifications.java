@@ -30,6 +30,11 @@ public class UsersSpecifications {
                 criteriaBuilder.equal(root.get("gender"), gender);
     }
 
+    // Specification to filter users by average rating greater than or equal to the given value
+    public static Specification<Users> hasAvgUserRatingGreaterThanOrEqual(double avgUserRating) {
+        return (root, query, criteriaBuilder) ->
+                criteriaBuilder.greaterThanOrEqualTo(root.get("avgUserRating"), avgUserRating);
+    }
 
     // Specification to check if an attribute contains a value (case-insensitive)
     // 检查输入和数据库的匹配项

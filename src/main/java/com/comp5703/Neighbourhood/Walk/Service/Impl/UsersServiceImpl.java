@@ -309,19 +309,25 @@ public class UsersServiceImpl implements UsersService {
                     .and(UsersSpecifications.orderByAverageRate());
         }
 
-        // 添加性别过滤
+        // Add gender filter ( male / female / other )
         if (gender != null && !gender.isEmpty()) {
             spec = spec.and(UsersSpecifications.hasGender(gender));
         }
 
-        // 添加距离过滤（假设距离是某种数值字段或分类字段）
+        // Add distance filter
         if (distance != null && !distance.isEmpty()) {
             spec = spec.and(UsersSpecifications.containsAttribute("distance", distance));
         }
 
-        // 添加评分过滤
+        // Add rating filter
         if (rating != null && !rating.isEmpty()) {
-            spec = spec.and(UsersSpecifications.containsAttribute("rating", rating));
+            spec = switch (rating) {
+                case "5 stars" -> spec.and(UsersSpecifications.hasAvgUserRatingGreaterThanOrEqual(5.0));
+                case "4 stars & up" -> spec.and(UsersSpecifications.hasAvgUserRatingGreaterThanOrEqual(4.0));
+                case "3 stars & up" -> spec.and(UsersSpecifications.hasAvgUserRatingGreaterThanOrEqual(3.0));
+                case "2 stars & up" -> spec.and(UsersSpecifications.hasAvgUserRatingGreaterThanOrEqual(2.0));
+                default -> spec.and(UsersSpecifications.hasAvgUserRatingGreaterThanOrEqual(1.0));
+            };
         }
 
         List<Users> users = usersRepository.findAll(spec);
