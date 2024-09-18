@@ -140,8 +140,33 @@ export default function ProfileManagementAccountInformationWalker() {
   };
 
   // 确保 availableDate 存在并且有两个日期
-  const startDate = userProfile.availableDate && userProfile.availableDate.length >= 2 ? formatDate(userProfile.availableDate[0]) : 'N/A';
-  const endDate = userProfile.availableDate && userProfile.availableDate.length >= 2 ? formatDate(userProfile.availableDate[1]) : 'N/A';
+  const startDate = userProfile.availableDate && userProfile.availableDate.length >= 2
+      ? `${new Date(userProfile.availableDate[0]).toLocaleDateString('en-US', {
+        timeZone: 'UTC',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+      })} ${new Date(userProfile.availableDate[0]).toLocaleTimeString('en-US', {
+        timeZone: 'UTC',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false // 24 小时制
+      })}`
+      : 'N/A';
+
+  const endDate = userProfile.availableDate && userProfile.availableDate.length >= 2
+      ? `${new Date(userProfile.availableDate[1]).toLocaleDateString('en-US', {
+        timeZone: 'UTC',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+      })} ${new Date(userProfile.availableDate[1]).toLocaleTimeString('en-US', {
+        timeZone: 'UTC',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false // 24 小时制
+      })}`
+      : 'N/A';
 
   // skill 只有一个元素
   const skill = userProfile.skill && userProfile.skill.length > 0 ? userProfile.skill[0] : 'N/A';
