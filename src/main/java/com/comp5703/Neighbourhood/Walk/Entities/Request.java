@@ -1,6 +1,8 @@
 package com.comp5703.Neighbourhood.Walk.Entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import org.apache.catalina.User;
 
@@ -19,6 +21,7 @@ public class Request {
 
     @ManyToOne
     @JoinColumn(name = "walkerId", referencedColumnName = "userId")
+    @JsonBackReference(value = "request-walker")
     private Users walker;
 
     @ManyToOne

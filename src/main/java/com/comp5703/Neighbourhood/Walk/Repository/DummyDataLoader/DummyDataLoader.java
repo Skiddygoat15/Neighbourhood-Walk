@@ -1,14 +1,19 @@
 package com.comp5703.Neighbourhood.Walk.Repository.DummyDataLoader;
 
+import com.comp5703.Neighbourhood.Walk.Entities.Request;
 import com.comp5703.Neighbourhood.Walk.Entities.Role;
 import com.comp5703.Neighbourhood.Walk.Entities.Users;
+import com.comp5703.Neighbourhood.Walk.Entities.WalkerRequest;
+import com.comp5703.Neighbourhood.Walk.Repository.RequestRepository;
 import com.comp5703.Neighbourhood.Walk.Repository.RoleRepository;
 import com.comp5703.Neighbourhood.Walk.Repository.UsersRepository;
+import com.comp5703.Neighbourhood.Walk.Repository.WalkerRequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -17,12 +22,16 @@ public class DummyDataLoader implements CommandLineRunner {
 
     private final UsersRepository usersRepository;
     private final RoleRepository roleRepository;
+    private final RequestRepository requestRepository;
+    private final WalkerRequestRepository walkerRequestRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public DummyDataLoader(UsersRepository usersRepository, RoleRepository roleRepository, BCryptPasswordEncoder passwordEncoder) {
+    public DummyDataLoader(UsersRepository usersRepository, RoleRepository roleRepository, com.comp5703.Neighbourhood.Walk.Repository.RequestRepository requestRepository, WalkerRequestRepository walkerRequestRepository, BCryptPasswordEncoder passwordEncoder) {
         this.usersRepository = usersRepository;
         this.roleRepository = roleRepository;
+        this.requestRepository = requestRepository;
+        this.walkerRequestRepository = walkerRequestRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -30,6 +39,8 @@ public class DummyDataLoader implements CommandLineRunner {
     public void run(String... args) throws Exception {
         usersRepository.deleteAll();
         roleRepository.deleteAll();
+        requestRepository.deleteAll();
+        walkerRequestRepository.deleteAll();
 
         Users user1 = new Users();
         user1.setName("John");
@@ -87,6 +98,59 @@ public class DummyDataLoader implements CommandLineRunner {
 
         // 保存角色到数据库
         roleRepository.saveAll(Arrays.asList(role1, role2, role3a, role3b, role4a, role4b));
+
+        // 定义日期格式
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+
+        Request request1 = new Request();
+        request1.setParent(user1);
+        request1.setPublishDate( new Date() );
+        request1.setStartTime( (Date) formatter.parse("2024-09-20T09:00:00.111") );
+        request1.setArriveTime( (Date) formatter.parse("2024-09-20T09:20:00.111") );
+        request1.setDeparture("Redfern");
+        request1.setDestination("Sydney Uni");
+        request1.setDetails("Please meet us at Woolworths");
+        request1.setStatus("Published");
+
+        Request request2 = new Request();
+        request2.setParent(user3);
+        request2.setPublishDate( (Date) formatter.parse("2024-09-15T09:00:00.111") );
+        request2.setStartTime( (Date) formatter.parse("2024-10-01T07:00:00.111") );
+        request2.setArriveTime( (Date) formatter.parse("2024-10-01T08:00:00.111") );
+        request2.setDeparture("Broadway");
+        request2.setDestination("UTS");
+        request2.setDetails("Please meet us at Coles");
+        request2.setStatus("Published");
+
+        Request request3 = new Request();
+        request3.setParent(user4);
+        request3.setPublishDate( (Date) formatter.parse("2024-08-10T09:00:00.111") );
+        request3.setStartTime( (Date) formatter.parse("2024-10-16T07:00:00.111") );
+        request3.setArriveTime( (Date) formatter.parse("2024-10-16T08:30:00.111") );
+        request3.setDeparture("Westfield");
+        request3.setDestination("UNSW");
+        request3.setDetails("Please meet us at KFC");
+        request3.setStatus("Published");
+
+        Request request4 = new Request();
+        request4.setParent(user1);
+        request4.setWalker(user2);
+        request4.setPublishDate( (Date) formatter.parse("2024-08-10T09:00:00.111") );
+        request4.setStartTime( (Date) formatter.parse("2024-10-16T07:00:00.111") );
+        request4.setArriveTime( (Date) formatter.parse("2024-10-16T08:30:00.111") );
+        request4.setDeparture("Westfield");
+        request4.setDestination("UNSW");
+        request4.setDetails("Please meet us at KFC");
+        request4.setStatus("Accepted");
+
+        requestRepository.saveAll(Arrays.asList(request1, request2, request3, request4));
+
+        WalkerRequest walkerRequest1 = new WalkerRequest();
+        walkerRequest1.setRequest(request4);
+        walkerRequest1.setWalker(user2);
+        walkerRequest1.setStatus("Accepted");
+
+        walkerRequestRepository.saveAll(Arrays.asList(walkerRequest1));
 
         System.out.println("Dummy data has been inserted into the Users and Roles tables.");
     }
