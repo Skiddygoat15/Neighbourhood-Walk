@@ -40,6 +40,7 @@ public class DummyDataLoader implements CommandLineRunner {
         user1.setAddress("123 Maple Street");
         user1.setBirthDate(new Date(90, 0, 0));
         user1.setGender("male");
+        user1.setAvgUserRating(5.0);
 
         Users user2 = new Users();
         user2.setName("Jane");
@@ -50,6 +51,7 @@ public class DummyDataLoader implements CommandLineRunner {
         user2.setAddress("456 Oak Avenue");
         user2.setBirthDate(new Date(92, 1, 1));
         user2.setGender("female");
+        user2.setAvgUserRating(5.0);
 
         Users user3 = new Users();
         user3.setName("Alice");
@@ -60,6 +62,7 @@ public class DummyDataLoader implements CommandLineRunner {
         user3.setAddress("789 Birch Road");
         user3.setBirthDate(new Date(88, 2, 2));
         user3.setGender("female");
+        user3.setAvgUserRating(5.0);
 
         Users user4 = new Users();
         user4.setName("Bob");
@@ -70,6 +73,7 @@ public class DummyDataLoader implements CommandLineRunner {
         user4.setAddress("101 Elm Street");
         user4.setBirthDate(new Date(85, 3, 3));
         user4.setGender("other");
+        user4.setAvgUserRating(5.0);
 
         // 将用户保存到数据库
         usersRepository.saveAll(Arrays.asList(user1, user2, user3, user4));
