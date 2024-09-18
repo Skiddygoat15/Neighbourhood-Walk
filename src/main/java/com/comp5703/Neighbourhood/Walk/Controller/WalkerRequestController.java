@@ -63,7 +63,7 @@ public class WalkerRequestController {
     }
 
     @GetMapping("/getParentIdByWalkerRequestId/{walkerRequestId}")
-    public Users getParentIdByWalkerRequestId(@PathVariable long walkerRequestId) {
+    public Users getParentIdByWalkerRequestId ( @PathVariable long walkerRequestId){
         Users parent = walkerRequestService.getParentIdByWalkerRequestId(walkerRequestId);
         return parent;
     }
