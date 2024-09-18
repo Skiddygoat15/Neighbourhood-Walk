@@ -33,6 +33,16 @@ public class RequestController {
         return new ResponseEntity<>(requests, HttpStatus.OK);
     }
 
+    @GetMapping("/getRequestByRequestId/{requestId}")
+    public ResponseEntity<?> getRequestById(@PathVariable int requestId) {
+        try {
+            Request request = requestService.getRequestById(requestId);
+            return new ResponseEntity<>(request, HttpStatus.OK);
+        } catch (ResourceNotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
     /**
      * walker创建request
      * @param request
@@ -49,7 +59,7 @@ public class RequestController {
      * @param request
      * @return
      */
-    @PutMapping("/{requestId}")
+    @PutMapping("/update/{requestId}")
     public ResponseEntity<Request> updateRequest(@PathVariable int requestId, @RequestBody Request request) {
         return new ResponseEntity<>(requestService.updateRequest(requestId, request), HttpStatus.OK);
     }

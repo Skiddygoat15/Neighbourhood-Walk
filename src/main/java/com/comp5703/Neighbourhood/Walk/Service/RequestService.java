@@ -17,6 +17,7 @@ public interface RequestService {
     WalkerRequest rejectWalkerRequest(int requestId, long walkerId);
     void deleteRequest(int requestId);
     void cancelApply(int requestId, long walkerId);
+    Request getRequestById(int requestId);
 
     WalkerRequest applyRequest(int requestId, long walkerId);
 

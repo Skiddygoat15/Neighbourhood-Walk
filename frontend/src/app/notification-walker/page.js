@@ -88,16 +88,16 @@ import { format } from 'date-fns';
 
 export default function Home() {
     const [statusCards, setStatusCards] = useState([]); // 初始化为空数组
-    const [parentId, setparentId] = useState(0); // 初始化为空数组
+    const [parentSurname, setparentSurname] = useState(0); // 初始化为空数组
     const [walkerRequestId, setwalkerRequestId] = useState(0); // 初始化为空数组
 
     const userId = localStorage.getItem('userId');
     const role = localStorage.getItem('roles');
     // const token = localStorage.getItem('token');
-    if (!role.includes("walker")) {
-        console.error('Not a walker, no fetch executed');
-        return; // 如果不是 walker 角色，直接返回
-    }
+    // if (!role.includes("walker")) {
+    //     console.error('Not a walker, no fetch executed');
+    //     return; // 如果不是 walker 角色，直接返回
+    // }
     const walkerId = parseInt(userId, 10); // 直接将 userId 设置为 walkerId
     console.info("Walker ID set to: " + walkerId);
     console.info("Walker role set to: " + role);
@@ -170,7 +170,7 @@ export default function Home() {
                 // 假设 data 是数组
                 // console.info(data);
                 // console.info("upupup");
-                setparentId(data.id); // 设置整个返回数据为状态卡片
+                setparentSurname(data.surname); // 设置整个返回数据为状态卡片
             })
             .catch(error => {
                 console.error('Error fetching data:', error);
@@ -181,24 +181,42 @@ export default function Home() {
     // const date = new Date(isoString);
     //
     // console.log(date.toString());
-
     return (
         <div className="flex flex-col h-screen bg-gray-100 p-4" style={{ overflowY: 'auto' }}>
-            <Header title="Emma-parent" navigateTo={"/message"}/>
+            <Header title="Notification-walker" navigateTo={"/message"}/>
             {/* 保护性检查，只有当statusCards是非空数组时，才渲染 */}
 
-            {statusCards && statusCards.length > 0 && statusCards.map((card, index) => (
+            {statusCards && statusCards.length > 0 && statusCards
+                .filter(card => card.statusChanged !== "Applied") // 过滤掉statusChanged为"Applied"的通知
+                .map((card, index) => (
                 <StatusCard
                     key={index}
-                    parentId={parentId}
-                    walkerId={walkerId}
-                    statusPrevious={card.statusPrevious}
-                    statusChanged={card.statusChanged}
+                    title = {"Application Status Change"}
+                    statusChanged={parentSurname + " has " + card.statusChanged + " your application!"}
                     time={format(card.time, 'EEEE, MMMM do, yyyy, hh:mm:ss a')}
                 />
             ))}
         </div>
     );
+    原来页面
+    // return (
+    //     <div className="flex flex-col h-screen bg-gray-100 p-4" style={{ overflowY: 'auto' }}>
+    //         <Header title="Notification" navigateTo={"/message"}/>
+    //         {/* 保护性检查，只有当statusCards是非空数组时，才渲染 */}
+    //
+    //         {statusCards && statusCards.length > 0 && statusCards.map((card, index) => (
+    //             <StatusCard
+    //                 key={index}
+    //                 parentId={parentId}
+    //                 walkerId={walkerId}
+    //                 statusPrevious={card.statusPrevious}
+    //                 statusChanged={card.statusChanged}
+    //                 time={format(card.time, 'EEEE, MMMM do, yyyy, hh:mm:ss a')}
+    //             />
+    //         ))}
+    //     </div>
+    // );
+    测试页面
     // {statusCards && statusCards.length > 0 && statusCards.map((card, index) => {
     //     // 直接在 map 回调中执行 console.log
     //     console.log(new Date(card.time));

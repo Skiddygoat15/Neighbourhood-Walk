@@ -43,7 +43,7 @@ export default function ClientOnlyNav_Parent() {
                         <span className="text-xs">Search</span>
                     </button>
                 </Link>
-                <Link href="/messages" className="text-center">
+                <Link href="/message-homepage-walker" className="text-center">
                     <button className="text-center">
                         <img src="/Navigation-icons/envelope.png" alt="Home" className="w-6 h-6 ml-4"/>
                         <span className="text-xs">Messages</span>

@@ -207,16 +207,28 @@ public class UsersServiceImpl implements UsersService {
                     List<Date> availableDates = updatedUser.getAvailableDate();
                     Date currentDate = new Date();
 
-                    // 遍历 availableDates，确保每个日期都在当前时间之后
-                    for (Date date : availableDates) {
-                        if (date.before(currentDate)) {
-                            throw new IllegalArgumentException("Start date or end date must be later than the current date.");
+                    // 验证 availableDates 长度必须为 2 才进行日期比较
+                    if (availableDates.size() >= 2) {
+                        Date startDate = availableDates.get(0);
+                        Date endDate = availableDates.get(1);
+
+                        // 确保 startDate 和 endDate 都在当前时间之后
+                        if (startDate.before(currentDate) || endDate.before(currentDate)) {
+                            throw new IllegalArgumentException("Start date and end date must be later than the current date.");
                         }
+
+                        // 确保 endDate 在 startDate 之后
+                        if (endDate.before(startDate)) {
+                            throw new IllegalArgumentException("End date must be after the start date.");
+                        }
+                    } else {
+                        throw new IllegalArgumentException("Available dates must include both start date and end date.");
                     }
 
                     // 如果验证通过，更新 availableDate 列表
                     existingUser.setAvailableDate(availableDates);
                 }
+
                 if (updatedUser.getSkill() != null) {
                     existingUser.setSkill(updatedUser.getSkill());
                 }

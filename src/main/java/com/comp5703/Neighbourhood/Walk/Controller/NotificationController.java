@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/Notification")
@@ -36,4 +37,15 @@ public class NotificationController {
     public ResponseEntity<List<Notification>> findNotificationByWalkerId(@PathVariable("walkerId") long walkerId) {
         return new ResponseEntity<>(notificationService.findNotificationByWalkerId(walkerId),HttpStatus.OK);
     }
+
+    @GetMapping("/findNotificationByRequestId/{requestId}")
+    public List<Notification> findNotificationByRequestId(@PathVariable("requestId") int requestId) {
+        return notificationService.findNotificationByRequestId(requestId);
+    }
+
+    @GetMapping("/findWalkerByNotification/{notificationId}")
+    public Users findWalkerByNotification(@PathVariable("notificationId") long notificationId) {
+        return notificationService.findWalkerByNotification(notificationId);
+    }
+
 }

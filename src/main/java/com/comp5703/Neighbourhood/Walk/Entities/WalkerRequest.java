@@ -27,6 +27,16 @@ public class WalkerRequest {
     @Column(name = "status")
     private String status;
 
+    @Override
+    public String toString() {
+        return "WalkerRequest{" +
+                "walkerRequestId=" + walkerRequestId +
+                ", request=" + request +
+                ", walker=" + walker +
+                ", status='" + status + '\'' +
+                '}';
+    }
+
     public long getWalkerRequestId() {
         return walkerRequestId;
     }
