@@ -65,13 +65,15 @@ export default function SearchParentWalkerDetails({ params }) {
   return (
     <main className="min-h-screen bg-white">
       <div className="max-w-md mx-auto p-4 space-y-8">
-        {/* Back Button */}
-        <button onClick={() => handleBack()} className="text-2xl p-2 focus:outline-none">
-          &larr;
-        </button>
+        <div>
+          {/* Back Button */}
+          <button onClick={() => handleBack()} className="text-2xl p-2 focus:outline-none">
+            &larr;
+          </button>
 
-        {/* Title */}
-        <h1 className="text-2xl font-bold text-center">Walker details</h1>
+          {/* Title */}
+          <h1 className="text-2xl font-bold text-center">Walker details</h1>
+        </div>
 
         {/* Walker Information */}
         {error && <p className="text-red-500">{error}</p>}
@@ -86,8 +88,10 @@ export default function SearchParentWalkerDetails({ params }) {
               <p><strong>Email:</strong> {walker.email}</p>
               <p><strong>Phone:</strong> {walker.phone}</p>
               <p><strong>Communication Preference:</strong> {walker.communicatePref}</p>
-              <p><strong>Preferred time:</strong> {formatDateTime(walker.availableDate[0])}</p>
-              <p><strong>Preferred time:</strong> {formatDateTime(walker.availableDate[1])}</p>
+              <p><strong>Preferred time From:</strong> </p>
+              <p>{walker.availableDate[0] ? formatDateTime(walker.availableDate[0]) : 'N/A'}</p>
+              <p><strong>Preferred time To:</strong> </p>
+              <p>{walker.availableDate[0] ? formatDateTime(walker.availableDate[1]) : 'N/A'}</p>
               <p><strong>Skill:</strong> {walker.skill}</p>
               <p><strong>Average Rating:</strong> {walker.avgUserRating}</p>
             </div>
