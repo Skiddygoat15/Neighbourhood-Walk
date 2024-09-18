@@ -322,10 +322,10 @@ public class UsersServiceImpl implements UsersService {
         // Add rating filter
         if (rating != null && !rating.isEmpty()) {
             spec = switch (rating) {
-                case "5 stars" -> spec.and(UsersSpecifications.hasAvgUserRatingGreaterThanOrEqual(5.0));
-                case "4 stars & up" -> spec.and(UsersSpecifications.hasAvgUserRatingGreaterThanOrEqual(4.0));
-                case "3 stars & up" -> spec.and(UsersSpecifications.hasAvgUserRatingGreaterThanOrEqual(3.0));
-                case "2 stars & up" -> spec.and(UsersSpecifications.hasAvgUserRatingGreaterThanOrEqual(2.0));
+                case "5stars" -> spec.and(UsersSpecifications.hasAvgUserRatingGreaterThanOrEqual(5.0));
+                case "4stars" -> spec.and(UsersSpecifications.hasAvgUserRatingGreaterThanOrEqual(4.0));
+                case "3stars" -> spec.and(UsersSpecifications.hasAvgUserRatingGreaterThanOrEqual(3.0));
+                case "2stars" -> spec.and(UsersSpecifications.hasAvgUserRatingGreaterThanOrEqual(2.0));
                 default -> spec.and(UsersSpecifications.hasAvgUserRatingGreaterThanOrEqual(1.0));
             };
         }
