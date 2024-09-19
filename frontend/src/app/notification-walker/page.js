@@ -93,7 +93,7 @@ export default function Home() {
     const [refreshKey, setRefreshKey] = useState(0); // 用于触发重新渲染的状态
 
     const userId = localStorage.getItem('userId');
-    const role = localStorage.getItem('roles');
+    const role = localStorage.getItem('currentRole');
     // const token = localStorage.getItem('token');
     // if (!role.includes("walker")) {
     //     console.error('Not a walker, no fetch executed');

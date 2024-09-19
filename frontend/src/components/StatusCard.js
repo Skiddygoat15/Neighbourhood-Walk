@@ -160,11 +160,11 @@ export default function StatusCard({ showRedDot, title, statusChanged, time, not
             }else{
                 // console.info(role);
                 // console.info("role is up")
-                if (role.includes("parent")){
+                if (role === 'parent'){
                     // console.info("parent");
                     window.location.href = `/notification-parent`;
                 }
-                if (role.includes("walker")){
+                if (role === 'walker'){
                     // console.info("walker");
                     window.location.href = `/notification-walker`;
                 }

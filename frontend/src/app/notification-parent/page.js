@@ -299,7 +299,7 @@ export default function Home() {
     //     return; // 如果不是 walker 角色，直接返回
     // }
     const parentId = parseInt(userId, 10); // 直接将 userId 设置为 parentId
-    const role = localStorage.getItem('roles');
+    const role = localStorage.getItem('currentRole');
     // console.info("parentId ID set to: " + parentId);
     // console.info("parentId role set to: " + role);
 
