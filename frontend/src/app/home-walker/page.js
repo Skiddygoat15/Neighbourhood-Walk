@@ -33,6 +33,8 @@ export default function HomeWalker() {
   const [name, setName] = useState('');
   const [preferredName, setPreferredName] = useState('');
   const [greeting, setGreeting] = useState('');
+  const [avgUserRating, setAvgUserRating] = useState(null); // 用于存储API返回的avgUserRating值
+
 
   useEffect(() => {
     // 从localStorage获取name和preferredName
@@ -75,6 +77,34 @@ export default function HomeWalker() {
   }, []);
 
   useEffect(() => {
+    const userId = localStorage.getItem('userId');
+
+    if (!userId) {
+      console.error('UserId not found in localStorage');
+      return;
+    }
+    // 调用API获取 avgUserRating
+    const fetchAvgUserRating = async () => {
+      try {
+        const response = await fetch(`http://localhost:8080/Users/getUserById/${userId}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          setAvgUserRating(data.avgUserRating); // 将API返回的avgUserRating存储到state
+        } else {
+          console.error('Failed to fetch user rating:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error fetching user rating:', error);
+      }
+    };
+
+    fetchAvgUserRating();
     // 检查未读通知
     const checkNotifications = async () => {
       try {
@@ -117,7 +147,9 @@ export default function HomeWalker() {
         <div className="grid grid-cols-2 gap-4">
           <div className="bg-white border rounded-lg p-4 text-center">
             <p className="font-semibold">Stars</p>
-            <p className="text-xl">⭐ -/5</p>
+            <p className="text-xl mr-3">
+              ⭐ {avgUserRating ? `${avgUserRating}/5` : '-/5'}
+            </p>
           </div>
           <div className="bg-white border rounded-lg p-4 text-center">
             <p className="font-semibold">History</p>
