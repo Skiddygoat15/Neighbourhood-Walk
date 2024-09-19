@@ -106,7 +106,8 @@ export default function HomeWalker() {
         </div>
 
         <div className="mt-4">
-          <button className="w-full bg-white border rounded-lg p-4 text-center font-semibold">
+          <button onClick={() => handleNavigation('/request-status-walker')}
+              className="w-full bg-white border rounded-lg p-4 text-center font-semibold">
             Request Respond
           </button>
         </div>

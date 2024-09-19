@@ -49,9 +49,17 @@ public class RequestController {
      * @return
      */
     @PostMapping
-    public ResponseEntity<Request> addRequest(@RequestBody Request request) {
-        return new ResponseEntity<>(requestService.createRequest(request), HttpStatus
-                .CREATED);
+    public ResponseEntity<?> addRequest(@RequestBody Request request) {
+        try {
+            return new ResponseEntity<>(requestService.createRequest(request), HttpStatus
+                    .CREATED);
+        } catch (IllegalArgumentException e) {
+            // 返回错误信息，状态码为400 (Bad Request)
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            // 处理其他可能的异常
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     /**
      * walker更新request
@@ -60,8 +68,16 @@ public class RequestController {
      * @return
      */
     @PutMapping("/update/{requestId}")
-    public ResponseEntity<Request> updateRequest(@PathVariable int requestId, @RequestBody Request request) {
-        return new ResponseEntity<>(requestService.updateRequest(requestId, request), HttpStatus.OK);
+    public ResponseEntity<?> updateRequest(@PathVariable int requestId, @RequestBody Request request) {
+        try {
+            return new ResponseEntity<>(requestService.updateRequest(requestId, request), HttpStatus.OK);
+        } catch (IllegalArgumentException e) {
+            // 返回错误信息，状态码为400 (Bad Request)
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            // 处理其他可能的异常
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
