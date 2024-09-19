@@ -1,22 +1,19 @@
 package com.comp5703.Neighbourhood.Walk.Service.Impl;
 
 import com.comp5703.Neighbourhood.Walk.Entities.Notification;
-import com.comp5703.Neighbourhood.Walk.Entities.Request;
 import com.comp5703.Neighbourhood.Walk.Entities.Users;
 import com.comp5703.Neighbourhood.Walk.Entities.WalkerRequest;
 import com.comp5703.Neighbourhood.Walk.Repository.NotificationRepository;
 import com.comp5703.Neighbourhood.Walk.Repository.WalkerRequestRepository;
 import com.comp5703.Neighbourhood.Walk.Service.NotificationService;
 import com.comp5703.Neighbourhood.Walk.exception.NotificationWebSocketHandler;
-import com.comp5703.Neighbourhood.Walk.exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 
@@ -110,5 +107,31 @@ public class NotificationServiceImpl implements NotificationService {
         Notification notification = notificationRepository.findById(notificationId).get();
         WalkerRequest walkerRequest = notification.getWalkerRequest();
         return walkerRequest.getWalker();
+    }
+
+    @Override
+    public String checkNotification(long notificationId) {
+        Optional<Notification> notification = notificationRepository.findById(notificationId);
+        if (notification.isPresent()){
+            if (!notification.get().isNotificationCheck()){
+                notification.get().setNotificationCheck(true);
+                notificationRepository.save(notification.get());
+                return "Notification has been checked successfully.";
+            }
+        }
+        return "Notification failed to be checked.";
+    }
+
+    @Override
+    public String closeNotification(long notificationId) {
+        Optional<Notification> notification = notificationRepository.findById(notificationId);
+        if (notification.isPresent()){
+            if (!notification.get().isNotificationClose()){
+                notification.get().setNotificationClose(true);
+                notificationRepository.save(notification.get());
+                return "Notification has been closed successfully.";
+            }
+        }
+        return "Notification failed to be closed.";
     }
 }

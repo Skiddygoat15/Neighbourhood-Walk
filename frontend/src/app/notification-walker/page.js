@@ -90,9 +90,10 @@ export default function Home() {
     const [statusCards, setStatusCards] = useState([]); // 初始化为空数组
     const [parentSurname, setparentSurname] = useState(0); // 初始化为空数组
     const [walkerRequestId, setwalkerRequestId] = useState(0); // 初始化为空数组
+    const [refreshKey, setRefreshKey] = useState(0); // 用于触发重新渲染的状态
 
     const userId = localStorage.getItem('userId');
-    const role = localStorage.getItem('roles');
+    const role = localStorage.getItem('currentRole');
     // const token = localStorage.getItem('token');
     // if (!role.includes("walker")) {
     //     console.error('Not a walker, no fetch executed');
@@ -177,6 +178,10 @@ export default function Home() {
             });
         },[walkerRequestId]);
 
+    const refreshPage = () => {
+        setRefreshKey(prevKey => prevKey + 1);
+    };
+
     // const isoString = ;
     // const date = new Date(isoString);
     //
@@ -188,14 +193,29 @@ export default function Home() {
 
             {statusCards && statusCards.length > 0 && statusCards
                 .filter(card => card.statusChanged !== "Applied") // 过滤掉statusChanged为"Applied"的通知
-                .map((card, index) => (
-                <StatusCard
-                    key={index}
-                    title = {"Application Status Change"}
-                    statusChanged={parentSurname + " has " + card.statusChanged + " your application!"}
-                    time={format(card.time, 'EEEE, MMMM do, yyyy, hh:mm:ss a')}
-                />
-            ))}
+                .map((card, index) => {
+                    if (card.notificationClose === true) {
+                        return null;
+                    }
+                    // console.info(parentSurname);
+                    // console.info(card.notificationCheck);
+                    // console.info("upupup");
+                    return(
+                            <StatusCard
+                                key={index}
+                                onRefresh={refreshPage}
+                                title={"Application Status Change"}
+                                statusChanged={parentSurname + " has " + card.statusChanged + " your application!"}
+                                time={format(card.time, 'EEEE, MMMM do, yyyy, hh:mm:ss a')}
+                                notificationId={card.notificationId}
+                                showRedDot={!card.notificationCheck}
+                                role={role}
+
+
+                            />
+                        )
+
+                })}
         </div>
     );
     原来页面

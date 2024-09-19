@@ -35,11 +35,25 @@ public class Notification {
     @TableField(fill = FieldFill.INSERT) //标明该字段，在什么时候需要被填充
     private Date Time;
 
+    @Column(name = "NotificationCheck")
+    private boolean NotificationCheck = false;
+
+    @Column(name = "NotificationClose")
+    private boolean NotificationClose = false;
+
     public Notification() {}
 
     public Notification(WalkerRequest walkerRequest, String statusPrevious, String statusChanged) {
         this.walkerRequest = walkerRequest;
         this.statusPrevious = statusPrevious;
         this.statusChanged = statusChanged;
+    }
+
+    public Notification(WalkerRequest walkerRequest, String statusPrevious, String statusChanged, boolean notificationCheck, boolean notificationClose) {
+        this.walkerRequest = walkerRequest;
+        this.statusPrevious = statusPrevious;
+        this.statusChanged = statusChanged;
+        NotificationCheck = notificationCheck;
+        NotificationClose = notificationClose;
     }
 }
