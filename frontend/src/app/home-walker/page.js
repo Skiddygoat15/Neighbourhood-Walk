@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 
 export default function HomeWalker() {
   const router = useRouter();
+  const [showRedDot, setShowRedDot] = useState(false);
 
   const handleNavigation = (path) => {
     router.push(path);
@@ -73,6 +74,37 @@ export default function HomeWalker() {
     }
   }, []);
 
+  useEffect(() => {
+    // 检查未读通知
+    const checkNotifications = async () => {
+      try {
+        // 从 localStorage 获取 userId
+        const userId = localStorage.getItem('userId');
+
+        if (!userId) {
+          console.error('UserId not found in localStorage');
+          return;
+        }
+        const response = await fetch(`http://localhost:8080/UPNotifications/check-any-notification-unchecked/${userId}`, {
+          method: 'GET',
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+          },
+        });
+        const data = await response.json();
+        if (data === true) {
+          setShowRedDot(true);
+        } else {
+          setShowRedDot(false);
+        }
+      } catch (error) {
+        console.error('Error checking notifications:', error);
+      }
+    };
+
+    checkNotifications();
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center">
       <div className="mt-4 text-center">
@@ -113,9 +145,22 @@ export default function HomeWalker() {
         </div>
 
         <div className="mt-4">
-          <button onClick={() => handleNavigation('/notification-walker')}
-                  className="w-full bg-white border rounded-lg p-4 text-center font-semibold">
+          <button
+              onClick={() => handleNavigation('/notification-walker')}
+              className="w-full bg-white border rounded-lg p-4 text-center font-semibold relative"
+          >
             Notification
+            {showRedDot && (
+                <span style={{
+                  position: 'absolute',
+                  top: '10px',
+                  right: '10px',
+                  height: '10px',
+                  width: '10px',
+                  borderRadius: '50%',
+                  backgroundColor: 'red',
+                }}></span>
+            )}
           </button>
         </div>
 

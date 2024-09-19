@@ -10,5 +10,5 @@ import java.util.List;
 public interface UserProfileNotificationRepository extends JpaRepository<UserProfileNotification, Long>, JpaSpecificationExecutor<UserProfileNotification> {
     List<UserProfileNotification> findByUser(Users user);
     // 查询是否有 NotificationCheck 为 false 的记录
-    boolean existsByNotificationCheckFalse();
+    boolean existsByUserIdAndNotificationCheckFalse(long userId);
 }

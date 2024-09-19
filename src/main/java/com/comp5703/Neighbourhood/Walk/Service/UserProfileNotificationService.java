@@ -11,5 +11,5 @@ public interface UserProfileNotificationService {
     public List<UserProfileNotificationDTO> getUPNotificationsByUserId(long userId);
     public void checkUPNotification(long id);
     public void closeUPNotification(long id);
-    public boolean checkAnyNotificationUnchecked();
+    public boolean checkAnyNotificationUnchecked(long userId);
 }

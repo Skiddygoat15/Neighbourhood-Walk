@@ -19,10 +19,10 @@ public class UserProfileNotificationController {
     @Autowired
     UserProfileNotificationService notificationService;
 
-    @GetMapping("/check-any-notification-unchecked")
-    public ResponseEntity<Boolean> checkForUncheckedNotifications() {
+    @GetMapping("/check-any-notification-unchecked/{userId}")
+    public ResponseEntity<Boolean> checkForUncheckedNotifications(@PathVariable long userId) {
         // 调用服务方法检查是否存在 NotificationCheck 为 false 的通知
-        boolean hasUnchecked = notificationService.checkAnyNotificationUnchecked();
+        boolean hasUnchecked = notificationService.checkAnyNotificationUnchecked(userId);
 
         // 返回布尔值作为响应，表示是否存在未检查的通知
         return new ResponseEntity<>(hasUnchecked, HttpStatus.OK);

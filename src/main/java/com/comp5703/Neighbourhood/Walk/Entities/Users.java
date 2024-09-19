@@ -81,6 +81,12 @@ public class Users {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserProfileNotification> userProfileNotifications = new ArrayList<>();
 
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PreMeet> preMeetsAsParent = new ArrayList<>();
+
+    @OneToMany(mappedBy = "walker", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<PreMeet> preMeetsAsWalker = new ArrayList<>();
+
     public Users() {
     }
 
