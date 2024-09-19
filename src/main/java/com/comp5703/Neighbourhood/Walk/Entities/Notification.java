@@ -56,4 +56,13 @@ public class Notification {
         notificationCheck = notificationCheck;
         notificationClose = notificationClose;
     }
+
+
+    public boolean isNotificationCheckFalse() {
+        return notificationCheck;
+    }
+
+    public String getStatusChanged() {
+        return statusChanged;
+    }
 }

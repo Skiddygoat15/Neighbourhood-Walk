@@ -227,7 +227,7 @@ export default function Home() {
     // console.log(date.toString());
     return (
         <div className="flex flex-col h-screen bg-gray-100 p-4" style={{ overflowY: 'auto' }}>
-            <Header title="Notification-walker" navigateTo={"/message"}/>
+            <Header title="Notification-walker" navigateTo={"/home-walker"}/>
             {/* 保护性检查，只有当statusCards是非空数组时，才渲染 */}
 
             {statusCards && statusCards.length > 0 && statusCards

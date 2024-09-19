@@ -76,10 +76,17 @@ export default function HomeParent() {
   }, []);
 
   useEffect(() => {
+    // 从 localStorage 获取 userId
+    const userId = localStorage.getItem('userId');
+
+    if (!userId) {
+      console.error('UserId not found in localStorage');
+      return;
+    }
     // 检查未读通知
     const checkNotifications = async () => {
       try {
-        const response = await fetch('http://localhost:8080/UPNotifications/check-any-notification-unchecked', {
+        const response = await fetch(`http://localhost:8080/UPNotifications/check-any-notification-unchecked-parent/${userId}`, {
           method: 'GET',
           headers: {
             'Authorization': 'Bearer ' + localStorage.getItem('token'),

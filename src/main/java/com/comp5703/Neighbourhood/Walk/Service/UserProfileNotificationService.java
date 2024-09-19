@@ -12,4 +12,5 @@ public interface UserProfileNotificationService {
     public void checkUPNotification(long id);
     public void closeUPNotification(long id);
     public boolean checkAnyNotificationUnchecked(long userId);
+    public boolean checkAnyNotificationUnchecked_Parent(long userId);
 }

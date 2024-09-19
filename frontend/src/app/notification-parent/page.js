@@ -480,12 +480,16 @@ export default function Home() {
 
     return (
         <div className="flex flex-col h-screen bg-gray-100 p-4" style={{ overflowY: 'auto' }}>
-            <Header title="Notification-parent" navigateTo={"/message"} />
+            <Header title="Notification-parent" navigateTo={"/home-parent"} />
 
             {/* 保护性检查，只有当 Notifications 是非空数组时，才渲染 */}
             {Notifications && Notifications.length > 0 && Notifications.map((notification, index) => {
                 console.info(notification);
                 console.info("refreshPage"+refreshKey);
+                if (!notification || notification.notificationClose === null || notification.notificationClose === undefined) {
+                    console.error("Notification or notificationClose is null/undefined", notification);
+                    return null; // 如果为 null 或 undefined，则跳过渲染
+                }
                 // 如果 notification.NotificationClose 为 true，则不渲染该组件
                 if (notification.notificationClose === true) {
                     return null;
