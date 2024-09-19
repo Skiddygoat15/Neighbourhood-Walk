@@ -254,7 +254,7 @@ export default function MyRequestApplication({ params }) {
                   <span className="text-lg font-bold">You have accepted Loading... application!</span>
                   <div className="flex items-center ml-auto">
                     <button className="text-red-500 ml-4"
-                            onClick={() => router.push("/notification-homepage")}>Pre-meet
+                            onClick={() => router.push("/pre-meet-parent")}>Pre-meet
                     </button>
                   </div>
                 </div>
@@ -319,7 +319,7 @@ export default function MyRequestApplication({ params }) {
                     <span className="text-lg font-bold">You have accepted {acceptedWalker.name} application!</span>
                     <div className="flex items-center ml-auto">
                       <button className="text-red-500 ml-4"
-                              onClick={() => router.push("/notification-homepage")}>Pre-meet
+                              onClick={() => router.push("/pre-meet-parent")}>Pre-meet
                       </button>
                     </div>
                   </div>
