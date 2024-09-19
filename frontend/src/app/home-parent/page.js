@@ -33,6 +33,7 @@ export default function HomeParent() {
   const [name, setName] = useState('');
   const [preferredName, setPreferredName] = useState('');
   const [greeting, setGreeting] = useState('');
+  const [showRedDot, setShowRedDot] = useState(false);
 
   useEffect(() => {
     // 从localStorage获取name和preferredName
@@ -72,6 +73,30 @@ export default function HomeParent() {
         console.log("preferredName != null")
       }
     }
+  }, []);
+
+  useEffect(() => {
+    // 检查未读通知
+    const checkNotifications = async () => {
+      try {
+        const response = await fetch('http://localhost:8080/UPNotifications/check-any-notification-unchecked', {
+          method: 'GET',
+          headers: {
+            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+          },
+        });
+        const data = await response.json();
+        if (data === true) {
+          setShowRedDot(true);
+        } else {
+          setShowRedDot(false);
+        }
+      } catch (error) {
+        console.error('Error checking notifications:', error);
+      }
+    };
+
+    checkNotifications();
   }, []);
 
   return (
@@ -117,9 +142,22 @@ export default function HomeParent() {
             >
               Request
             </button>
-            <button onClick={() => handleNavigation('/notification-parent')}
-                    className="w-full bg-white border rounded-lg p-4 text-center font-semibold">
+            <button
+                onClick={() => handleNavigation('/notification-parent')}
+                className="w-full bg-white border rounded-lg p-4 text-center font-semibold relative"
+            >
               Notification
+              {showRedDot && (
+                  <span style={{
+                    position: 'absolute',
+                    top: '10px',
+                    right: '10px',
+                    height: '10px',
+                    width: '10px',
+                    borderRadius: '50%',
+                    backgroundColor: 'red',
+                  }}></span>
+              )}
             </button>
             <button
                 onClick={() => handleLogOut()}

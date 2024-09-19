@@ -85,12 +85,14 @@ import React, {useState, useEffect} from 'react';
 import StatusCard from '../../components/StatusCard';
 import Header from "../../components/Header";
 import { format } from 'date-fns';
+import StatusCard_profile from "@/components/StatusCard_profile";
 
 export default function Home() {
     const [statusCards, setStatusCards] = useState([]); // 初始化为空数组
     const [parentSurname, setparentSurname] = useState(0); // 初始化为空数组
     const [walkerRequestId, setwalkerRequestId] = useState(0); // 初始化为空数组
     const [refreshKey, setRefreshKey] = useState(0); // 用于触发重新渲染的状态
+    const [Notifications_Profile, setNotifications_Profile] = useState([]);
 
     const userId = localStorage.getItem('userId');
     const role = localStorage.getItem('currentRole');
@@ -151,6 +153,43 @@ export default function Home() {
             });
         },[userId]);
 
+    // 获取UPNotifications
+    function fetchData_Profile(userId) {
+        return fetch(`http://localhost:8080/UPNotifications/getUPNotificationsByUserId/${userId}`, {
+            method: 'GET',
+            headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')},
+            mode: 'cors',
+            cache: 'default'
+        })
+            .then(response_profile => {
+                if (!response_profile.ok) {
+                    throw new Error(`Failed to fetch data for requestId ${userId}`);
+                }
+                return response_profile.json();
+            }).then(data_profile => {
+                // console.log(`Data received for requestId ${requestId}:`, data);
+                return data_profile;
+            })
+            .catch(error => {
+                console.error(`Error fetching data for requestId ${UPNotificationId}:`, error);
+            });
+    }
+
+    function fetchAllData_Profile(userId) {
+        fetchData_Profile(userId)
+            .then(results => {
+                setNotifications_Profile(results);
+            })
+            .catch(error => {
+                console.error('Error fetching profile data:', error);
+            });
+    }
+
+    // 保留fetchAllData_Profile单独执行
+    useEffect(() => {
+        fetchAllData_Profile(userId);
+    }, [userId]); // 确保profile的通知可以独立执行
+
     //根据walkerRequestId获取parentId
     useEffect(() => {
         const myInit = {
@@ -192,9 +231,9 @@ export default function Home() {
             {/* 保护性检查，只有当statusCards是非空数组时，才渲染 */}
 
             {statusCards && statusCards.length > 0 && statusCards
-                .filter(card => card.statusChanged !== "Applied") // 过滤掉statusChanged为"Applied"的通知
+                .filter(card => card && card.statusChanged !== "Applied") // 过滤掉statusChanged为"Applied"的通知
                 .map((card, index) => {
-                    if (card.notificationClose === true) {
+                    if (card && card.notificationClose === true) {
                         return null;
                     }
                     // console.info(parentSurname);
@@ -216,6 +255,33 @@ export default function Home() {
                         )
 
                 })}
+
+            {Notifications_Profile && Notifications_Profile.length > 0 && Notifications_Profile.map((notification, index) => {
+                console.info(notification);
+                console.info("refreshPage"+refreshKey);
+                // 如果 notification.NotificationClose 为 true，则不渲染该组件
+                if (notification.notificationClose === true) {
+                    return null;
+                }
+                // console.info(notification.notificationClose);
+                // console.info("upupup2");
+                // console.info(notification.notificationCheck);
+                // console.info("upupup3");
+                return (
+                    <StatusCard_profile
+                        key={index}
+                        onRefresh={refreshPage}
+                        title={notification.notifyType}
+                        statusChanged={notification.message}
+                        time={format(notification.time, 'EEEE, MMMM do, yyyy, hh:mm:ss a')}
+                        notificationId={notification.notifyId}
+                        showRedDot={!notification.notificationCheck} // 如果 NotificationCheck 为 false 则显示红点
+                        role={role}
+                        // 你可以定义 handleDelete 函数来处理删除逻辑
+
+                    />
+                );
+            })}
         </div>
     );
     原来页面

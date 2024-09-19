@@ -16,4 +16,7 @@ public class UserProfileNotificationDTO {
     private Date time;
     private String message;
     private String notifyType;
+    private long notifyId;
+    private boolean notificationClose;
+    private boolean notificationCheck;
 }

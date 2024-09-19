@@ -9,4 +9,7 @@ public interface UserProfileNotificationService {
     public void saveUserProfileNotification(UserProfileNotification userProfileNotification);
     public List<UserProfileNotification> getAllUserProfileNotifications();
     public List<UserProfileNotificationDTO> getUPNotificationsByUserId(long userId);
+    public void checkUPNotification(long id);
+    public void closeUPNotification(long id);
+    public boolean checkAnyNotificationUnchecked();
 }
