@@ -49,7 +49,7 @@ export default function ClientOnlyNav_Parent() {
                         <span className="text-xs">Messages</span>
                     </button>
                 </Link>
-                <Link href="/my-request-status-waiting-walker" className="text-center">
+                <Link href="/request-status-walker" className="text-center">
                     <button className="text-center">
                         <img src="/Navigation-icons/request.png" alt="Home" className="w-6 h-6 ml-2.5"/>
                         <span className="text-xs">Request</span>

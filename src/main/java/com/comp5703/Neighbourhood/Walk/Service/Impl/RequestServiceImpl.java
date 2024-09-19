@@ -17,7 +17,7 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Date;
+import java.util.*;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -57,6 +57,28 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     public Request createRequest(Request request) {
+        // 确保 departure 和 destination 不为空
+        if (request.getDeparture() == null || request.getDeparture().isEmpty()) {
+            throw new IllegalArgumentException("Departure cannot be null or empty.");
+        }
+        if (request.getDestination() == null || request.getDestination().isEmpty()) {
+            throw new IllegalArgumentException("Destination cannot be null or empty.");
+        }
+
+        Date currentDate = new Date();
+        // 验证开始时间和结束时间的逻辑
+        if (request.getStartTime() == null || request.getArriveTime() == null || request.getStartTime().toString().contains("NaN") || request.getArriveTime().toString().contains("NaN")) {
+            throw new IllegalArgumentException("Invalid time format. Please ensure all fields are filled correctly.");
+        }
+
+        if (request.getArriveTime().before(request.getStartTime())) {
+            throw new IllegalArgumentException("End time must be after the start time.");
+        }
+
+        if (request.getStartTime().before(currentDate) || request.getArriveTime().before(currentDate)) {
+            throw new IllegalArgumentException("Start time and end time must be in the future.");
+        }
+
         // search parent, walker instance manually
         System.out.println("Parent ID: " + request.getParent().getId());
         Users parent = usersRepository.findById(request.getParent().getId())
@@ -72,9 +94,16 @@ public class RequestServiceImpl implements RequestService {
         return requestRepository.save(request);
     }
 
-    //todo: after accept a walker, parent should not be able to update the request in progress
+
     @Override
     public Request updateRequest(int requestId, Request updatedRequest) {
+        Date currentDate = new Date();
+        // 验证开始时间和结束时间的逻辑
+
+        if (updatedRequest.getStartTime().before(currentDate) || updatedRequest.getArriveTime().before(currentDate)) {
+            throw new IllegalArgumentException("Start time and end time must be in the future.");
+        }
+
 //        Users parent = usersRepository.findById(updatedRequest.getParent().getId())
 //                .orElseThrow(() -> new ResourceNotFoundException("Parent not found with id: " + updatedRequest.getParent().getId()));
         Request request = requestRepository.findById(requestId).orElseThrow(() -> new ResourceNotFoundException("Request not found"));
@@ -83,8 +112,6 @@ public class RequestServiceImpl implements RequestService {
         request.setDeparture(updatedRequest.getDeparture());
         request.setDestination(updatedRequest.getDestination());
         request.setDetails(updatedRequest.getDetails());
-        //request.setStatus(updatedRequest.getStatus());
-        //request.setParent(parent);
 
         return requestRepository.save(request);
 

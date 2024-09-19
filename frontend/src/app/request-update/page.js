@@ -11,6 +11,8 @@ export default function UpdateRequest() {
   const [arriveTime, setArriveTime] = useState({ hour: '', minute: '', period: 'AM' });
   const [date, setDate] = useState('');
   const [request, setRequest] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   const [sendBody, setSendBody] = useState({
     startTime: new Date(),
@@ -66,9 +68,10 @@ export default function UpdateRequest() {
               router.push('/Login');
               return;
             }
-            return response.json().then(data => {
-              alert(data.message)
-              throw new Error(data.message || "error posting request");
+            return response.text().then(text => {
+              setError(text);
+              //alert(text);
+              throw new Error(text);
             });
           }
           return response.json();
@@ -80,6 +83,8 @@ export default function UpdateRequest() {
         })
         .catch(err => {
           console.log(err);
+          const errorMessage = err.message || 'create request failed';
+          setError(errorMessage);
           //setError('Failed to get contribution. Please try again.');
         });
   };
@@ -113,6 +118,7 @@ export default function UpdateRequest() {
         <button onClick={() => router.push("/request-my-request")} className="text-2xl p-2 focus:outline-none">
           &larr;
         </button>
+        {error && <p className="text-red-500 text-center">{error}</p>}
 
         {/* Title */}
         <h1 className="text-2xl font-bold text-center">Update request</h1>

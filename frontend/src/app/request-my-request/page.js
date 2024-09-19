@@ -154,8 +154,8 @@ export default function MyRequest() {
                   </div>
                   <p className="text-sm"><strong>Departure:</strong> {request.departure}</p>
                   <p className="text-sm"><strong>Destination:</strong> {request.destination}</p>
-                  <p className="text-sm"><strong>Estimated time:</strong> {moment(request.startTime).format("MM/DD/YYYY HH:mm")} - {moment(request.arriveTime).format("MM/DD/YYYY HH:mm")}</p>
-                  {/*<p className="text-sm"><strong>arrive time:</strong> {moment(request.arriveTime).format("MM/DD/YYYY HH:mm:ss")}</p>*/}
+                  <p className="text-sm"><strong>Estimated time:</strong> {moment(request.startTime).format("MM/DD/YYYY HH:mm")}</p>
+                  <p className="text-sm"><strong>arrive time:</strong> {moment(request.arriveTime).format("MM/DD/YYYY HH:mm:ss")}</p>
                   <p className="text-xs text-gray-500">Published by {moment(request.publishDate).format("MM/DD HH:mm")}</p>
                   <div className="flex justify-between mt-2">
                     <button

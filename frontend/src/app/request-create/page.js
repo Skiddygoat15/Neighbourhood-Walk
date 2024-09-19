@@ -55,6 +55,11 @@ export default function WalkRequestManagementParent() {
         console.log('Details:', sendBody.details);
         console.log('Estimated Departure Time:', sendBody.startTime);
         console.log('Estimated Arrival Time:', sendBody.arriveTime);
+
+        if (!date || !departureTime.hour || !departureTime.minute || !arriveTime.hour || !arriveTime.minute) {
+            alert("Please fill in both date and time.");
+            return;
+        }
         // setSendBody({
         //   parent: {id: 2},
         //   publishDate: new Date(),
@@ -80,10 +85,10 @@ export default function WalkRequestManagementParent() {
                         router.push('/Login');
                         return;
                     }
-                    return response.json().then(data => {
-                        alert(data.message)
-                        setError(data.message)
-                        throw new Error(data.message || "error posting request");
+                    return response.text().then(text => {
+                        setError(text);
+                        //alert(text);
+                        throw new Error(text);
                     });
                 }
                 return response.json();
@@ -99,6 +104,8 @@ export default function WalkRequestManagementParent() {
             })
             .catch(err => {
                 console.log(err);
+                const errorMessage = err.message || 'create request failed';
+                setError(errorMessage);
                 //setError('Failed to get contribution. Please try again.');
                 setLoading(false);
             });
@@ -133,6 +140,7 @@ export default function WalkRequestManagementParent() {
                 </button>
                 {/* Title */}
                 <h1 className="text-3xl font-bold text-center">Create your request</h1>
+                {error && <p className="text-red-500 text-center">{error}</p>}
                 {/* Departure Input */}
                 <div>
                     <label className="block text-lg font-semibold">Departure:</label>

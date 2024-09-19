@@ -3,7 +3,7 @@ package com.comp5703.Neighbourhood.Walk.Service;
 import com.comp5703.Neighbourhood.Walk.Entities.Request;
 import com.comp5703.Neighbourhood.Walk.Entities.WalkerRequest;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 //import java.util.Date;
 
