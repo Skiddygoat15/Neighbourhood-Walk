@@ -43,18 +43,24 @@ export default function WalkRequestManagementParent() {
     const handlePublish = () => {
         console.log('UserId: ', parentId);
         const addRequestAPI = `http://127.0.0.1:8080/requests`;
-        setSendBody((prevSendBody) => ({
-            ...prevSendBody,  // keep other attributes same
-            startTime: combineDateAndTime(date, departureTime),
-            arriveTime: combineDateAndTime(date, arriveTime)
-        }));
+        const updatedStartTime = combineDateAndTime(date, departureTime);
+        const updatedArriveTime = combineDateAndTime(date, arriveTime);
+
+        // 构造最终的请求体
+        const finalSendBody = {
+            ...sendBody,  // 复制 sendBody 的其他属性
+            startTime: updatedStartTime,
+            arriveTime: updatedArriveTime,
+            publishDate: new Date(),
+            parent: { id: parentId }
+        };
         console.log('Request Published');
-        console.log('parent:', sendBody.parent);
-        console.log('Departure:', sendBody.departure);
-        console.log('Destination:', sendBody.destination);
-        console.log('Details:', sendBody.details);
-        console.log('Estimated Departure Time:', sendBody.startTime);
-        console.log('Estimated Arrival Time:', sendBody.arriveTime);
+        console.log('parent:', finalSendBody.parent);
+        console.log('Departure:', finalSendBody.departure);
+        console.log('Destination:', finalSendBody.destination);
+        console.log('Details:', finalSendBody.details);
+        console.log('Estimated Departure Time:', finalSendBody.startTime);
+        console.log('Estimated Arrival Time:', finalSendBody.arriveTime);
 
         if (!date || !departureTime.hour || !departureTime.minute || !arriveTime.hour || !arriveTime.minute) {
             alert("Please fill in both date and time.");
@@ -76,7 +82,7 @@ export default function WalkRequestManagementParent() {
                 'Content-Type': 'application/json', // Set the content type header for JSON data
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
             },
-            body: JSON.stringify(sendBody)
+            body: JSON.stringify(finalSendBody)
         })
             .then(response => {
                 if (!response.ok) {

@@ -6,32 +6,33 @@ import {useRouter} from 'next/navigation';
 import {useEffect, useState} from 'react';
 
 
-export default function MyRequestApplication() {
+export default function MyRequestApplication({ params }) {
   const router = useRouter();
+  const { id } = params;
   const [walkers, setWalkers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [request, setRequest] = useState(null); // 使用 useState 管理 request
   const [acceptedWalker, setAcceptedWalker] = useState(null); // 用于管理被接受的 walker
   // 第一次渲染时，获取 localStorage 中的 request 数据
-  useEffect(() => {
-    const storedRequest = localStorage.getItem('clickedRequest');
-    //console.log("storedRequest: ", storedRequest);
-    if (storedRequest) {
-      setRequest(JSON.parse(storedRequest));
-      console.log("clickedRequest", request);
-    }
-  }, []); // 空数组作为依赖，确保只在组件挂载时执行一次
+  // useEffect(() => {
+  //   const storedRequest = localStorage.getItem('clickedRequest');
+  //   //console.log("storedRequest: ", storedRequest);
+  //   if (storedRequest) {
+  //     setRequest(JSON.parse(storedRequest));
+  //     console.log("clickedRequest", request);
+  //   }
+  // }, []); // 空数组作为依赖，确保只在组件挂载时执行一次
 
 
   useEffect(() => {
-    console.log("request: ", request)
-    if (!request || !request.requestId) {
-      // 如果 request 为空或 requestId 不存在，不执行 API 调用
-      return;
-    }
+    // console.log("request: ", request)
+    // if (!request || !request.requestId) {
+    //   // 如果 request 为空或 requestId 不存在，不执行 API 调用
+    //   return;
+    // }
 
-    const getRequestDetailsAPI = `http://127.0.0.1:8080/requests/getRequestByRequestId/${request.requestId}`;
+    const getRequestDetailsAPI = `http://127.0.0.1:8080/requests/getRequestByRequestId/${id}`;
     fetch(getRequestDetailsAPI, {
       method: 'get',
       credentials: 'include',
@@ -56,9 +57,12 @@ export default function MyRequestApplication() {
           return response.json();
         })
         .then(data => {
+          console.log("get request:", data);
           setRequest(data); // 更新 request 数据
           if (data.walker) {
+            console.log("accepted-walker:", data.walker);
             setAcceptedWalker(data.walker); // 设置被接受的 walker
+            setLoading(false);
           }
         })
         .catch(err => {
@@ -66,7 +70,7 @@ export default function MyRequestApplication() {
           setError('Failed to get request details. Please try again.');
           setLoading(false);
         });
-  }, [request?.requestId]); // 根据 requestId 触发
+  }, [id]); // 根据 requestId 触发
 
   // 获取申请者列表
   useEffect(() => {
@@ -74,7 +78,7 @@ export default function MyRequestApplication() {
       return;
     }
 
-    const getWalkersAPI = `http://127.0.0.1:8080/WalkerRequest/getWalkersByRequestId/${request.requestId}`;
+    const getWalkersAPI = `http://127.0.0.1:8080/WalkerRequest/getWalkersByRequestId/${id}`;
     fetch(getWalkersAPI, {
       method: 'get',
       credentials: 'include',
@@ -90,15 +94,16 @@ export default function MyRequestApplication() {
               router.push('/Login');
               return;
             }
-            return response.json().then(data => {
-              alert(data.message);
-              setError(data.message);
-              throw new Error(data.message || "Error getting walker list");
+            return response.text().then(text => {
+              //setError(text);
+              alert(text);
+              throw new Error(text || "Error fetching request");
             });
           }
           return response.json();
         })
         .then(data => {
+          console.log("get walkers: ", data)
           setWalkers(data); // 设置 walkers 数据
           setLoading(false);
         })
@@ -118,7 +123,7 @@ export default function MyRequestApplication() {
 
   // 处理接受 walker 的请求
   const acceptWalker = (walkerId) => {
-    const acceptAPI = `http://127.0.0.1:8080/requests/${request.requestId}/accept?walkerId=${walkerId}`;
+    const acceptAPI = `http://127.0.0.1:8080/requests/${id}/accept?walkerId=${walkerId}`;
     console.log("acceptAPI: " + acceptAPI)
     fetch(acceptAPI, {
       method: 'post',
@@ -130,25 +135,28 @@ export default function MyRequestApplication() {
     })
         .then(response => {
           if (!response.ok) {
-            return response.json().then(data => {
-              alert(data.message);
-              throw new Error(data.message || "Error accepting walker");
+            return response.text().then(text => {
+              //setError(text);
+              alert(text);
+              throw new Error(text || "Error accepting walker");
             });
           }
           alert('Request accepted successfully.');
           setAcceptedWalker(walkers.find(walker => walker.id === walkerId));
           setWalkers(walkers.filter(walker => walker.id === walkerId));
           //router.reload(); // 刷新页面
+          setLoading(false);
         })
         .catch(err => {
           console.log(err);
           alert('Failed to accept walker. Please try again.');
+          setLoading(false);
         });
   };
 
   // 处理拒绝 walker 的请求
   const rejectWalker = (walkerId) => {
-    const rejectAPI = `http://127.0.0.1:8080/requests/${request.requestId}/reject?walkerId=${walkerId}`;
+    const rejectAPI = `http://127.0.0.1:8080/requests/${id}/reject?walkerId=${walkerId}`;
     console.log("rejectAPI: " + rejectAPI)
     fetch(rejectAPI, {
       method: 'post',
@@ -160,17 +168,20 @@ export default function MyRequestApplication() {
     })
         .then(response => {
           if (!response.ok) {
-            return response.json().then(data => {
-              alert(data.message);
-              throw new Error(data.message || "Error rejecting walker");
+            return response.text().then(text => {
+              //setError(text);
+              alert(text);
+              throw new Error(text || "Error rejecting walker");
             });
           }
           alert('Request rejected successfully.');
           setWalkers(walkers.filter(walker => walker.id !== walkerId));
           //router.reload(); // 刷新页面
+          setLoading(false);
         })
         .catch(err => {
           console.log(err);
+          setLoading(false);
           alert('Failed to reject walker. Please try again.');
         });
   };

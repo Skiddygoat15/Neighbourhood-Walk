@@ -1,9 +1,6 @@
 package com.comp5703.Neighbourhood.Walk.Controller;
 
-import com.comp5703.Neighbourhood.Walk.Entities.Request;
-import com.comp5703.Neighbourhood.Walk.Entities.Users;
-import com.comp5703.Neighbourhood.Walk.Entities.WalkerRequest;
-import com.comp5703.Neighbourhood.Walk.Entities.WalkerRequestDTO;
+import com.comp5703.Neighbourhood.Walk.Entities.*;
 import com.comp5703.Neighbourhood.Walk.Repository.WalkerRequestRepository;
 import com.comp5703.Neighbourhood.Walk.Service.RequestService;
 import com.comp5703.Neighbourhood.Walk.exception.ResourceNotFoundException;
@@ -36,7 +33,7 @@ public class RequestController {
     @GetMapping("/getRequestByRequestId/{requestId}")
     public ResponseEntity<?> getRequestById(@PathVariable int requestId) {
         try {
-            Request request = requestService.getRequestById(requestId);
+            RequestDTO request = requestService.getRequestById(requestId);
             return new ResponseEntity<>(request, HttpStatus.OK);
         } catch (ResourceNotFoundException e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
