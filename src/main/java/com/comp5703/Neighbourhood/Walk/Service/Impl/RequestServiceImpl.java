@@ -130,9 +130,11 @@ public class RequestServiceImpl implements RequestService {
         if (Objects.equals(notification.getStatusPrevious(), "Published") && Objects.equals(notification.getStatusChanged(), "Applied")){
             notification.setStatusChanged("Accepted");
             notification.setStatusPrevious("Applied");
+            notification.setNotificationCheck(false);
+            notification.setNotificationClose(false);
             notificationService.addNotification(notification);
         }else{
-            notificationService.addNotification(new Notification(walkerRequest,previousStatus,"Accepted"));
+            notificationService.addNotification(new Notification(walkerRequest,previousStatus,"Accepted",false,false));
         }
         return walkerRequest;
     }
@@ -162,9 +164,11 @@ public class RequestServiceImpl implements RequestService {
         if (Objects.equals(notification.getStatusPrevious(), "Published") && Objects.equals(notification.getStatusChanged(), "Applied")){
             notification.setStatusChanged("Rejected");
             notification.setStatusPrevious("Applied");
+            notification.setNotificationCheck(false);
+            notification.setNotificationClose(false);
             notificationService.addNotification(notification);
         }else{
-            notificationService.addNotification(new Notification(walkerRequest,previousStatus,"Rejected"));
+            notificationService.addNotification(new Notification(walkerRequest,previousStatus,"Rejected",false,false));
         }
         return walkerRequest;
     }

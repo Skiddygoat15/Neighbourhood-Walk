@@ -9,7 +9,4 @@ public interface NotificationRepository extends CrudRepository<Notification, Lon
     <S extends Notification> S save(S entity);
 
     Notification findAllByWalkerRequest_WalkerRequestId(long walkerRequestId);
-
-
-
 }
