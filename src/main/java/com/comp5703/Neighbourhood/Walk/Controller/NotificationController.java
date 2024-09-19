@@ -48,4 +48,13 @@ public class NotificationController {
         return notificationService.findWalkerByNotification(notificationId);
     }
 
+    @PostMapping("/checkNotification/{notificationId}")
+    public String checkNotification(@PathVariable("notificationId")long notificationId) {
+        return notificationService.checkNotification(notificationId);
+    }
+
+    @PostMapping("/closeNotification/{notificationId}")
+    public String closeNotification(@PathVariable("notificationId")long notificationId) {
+        return notificationService.closeNotification(notificationId);
+    }
 }
