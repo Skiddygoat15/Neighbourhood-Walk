@@ -344,7 +344,7 @@ export default function Home() {
                 }
                 return response.json();
             }).then(data => {
-                // console.log(`Data received for requestId ${requestId}:`, data);
+                console.log(`Data received for requestId ${requestId}:`, data);
                 return data;
             })
             .catch(error => {
@@ -358,7 +358,7 @@ export default function Home() {
         Promise.all(promises)
             .then(results => {
                 setNotifications(results.flat());
-                // console.info("Notifications updated:", results.flat()); // 检查 Notifications 是否正确更新
+                console.info("Notifications updated:", results.flat()); // 检查 Notifications 是否正确更新
             })
             .catch(error => {
                 console.error('Error fetching all data:', error);

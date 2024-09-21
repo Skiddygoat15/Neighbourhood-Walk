@@ -210,8 +210,6 @@ export default function Home() {
                                 notificationId={card.notificationId}
                                 showRedDot={!card.notificationCheck}
                                 role={role}
-
-
                             />
                         )
 
