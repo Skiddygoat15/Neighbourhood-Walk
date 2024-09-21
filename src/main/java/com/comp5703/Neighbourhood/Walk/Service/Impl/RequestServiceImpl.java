@@ -1,9 +1,6 @@
 package com.comp5703.Neighbourhood.Walk.Service.Impl;
 
-import com.comp5703.Neighbourhood.Walk.Entities.Notification;
-import com.comp5703.Neighbourhood.Walk.Entities.Request;
-import com.comp5703.Neighbourhood.Walk.Entities.Users;
-import com.comp5703.Neighbourhood.Walk.Entities.WalkerRequest;
+import com.comp5703.Neighbourhood.Walk.Entities.*;
 import com.comp5703.Neighbourhood.Walk.Repository.NotificationRepository;
 import com.comp5703.Neighbourhood.Walk.Repository.RequestRepository;
 import com.comp5703.Neighbourhood.Walk.Repository.UsersRepository;
@@ -50,9 +47,23 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public Request getRequestById(int requestId) {
+    public RequestDTO getRequestById(int requestId) {
         Request request = requestRepository.findById(requestId).orElseThrow(() -> new ResourceNotFoundException("Request not found"));
-        return request;
+        // Convert Request to RequestDTO
+        RequestDTO requestDTO = new RequestDTO(
+                request.getRequestId(),
+                request.getWalker(),
+                request.getParent(),
+                request.getPublishDate(),
+                request.getStartTime(),
+                request.getArriveTime(),
+                request.getDeparture(),
+                request.getDestination(),
+                request.getDetails(),
+                request.getStatus()
+        );
+
+        return requestDTO;
     }
 
     @Override

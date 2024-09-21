@@ -1,6 +1,7 @@
 package com.comp5703.Neighbourhood.Walk.Service;
 
 import com.comp5703.Neighbourhood.Walk.Entities.Request;
+import com.comp5703.Neighbourhood.Walk.Entities.RequestDTO;
 import com.comp5703.Neighbourhood.Walk.Entities.WalkerRequest;
 
 import java.util.Date;
@@ -17,7 +18,7 @@ public interface RequestService {
     WalkerRequest rejectWalkerRequest(int requestId, long walkerId);
     void deleteRequest(int requestId);
     void cancelApply(int requestId, long walkerId);
-    Request getRequestById(int requestId);
+    RequestDTO getRequestById(int requestId);
 
     WalkerRequest applyRequest(int requestId, long walkerId);
 

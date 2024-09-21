@@ -36,10 +36,10 @@ public class Notification {
     private Date Time;
 
     @Column(name = "NotificationCheck")
-    private boolean NotificationCheck = false;
+    private boolean notificationCheck = false;
 
     @Column(name = "NotificationClose")
-    private boolean NotificationClose = false;
+    private boolean notificationClose = false;
 
     public Notification() {}
 
@@ -53,7 +53,16 @@ public class Notification {
         this.walkerRequest = walkerRequest;
         this.statusPrevious = statusPrevious;
         this.statusChanged = statusChanged;
-        NotificationCheck = notificationCheck;
-        NotificationClose = notificationClose;
+        notificationCheck = notificationCheck;
+        notificationClose = notificationClose;
+    }
+
+
+    public boolean isNotificationCheckFalse() {
+        return notificationCheck;
+    }
+
+    public String getStatusChanged() {
+        return statusChanged;
     }
 }

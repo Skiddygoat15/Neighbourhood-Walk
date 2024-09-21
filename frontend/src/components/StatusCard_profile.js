@@ -148,7 +148,7 @@ export default function StatusCard({ showRedDot, title, statusChanged, time, not
     const handleClick = () => {
         // setShowDot(false);  // 点击后设置状态为不显示
         // 调用后端接口检查通知
-        fetch(`http://127.0.0.1:8080/Notification/checkNotification/${notificationId}`, {
+        fetch(`http://127.0.0.1:8080/UPNotifications/check/${notificationId}`, {
             method: 'POST',
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token'),
@@ -177,7 +177,7 @@ export default function StatusCard({ showRedDot, title, statusChanged, time, not
     // 关闭通知函数
     const handleCloseNotification = () => {
         // 调用后端接口关闭通知
-        fetch(`http://127.0.0.1:8080/Notification/closeNotification/${notificationId}`, {
+        fetch(`http://127.0.0.1:8080/UPNotifications/close/${notificationId}`, {
             method: 'POST',
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token'),
