@@ -165,7 +165,7 @@ export default function HomeWalker() {
 
         <div className="mt-4">
           <button className="w-full bg-white border rounded-lg p-4 text-center font-semibold">
-            Pre-meet
+            Pre-meet Requests
           </button>
         </div>
 

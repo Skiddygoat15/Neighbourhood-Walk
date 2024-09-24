@@ -36,9 +36,21 @@ public class PreMeetServiceImpl implements PreMeetService {
     @Override
     public List<PreMeetDTO> getPreMeetsByWalkerId(long walkerId) {
         List<PreMeet> preMeets = preMeetRepository.findAllByWalkerUserId(walkerId);
-        return preMeets.stream().map(PreMeetDTO::new).collect(Collectors.toList());
-    }
 
+        return preMeets.stream().map(preMeet -> {
+            PreMeetDTO dto = new PreMeetDTO(preMeet);
+            Users parent = preMeet.getParent(); // 获取与 PreMeet 相关联的 Parent 实体
+
+            // 检查 contactApproach 并更新为对应的 Parent 的 email 或 phone
+            if ("Email".equals(preMeet.getContactApproach())) {
+                dto.setContactApproach(parent.getEmail()); // 设置为 parent 的 email 地址
+            } else if ("Phone".equals(preMeet.getContactApproach())) {
+                dto.setContactApproach(parent.getPhone()); // 设置为 parent 的 phone
+            }
+
+            return dto;
+        }).collect(Collectors.toList());
+    }
     // 3. 创建 PreMeet
     @Override
     public PreMeet createPreMeet(PreMeet preMeet, long parentId, long walkerId, int requestId) {

@@ -168,7 +168,7 @@ export default function HomeParent() {
                 onClick={() => handleNavigation('/pre-meet-parent')}
                 className="w-full bg-white border rounded-lg p-4 text-center font-semibold"
             >
-              Arrange Pre-meet
+              Pre-meet History
             </button>
             <button
                 onClick={() => handleNavigation('/request-create')}
