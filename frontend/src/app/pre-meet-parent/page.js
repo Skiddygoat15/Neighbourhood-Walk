@@ -62,6 +62,9 @@ export default function PreMeetParent() {
               <label htmlFor="contactMethod" className="block text-lg font-medium">
                 Contact Method
               </label>
+              <p className="text-left text-sm text-gray-600">
+                By providing contact method, your contact information will be sent to the walker you just accepted.
+              </p>
               <select
                   id="contactMethod"
                   value={contactMethod}

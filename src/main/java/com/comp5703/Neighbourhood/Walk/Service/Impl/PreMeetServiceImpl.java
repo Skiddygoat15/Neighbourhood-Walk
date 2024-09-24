@@ -11,6 +11,7 @@ import com.comp5703.Neighbourhood.Walk.Service.PreMeetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -65,6 +66,14 @@ public class PreMeetServiceImpl implements PreMeetService {
         // 检查 request 的 status 是否为 'Accepted'
         if (!"Accepted".equals(request.getStatus())) {
             throw new IllegalArgumentException("Only accepted requests can create a premeet");
+        }
+        // preMeetDate 不早于当前时间并且不晚于 requestStartDate
+        Date requestStartDate = request.getStartTime();
+        Date preMeetDate = preMeet.getTime();
+        Date currentDate = new Date();
+
+        if (!(preMeetDate.compareTo(currentDate) >= 0 && preMeetDate.compareTo(requestStartDate) <= 0)) {
+            throw new IllegalArgumentException("Please make sure that preMeetDate is before current date and not later than requestStartDate!");
         }
         // 验证通过后，获取 parent 和 walker 实体
         Users parent = usersRepository.findById(parentId)
