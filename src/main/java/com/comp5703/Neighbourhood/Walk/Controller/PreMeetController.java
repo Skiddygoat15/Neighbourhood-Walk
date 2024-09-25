@@ -41,6 +41,7 @@ public class PreMeetController {
             @RequestBody PreMeet preMeetRequest) {
 
         // 创建 PreMeet 实体并设置字段
+        System.out.println("preMeetRequest:" + preMeetRequest.getTime());
         PreMeet preMeet = new PreMeet();
         preMeet.setTime(preMeetRequest.getTime());
         preMeet.setPreMeetType(preMeetRequest.getPreMeetType());

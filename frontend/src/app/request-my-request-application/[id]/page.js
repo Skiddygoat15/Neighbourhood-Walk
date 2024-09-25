@@ -94,6 +94,8 @@ export default function MyRequestApplication({ params }) {
           if (data.walker) {
             console.log("accepted-walker:", data.walker);
             setAcceptedWalker(data.walker); // 设置被接受的 walker
+            localStorage.setItem("preMeetIds", [data.parent.id,data.walker.id,id])
+            console.log("preMeetIds 1:", localStorage.getItem("preMeetIds").length)
             setLoading(false);
           }
         })
@@ -176,6 +178,8 @@ export default function MyRequestApplication({ params }) {
           alert('Request accepted successfully.');
           setAcceptedWalker(walkers.find(walker => walker.id === walkerId));
           setWalkers(walkers.filter(walker => walker.id === walkerId));
+          localStorage.setItem("preMeetIds", [request.parent.id, walkerId, id])
+          console.log("preMeetIds 2:", localStorage.getItem("preMeetIds"))
           //router.reload(); // 刷新页面
           setLoading(false);
         })

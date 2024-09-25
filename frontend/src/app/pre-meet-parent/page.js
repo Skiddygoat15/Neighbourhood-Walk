@@ -9,6 +9,17 @@ export default function PreMeetParent() {
   const [contactMethod, setContactMethod] = useState("phone");
   const [meetingDate, setMeetingDate] = useState("");
   const [meetingInfo, setMeetingInfo] = useState("");
+  const parentId = sessionStorage.getItem("preMeetIds")[0];
+  const walkerId = sessionStorage.getItem("preMeetIds")[2];
+  const requestId = sessionStorage.getItem("preMeetIds")[4];
+
+  const data = {
+    "time": "2024-10-01T14:00:00",
+    "preMeetType": "Online",
+    "contactApproach": "Email",
+    "urlOrAddress": "https://example.com/meeting-link",
+    "newOrNot": true
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -18,9 +29,45 @@ export default function PreMeetParent() {
       contactMethod,
       meetingDate,
       meetingInfo,
+      parentId,
+      walkerId,
+      requestId
     });
+    const finalSendBody = {
+      time: meetingDate,
+      preMeetType: meetingType,
+      contactApproach: contactMethod,
+      urlOrAddress: meetingInfo,
+      newOrNot: true
+    }
+    const createPreMeetAPI = `http://127.0.0.1:8080/preMeet/create/${parentId}/${walkerId}/${requestId}`
+    fetch(createPreMeetAPI, {
+      method: 'post',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + localStorage.getItem('token')
+      },
+      body: JSON.stringify(finalSendBody)
+    })
+        .then(response => {
+          if (!response.ok) {
+            return response.text().then(text => {
+              //setError(text);
+              alert(text);
+              throw new Error(text || "Error accepting walker");
+            });
+          }
+          alert('create preMeet successfully.');
+          //router.push('/next-page'); // 修改成你想跳转的页面
+          //setLoading(false);
+        })
+        .catch(err => {
+          console.log(err);
+          alert('Failed to create preMeet. Please try again.');
+          //setLoading(false);
+        });
     // 表单提交后跳转到其他页面
-    router.push('/next-page'); // 修改成你想跳转的页面
   };
 
   return (
