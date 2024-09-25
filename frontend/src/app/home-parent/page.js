@@ -165,7 +165,7 @@ export default function HomeParent() {
               Search Walker
             </button>
             <button
-                onClick={() => handleNavigation('/pre-meet-parent')}
+                onClick={() => handleNavigation('/pre-meet-parent-info')}
                 className="w-full bg-white border rounded-lg p-4 text-center font-semibold"
             >
               Pre-meet History
