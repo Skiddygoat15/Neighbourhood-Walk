@@ -95,7 +95,7 @@ export default function MyRequestApplication({ params }) {
             console.log("accepted-walker:", data.walker);
             setAcceptedWalker(data.walker); // 设置被接受的 walker
             localStorage.setItem("preMeetIds", [data.parent.id,data.walker.id,id])
-            console.log("preMeetIds 1:", localStorage.getItem("preMeetIds").length)
+            console.log("preMeetIds 1:", localStorage.getItem("preMeetIds"))
             setLoading(false);
           }
         })

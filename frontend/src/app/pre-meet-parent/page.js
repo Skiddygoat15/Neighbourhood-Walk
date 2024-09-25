@@ -59,7 +59,7 @@ export default function PreMeetParent() {
             });
           }
           alert('create preMeet successfully.');
-          //router.push('/next-page'); // 修改成你想跳转的页面
+          router.push('/pre-meet-parent-info'); // 修改成你想跳转的页面
           //setLoading(false);
         })
         .catch(err => {
