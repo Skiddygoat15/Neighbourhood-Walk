@@ -164,7 +164,8 @@ export default function HomeWalker() {
         </div>
 
         <div className="mt-4">
-          <button className="w-full bg-white border rounded-lg p-4 text-center font-semibold">
+          <button onClick={() => handleNavigation('/pre-meet-walker')}
+                  className="w-full bg-white border rounded-lg p-4 text-center font-semibold">
             Pre-meet Requests
           </button>
         </div>
