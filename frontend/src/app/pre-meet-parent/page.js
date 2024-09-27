@@ -9,9 +9,9 @@ export default function PreMeetParent() {
   const [contactMethod, setContactMethod] = useState("phone");
   const [meetingDate, setMeetingDate] = useState("");
   const [meetingInfo, setMeetingInfo] = useState("");
-  const parentId = sessionStorage.getItem("preMeetIds")[0];
-  const walkerId = sessionStorage.getItem("preMeetIds")[2];
-  const requestId = sessionStorage.getItem("preMeetIds")[4];
+  const parentId = localStorage.getItem("preMeetIds")[0];
+  const walkerId = localStorage.getItem("preMeetIds")[2];
+  const requestId = localStorage.getItem("preMeetIds")[4];
 
   const data = {
     "time": "2024-10-01T14:00:00",
@@ -118,8 +118,8 @@ export default function PreMeetParent() {
                   onChange={(e) => setContactMethod(e.target.value)}
                   className="mt-1 block w-full border border-gray-300 rounded-md p-2"
               >
-                <option value="phone">Phone</option>
-                <option value="email">Email</option>
+                <option value="Phone">Phone</option>
+                <option value="Email">Email</option>
               </select>
             </div>
 
