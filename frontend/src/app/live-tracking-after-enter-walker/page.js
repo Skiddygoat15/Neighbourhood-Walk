@@ -68,7 +68,7 @@ export default function LiveTrackingAfterEnter() {
             </div>
 
 
-            <div className="mt-auto mb-8 w-full max-w-lg px-8">
+            <div className="mt-auto mb-20 w-full max-w-lg px-8">
                 <button
                     onClick={() => alert('Exit tracking')}
                     className="w-full bg-black text-white text-xl py-4 rounded-lg hover:bg-gray-800"

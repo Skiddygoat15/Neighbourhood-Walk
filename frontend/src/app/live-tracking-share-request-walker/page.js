@@ -59,7 +59,7 @@ export default function LiveTrackingShareRequestWalker() {
             </div>
 
 
-            <div className="flex space-x-4 mt-40">
+            <div className="flex space-x-4 mt-10">
                 <button
                     onClick={handleAccept}
                     className="w-32 bg-black text-white text-lg py-2 rounded-lg"
