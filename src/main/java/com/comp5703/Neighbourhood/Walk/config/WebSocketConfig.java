@@ -25,16 +25,4 @@ public class WebSocketConfig implements WebSocketConfigurer {
                 .setAllowedOrigins("http://localhost:3000", "http://localhost:3001", "http://localhost:3002", "http://localhost:3003", "http://localhost:3004");
     }
 
-    @Bean
-    public ServletWebServerFactory servletContainer() {
-        TomcatServletWebServerFactory tomcat = new TomcatServletWebServerFactory();
-        tomcat.addAdditionalTomcatConnectors(createConnector());  // 添加额外的连接器
-        return tomcat;
-    }
-
-    private Connector createConnector() {
-        Connector connector = new Connector(TomcatServletWebServerFactory.DEFAULT_PROTOCOL);
-        connector.setPort(8081);  // 为WebSocket设置独立的8081端口
-        return connector;
-    }
 }

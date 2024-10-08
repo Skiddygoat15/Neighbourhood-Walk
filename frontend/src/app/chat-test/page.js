@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 
 export default function UserDetail() {
     useEffect(() => {
+
         const websocket = new WebSocket('ws://localhost:8080/ws');
 
         websocket.onopen = function() {
