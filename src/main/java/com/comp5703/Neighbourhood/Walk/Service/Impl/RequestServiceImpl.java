@@ -275,9 +275,9 @@ public class RequestServiceImpl implements RequestService {
     public List<Request> searchRequests(String searchTerm, String distance, Date startTime, Date arriveTime) {
         Specification<Request> spec = Specification.where(RequestSpecifications.statusIs("Published"));
 
-        // 检查 searchTerm 是否为空或仅包含空格
+        // Check whether the search term is empty or contains only Spaces
         if (searchTerm == null || searchTerm.trim().isEmpty()) {
-            // 如果搜索条件为空，则返回所有 requests
+            // If the search condition is empty, all requests are returned
         } else {
             // Combine Specifications
             spec = spec.and(RequestSpecifications.hasDeparture(searchTerm)
@@ -291,9 +291,6 @@ public class RequestServiceImpl implements RequestService {
         if (arriveTime != null) {
             spec = spec.and(RequestSpecifications.hasArriveTime(arriveTime));
         }
-//        if (distance != null && !distance.isEmpty()) {
-//            spec = spec.and(UsersSpecifications.containsAttribute("distance", distance));
-//        }
 
         List<Request> requests = requestRepository.findAll(spec);
         // check if request exists

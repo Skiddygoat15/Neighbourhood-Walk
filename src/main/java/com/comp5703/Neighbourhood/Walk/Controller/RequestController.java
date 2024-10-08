@@ -191,13 +191,13 @@ public class RequestController {
             List<Request> requests = requestService.searchRequests(searchTerm, distance, startTime, arriveTime);
             return new ResponseEntity<>(requests, HttpStatus.OK);
         } catch (ResourceNotFoundException e) {
-            // 处理找不到资源的自定义异常
+            // Handle custom exceptions where resources cannot be found
             return new ResponseEntity<>(
                     Map.of("message", e.getMessage()),
                     HttpStatus.NOT_FOUND
             );
         } catch (Exception e) {
-            // 捕获所有其他异常，并返回500服务器错误
+            // Catch all other exceptions and return 500 server errors
             return new ResponseEntity<>(
                     Map.of("message", "An unexpected error occurred: " + e.getMessage()),
                     HttpStatus.INTERNAL_SERVER_ERROR
