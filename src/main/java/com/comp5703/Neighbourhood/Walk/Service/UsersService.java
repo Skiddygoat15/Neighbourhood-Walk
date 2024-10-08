@@ -26,5 +26,6 @@ public interface UsersService {
     //byron
     List<Users> searchWalkers(String searchTerm, String gender, String distance, String rating);
     Optional<Users> getUserByEmailOrPhone(String emailOrPhone);
+
 }
 

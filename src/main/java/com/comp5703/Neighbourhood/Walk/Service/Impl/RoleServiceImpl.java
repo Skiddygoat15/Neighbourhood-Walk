@@ -125,4 +125,19 @@ public class RoleServiceImpl implements RoleService {
         roleRepository.delete(roleOptional.get());
     }
 
+    @Override
+    public Role getRoleUserByUserIdAndRoleType(long userId, String roleType) {
+        Optional<Users> userOptional = usersRepository.findById(userId);
+        if (userOptional.isEmpty()) {
+            throw new IllegalArgumentException("User not found with id: " + userId);
+        }
+        Users user = userOptional.get();
+        Optional<Role> roleOptional = roleRepository.findByUserIdAndRoleType(user, roleType);
+        if (roleOptional.isEmpty()) {
+            throw new IllegalArgumentException("Role not found for user with id: " + userId + " and role type: " + roleType);
+        }
+
+        return roleOptional.get();
+    }
+
 }
