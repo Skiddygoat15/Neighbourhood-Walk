@@ -86,8 +86,19 @@ public class DummyDataLoader implements CommandLineRunner {
         user4.setGender("other");
         user4.setAvgUserRating(5.0);
 
+        Users user5 = new Users();
+        user5.setName("admin");
+        user5.setSurname("admin");
+        user5.setEmail("admin@test.com");
+        user5.setPassword(passwordEncoder.encode("123456")); // 加密密码
+        user5.setPhone("1112223333");
+        user5.setAddress("101 Elm Street");
+        user5.setBirthDate(new Date(85, 3, 3));
+        user5.setGender("other");
+        user5.setAvgUserRating(5.0);
+
         // 将用户保存到数据库
-        usersRepository.saveAll(Arrays.asList(user1, user2, user3, user4));
+        usersRepository.saveAll(Arrays.asList(user1, user2, user3, user4, user5));
 
         Role role1 = new Role(user1, "parent");
         Role role2 = new Role(user2, "walker");
@@ -95,9 +106,9 @@ public class DummyDataLoader implements CommandLineRunner {
         Role role3b = new Role(user3, "walker");
         Role role4a = new Role(user4, "parent");
         Role role4b = new Role(user4, "walker");
-
+        Role role5 = new Role(user5, "admin");
         // 保存角色到数据库
-        roleRepository.saveAll(Arrays.asList(role1, role2, role3a, role3b, role4a, role4b));
+        roleRepository.saveAll(Arrays.asList(role1, role2, role3a, role3b, role4a, role4b, role5));
 
         // 定义日期格式
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
