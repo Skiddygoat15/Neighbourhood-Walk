@@ -26,4 +26,9 @@ public class ChatBoxServiceImpl implements ChatBoxService {
     public List<ChatBox> getChatBox(Role roleFrom, Role roleTo) {
         return chatBoxRepository.findAllByRoleFromAndRoleTo(roleFrom, roleTo);
     }
+
+    @Override
+    public void deleteChatBox(ChatBox chatBox) {
+        chatBoxRepository.delete(chatBox);
+    }
 }

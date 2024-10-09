@@ -9,4 +9,5 @@ import java.util.List;
 public interface ChatBoxService extends Serializable {
     ChatBox saveChatBox(ChatBox chatBox);
     List<ChatBox> getChatBox(Role roleFrom, Role roleTo);
+    void deleteChatBox(ChatBox chatBox);
 }

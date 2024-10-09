@@ -13,14 +13,14 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
     public void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException {
         // 处理收到的消息
         System.out.println("收到消息：" + message.getPayload());
-        session.sendMessage(new TextMessage("消息已收到"));
+//        session.sendMessage(new TextMessage("消息已收到"));
     }
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         // 连接建立时
         System.out.println("WebSocket连接已建立");
-        session.sendMessage(new TextMessage("欢迎连接WebSocket"));
+//        session.sendMessage(new TextMessage("欢迎连接WebSocket"));
     }
 
     @Override

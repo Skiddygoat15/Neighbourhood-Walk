@@ -28,4 +28,9 @@ public class ChatBoxController {
         List<ChatBox> chatBoxResponse = chatBoxService.getChatBox(roleFrom,roleTo);
         return new ResponseEntity<>(chatBoxResponse, HttpStatus.OK);
     }
+
+    @DeleteMapping("/deleteChatBox")
+    public void deleteChatBox(@RequestBody ChatBox chatBox){
+        chatBoxService.deleteChatBox(chatBox);
+    }
 }

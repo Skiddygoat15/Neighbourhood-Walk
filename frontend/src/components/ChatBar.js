@@ -4,10 +4,12 @@ import React, { useState } from 'react';
 export default function ChatBar({ onSendMessage }) {
     const [message, setMessage] = useState('');
 
+    // 修改输入框中消息内容
     const handleChange = (event) => {
         setMessage(event.target.value);
     };
 
+    // 消息内容提交
     const handleSubmit = (event) => {
         event.preventDefault();
         if (message.trim()) {
@@ -29,12 +31,9 @@ export default function ChatBar({ onSendMessage }) {
                 value={message}
                 onChange={handleChange}
             />
-            <button
-                type="submit"
-                className="flex-none rounded-r-md bg-indigo-500 px-3.5 py-2.5
+            <button type="submit" className="flex-none rounded-r-md bg-indigo-500 px-3.5 py-2.5
                 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400
-                focus-visible:ring-2 focus-visible:ring-indigo-500"
-            >
+                focus-visible:ring-2 focus-visible:ring-indigo-500">
                 Send
             </button>
         </form>
