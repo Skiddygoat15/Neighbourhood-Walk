@@ -68,4 +68,16 @@ public class RoleController {
             return new ResponseEntity<>("An error occurred during role deletion", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/getRoleByUserIdAndRoleType")
+    public ResponseEntity<?> getRoleByUserIdAndRoleType(@RequestParam("userId") long userId, @RequestParam("roleType") String roleType) {
+        Role roleUserByUserIdAndRoleType;
+        try {
+            roleUserByUserIdAndRoleType = roleService.getRoleUserByUserIdAndRoleType(userId, roleType);
+        } catch (RuntimeException e) {
+            throw new RuntimeException("Role not found for user with id: " + userId + " and role type: " + roleType);
+        }
+
+        return new ResponseEntity<>(roleUserByUserIdAndRoleType, HttpStatus.OK);
+    }
 }
