@@ -94,6 +94,8 @@ export default function MyRequestApplication({ params }) {
           if (data.walker) {
             console.log("accepted-walker:", data.walker);
             setAcceptedWalker(data.walker); // 设置被接受的 walker
+            localStorage.setItem("preMeetIds", [data.parent.id,data.walker.id,id])
+            console.log("preMeetIds 1:", localStorage.getItem("preMeetIds"))
             setLoading(false);
           }
         })
@@ -176,6 +178,8 @@ export default function MyRequestApplication({ params }) {
           alert('Request accepted successfully.');
           setAcceptedWalker(walkers.find(walker => walker.id === walkerId));
           setWalkers(walkers.filter(walker => walker.id === walkerId));
+          localStorage.setItem("preMeetIds", [request.parent.id, walkerId, id])
+          console.log("preMeetIds 2:", localStorage.getItem("preMeetIds"))
           //router.reload(); // 刷新页面
           setLoading(false);
         })
@@ -254,7 +258,7 @@ export default function MyRequestApplication({ params }) {
                   <span className="text-lg font-bold">You have accepted Loading... application!</span>
                   <div className="flex items-center ml-auto">
                     <button className="text-red-500 ml-4"
-                            onClick={() => router.push("/notification-homepage")}>Pre-meet
+                            onClick={() => router.push("/pre-meet-parent")}>Pre-meet
                     </button>
                   </div>
                 </div>
@@ -319,7 +323,7 @@ export default function MyRequestApplication({ params }) {
                     <span className="text-lg font-bold">You have accepted {acceptedWalker.name} application!</span>
                     <div className="flex items-center ml-auto">
                       <button className="text-red-500 ml-4"
-                              onClick={() => router.push("/notification-homepage")}>Pre-meet
+                              onClick={() => router.push("/pre-meet-parent")}>Pre-meet
                       </button>
                     </div>
                   </div>

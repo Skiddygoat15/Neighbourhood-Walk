@@ -131,7 +131,7 @@ public class UsersServiceImpl implements UsersService {
         }
 
         // 验证密码长度必须大于6
-        if (user.getPassword().length() <= 6) {
+        if (user.getPassword().length() < 6) {
             throw new IllegalArgumentException("The password length must be at least 6 characters.");
         }
 
@@ -172,13 +172,9 @@ public class UsersServiceImpl implements UsersService {
         // 正则表达式定义
         Pattern phonePattern = Pattern.compile("^[0-9]{10}$");
         Pattern emailPattern = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$"); // 邮箱格式验证
-        Pattern namePattern = Pattern.compile("^[A-Za-z]+$"); // preferredName 不包含特殊字符
 
         // 验证和更新允许修改的字段
         if (updatedUser.getPreferredName() != null) {
-            if (!namePattern.matcher(updatedUser.getPreferredName()).matches()) {
-                throw new IllegalArgumentException("Preferred name cannot contain special characters and numbers.");
-            }
             existingUser.setPreferredName(updatedUser.getPreferredName());
         }
         if (updatedUser.getEmail() != null) {

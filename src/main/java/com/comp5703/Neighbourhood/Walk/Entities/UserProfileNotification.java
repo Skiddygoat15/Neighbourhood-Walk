@@ -31,6 +31,12 @@ public class UserProfileNotification {
     @Column(name = "time")
     private Date time;
 
+    @Column(name = "NotificationCheck")
+    private boolean notificationCheck = false;
+
+    @Column(name = "NotificationClose")
+    private boolean notificationClose = false;
+
     public UserProfileNotification() {}
 
     public UserProfileNotification(Users user, String notifyType, String message, Date time) {

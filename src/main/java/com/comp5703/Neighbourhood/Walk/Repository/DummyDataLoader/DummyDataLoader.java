@@ -155,13 +155,13 @@ public class DummyDataLoader implements CommandLineRunner {
         request4.setStatus("Accepted");
 
         requestRepository.saveAll(Arrays.asList(request1, request2, request3, request4));
-
-        WalkerRequest walkerRequest1 = new WalkerRequest();
-        walkerRequest1.setRequest(request4);
-        walkerRequest1.setWalker(user2);
-        walkerRequest1.setStatus("Accepted");
-
-        walkerRequestRepository.saveAll(Arrays.asList(walkerRequest1));
+//
+//        WalkerRequest walkerRequest1 = new WalkerRequest();
+//        walkerRequest1.setRequest(request4);
+//        walkerRequest1.setWalker(user2);
+//        walkerRequest1.setStatus("Accepted");
+//
+//        walkerRequestRepository.saveAll(Arrays.asList(walkerRequest1));
 
         System.out.println("Dummy data has been inserted into the Users and Roles tables.");
     }
