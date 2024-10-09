@@ -47,6 +47,17 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
+    public List<Request> getAllRequests() {
+        List<Request> requests = requestRepository.findAll();
+//        if (requests.isEmpty()) {
+//            // 可以选择返回一个自定义的异常，或者在控制器里处理
+//            throw new ResourceNotFoundException("No requests found for userId: " + userId);
+//        }
+
+        return requests;
+    }
+
+    @Override
     public RequestDTO getRequestById(int requestId) {
         Request request = requestRepository.findById(requestId).orElseThrow(() -> new ResourceNotFoundException("Request not found"));
         // Convert Request to RequestDTO

@@ -19,6 +19,7 @@ public interface RequestService {
     void deleteRequest(int requestId);
     void cancelApply(int requestId, long walkerId);
     RequestDTO getRequestById(int requestId);
+    public List<Request> getAllRequests();
 
     WalkerRequest applyRequest(int requestId, long walkerId);
 

@@ -54,6 +54,8 @@ public class Users {
     private String veriMethod;
     @Column(name = "avgUserRating")
     private double avgUserRating;
+    @Column(name = "activityStatus")
+    private String activityStatus;
     /*
     @OneToMany(mappedBy = "userId")：表示 Users 和 Role 之间是一对多的关系。
     mappedBy 指定了在 Role 实体中定义了关系的字段，即 userId。
@@ -217,6 +219,13 @@ public class Users {
     }
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+    public String getActivityStatus() {
+        return activityStatus;
+    }
+
+    public void setActivityStatus(String activityStatus) {
+        this.activityStatus = activityStatus;
     }
 
 }

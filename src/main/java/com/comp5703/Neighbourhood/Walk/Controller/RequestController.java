@@ -40,6 +40,11 @@ public class RequestController {
         }
     }
 
+    @GetMapping("/getAllRequests")
+    public ResponseEntity<?> getAllRequests() {
+        return new ResponseEntity<>(requestService.getAllRequests(), HttpStatus.OK);
+    }
+
     /**
      * walker创建request
      * @param request
