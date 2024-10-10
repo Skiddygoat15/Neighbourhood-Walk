@@ -26,21 +26,23 @@ const RegistrationSignup = () => {
       const data = await response.json();
 
       const getCountryCode = (data) => {
-        const addressComponents = data.results[0].address_components;
-        for (let component of addressComponents) {
-          if (component.types.includes("country")) {
-            return component.short_name;  // 获取国家的缩写
+        try {
+          const addressComponents = data.results[0].address_components;
+          for (let component of addressComponents) {
+            if (component.types.includes("country")) {
+              return component.short_name;  // 获取国家的缩写
+            }
           }
+        } catch (error) {
+          throw new Error("Country code not found");
         }
-        throw new Error("Country code not found");
       };
-      const countryCode = getCountryCode(data);
 
       console.log("data.results: " + data.results);
       console.log("data.results.length: " + data.results.length);
       console.log(countryCode);  // 输出类似 "AU" 的国家代号
 
-      if (data.results.length > 0 && countryCode === "AU") {
+      if (data.results.length > 0 && getCountryCode(data) === "AU") {
         const { lat, lng } = data.results[0].geometry.location;
         const formatted_address = data.results[0].formatted_address;
         return { lat, lng , formatted_address};
