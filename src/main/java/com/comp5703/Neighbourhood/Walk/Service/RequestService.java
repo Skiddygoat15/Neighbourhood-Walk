@@ -25,6 +25,7 @@ public interface RequestService {
 
 
     // byron
-    List<Request> searchRequests(String searchTerm, String distance, Date startTime, Date arriveTime);
+    double calculateDistance(double lat1, double lon1, double lat2, double lon2);
+    List<Request> searchRequests(Long walkerId, String searchTerm, String distance, Date startTime, Date arriveTime);
     Request getById(int requestId);
 }

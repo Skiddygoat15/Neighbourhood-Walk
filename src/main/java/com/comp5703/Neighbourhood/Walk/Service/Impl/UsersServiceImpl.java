@@ -102,6 +102,8 @@ public class UsersServiceImpl implements UsersService {
                 user.getPhone() == null || user.getPhone().isEmpty() ||
                 user.getEmail() == null || user.getEmail().isEmpty() ||
                 user.getAddress() == null || user.getAddress().isEmpty() ||
+                user.getLatitude() == null || user.getLatitude().isNaN() ||
+                user.getLongitude() == null || user.getLongitude().isNaN() ||
                 user.getPassword() == null || user.getPassword().isEmpty() ||
                 user.getGender() == null || user.getGender().isEmpty() ||
                 user.getBirthDate() == null) {
@@ -299,14 +301,13 @@ public class UsersServiceImpl implements UsersService {
         throw new IllegalArgumentException("User with ID " + id + " not found");
     }
 
-    //byron
     @Override
     public List<Users> searchWalkers(String searchTerm, String gender, String distance, String rating) {
         Specification<Users> spec = Specification.where(UsersSpecifications.hasRole("walker"));
 
-        // 检查 searchTerm 是否为空或仅包含空格
+        // Check whether the searchTerm is empty or contains only Spaces
         if (searchTerm == null || searchTerm.trim().isEmpty()) {
-            // 如果搜索条件为空，则返回所有 Walkers
+            // If the search criteria are empty, all Walkers are returned
             spec = spec.and(UsersSpecifications.orderByAverageRate());
         } else {
             // Combine Specifications

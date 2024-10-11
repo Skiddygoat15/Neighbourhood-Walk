@@ -6,6 +6,7 @@ import {useRouter} from "next/navigation";
 
 export default function SearchWalker() {
     const router = useRouter();
+    const walkerId = localStorage.getItem('userId');
     const [distance, setDistance] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
     const [requests, setRequests] = useState([]);  // store requests list
@@ -26,7 +27,7 @@ export default function SearchWalker() {
         setRequests([]); // 点击搜索按钮时先清空之前的结果
         setError(null); // 清空之前的错误消息
 
-        const searchRequestsAPI = `http://127.0.0.1:8080/requests/searchRequests?searchTerm=${searchTerm}`;
+        const searchRequestsAPI = `http://127.0.0.1:8080/requests/searchRequests?walkerId=${walkerId}&searchTerm=${searchTerm}&distance=${distance}`;
 
         try {
             const response = await fetch(searchRequestsAPI, {
@@ -170,7 +171,6 @@ export default function SearchWalker() {
 
                     {error && <p className="text-red-500">{error}</p>}
                 </div>
-
 
                 <div className="relative mb-4">
                     <select

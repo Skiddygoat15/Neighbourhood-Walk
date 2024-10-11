@@ -18,6 +18,48 @@ const RegistrationSignup = () => {
   const [error, setError] = useState('');
   const router = useRouter();
 
+  const geocodeAddress = async (address) => {
+    try {
+      const response = await fetch(
+          `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=AIzaSyCckyaBJIn_YdEaWxLpcGtMvbn3D3y_dLQ&language=en`
+      );
+      const data = await response.json();
+
+      const getCountryCode = (data) => {
+        try {
+          const addressComponents = data.results[0].address_components;
+          for (let component of addressComponents) {
+            if (component.types.includes("country")) {
+              return component.short_name;  // 获取国家的缩写
+            }
+          }
+        } catch (error) {
+          throw new Error("Please input valid address");
+        }
+      };
+
+      console.log("data.results: " + data.results);
+      console.log("data.results.length: " + data.results.length);
+
+      if (data.results.length > 0 && getCountryCode(data) === "AU") {
+
+        console.log(getCountryCode(data));  // 输出类似 "AU" 的国家代号
+        const { lat, lng } = data.results[0].geometry.location;
+        const formatted_address = data.results[0].formatted_address;
+        return { lat, lng , formatted_address};
+
+      } else if (data.results.length > 0 && getCountryCode(data) !== "AU") {
+        console.log(getCountryCode(data));  // 输出类似 "AU" 的国家代号
+        throw new Error("Input address is not in Australia");
+
+      } else {
+        console.log(getCountryCode(data));  // 输出类似 "AU" 的国家代号
+        throw new Error("Please input valid address");
+      }
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
 
   const handleChange = (e) => {
     setFormData({
@@ -26,10 +68,8 @@ const RegistrationSignup = () => {
     });
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     // 每次提交前清空错误信息
     setError('');
 
@@ -38,21 +78,27 @@ const RegistrationSignup = () => {
       return;
     }
 
-    const requestData = {
-      name: formData.name,
-      surname: formData.surname,
-      phone: formData.phone,
-      email: formData.email,
-      address: formData.address,
-      password: formData.password,
-      gender: formData.gender,
-      birthDate: new Date(formData.birthDate).toISOString(),
-      avgUserRating: 5.0
-    };
-
-    const apiUrl = `http://localhost:8080/Users/register?roleType=${roleType}`;
-
     try {
+      // 先将地址转换为经纬度
+      const { lat, lng , formatted_address } = await geocodeAddress(formData.address);
+      console.log("latitude: " + lat + "  longitude: " + lng, "formatted_address: " + formatted_address);
+
+      const requestData = {
+        name: formData.name,
+        surname: formData.surname,
+        phone: formData.phone,
+        email: formData.email,
+        address: formatted_address, // 地址文本
+        latitude: lat, // 经纬度
+        longitude: lng, // 经纬度
+        password: formData.password,
+        gender: formData.gender,
+        birthDate: new Date(formData.birthDate).toISOString(),
+        avgUserRating: 5.0,
+      };
+
+      const apiUrl = `http://localhost:8080/Users/register?roleType=${roleType}`;
+
       const res = await fetch(apiUrl, {
         method: 'POST',
         headers: {
@@ -69,10 +115,57 @@ const RegistrationSignup = () => {
 
       router.push('/registration-loginform');
     } catch (err) {
-      setError(err);
+      setError(err.message || 'Registration failed');
       console.error(err);
     }
   };
+
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //
+  //   // 每次提交前清空错误信息
+  //   setError('');
+  //
+  //   if (formData.password !== formData.confirmPassword) {
+  //     setError('Passwords do not match');
+  //     return;
+  //   }
+  //
+  //   const requestData = {
+  //     name: formData.name,
+  //     surname: formData.surname,
+  //     phone: formData.phone,
+  //     email: formData.email,
+  //     address: formData.address,
+  //     password: formData.password,
+  //     gender: formData.gender,
+  //     birthDate: new Date(formData.birthDate).toISOString(),
+  //     avgUserRating: 5.0
+  //   };
+  //
+  //   const apiUrl = `http://localhost:8080/Users/register?roleType=${roleType}`;
+  //
+  //   try {
+  //     const res = await fetch(apiUrl, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify(requestData),
+  //     });
+  //
+  //     if (!res.ok) {
+  //       const errorMessage = await res.text(); // 捕获后端返回的错误消息
+  //       setError(errorMessage || 'Registration failed'); // 直接设置错误信息
+  //       return; // 直接返回，防止继续执行后续逻辑
+  //     }
+  //
+  //     router.push('/registration-loginform');
+  //   } catch (err) {
+  //     setError(err);
+  //     console.error(err);
+  //   }
+  // };
 
   return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">

@@ -1,35 +1,83 @@
 "use client"
 import { useRouter } from 'next/navigation';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
-import { useState, useEffect } from 'react';
+import {useState, useEffect, useCallback, useRef} from 'react';
 import Image from 'next/image';
 
 const containerStyle = {
     width: '100%',
-    height: '400px',
+    height: '530px',
 };
 
 const center = {
-    lat: -33.8688, // 经度
-    lng: 151.2093, // 纬度
+    lat: -33.8688, // longitude
+    lng: 151.2093, // latitude
 };
 
 export default function LiveTrackingAfterEnter() {
     const router = useRouter();
-    const [currentPosition, setCurrentPosition] = useState(center);
+    const [currentPosition, setCurrentPosition] = useState(null); // Initially null, waiting to get the current location
+    const [map, setMap] = useState(null);
+    const isButtonAdded = useRef(false);  // Used to track whether a button has been added
 
-    // 获取当前位置
+    // Get current location
+    const getCurrentLocation = useCallback(() => {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (position) => {
+                    const { latitude, longitude } = position.coords;
+                    const newPosition = {
+                        lat: latitude,
+                        lng: longitude,
+                    };
+                    setCurrentPosition(newPosition);
+                    if (map) {
+                        map.panTo(newPosition);
+                    }
+                },
+                (error) => console.error("Error getting location: ", error),
+                { enableHighAccuracy: true }
+            );
+        }
+    }, [map]);
+
+    // Gets the current location and sets it immediately when the component loads
     useEffect(() => {
-        navigator.geolocation.getCurrentPosition(
-            (position) => {
-                setCurrentPosition({
-                    lat: position.coords.latitude,
-                    lng: position.coords.longitude,
-                });
-            },
-            (error) => console.log(error),
-            { enableHighAccuracy: true }
-        );
+        getCurrentLocation();
+    }, [getCurrentLocation]);
+
+    // Make sure the 'back to current location' button is added only once
+    useEffect(() => {
+        if (map && !isButtonAdded.current) {  // Check whether button have been added
+            // Create a custom button get back to current location button
+            const locationButton = document.createElement("div");
+            locationButton.style.width = '40px';
+            locationButton.style.height = '40px';
+            locationButton.style.margin = '10px';
+            locationButton.style.display = 'flex';
+            locationButton.style.alignItems = 'center';
+            locationButton.style.justifyContent = 'center';
+            locationButton.style.borderRadius = '50%';
+            locationButton.style.backgroundColor = 'white';
+            locationButton.style.cursor = 'pointer';
+            locationButton.style.boxShadow = '0 2px 6px rgba(0, 0, 0, 0.3)';
+            locationButton.title = "Back to current location";
+
+            // 使用HTML实体符号作为按钮内容
+            locationButton.innerHTML = '&#128205;'; // 使用地图标记符号作为图标
+
+            // 将按钮添加到地图的右侧中间
+            map.controls[window.google.maps.ControlPosition.RIGHT_BOTTOM].push(locationButton);
+
+            // 点击事件监听器 - 调用获取当前位置
+            locationButton.addEventListener("click", getCurrentLocation);
+
+            isButtonAdded.current = true;  // 标记控件已经被添加
+        }
+    }, [map, getCurrentLocation]);
+
+    const onLoad = useCallback((mapInstance) => {
+        setMap(mapInstance);
     }, []);
 
     return (
@@ -43,7 +91,7 @@ export default function LiveTrackingAfterEnter() {
                     <h1 className="text-2xl font-bold">Live-tracking</h1>
                 </div>
 
-                <div className="absolute bg-white p-3 rounded-full shadow" style={{ top: '80px', right: '20px' }}>
+                <div className="absolute bg-white p-3 rounded-full shadow" style={{top: '80px', right: '20px'}}>
                     <Image
                         src="/Icon.png"
                         alt="Person icon"
@@ -54,18 +102,28 @@ export default function LiveTrackingAfterEnter() {
             </div>
 
             {/* Map Section */}
-            <div className="w-full max-w-lg mt-40 flex justify-center">
-                <LoadScript googleMapsApiKey="YOUR_GOOGLE_MAPS_API_KEY">
-                    <GoogleMap
-                        mapContainerStyle={containerStyle}
-                        center={currentPosition}
-                        zoom={14}
-                    >
-
-                        <Marker position={currentPosition} />
-                    </GoogleMap>
-                </LoadScript>
-            </div>
+            {/* Only render the map if after get the current location */}
+            {currentPosition && (
+                <div className="w-full max-w-lg mt-40 flex justify-center">
+                    <LoadScript googleMapsApiKey="AIzaSyB0LNcULkVV2QRvCq8hhjfg2_AZAX53QCg" language="en">
+                        <GoogleMap
+                            mapContainerStyle={containerStyle}
+                            center={currentPosition}  // 设置地图中心为当前位置
+                            zoom={14}
+                            onLoad={onLoad}
+                            options={{
+                                zoomControl: true, // 保留缩放控件
+                                streetViewControl: true, // 保留小黄人控件
+                                mapTypeControl: true, // 保留地图类型切换控件
+                                fullscreenControl: true, // 保留全屏控件
+                                gestureHandling: "greedy", // 用户可以用手势拖动地图
+                            }}
+                        >
+                            <Marker position={currentPosition} />
+                        </GoogleMap>
+                    </LoadScript>
+                </div>
+            )}
 
 
             <div className="mt-auto mb-20 w-full max-w-lg px-8">
