@@ -41,6 +41,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests() // Change from authorizeRequests to authorizeHttpRequests
                 .requestMatchers("/h2/**").permitAll() // Change from antMatchers to requestMatchers
                 .requestMatchers(HttpMethod.POST, SecurityConstants.REGISTER_PATH).permitAll()
+                .requestMatchers("/geocode/**").permitAll()
                 .requestMatchers("/ws/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
