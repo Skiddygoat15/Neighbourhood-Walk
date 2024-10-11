@@ -72,12 +72,13 @@ public class UsersController {
 
     //byron
     @GetMapping("/searchWalkers")
-    public ResponseEntity<?> searchWalkers(@RequestParam String searchTerm,
+    public ResponseEntity<?> searchWalkers(@RequestParam long parentId,
+                                           @RequestParam String searchTerm,
                                            @RequestParam(required = false) String gender,
                                            @RequestParam(required = false) String distance,
                                            @RequestParam(required = false) String rating) {
         try {
-            List<Users> walkers = usersService.searchWalkers(searchTerm, gender, distance, rating);
+            List<Users> walkers = usersService.searchWalkers(parentId, searchTerm, gender, distance, rating);
             return new ResponseEntity<>(walkers, HttpStatus.OK);
         } catch (ResourceNotFoundException e) {
             // 处理找不到资源的自定义异常

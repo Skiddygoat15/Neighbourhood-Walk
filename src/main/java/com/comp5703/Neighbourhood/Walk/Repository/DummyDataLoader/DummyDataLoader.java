@@ -48,7 +48,9 @@ public class DummyDataLoader implements CommandLineRunner {
         user1.setEmail("test1@test.com");
         user1.setPassword(passwordEncoder.encode("password123")); // 加密密码
         user1.setPhone("1234567890");
-        user1.setAddress("123 Maple Street");
+        user1.setAddress("54 Fitzroy St, Newtown NSW 2042, Australia");
+        user1.setLatitude(-33.8945024);
+        user1.setLongitude(151.1866821);
         user1.setBirthDate(new Date(90, 0, 0));
         user1.setGender("male");
         user1.setAvgUserRating(5.0);
@@ -60,7 +62,9 @@ public class DummyDataLoader implements CommandLineRunner {
         user2.setEmail("test2@test.com");
         user2.setPassword(passwordEncoder.encode("password456")); // 加密密码
         user2.setPhone("9876543210");
-        user2.setAddress("456 Oak Avenue");
+        user2.setAddress("31 Leamington Ave, Newtown NSW 2042, Australia");
+        user2.setLatitude(-33.8960373);
+        user2.setLongitude(151.1869439);
         user2.setBirthDate(new Date(92, 1, 1));
         user2.setGender("female");
         user2.setAvgUserRating(5.0);
@@ -72,7 +76,9 @@ public class DummyDataLoader implements CommandLineRunner {
         user3.setEmail("test3@test.com");
         user3.setPassword(passwordEncoder.encode("password789")); // 加密密码
         user3.setPhone("5555555555");
-        user3.setAddress("789 Birch Road");
+        user3.setAddress("77 Pyrmont Bridge Rd, Annandale NSW 2038, Australia");
+        user3.setLatitude(-33.8859592);
+        user3.setLongitude(151.1755954);
         user3.setBirthDate(new Date(88, 2, 2));
         user3.setGender("female");
         user3.setAvgUserRating(5.0);
@@ -84,7 +90,9 @@ public class DummyDataLoader implements CommandLineRunner {
         user4.setEmail("test4@test.com");
         user4.setPassword(passwordEncoder.encode("password101")); // 加密密码
         user4.setPhone("1112223333");
-        user4.setAddress("101 Elm Street");
+        user4.setAddress("107 Annandale St, Annandale NSW 2038, Australia");
+        user4.setLatitude(-33.8824012);
+        user4.setLongitude(151.1689731);
         user4.setBirthDate(new Date(85, 3, 3));
         user4.setGender("other");
         user4.setAvgUserRating(5.0);
@@ -123,8 +131,12 @@ public class DummyDataLoader implements CommandLineRunner {
         request1.setPublishDate( new Date() );
         request1.setStartTime( (Date) formatter.parse("2024-09-20T09:00:00.111") );
         request1.setArriveTime( (Date) formatter.parse("2024-09-20T09:20:00.111") );
-        request1.setDeparture("Redfern");
-        request1.setDestination("Sydney Uni");
+        request1.setDeparture("54 Fitzroy St, Newtown NSW 2042, Australia");
+        request1.setDepartureLatitude(-33.8960373);
+        request1.setDepartureLongitude(151.1869439);
+        request1.setDestination("Darlington public school"); // Golden Grove St, Chippendale NSW 2008, Australia
+        request1.setDestinationLatitude(-33.8930788);
+        request1.setDestinationLongitude(151.1894845);
         request1.setDetails("Please meet us at Woolworths");
         request1.setStatus("Published");
 
@@ -133,8 +145,12 @@ public class DummyDataLoader implements CommandLineRunner {
         request2.setPublishDate( (Date) formatter.parse("2024-09-15T09:00:00.111") );
         request2.setStartTime( (Date) formatter.parse("2024-10-01T07:00:00.111") );
         request2.setArriveTime( (Date) formatter.parse("2024-10-01T08:00:00.111") );
-        request2.setDeparture("Broadway");
-        request2.setDestination("UTS");
+        request2.setDeparture("77 Pyrmont Bridge Rd, Annandale NSW 2038, Australia");
+        request2.setDepartureLatitude(-33.8859592);
+        request2.setDepartureLongitude(151.1755954);
+        request2.setDestination("50 Carillon Ave, Newtown NSW 2042, Australia");
+        request2.setDepartureLatitude(-33.8915856);
+        request2.setDepartureLongitude(151.185331);
         request2.setDetails("Please meet us at Coles");
         request2.setStatus("Published");
 
@@ -143,8 +159,12 @@ public class DummyDataLoader implements CommandLineRunner {
         request3.setPublishDate( (Date) formatter.parse("2024-08-10T09:00:00.111") );
         request3.setStartTime( (Date) formatter.parse("2024-10-16T07:00:00.111") );
         request3.setArriveTime( (Date) formatter.parse("2024-10-16T08:30:00.111") );
-        request3.setDeparture("Westfield");
-        request3.setDestination("UNSW");
+        request3.setDeparture("107 Annandale St, Annandale NSW 2038, Australia");
+        request3.setDepartureLatitude(-33.8824012);
+        request3.setDepartureLongitude(151.1689731);
+        request3.setDestination("50 Carillon Ave, Newtown NSW 2042, Australia");
+        request3.setDepartureLatitude(-33.8915856);
+        request3.setDepartureLongitude(151.185331);
         request3.setDetails("Please meet us at KFC");
         request3.setStatus("Published");
 

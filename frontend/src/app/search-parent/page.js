@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 
 export default function SearchParent() {
   const router = useRouter();
+  const parentId = localStorage.getItem('userId');
   const [gender, setGender] = useState('');
   const [distance, setDistance] = useState('');
   const [rating, setRating] = useState('');
@@ -31,7 +32,7 @@ export default function SearchParent() {
     setWalkers([]); // 点击搜索按钮时先清空之前的结果
     setError(null); // 清空之前的错误消息
 
-    const searchWalkersAPI = `http://127.0.0.1:8080/Users/searchWalkers?searchTerm=${searchTerm}&gender=${gender}&distance=${distance}&rating=${rating}`;
+    const searchWalkersAPI = `http://127.0.0.1:8080/Users/searchWalkers?parentId=${parentId}&searchTerm=${searchTerm}&gender=${gender}&distance=${distance}&rating=${rating}`;
 
     try {
       const response = await fetch(searchWalkersAPI, {

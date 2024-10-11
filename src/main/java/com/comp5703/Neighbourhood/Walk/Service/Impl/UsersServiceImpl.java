@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service
 public class UsersServiceImpl implements UsersService {
@@ -288,7 +289,20 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
-    public List<Users> searchWalkers(String searchTerm, String gender, String distance, String rating) {
+    public double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+        final int R = 6371; // The radius of the earth in kilometers
+        double latDistance = Math.toRadians(lat2 - lat1);
+        double lonDistance = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double distance = R * c; // Return distance in kilometers
+        return distance;
+    }
+
+    @Override
+    public List<Users> searchWalkers(Long parentId, String searchTerm, String gender, String distance, String rating) {
         Specification<Users> spec = Specification.where(UsersSpecifications.hasRole("walker"));
 
         // Check whether the searchTerm is empty or contains only Spaces
@@ -311,11 +325,6 @@ public class UsersServiceImpl implements UsersService {
             spec = spec.and(UsersSpecifications.hasGender(gender));
         }
 
-        // Add distance filter
-        if (distance != null && !distance.isEmpty()) {
-            spec = spec.and(UsersSpecifications.containsAttribute("distance", distance));
-        }
-
         // Add rating filter
         if (rating != null && !rating.isEmpty()) {
             spec = switch (rating) {
@@ -328,9 +337,43 @@ public class UsersServiceImpl implements UsersService {
         }
 
         List<Users> users = usersRepository.findAll(spec);
-
         if (users.isEmpty()) {
-            throw new ResourceNotFoundException("No matching users found for the given search criteria.");
+            throw new ResourceNotFoundException("No matching walkers found for the given search criteria.");
+        }
+
+        Users currentParent = usersRepository.findById(parentId)
+                .orElseThrow(() -> new ResourceNotFoundException("User Information not found"));
+        double parentLatitude = currentParent.getLatitude();
+        double parentLongitude = currentParent.getLongitude();
+
+        // Add distance filter
+        if (distance != null && !distance.isEmpty()) {
+            double maxDistanceKm = distance.equals("1km") ? 1 : 2;
+
+            // 使用 Haversine 公式计算距离并过滤
+            users = users.stream()
+                    .filter(user -> {
+                        // 检查是否有出发点的经纬度
+                        Double walkerLatitude = user.getLatitude();
+                        Double walkerLongitude = user.getLongitude();
+
+                        // 如果出发点的经纬度为空，跳过此请求
+                        if (walkerLatitude == null || walkerLongitude == null) {
+                            return false; // 过滤掉这个请求
+                        }
+
+                        // 计算两个经纬度之间的距离
+                        double calculatedDistance = calculateDistance(parentLatitude, parentLongitude, walkerLatitude, walkerLongitude);
+
+                        // 只保留在距离范围内的请求
+                        return calculatedDistance <= maxDistanceKm;
+                    })
+                    .collect(Collectors.toList());
+        }
+
+        // check whether walkers list is empty after filtering
+        if (users.isEmpty()) {
+            throw new ResourceNotFoundException("No walkers found for the given distance constraint.");
         }
 
         return users;

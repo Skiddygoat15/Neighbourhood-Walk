@@ -1,6 +1,8 @@
 "use client";
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { geocodeAddress } from '@/components/geocode';
+
 
 const RegistrationSignup = () => {
   const [roleType, setRoleType] = useState('walker'); // Ĭ�Ͻ�ɫΪ walker
@@ -17,49 +19,6 @@ const RegistrationSignup = () => {
   });
   const [error, setError] = useState('');
   const router = useRouter();
-
-  const geocodeAddress = async (address) => {
-    try {
-      const response = await fetch(
-          `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=AIzaSyCckyaBJIn_YdEaWxLpcGtMvbn3D3y_dLQ&language=en`
-      );
-      const data = await response.json();
-
-      const getCountryCode = (data) => {
-        try {
-          const addressComponents = data.results[0].address_components;
-          for (let component of addressComponents) {
-            if (component.types.includes("country")) {
-              return component.short_name;  // 获取国家的缩写
-            }
-          }
-        } catch (error) {
-          throw new Error("Please input valid address");
-        }
-      };
-
-      console.log("data.results: " + data.results);
-      console.log("data.results.length: " + data.results.length);
-
-      if (data.results.length > 0 && getCountryCode(data) === "AU") {
-
-        console.log(getCountryCode(data));  // 输出类似 "AU" 的国家代号
-        const { lat, lng } = data.results[0].geometry.location;
-        const formatted_address = data.results[0].formatted_address;
-        return { lat, lng , formatted_address};
-
-      } else if (data.results.length > 0 && getCountryCode(data) !== "AU") {
-        console.log(getCountryCode(data));  // 输出类似 "AU" 的国家代号
-        throw new Error("Input address is not in Australia");
-
-      } else {
-        console.log(getCountryCode(data));  // 输出类似 "AU" 的国家代号
-        throw new Error("Please input valid address");
-      }
-    } catch (error) {
-      throw new Error(error.message);
-    }
-  };
 
   const handleChange = (e) => {
     setFormData({
@@ -89,6 +48,7 @@ const RegistrationSignup = () => {
         phone: formData.phone,
         email: formData.email,
         address: formatted_address, // 地址文本
+        // fullAddress: formatted_address,
         latitude: lat, // 经纬度
         longitude: lng, // 经纬度
         password: formData.password,

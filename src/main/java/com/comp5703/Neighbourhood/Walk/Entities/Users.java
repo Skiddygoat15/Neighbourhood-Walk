@@ -30,6 +30,8 @@ public class Users {
     private String phone;
     @Column(name = "address", nullable = false)
     private String address;
+//    @Column(name = "full_address", nullable = false)
+//    private String fullAddress;
     @Column(name = "latitude")
     private Double latitude;
     @Column(name = "longitude")
@@ -155,6 +157,14 @@ public class Users {
     public void setAddress(String address) {
         this.address = address;
     }
+
+//    public String getFullAddress() {
+//        return fullAddress;
+//    }
+//
+//    public void setFullAddress(String fullAddress) {
+//        this.fullAddress = fullAddress;
+//    }
 
     public Double getLatitude() {
         return latitude;

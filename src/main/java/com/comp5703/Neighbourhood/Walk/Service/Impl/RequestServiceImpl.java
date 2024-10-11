@@ -152,7 +152,11 @@ public class RequestServiceImpl implements RequestService {
         request.setStartTime(updatedRequest.getStartTime());
         request.setArriveTime(updatedRequest.getArriveTime());
         request.setDeparture(updatedRequest.getDeparture());
+        request.setDepartureLatitude(updatedRequest.getDepartureLatitude());
+        request.setDepartureLongitude(updatedRequest.getDepartureLongitude());
         request.setDestination(updatedRequest.getDestination());
+        request.setDestinationLatitude(updatedRequest.getDestinationLatitude());
+        request.setDestinationLongitude(updatedRequest.getDestinationLongitude());
         request.setDetails(updatedRequest.getDetails());
 
         return requestRepository.save(request);
@@ -303,14 +307,14 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     public double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
-        final int R = 6371; // 地球半径，单位为千米
+        final int R = 6371; // The radius of the earth in kilometers
         double latDistance = Math.toRadians(lat2 - lat1);
         double lonDistance = Math.toRadians(lon2 - lon1);
         double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
                 + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
                 * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
         double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        double distance = R * c; // 以公里为单位返回距离
+        double distance = R * c; // Return distance in kilometers
         return distance;
     }
 
@@ -342,7 +346,7 @@ public class RequestServiceImpl implements RequestService {
         }
 
         Users currentWalker = usersRepository.findById(walkerId)
-                .orElseThrow(() -> new ResourceNotFoundException("Walker not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("User Information not found"));
         double walkerLatitude = currentWalker.getLatitude();
         double walkerLongitude = currentWalker.getLongitude();
 
@@ -371,7 +375,7 @@ public class RequestServiceImpl implements RequestService {
                     .collect(Collectors.toList());
         }
 
-        // check whether request is empty after filtering
+        // check whether request list is empty after filtering
         if (requests.isEmpty()) {
             throw new ResourceNotFoundException("No requests found for the given distance constraint.");
         }
