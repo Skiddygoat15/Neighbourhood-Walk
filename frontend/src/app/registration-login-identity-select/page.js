@@ -13,9 +13,9 @@ const LoginIdentitySelect = () => {
 
   const handleContinue = () => {
     if (selectedRole === "walker") {
-      router.push("/walker-dashboard"); // replace with actual route for walker
+      router.push("/home-walker"); // replace with actual route for walker
     } else if (selectedRole === "parent") {
-      router.push("/parent-dashboard"); // replace with actual route for parent
+      router.push("/home-parent"); // replace with actual route for parent
     } else {
       alert("Please select a role to continue.");
     }
