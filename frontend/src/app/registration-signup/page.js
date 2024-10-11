@@ -34,25 +34,30 @@ const RegistrationSignup = () => {
             }
           }
         } catch (error) {
-          throw new Error("Country code not found");
+          throw new Error("Please input valid address");
         }
       };
 
       console.log("data.results: " + data.results);
       console.log("data.results.length: " + data.results.length);
-      console.log(countryCode);  // 输出类似 "AU" 的国家代号
 
       if (data.results.length > 0 && getCountryCode(data) === "AU") {
+
+        console.log(getCountryCode(data));  // 输出类似 "AU" 的国家代号
         const { lat, lng } = data.results[0].geometry.location;
         const formatted_address = data.results[0].formatted_address;
         return { lat, lng , formatted_address};
-      } else if (data.results.length > 0 && countryCode !== "AU") {
+
+      } else if (data.results.length > 0 && getCountryCode(data) !== "AU") {
+        console.log(getCountryCode(data));  // 输出类似 "AU" 的国家代号
         throw new Error("Input address is not in Australia");
+
       } else {
+        console.log(getCountryCode(data));  // 输出类似 "AU" 的国家代号
         throw new Error("Please input valid address");
       }
     } catch (error) {
-      throw new Error(error);
+      throw new Error(error.message);
     }
   };
 

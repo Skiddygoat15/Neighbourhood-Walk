@@ -183,12 +183,13 @@ public class RequestController {
     }
 
     @GetMapping("/searchRequests")
-    public ResponseEntity<?> searchRequests(@RequestParam String searchTerm,
+    public ResponseEntity<?> searchRequests(@RequestParam long walkerId,
+                                            @RequestParam String searchTerm,
                                             @RequestParam(required = false) String distance,
                                             @RequestParam(required = false) Date startTime,
                                             @RequestParam(required = false) Date arriveTime) {
         try {
-            List<Request> requests = requestService.searchRequests(searchTerm, distance, startTime, arriveTime);
+            List<Request> requests = requestService.searchRequests(walkerId, searchTerm, distance, startTime, arriveTime);
             return new ResponseEntity<>(requests, HttpStatus.OK);
         } catch (ResourceNotFoundException e) {
             // Handle custom exceptions where resources cannot be found

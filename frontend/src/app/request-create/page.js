@@ -40,15 +40,71 @@ export default function WalkRequestManagementParent() {
         destination: '',
         details: ''
     });
-    const handlePublish = () => {
+
+    const geocodeAddress = async (address) => {
+        try {
+            const response = await fetch(
+                `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=AIzaSyCckyaBJIn_YdEaWxLpcGtMvbn3D3y_dLQ&language=en`
+            );
+            const data = await response.json();
+
+            const getCountryCode = (data) => {
+                try {
+                    const addressComponents = data.results[0].address_components;
+                    for (let component of addressComponents) {
+                        if (component.types.includes("country")) {
+                            return component.short_name;  // 获取国家的缩写
+                        }
+                    }
+                } catch (error) {
+                    throw new Error("Please input valid address");
+                }
+            };
+
+            console.log("data.results: " + data.results);
+            console.log("data.results.length: " + data.results.length);
+
+            if (data.results.length > 0 && getCountryCode(data) === "AU") {
+
+                console.log(getCountryCode(data));  // 输出类似 "AU" 的国家代号
+                const { lat, lng } = data.results[0].geometry.location;
+                const formatted_address = data.results[0].formatted_address;
+                return { lat, lng , formatted_address};
+
+            } else if (data.results.length > 0 && getCountryCode(data) !== "AU") {
+                console.log(getCountryCode(data));  // 输出类似 "AU" 的国家代号
+                throw new Error("Input address is not in Australia");
+
+            } else {
+                console.log(getCountryCode(data));  // 输出类似 "AU" 的国家代号
+                throw new Error("Please input valid address");
+            }
+        } catch (error) {
+            setError(error.message);
+            throw new Error(error.message);
+        }
+    };
+
+    const handlePublish = async () => {
         console.log('UserId: ', parentId);
         const addRequestAPI = `http://127.0.0.1:8080/requests`;
         const updatedStartTime = combineDateAndTime(date, departureTime);
         const updatedArriveTime = combineDateAndTime(date, arriveTime);
 
+        // 获取 departure 的经纬度
+        const departureCoords = await geocodeAddress(sendBody.departure);
+        // 获取 destination 的经纬度
+        const destinationCoords = await geocodeAddress(sendBody.destination);
+
         // 构造最终的请求体
         const finalSendBody = {
-            ...sendBody,  // 复制 sendBody 的其他属性
+            departure: departureCoords.formatted_address,
+            departureLatitude: departureCoords.lat,
+            departureLongitude: departureCoords.lng,
+            destination: destinationCoords.formatted_address,
+            destinationLatitude: destinationCoords.lat,
+            destinationLongitude: destinationCoords.lng,
+            details: sendBody.details,
             startTime: updatedStartTime,
             arriveTime: updatedArriveTime,
             publishDate: new Date(),
@@ -57,7 +113,11 @@ export default function WalkRequestManagementParent() {
         console.log('Request Published');
         console.log('parent:', finalSendBody.parent);
         console.log('Departure:', finalSendBody.departure);
+        console.log('Departure Latitude:', finalSendBody.departureLatitude);
+        console.log('Departure Longitude:', finalSendBody.departureLongitude);
         console.log('Destination:', finalSendBody.destination);
+        console.log('Destination Latitude:', finalSendBody.destinationLatitude);
+        console.log('Destination Longitude:', finalSendBody.destinationLongitude);
         console.log('Details:', finalSendBody.details);
         console.log('Estimated Departure Time:', finalSendBody.startTime);
         console.log('Estimated Arrival Time:', finalSendBody.arriveTime);
@@ -137,6 +197,7 @@ export default function WalkRequestManagementParent() {
         const formattedTime = convertTo24HourTime(time);
         return `${date}T${formattedTime}`;
     }
+
     return (
         <main className="min-h-screen bg-white">
             <div className="max-w-md mx-auto p-4 space-y-8">

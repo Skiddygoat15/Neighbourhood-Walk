@@ -40,8 +40,20 @@ public class Request {
     @Column(name = "departure")
     private String departure;
 
+    @Column(name = "departureLatitude")
+    private Double departureLatitude;
+
+    @Column(name = "departureLongitude")
+    private Double departureLongitude;
+
     @Column(name = "destination")
     private String destination;
+
+    @Column(name = "destinationLatitude")
+    private Double destinationLatitude;
+
+    @Column(name = "destinationLongitude")
+    private Double destinationLongitude;
 
     @Column(name = "details")
     private String details;
@@ -140,6 +152,14 @@ public class Request {
         this.departure = departure;
     }
 
+    public Double getDepartureLatitude() { return departureLatitude; }
+
+    public void setDepartureLatitude(Double departureLatitude) { this.departureLatitude = departureLatitude; }
+
+    public Double getDepartureLongitude() { return departureLongitude; }
+
+    public void setDepartureLongitude(Double departureLongitude) { this.departureLongitude = departureLongitude; }
+
     public String getDestination() {
         return destination;
     }
@@ -147,6 +167,14 @@ public class Request {
     public void setDestination(String destination) {
         this.destination = destination;
     }
+
+    public Double getDestinationLatitude() { return destinationLatitude; }
+
+    public void setDestinationLatitude(Double destinationLatitude) { this.destinationLatitude = destinationLatitude; }
+
+    public Double getDestinationLongitude() { return destinationLongitude; }
+
+    public void setDestinationLongitude(Double destinationLongitude) { this.destinationLongitude = destinationLongitude; }
 
     public String getDetails() {
         return details;

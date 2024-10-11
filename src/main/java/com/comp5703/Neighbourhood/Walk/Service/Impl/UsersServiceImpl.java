@@ -88,7 +88,8 @@ public class UsersServiceImpl implements UsersService {
                 user.getPhone() == null || user.getPhone().isEmpty() ||
                 user.getEmail() == null || user.getEmail().isEmpty() ||
                 user.getAddress() == null || user.getAddress().isEmpty() ||
-                user.getLatitude() == null || user.getLongitude() == null ||
+                user.getLatitude() == null || user.getLatitude().isNaN() ||
+                user.getLongitude() == null || user.getLongitude().isNaN() ||
                 user.getPassword() == null || user.getPassword().isEmpty() ||
                 user.getGender() == null || user.getGender().isEmpty() ||
                 user.getBirthDate() == null) {
