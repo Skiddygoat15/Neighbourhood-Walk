@@ -52,7 +52,7 @@ public class DummyDataLoader implements CommandLineRunner {
         user1.setBirthDate(new Date(90, 0, 0));
         user1.setGender("male");
         user1.setAvgUserRating(5.0);
-        user1.setActivityStatus("offline");
+        user1.setActivityStatus("Offline");
 
         Users user2 = new Users();
         user2.setName("Jane");
@@ -64,7 +64,7 @@ public class DummyDataLoader implements CommandLineRunner {
         user2.setBirthDate(new Date(92, 1, 1));
         user2.setGender("female");
         user2.setAvgUserRating(5.0);
-        user2.setActivityStatus("active");
+        user2.setActivityStatus("Active");
 
         Users user3 = new Users();
         user3.setName("Alice");
@@ -76,7 +76,7 @@ public class DummyDataLoader implements CommandLineRunner {
         user3.setBirthDate(new Date(88, 2, 2));
         user3.setGender("female");
         user3.setAvgUserRating(5.0);
-        user3.setActivityStatus("blocked");
+        user3.setActivityStatus("Blocked");
 
         Users user4 = new Users();
         user4.setName("Bob");
@@ -88,7 +88,7 @@ public class DummyDataLoader implements CommandLineRunner {
         user4.setBirthDate(new Date(85, 3, 3));
         user4.setGender("other");
         user4.setAvgUserRating(5.0);
-        user4.setActivityStatus("active");
+        user4.setActivityStatus("Active");
 
         Users user5 = new Users();
         user5.setName("admin");
@@ -100,7 +100,7 @@ public class DummyDataLoader implements CommandLineRunner {
         user5.setBirthDate(new Date(85, 3, 3));
         user5.setGender("other");
         user5.setAvgUserRating(5.0);
-        user5.setActivityStatus("active");
+        user5.setActivityStatus("Active");
 
         // 将用户保存到数据库
         usersRepository.saveAll(Arrays.asList(user1, user2, user3, user4, user5));

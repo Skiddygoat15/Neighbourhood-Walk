@@ -69,6 +69,20 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
+    public void activeUser(long id) {
+        Users user =  usersRepository.getById(id);
+        user.setActivityStatus("Active");
+        usersRepository.save(user);
+    }
+
+    @Override
+    public void blockUser(long id) {
+        Users user =  usersRepository.getById(id);
+        user.setActivityStatus("Blocked");
+        usersRepository.save(user);
+    }
+
+    @Override
     public List<Users> getAllUsers() {
         return (List<Users>) usersRepository.findAll();
     }

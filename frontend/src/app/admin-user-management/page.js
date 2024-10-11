@@ -128,14 +128,80 @@ export default function AdminUserManagement() {
         }
     };
 
+    // 激活用户
+    const handleActivate = async (userId) => {
+        const activateUserAPI = `http://127.0.0.1:8080/Users/activeUser/${userId}`;
+        try {
+            const response = await fetch(activateUserAPI, {
+                method: 'get',
+                credentials: 'include',
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                }
+            });
+            if (response.ok) {
+                fetchUsers();  // 更新用户列表
+            } else {
+                const data = await response.json();
+                setError(data.message || 'Failed to activate user.');
+            }
+        } catch (error) {
+            setError(error.message);
+        }
+    };
+
+    // 封锁用户
+    const handleBlock = async (userId) => {
+        const blockUserAPI = `http://127.0.0.1:8080/Users/blockUser/${userId}`;
+        try {
+            const response = await fetch(blockUserAPI, {
+                method: 'get',
+                credentials: 'include',
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                }
+            });
+            if (response.ok) {
+                fetchUsers();  // 更新用户列表
+            } else {
+                const data = await response.json();
+                setError(data.message || 'Failed to block user.');
+            }
+        } catch (error) {
+            setError(error.message);
+        }
+    };
+
+    // 删除用户
+    const handleDelete = async (userId) => {
+        const deleteUserAPI = `http://127.0.0.1:8080/Users/${userId}`;
+        try {
+            const response = await fetch(deleteUserAPI, {
+                method: 'delete',
+                credentials: 'include',
+                headers: {
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                }
+            });
+            if (response.ok) {
+                fetchUsers();  // 更新用户列表
+            } else {
+                const data = await response.json();
+                setError(data.message || 'Failed to delete user.');
+            }
+        } catch (error) {
+            setError(error.message);
+        }
+    };
+
     // set status css
     const getStatusStyle = (status) => {
         switch (status) {
-            case 'active':
+            case 'Active':
                 return 'text-green-500';  // green for active
-            case 'blocked':
+            case 'Blocked':
                 return 'text-red-500';  // red for blocked
-            case 'offline':
+            case 'Offline':
                 return 'text-gray-500';  // grey for offline
             default:
                 return 'text-gray-500';  // default grey
@@ -217,6 +283,24 @@ export default function AdminUserManagement() {
                                     <p className={`font-bold ${getStatusStyle(user.activityStatus)}`}>
                                         <strong>Activity Status:</strong> {user.activityStatus}
                                     </p>
+                                </div>
+                                {/* Buttons */}
+                                <div className="space-x-2">
+                                    {/* Activate Button */}
+                                    <button
+                                        onClick={() => handleActivate(user.id)}
+                                        className="py-2 px-4 bg-black text-white rounded-full text-sm font-semibold"> Activate
+                                    </button>
+                                    {/* Block Button */}
+                                    <button
+                                        onClick={() => handleBlock(user.id)}
+                                        className="py-2 px-4 bg-black text-white rounded-full text-sm font-semibold"> Block
+                                    </button>
+                                    {/* Delete Button */}
+                                    <button
+                                        onClick={() => handleDelete(user.id)}
+                                        className="py-2 px-4 bg-black text-white rounded-full text-sm font-semibold"> Delete
+                                    </button>
                                 </div>
                             </div>
                         ))
