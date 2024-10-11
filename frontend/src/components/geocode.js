@@ -7,10 +7,8 @@ export const geocodeAddress = async (address) => {
             `http://localhost:8080/geocode/?address=${encodeURIComponent(address)}`,  // 调用后端 API
             {
                 method: 'GET',
-                credentials: 'include',  // 包含用户凭证
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                    'Content-Type': 'application/json'
                 },
             }
         );
