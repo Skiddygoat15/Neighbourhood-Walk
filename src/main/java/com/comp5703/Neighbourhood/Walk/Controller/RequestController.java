@@ -40,6 +40,16 @@ public class RequestController {
         }
     }
 
+    @GetMapping("/getAllRequests")
+    public ResponseEntity<?> getAllRequests() {
+        try {
+            List<RequestDTO> request = requestService.getAllRequests();
+            return new ResponseEntity<>(request, HttpStatus.OK);
+        } catch (ResourceNotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
     /**
      * walker创建request
      * @param request

@@ -47,6 +47,29 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
+    public List<RequestDTO> getAllRequests() {
+        // List<Request> requests = requestRepository.findAll();
+        // 获取所有的 Request 列表
+        List<Request> requests = requestRepository.findAll();
+
+        // 将每个 Request 转换为 RequestDTO
+        List<RequestDTO> requestDTOs = requests.stream().map(request -> new RequestDTO(
+                request.getRequestId(),
+                request.getWalker(),  // 这里 Walker 可能是一个实体类，你可以根据需要将其转换为DTO或直接返回
+                request.getParent(),
+                request.getPublishDate(),
+                request.getStartTime(),
+                request.getArriveTime(),
+                request.getDeparture(),
+                request.getDestination(),
+                request.getDetails(),
+                request.getStatus()
+        )).collect(Collectors.toList());
+
+        return requestDTOs;
+    }
+
+    @Override
     public RequestDTO getRequestById(int requestId) {
         Request request = requestRepository.findById(requestId).orElseThrow(() -> new ResourceNotFoundException("Request not found"));
         // Convert Request to RequestDTO

@@ -199,8 +199,8 @@ export default function WalkRequestManagementParent() {
     }
 
     return (
-        <main className="min-h-screen bg-white">
-            <div className="max-w-md mx-auto p-4 space-y-8">
+        <main className="h-screen bg-white flex flex-col justify-center pb-10">
+            <div className="w-full px-4 space-y-6 pb-14">
                 {/* Back Button */}
                 <button onClick={() => router.back()} className="text-2xl p-2 focus:outline-none">
                     &larr;
@@ -256,33 +256,33 @@ export default function WalkRequestManagementParent() {
                 {/* Estimated Departure */}
                 <div>
                     <label className="block text-lg font-semibold">Estimated departure:</label>
-                    <div className="flex space-x-4">
+                    <div className="flex space-x-3">
                         <input
                             type="date"
                             value={date}
                             onChange={(e) => setDate(e.target.value)}
-                            className="w-full p-3 border border-black rounded-lg"
+                            className="w-full p-2 border border-black rounded-lg"
                         />
-                        <div className="flex space-x-2">
+                        <div className="grid grid-cols-5 text-sm gap-2">
                             <input
                                 type="number"
                                 value={departureTime.hour}
-                                onChange={(e) => setDepartureTime({ ...departureTime, hour: e.target.value })}
+                                onChange={(e) => setDepartureTime({...departureTime, hour: e.target.value})}
                                 placeholder="HH"
-                                className="w-16 p-3 border border-black rounded-lg text-center"
+                                className="w-12 p-2 border border-black rounded-lg text-center text-sm"
                             />
-                            <span className="text-lg">:</span>
+                            <span className="col-span-1 flex items-center justify-center text-sm">:</span>
                             <input
                                 type="number"
                                 value={departureTime.minute}
-                                onChange={(e) => setDepartureTime({ ...departureTime, minute: e.target.value })}
+                                onChange={(e) => setDepartureTime({...departureTime, minute: e.target.value})}
                                 placeholder="MM"
-                                className="w-16 p-3 border border-black rounded-lg text-center"
+                                className="w-12 p-2 border border-black rounded-lg text-center text-sm ml-[-10px]"
                             />
                             <select
                                 value={departureTime.period}
-                                onChange={(e) => setDepartureTime({ ...departureTime, period: e.target.value })}
-                                className="p-3 border border-black rounded-lg"
+                                onChange={(e) => setDepartureTime({...departureTime, period: e.target.value})}
+                                className="w-16 p-2 border border-black rounded-lg text-sm ml-[10px]"
                             >
                                 <option value="AM">AM</option>
                                 <option value="PM">PM</option>
@@ -293,26 +293,26 @@ export default function WalkRequestManagementParent() {
                 {/* Estimated Arrival */}
                 <div>
                     <label className="block text-lg font-semibold">Estimated Arrival:</label>
-                    <div className="flex space-x-2">
+                    <div className="flex text-sm space-x-2">
                         <input
                             type="number"
                             value={arriveTime.hour}
-                            onChange={(e) => setArriveTime({ ...arriveTime, hour: e.target.value })}
+                            onChange={(e) => setArriveTime({...arriveTime, hour: e.target.value})}
                             placeholder="HH"
                             className="w-16 p-3 border border-black rounded-lg text-center"
                         />
-                        <span className="text-lg">:</span>
+                        <span className="text-sm">:</span>
                         <input
                             type="number"
                             value={arriveTime.minute}
-                            onChange={(e) => setArriveTime({ ...arriveTime, minute: e.target.value })}
+                            onChange={(e) => setArriveTime({...arriveTime, minute: e.target.value})}
                             placeholder="MM"
                             className="w-16 p-3 border border-black rounded-lg text-center"
                         />
                         <select
                             value={arriveTime.period}
-                            onChange={(e) => setArriveTime({ ...arriveTime, period: e.target.value })}
-                            className="p-3 border border-black rounded-lg"
+                            onChange={(e) => setArriveTime({...arriveTime, period: e.target.value})}
+                            className="p-3 border border-black text-sm rounded-lg"
                         >
                             <option value="AM">AM</option>
                             <option value="PM">PM</option>
