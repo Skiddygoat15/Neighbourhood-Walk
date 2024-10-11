@@ -18,7 +18,7 @@ import java.util.*;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-
+import java.util.stream.Collectors;
 
 
 @Service
@@ -47,14 +47,26 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
-    public List<Request> getAllRequests() {
+    public List<RequestDTO> getAllRequests() {
+        // List<Request> requests = requestRepository.findAll();
+        // 获取所有的 Request 列表
         List<Request> requests = requestRepository.findAll();
-//        if (requests.isEmpty()) {
-//            // 可以选择返回一个自定义的异常，或者在控制器里处理
-//            throw new ResourceNotFoundException("No requests found for userId: " + userId);
-//        }
 
-        return requests;
+        // 将每个 Request 转换为 RequestDTO
+        List<RequestDTO> requestDTOs = requests.stream().map(request -> new RequestDTO(
+                request.getRequestId(),
+                request.getWalker(),  // 这里 Walker 可能是一个实体类，你可以根据需要将其转换为DTO或直接返回
+                request.getParent(),
+                request.getPublishDate(),
+                request.getStartTime(),
+                request.getArriveTime(),
+                request.getDeparture(),
+                request.getDestination(),
+                request.getDetails(),
+                request.getStatus()
+        )).collect(Collectors.toList());
+
+        return requestDTOs;
     }
 
     @Override
