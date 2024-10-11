@@ -15,6 +15,8 @@ public interface UsersService {
     Optional<Users> getUsersByPhone(String phone);
     Optional<Map<String, String>> getUserNamesById(long id);
     UserProfileDTO getUserProfileById(long id);
+    void activeUser(long id);
+    void blockUser(long id);
 
     void deleteUsers(long id);
     List<Users> getAllUsers();

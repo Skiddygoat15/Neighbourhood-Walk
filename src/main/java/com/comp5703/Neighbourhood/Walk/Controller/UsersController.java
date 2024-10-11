@@ -64,6 +64,18 @@ public class UsersController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @GetMapping("/blockUser/{id}")
+    public ResponseEntity<HttpStatus> blockUser(@PathVariable int id) {
+        usersService.blockUser(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/activeUser/{id}")
+    public ResponseEntity<HttpStatus> activeUser(@PathVariable int id) {
+        usersService.activeUser(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
     @GetMapping("/allUsers")
     public ResponseEntity<List<Users>> getAllUsers() {
         return new ResponseEntity<>(usersService.getAllUsers(), HttpStatus.OK);
