@@ -149,11 +149,11 @@ export default function SearchParent() {
 
           <div className="flex justify-between mb-4">
 
-            <div className="flex flex-col space-y-2 mb-4 md:flex-row md:space-y-0 md:space-x-4 w-full">
+            <div className="flex flex-col space-y-2 mb-4 md:flex-row md:flex-wrap md:space-y-0 md:space-x-4 w-full">
               <select
                   value={gender}
                   onChange={(e) => setGender(e.target.value)}
-                  className="bg-white border px-4 py-2 rounded-lg w-full md:w-1/3"
+                  className="bg-white border px-4 py-2 rounded-lg w-full md:w-1/4 lg:w-4/5"
               >
                 <option value="">Gender</option>
                 <option value="male">Male</option>
@@ -163,11 +163,11 @@ export default function SearchParent() {
             </div>
 
 
-            <div className="flex flex-col space-y-2 mb-4 md:flex-row md:space-y-0 md:space-x-4 w-full">
+            <div className="flex flex-col space-y-2 mb-4 md:flex-row md:flex-wrap md:space-y-0 md:space-x-4 w-full">
               <select
                   value={distance}
                   onChange={(e) => setDistance(e.target.value)}
-                  className="bg-white border px-4 py-2 rounded-lg w-full md:w-1/3"
+                  className="bg-white border px-4 py-2 rounded-lg w-full md:w-1/4 lg:w-4/5"
               >
                 <option value="">Distance</option>
                 <option value="1km">Within 1km</option>
@@ -176,11 +176,11 @@ export default function SearchParent() {
             </div>
 
 
-            <div className="flex flex-col space-y-2 mb-4 md:flex-row md:space-y-0 md:space-x-4 w-full">
+            <div className="flex flex-col space-y-2 mb-4 md:flex-row md:flex-wrap md:space-y-0 md:space-x-4 w-full">
               <select
                   value={rating}
                   onChange={(e) => setRating(e.target.value)}
-                  className="bg-white border px-4 py-2 rounded-lg w-full md:w-1/3"
+                  className="bg-white border px-4 py-2 rounded-lg w-full md:w-1/4 lg:w-4/5"
               >
                 <option value="">Ratings</option>
                 <option value="5stars">5 stars</option>

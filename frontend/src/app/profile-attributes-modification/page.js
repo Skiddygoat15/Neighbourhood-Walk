@@ -108,92 +108,93 @@ export default function ProfileAttributesModification() {
 
   return (
     <main className="min-h-screen bg-white">
-      <div className="max-w-md mx-auto p-4 space-y-8" style={{ height: 'calc(100vh - 55px)', overflowY: 'auto' }}>
+      <div className="w-full px-4 sm:px-6 lg:px-8" style={{height: 'calc(100vh - 55px)', overflowY: 'auto'}}>
         {/* Back Button */}
         <button onClick={() => router.back()} className="text-2xl p-2 focus:outline-none">
           &larr;
         </button>
 
         {/* Title */}
-        <h1 className="text-2xl font-bold text-center">Profile Attributes Modification</h1>
-        {error && <p className="text-red-500 text-center">{error}</p>}
+        <h1 className="text-2xl font-bold text-center mb-2">Profile Attributes Modification</h1>
+          {error && <p className="text-red-500 text-center">{error}</p>}
 
-        {/* Form Fields */}
-        <div className="space-y-4">
-          {/* Phone Number */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Phone Number</label>
-            <p className="text-xs text-gray-500">You will use this number to receive notifications and to log in and restore your account</p>
-            <div className="flex items-center mt-2">
-              <select
-                className="border border-gray-300 p-2 rounded-l-md"
-                value={countryCode}
-                onChange={handleCountryChange}
-              >
-                {countryCodes.map((item, index) => (
-                  <option key={index} value={item.code}>
-                    {item.country} ({item.code})
-                  </option>
-                ))}
-              </select>
+          {/* Form Fields */}
+          <div className="space-y-6">
+            {/* Phone Number */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Phone Number</label>
+              <p className="text-xs text-gray-500">You will use this number to receive notifications and to log in and
+                restore your account</p>
+              <div className="flex items-center mt-2">
+                <select
+                    className="border border-gray-300 p-4 rounded-l-md"
+                    value={countryCode}
+                    onChange={handleCountryChange}
+                >
+                  {countryCodes.map((item, index) => (
+                      <option key={index} value={item.code}>
+                        {item.country} ({item.code})
+                      </option>
+                  ))}
+                </select>
+                <input
+                    type="text"
+                    className="border border-gray-300 p-4 rounded-r-md w-full"
+                    placeholder="Enter your phone number"
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                />
+              </div>
+              {/*<p className="text-xs text-gray-500">The system will send you a verification code</p>*/}
+            </div>
+
+            {/* Email Address */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">E-mail Address</label>
+              <p className="text-xs text-gray-500">You will use this mailbox to receive messages</p>
               <input
-                type="text"
-                className="border border-gray-300 p-2 rounded-r-md w-full"
-                placeholder="Enter your phone number"
-                value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
+                  type="email"
+                  className="border border-gray-300 p-4 rounded-md w-full mt-2"
+                  value={emailAddress}
+                  onChange={(e) => setEmailAddress(e.target.value)}
+              />
+              {/*<p className="text-xs text-gray-500">The system will send you a verification code</p>*/}
+            </div>
+
+            {/* Communication Preference */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Communication Preference</label>
+              <select
+                  className="border border-gray-300 p-4 rounded-md w-full mt-2"
+                  value={communicationPreference}
+                  onChange={(e) => setCommunicationPreference(e.target.value)}
+              >
+                <option value="">Select an option</option>
+                <option value="Email">Email</option>
+                <option value="Phone">Phone</option>
+              </select>
+            </div>
+
+            {/* Preferred Name */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700">Preferred Name</label>
+              <input
+                  type="text"
+                  className="border border-gray-300 p-4 rounded-md w-full mt-2"
+                  value={preferredName}
+                  onChange={(e) => setPreferredName(e.target.value)}
               />
             </div>
-            {/*<p className="text-xs text-gray-500">The system will send you a verification code</p>*/}
           </div>
 
-          {/* Email Address */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">E-mail Address</label>
-            <p className="text-xs text-gray-500">You will use this mailbox to receive messages</p>
-            <input
-              type="email"
-              className="border border-gray-300 p-2 rounded-md w-full mt-2"
-              value={emailAddress}
-              onChange={(e) => setEmailAddress(e.target.value)}
-            />
-            {/*<p className="text-xs text-gray-500">The system will send you a verification code</p>*/}
-          </div>
-
-          {/* Communication Preference */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Communication Preference</label>
-            <select
-              className="border border-gray-300 p-2 rounded-md w-full mt-2"
-              value={communicationPreference}
-              onChange={(e) => setCommunicationPreference(e.target.value)}
-            >
-              <option value="">Select an option</option>
-              <option value="Email">Email</option>
-              <option value="Phone">Phone</option>
-            </select>
-          </div>
-
-          {/* Preferred Name */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700">Preferred Name</label>
-            <input
-              type="text"
-              className="border border-gray-300 p-2 rounded-md w-full mt-2"
-              value={preferredName}
-              onChange={(e) => setPreferredName(e.target.value)}
-            />
-          </div>
+          {/* Update Button */}
+          <button
+              onClick={handleUpdate}
+              className="w-full py-4 text-center bg-black text-white rounded-full font-semibold hover:bg-gray-800 mt-8"
+          >
+            Update
+          </button>
         </div>
-
-        {/* Update Button */}
-        <button
-          onClick={handleUpdate}
-          className="w-full py-3 text-center bg-black text-white rounded-full font-semibold hover:bg-gray-800 mt-8"
-        >
-          Update
-        </button>
-      </div>
     </main>
-  );
+);
 }

@@ -120,9 +120,9 @@ export default function ProfileManagementAccountInformation() {
 
   return (
       <main className="min-h-screen bg-white">
-        <div className="max-w-md mx-auto p-4 space-y-8" style={{ height: 'calc(100vh - 55px)', overflowY: 'auto' }}>
+        <div className="w-full px-4 sm:px-6 lg:px-8 space-y-8" style={{ height: 'calc(100vh - 55px)', overflowY: 'auto' }}>
           {/* Title */}
-          <h1 className="text-2xl font-bold text-center">Account Information</h1>
+          <h1 className="text-2xl font-bold text-center mt-8">Account Information</h1>
 
           {/* User Info Section */}
           <div className="flex items-center justify-between">
@@ -136,42 +136,42 @@ export default function ProfileManagementAccountInformation() {
 
           {/* Details List */}
           <div className="space-y-4">
-            <div className="flex justify-between items-center border-b py-2">
+            <div className="flex justify-between items-center border-b py-2 text-sm sm:text-base">
               <span>Preferred Name</span>
               <div className="flex items-center">
                 <span>{userProfile.preferredName || 'N/A'}</span>
               </div>
             </div>
 
-            <div className="flex justify-between items-center border-b py-2">
+            <div className="flex justify-between items-center border-b py-2 text-sm sm:text-base">
               <span>Date of Birth</span>
               <div className="flex items-center">
                 <span>{new Date(userProfile.birthDate).toLocaleDateString()}</span>
               </div>
             </div>
 
-            <div className="flex justify-between items-center border-b py-2">
+            <div className="flex justify-between items-center border-b py-2 text-sm sm:text-base">
               <span>Phone Number</span>
               <div className="flex items-center">
                 <span>+61 {userProfile.phone}</span>
               </div>
             </div>
 
-            <div className="flex justify-between items-center border-b py-2">
+            <div className="flex justify-between items-center border-b py-2 text-sm sm:text-base">
               <span>E-mail Address</span>
               <div className="flex items-center">
                 <span>{userProfile.email}</span>
               </div>
             </div>
 
-            <div className="flex justify-between items-center border-b py-2">
+            <div className="flex justify-between items-center border-b py-2 text-sm sm:text-base">
               <span>Address</span>
               <div className="flex items-center">
                 <span>{userProfile.address}</span>
               </div>
             </div>
 
-            <div className="flex justify-between items-center border-b py-2">
+            <div className="flex justify-between items-center border-b py-2 text-sm sm:text-base">
               <span>Communication Preference</span>
               <div className="flex items-center">
                 <span>{userProfile.communicatePref || 'N/A'}</span>
