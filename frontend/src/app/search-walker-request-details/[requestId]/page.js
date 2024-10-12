@@ -298,7 +298,7 @@ export default function RequestDetails({params}) {
     return (
         <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-between">
 
-            <div className="bg-white p-4 shadow-md w-full max-w-md mx-auto">
+            <div className="bg-white p-4 shadow-md w-full">
                 {/* show back icon and title*/}
                 <div className="flex items-center mb-4">
                     <button onClick={() => handleBack()} className="mr-4">

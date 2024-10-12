@@ -173,10 +173,10 @@ export default function ProfileManagementAccountInformationWalker() {
 
 
   return (
-      <main className="min-h-screen bg-white">
-        <div className="max-w-md mx-auto p-4 space-y-8" style={{ height: 'calc(100vh - 55px)', overflowY: 'auto' }}>
+      <main className="min-h-screen bg-white mb-10">
+        <div className="w-full px-4 sm:px-6 lg:px-8 space-y-8" style={{ height: 'calc(100vh - 55px)', overflowY: 'auto' }}>
           {/* Title */}
-          <h1 className="text-2xl font-bold text-center">Account Information</h1>
+          <h1 className="text-2xl font-bold text-center mt-6">Account Information</h1>
 
           {/* User Info Section */}
           <div className="flex items-center justify-between">

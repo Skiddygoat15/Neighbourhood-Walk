@@ -117,8 +117,8 @@ export default function SearchWalker() {
     };
 
     return (
-        <div className="min-h-screen bg-gray-100">
-            <div className="bg-white p-4 rounded-lg shadow-md max-w-md mx-auto mt-4">
+        <div className="min-h-screen bg-gray-100 pb-20">
+            <div className="bg-white p-4 rounded-lg shadow-md w-full mx-auto">
 
                 <h1 className="text-2xl font-semibold mb-4">Search</h1>
 
