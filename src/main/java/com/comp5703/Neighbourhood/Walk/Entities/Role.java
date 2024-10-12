@@ -20,6 +20,15 @@ public class Role {
     @Column(name = "roleType", nullable = false)
     private String roleType;
 
+    @Override
+    public String toString() {
+        return "Role{" +
+                "roleId=" + roleId +
+                ", userId=" + userId +
+                ", roleType='" + roleType + '\'' +
+                '}';
+    }
+
     // Constructors
     public Role() {}
 

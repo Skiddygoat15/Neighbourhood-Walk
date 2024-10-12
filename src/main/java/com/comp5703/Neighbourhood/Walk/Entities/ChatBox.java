@@ -27,34 +27,50 @@ public class ChatBox {
     @JoinColumn(name = "roleTo")
     private Role roleTo;
 
-    @JoinColumn(name = "message")
+    @Column(name = "message")
     private String message;
 
-    @JoinColumn(name = "time")
+    @Column(name = "time")
     @CreationTimestamp
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", timezone = "UTC")
     @TableField(fill = FieldFill.INSERT) //标明该字段，在什么时候需要被填充
     private Date time;
 
-//    @OneToMany(mappedBy = "walker", cascade = CascadeType.ALL, orphanRemoval = true)
-//    private List<PreMeet> preMeetsAsWalker = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "chatRoomId")
+    private ChatRoom chatRoom;
+
+
+    @Override
+    public String toString() {
+        return "ChatBox{" +
+                "id=" + id +
+                ", roleFrom=" + roleFrom +
+                ", roleTo=" + roleTo +
+                ", message='" + message + '\'' +
+                ", time=" + time +
+                ", chatRoom=" + chatRoom +
+                '}';
+    }
 
     public ChatBox() {
     }
 
-    public ChatBox(long id, Role roleFrom, Role roleTo, String message, Date time) {
+    public ChatBox(long id, Role roleFrom, Role roleTo, String message, Date time, ChatRoom chatRoom) {
         this.id = id;
         this.roleFrom = roleFrom;
         this.roleTo = roleTo;
         this.message = message;
         this.time = time;
+        this.chatRoom = chatRoom;
     }
 
-    public ChatBox(Role roleFrom, Role roleTo, String message, Date time) {
+    public ChatBox(Role roleFrom, Role roleTo, String message, Date time, ChatRoom chatRoom) {
         this.roleFrom = roleFrom;
         this.roleTo = roleTo;
         this.message = message;
         this.time = time;
+        this.chatRoom = chatRoom;
     }
 
     public long getId() {
@@ -95,5 +111,13 @@ public class ChatBox {
 
     public void setTime(Date time) {
         this.time = time;
+    }
+
+    public ChatRoom getChatRoom() {
+        return chatRoom;
+    }
+
+    public void setChatRoom(ChatRoom chatRoom) {
+        this.chatRoom = chatRoom;
     }
 }

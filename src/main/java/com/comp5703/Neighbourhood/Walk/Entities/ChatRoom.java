@@ -10,11 +10,11 @@ import java.util.List;
 public class ChatRoom {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JoinColumn(name = "ChatRoomId")
-    private long id;
+    private String id;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "ChatBoxes")
     private List<ChatBox> ChatBoxes = new ArrayList<>();
 
@@ -29,7 +29,7 @@ public class ChatRoom {
     public ChatRoom() {
     }
 
-    public ChatRoom(long id, List<ChatBox> chatBoxes, Role roleFrom, Role roleTo) {
+    public ChatRoom(String id, List<ChatBox> chatBoxes, Role roleFrom, Role roleTo) {
         this.id = id;
         ChatBoxes = chatBoxes;
         this.roleFrom = roleFrom;
@@ -42,11 +42,16 @@ public class ChatRoom {
         this.roleTo = roleTo;
     }
 
-    public long getId() {
+    public ChatRoom(String id, List<ChatBox> chatBoxes) {
+        this.id = id;
+        ChatBoxes = chatBoxes;
+    }
+
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

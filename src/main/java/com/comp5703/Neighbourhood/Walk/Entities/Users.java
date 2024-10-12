@@ -1,6 +1,5 @@
 package com.comp5703.Neighbourhood.Walk.Entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 

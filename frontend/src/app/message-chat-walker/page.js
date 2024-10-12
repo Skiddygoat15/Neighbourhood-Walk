@@ -22,55 +22,62 @@ export default function Home() {
     // 双方role状态检测
     const [roleFrom, setRoleFrom] = useState("");
     const [userIdFrom, setUserIdFrom] = useState("");
-    const [userIdTo, setUserIdTo] = useState(1);
+    const [userIdTo, setUserIdTo] = useState("1");
+    const [isDataReady, setIsDataReady] = useState(false);
 
     useEffect(() => {
-        // 在 useEffect 中，代码只会在客户端执行
-        if (typeof window !== 'undefined') {
-            const storedRole = localStorage.getItem("roles").slice(2,-2);
-            const storedUser = localStorage.getItem("userId");
+        const storedRole = localStorage.getItem("roles")?.slice(2, -2);
+        const storedUser = localStorage.getItem("userId");
+        if (storedUser && storedRole) {
             setRoleFrom(storedRole);
             setUserIdFrom(storedUser);
+            setIsDataReady(true);  // 设置数据准备完毕的状态
         }
     }, []);
-
     const roleTo = roleFrom === "walker" ? "parent" : "walker";
 
-    // console.info("role of the main chatter is " + roleFrom);
-    // console.info("role of the other chatter is " + roleTo);
-
-
-
-
+    useEffect(() => {
+        if (isDataReady) {
+            initializeWebSocket(userIdFrom);
+        }
+    }, [isDataReady, userIdFrom]);
     // ####################################功能2:WebSocket服务器连接####################################
     const websocket = useRef(null);
     const [inputMessage, setInputMessage] = useState("");
     const [messages, setMessages] = useState([]);  // 用于存储消息的状态
-    // const handleSendMessage = (message) => {
-    //
-    //     const newMessage = {
-    //         id: messages.length > 0 ? messages[messages.length - 1].id + 1 : 1,
-    //         text: message,
-    //         time: new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
-    //         from: role
-    //     };
-    //
-    //     setMessages([...messages, newMessage]);
-    //     console.log("Message sent:", message); // 实际项目中，这里可以是调用 API 发送消息
-    // };
 
     //websocket连接
-    useEffect(() => {
+    // useEffect(() => {
+    function initializeWebSocket(userIdFrom) {
         websocket.current = new WebSocket('ws://localhost:8080/ws');
 
-        websocket.current.onopen = function() {
+        websocket.current.onopen = function () {
             console.log("WebSocket连接成功");
+            console.log("userIdFrom is: " + userIdFrom);
             // setMessages((prev) => [...prev, `用户[${username}] 已经加入聊天室`]);
+
+            // 获取并发送chat双方的userId给服务器
+            if (typeof window !== 'undefined') {
+                if (userIdFrom) {
+                    // 构建要发送的数据
+
+                    const initData = JSON.stringify({
+                        type: "init",
+                        userIdFrom: userIdFrom,
+                        userIdTo: userIdTo,
+                    });
+                    // const initDataToJsonStr = JSON.stringify(initData);
+                    // 发送数据到服务器
+                    console.log("已发送initData到服务器");
+                    console.info(initData);
+                    websocket.current.send(initData);
+                }
+            }
             setMessages((prev) => [...prev, `用户1 已经加入聊天室`]);
         };
 
         // 当接收到 WebSocket 消息时
-        websocket.current.onmessage = function(event) {
+        websocket.current.onmessage = function (event) {
             // console.log("收到消息: " + event.data);
             // setMessages((prev) => [...prev, event.data]);
             // const newMessage = JSON.parse(event.data); // 假设服务器发送的是JSON字符串
@@ -85,13 +92,13 @@ export default function Home() {
         };
 
         // WebSocket 错误处理
-        websocket.current.onerror = function(event) {
+        websocket.current.onerror = function (event) {
             console.error("WebSocket error observed:", event);
 
         };
 
         // WebSocket 连接关闭处理
-        websocket.current.onclose = function(event) {
+        websocket.current.onclose = function (event) {
             console.log(`WebSocket is closed now.`);
             setMessages((prev) => [...prev, `用户1 已经离开聊天室`]);
         };
@@ -102,8 +109,8 @@ export default function Home() {
                 websocket.current.close();
             }
         };
-    }, []);
-
+        // }, []);
+    }
     // ####################################功能3:处理发送信息####################################
     // 使用websocket发送消息
     const sendMessage = (inputMessage) => {
@@ -116,6 +123,7 @@ export default function Home() {
         if(websocket.current && websocket.current.readyState === WebSocket.OPEN) {
             const messageData = JSON.stringify({
                 // time={format(notification.time, 'EEEE, MMMM do, yyyy, hh:mm:ss a')}
+                    type: "message",
                     userIdFrom: userIdFrom,
                     userIdTo: userIdTo,
                     roleFrom: roleFrom,

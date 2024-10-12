@@ -1,16 +1,24 @@
 // components/ChattingStatus.js
 
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
 
 function ChattingStatus({ name, text, time, parentId, path }) {
 
 
-
+    const [role, setRole] = useState("");;
     const router = useRouter();  // 使用 useRouter
 
+    useEffect(()=>{
+        setRole(localStorage.getItem("role"));
+    },[])
+
     const goToNotificationChatPage = () => {
-        router.push(path || `/message-chat`); // Use provided path or default to `/message-chat`
+        if (role === "parent"){
+            router.push(path || `/message-chat-parent`); // Use provided path or default to `/message-chat`
+        }else {
+            router.push(path || `/message-chat-walker`); // Use provided path or default to `/message-chat`
+        }
     };
 
     const myInit = {
