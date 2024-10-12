@@ -134,7 +134,7 @@ public class DummyDataLoader implements CommandLineRunner {
         request1.setDeparture("54 Fitzroy St, Newtown NSW 2042, Australia");
         request1.setDepartureLatitude(-33.8960373);
         request1.setDepartureLongitude(151.1869439);
-        request1.setDestination("Darlington public school"); // Golden Grove St, Chippendale NSW 2008, Australia
+        request1.setDestination("Golden Grove St, Chippendale NSW 2008, Australia");
         request1.setDestinationLatitude(-33.8930788);
         request1.setDestinationLongitude(151.1894845);
         request1.setDetails("Please meet us at Woolworths");

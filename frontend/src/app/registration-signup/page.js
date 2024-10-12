@@ -38,9 +38,8 @@ const RegistrationSignup = () => {
     }
 
     try {
-      // 先将地址转换为经纬度
+      // convert the address to latitude and longitude
       const { lat, lng , formatted_address } = await geocodeAddress(formData.address);
-      console.log("latitude: " + lat + "  longitude: " + lng, "formatted_address: " + formatted_address);
 
       const requestData = {
         name: formData.name,
@@ -79,53 +78,6 @@ const RegistrationSignup = () => {
       console.error(err);
     }
   };
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //
-  //   // 每次提交前清空错误信息
-  //   setError('');
-  //
-  //   if (formData.password !== formData.confirmPassword) {
-  //     setError('Passwords do not match');
-  //     return;
-  //   }
-  //
-  //   const requestData = {
-  //     name: formData.name,
-  //     surname: formData.surname,
-  //     phone: formData.phone,
-  //     email: formData.email,
-  //     address: formData.address,
-  //     password: formData.password,
-  //     gender: formData.gender,
-  //     birthDate: new Date(formData.birthDate).toISOString(),
-  //     avgUserRating: 5.0
-  //   };
-  //
-  //   const apiUrl = `http://localhost:8080/Users/register?roleType=${roleType}`;
-  //
-  //   try {
-  //     const res = await fetch(apiUrl, {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(requestData),
-  //     });
-  //
-  //     if (!res.ok) {
-  //       const errorMessage = await res.text(); // 捕获后端返回的错误消息
-  //       setError(errorMessage || 'Registration failed'); // 直接设置错误信息
-  //       return; // 直接返回，防止继续执行后续逻辑
-  //     }
-  //
-  //     router.push('/registration-loginform');
-  //   } catch (err) {
-  //     setError(err);
-  //     console.error(err);
-  //   }
-  // };
 
   return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
