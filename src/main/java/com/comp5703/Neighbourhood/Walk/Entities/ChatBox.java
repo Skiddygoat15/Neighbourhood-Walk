@@ -5,7 +5,9 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 
 @Entity
@@ -17,11 +19,13 @@ public class ChatBox {
     @JoinColumn(name = "ChatBoxId")
     private long id;
 
+    @ManyToOne
     @JoinColumn(name = "roleFrom")
-    private long roleFrom;
+    private Role roleFrom;
 
+    @ManyToOne
     @JoinColumn(name = "roleTo")
-    private long roleTo;
+    private Role roleTo;
 
     @JoinColumn(name = "message")
     private String message;
@@ -32,11 +36,21 @@ public class ChatBox {
     @TableField(fill = FieldFill.INSERT) //标明该字段，在什么时候需要被填充
     private Date time;
 
+//    @OneToMany(mappedBy = "walker", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<PreMeet> preMeetsAsWalker = new ArrayList<>();
+
     public ChatBox() {
     }
 
-    public ChatBox(long id, long roleFrom, long roleTo, String message, Date time) {
+    public ChatBox(long id, Role roleFrom, Role roleTo, String message, Date time) {
         this.id = id;
+        this.roleFrom = roleFrom;
+        this.roleTo = roleTo;
+        this.message = message;
+        this.time = time;
+    }
+
+    public ChatBox(Role roleFrom, Role roleTo, String message, Date time) {
         this.roleFrom = roleFrom;
         this.roleTo = roleTo;
         this.message = message;
@@ -51,19 +65,19 @@ public class ChatBox {
         this.id = id;
     }
 
-    public long getRoleFrom() {
+    public Role getRoleFrom() {
         return roleFrom;
     }
 
-    public void setRoleFrom(long roleFrom) {
+    public void setRoleFrom(Role roleFrom) {
         this.roleFrom = roleFrom;
     }
 
-    public long getRoleTo() {
+    public Role getRoleTo() {
         return roleTo;
     }
 
-    public void setRoleTo(long roleTo) {
+    public void setRoleTo(Role roleTo) {
         this.roleTo = roleTo;
     }
 

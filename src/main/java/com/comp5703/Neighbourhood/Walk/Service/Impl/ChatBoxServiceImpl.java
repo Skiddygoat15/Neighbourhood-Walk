@@ -17,7 +17,7 @@ public class ChatBoxServiceImpl implements ChatBoxService {
     @Override
     public ChatBox saveChatBox(ChatBox chatBox) {
         if (chatBox == null){
-            throw new IllegalArgumentException("ChatBox not found with.");
+            throw new IllegalArgumentException("ChatBox not found.");
         }
         return chatBoxRepository.save(chatBox);
     }
