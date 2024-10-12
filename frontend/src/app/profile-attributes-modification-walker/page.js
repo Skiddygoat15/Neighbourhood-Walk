@@ -128,8 +128,8 @@ export default function ProfileManagementSelectTimeWalker() {
 
 
   return (
-    <main className="min-h-screen bg-white">
-      <div className="max-w-md mx-auto p-4 space-y-8 overflow-y-auto" style={{maxHeight: 'calc(100vh - 55px)'}}>
+    <main className="min-h-screen bg-white mb-40">
+      <div className="w-full px-4 sm:px-6 lg:px-8" style={{maxHeight: 'calc(100vh - 55px)'}}>
         {/* Back Button */}
         <button onClick={() => router.back()} className="text-2xl p-2 focus:outline-none">
           &larr;

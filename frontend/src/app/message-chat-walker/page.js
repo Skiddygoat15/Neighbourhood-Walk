@@ -68,8 +68,12 @@ export default function Home() {
                         </div>
                     ))}
                 </div>
-                <ChatBar onSendMessage={handleSendMessage}/>
             </div>
+
+            <div className="p-4 border-t border-gray-300">
+                <ChatBar onSendMessage={handleSendMessage} />
+            </div>
+
 
             <div className="py-2">
                 <input type="text" placeholder="Do you want to pre-meet?" className="form-input w-full p-3 rounded-md"/>
