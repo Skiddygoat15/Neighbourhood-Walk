@@ -7,7 +7,10 @@ import com.comp5703.Neighbourhood.Walk.Entities.Role;
 import java.util.List;
 
 public interface ChatRoomService {
-    ChatRoom saveChatBox(ChatRoom chatRoom);
-    List<ChatBox> getChatBoxes(ChatRoom chatRoom);
-    void deleteChatRoom(ChatRoom chatRoom);
+//    ChatRoom saveChatBox(ChatRoom chatRoom);
+
+    ChatRoom saveChatBox(long userIdFrom, long userIdTo, String roleTypeFrom, String roleTypeTo);
+
+    List<ChatBox> getChatBoxes(String chatRoomId);
+    void deleteChatRoom(String chatRoomId);
 }

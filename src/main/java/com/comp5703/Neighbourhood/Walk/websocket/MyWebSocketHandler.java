@@ -59,7 +59,6 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
             case "init":
                 String userIdFrom = jsonObject.getString("userIdFrom");
                 String userIdTo = jsonObject.getString("userIdTo");
-                //创建roomId
                 String roomId = generateRoomId(userIdFrom, userIdTo);
 
                 //存储信息体
@@ -80,7 +79,7 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
                 roomSessions.putIfAbsent(roomId, new ArrayList<>());
                 roomSessions.get(roomId).add(session); // 确保会话被添加到列表中
 
-                System.out.println("WebSocket连接已建立，加入房间：" + roomId);
+                System.out.println("WebSocket has been built, join in the room with id：" + roomId);
                 session.sendMessage(new TextMessage("You have joined the room: " + roomId));
                 break;
 

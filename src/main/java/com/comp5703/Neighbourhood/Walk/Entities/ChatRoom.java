@@ -1,5 +1,7 @@
 package com.comp5703.Neighbourhood.Walk.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -18,16 +20,17 @@ public class ChatRoom {
     @JoinColumn(name = "ChatBoxes")
     private List<ChatBox> ChatBoxes = new ArrayList<>();
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "roleFrom")
+    @JsonIgnore
     private Role roleFrom;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "roleTo")
+    @JsonIgnore
     private Role roleTo;
 
-    public ChatRoom() {
-    }
+    public ChatRoom() {}
 
     public ChatRoom(String id, List<ChatBox> chatBoxes, Role roleFrom, Role roleTo) {
         this.id = id;
@@ -40,11 +43,6 @@ public class ChatRoom {
         ChatBoxes = chatBoxes;
         this.roleFrom = roleFrom;
         this.roleTo = roleTo;
-    }
-
-    public ChatRoom(String id, List<ChatBox> chatBoxes) {
-        this.id = id;
-        ChatBoxes = chatBoxes;
     }
 
     public String getId() {

@@ -2,13 +2,14 @@ package com.comp5703.Neighbourhood.Walk.Entities;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 
 @Entity
 @Table(name = "ChatBox")
@@ -21,10 +22,12 @@ public class ChatBox {
 
     @ManyToOne
     @JoinColumn(name = "roleFrom")
+    @JsonIgnore
     private Role roleFrom;
 
     @ManyToOne
     @JoinColumn(name = "roleTo")
+    @JsonIgnore
     private Role roleTo;
 
     @Column(name = "message")
@@ -56,12 +59,10 @@ public class ChatBox {
     public ChatBox() {
     }
 
-    public ChatBox(long id, Role roleFrom, Role roleTo, String message, Date time, ChatRoom chatRoom) {
-        this.id = id;
+    public ChatBox(Role roleFrom, Role roleTo, String message, ChatRoom chatRoom) {
         this.roleFrom = roleFrom;
         this.roleTo = roleTo;
         this.message = message;
-        this.time = time;
         this.chatRoom = chatRoom;
     }
 
@@ -70,6 +71,14 @@ public class ChatBox {
         this.roleTo = roleTo;
         this.message = message;
         this.time = time;
+        this.chatRoom = chatRoom;
+    }
+
+    public ChatBox(long id, Role roleFrom, Role roleTo, String message, ChatRoom chatRoom) {
+        this.id = id;
+        this.roleFrom = roleFrom;
+        this.roleTo = roleTo;
+        this.message = message;
         this.chatRoom = chatRoom;
     }
 

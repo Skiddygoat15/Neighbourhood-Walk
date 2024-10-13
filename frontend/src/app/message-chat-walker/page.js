@@ -82,7 +82,7 @@ export default function Home() {
             // setMessages((prev) => [...prev, event.data]);
             // const newMessage = JSON.parse(event.data); // 假设服务器发送的是JSON字符串
             // setMessages(prevMessages => [...prevMessages, newMessage]);
-            console.log("收到消息: ", event.data);
+            console.log("Get message from server: ", event.data);
             try {
                 const parsedData = JSON.parse(event.data);
                 setMessages(prev => [...prev, parsedData]);

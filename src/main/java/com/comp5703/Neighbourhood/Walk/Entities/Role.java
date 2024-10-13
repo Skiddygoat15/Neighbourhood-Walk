@@ -1,6 +1,7 @@
 package com.comp5703.Neighbourhood.Walk.Entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 @Entity
@@ -12,7 +13,7 @@ public class Role {
     @Column(name = "roleId")
     private long roleId;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "userId", referencedColumnName = "userId", nullable = false)
     @JsonIgnore  // 这个字段在 JSON 输出时会被忽略
     private Users userId;
