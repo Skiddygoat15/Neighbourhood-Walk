@@ -388,4 +388,12 @@ public class RequestServiceImpl implements RequestService {
         return requestRepository.getById(requestId);
     }
 
+    public long getTotalRequests() {
+        return requestRepository.count();
+    }
+
+    public long getRequestsByStatus(String status) {
+        return requestRepository.countByStatus(status);
+    }
+
 }

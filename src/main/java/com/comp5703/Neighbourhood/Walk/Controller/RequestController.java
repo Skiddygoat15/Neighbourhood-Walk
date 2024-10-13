@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -214,5 +215,21 @@ public class RequestController {
                     HttpStatus.INTERNAL_SERVER_ERROR
             );
         }
+    }
+
+    @GetMapping("/stats")
+    public ResponseEntity<Map<String, Object>> getRequestStats() {
+        Map<String, Object> stats = new HashMap<>();
+        long totalRequests = requestService.getTotalRequests();
+        long publishedRequests = requestService.getRequestsByStatus("Published");
+        long acceptedRequests = requestService.getRequestsByStatus("Accepted");
+        long finishedRequests = requestService.getRequestsByStatus("Finished");
+
+        stats.put("totalRequests", totalRequests);
+        stats.put("publishedRequests", publishedRequests);
+        stats.put("acceptedRequests", acceptedRequests);
+        stats.put("finishedRequests", finishedRequests);
+
+        return ResponseEntity.ok(stats);
     }
 }

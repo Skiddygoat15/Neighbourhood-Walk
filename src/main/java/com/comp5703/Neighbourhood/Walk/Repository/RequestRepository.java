@@ -36,4 +36,6 @@ public interface RequestRepository extends JpaRepository<Request, Integer>, JpaS
 
     @Override
     Optional<Request> findById(Integer integer);
+
+    long countByStatus(String status);
 }

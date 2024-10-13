@@ -30,5 +30,9 @@ public interface UsersService {
     List<Users> searchWalkers(Long parentId, String searchTerm, String gender, String distance, String rating);
     Optional<Users> getUserByEmailOrPhone(String emailOrPhone);
 
+    //admin user statistics
+    long getTotalUsers();
+    long getUsersByStatus(String status);
+
 }
 

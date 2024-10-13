@@ -216,7 +216,6 @@ export default function AdminContentManagement() {
                     ) : requests.length > 0 ? (
                         requests.map((request) => (
                             <div key={request.requestId} className="border rounded-lg p-4 flex items-center space-x-4">
-                                <div className="w-16 h-16 bg-gray-200 rounded-lg"></div>
                                 <div>
                                     <p><strong>Departure:</strong> {request.departure}</p>
                                     <p><strong>Destination:</strong> {request.destination}</p>
@@ -231,7 +230,7 @@ export default function AdminContentManagement() {
                                 </div>
                                 <button
                                     onClick={() => deleteRequest(request.requestId)}
-                                    className="py-2 px-4 bg-black text-white rounded-full text-sm font-semibold"
+                                    className="py-2 px-4 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-sm transition-all duration-150 w-24 text-center"
                                 >
                                     delete
                                 </button>

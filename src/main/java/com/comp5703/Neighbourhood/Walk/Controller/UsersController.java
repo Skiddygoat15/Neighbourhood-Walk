@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -134,6 +135,20 @@ public class UsersController {
         } catch (Exception e) {
             return new ResponseEntity<>("An error occurred while updating user profile.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping("/stats")
+    public ResponseEntity<Map<String, Object>> getUserStats() {
+        Map<String, Object> stats = new HashMap<>();
+        long totalUsers = usersService.getTotalUsers();
+        long activeUsers = usersService.getUsersByStatus("Active");
+        long offlineUsers = usersService.getUsersByStatus("Offline");
+
+        stats.put("totalUsers", totalUsers);
+        stats.put("activeUsers", activeUsers);
+        stats.put("offlineUsers", offlineUsers);
+
+        return ResponseEntity.ok(stats);
     }
 
 }

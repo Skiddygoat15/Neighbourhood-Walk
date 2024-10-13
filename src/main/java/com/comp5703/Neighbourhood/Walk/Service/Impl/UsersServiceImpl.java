@@ -407,4 +407,12 @@ public class UsersServiceImpl implements UsersService {
         return userOptional;
     }
 
+    public long getTotalUsers() {
+        return usersRepository.count();
+    }
+
+    public long getUsersByStatus(String status) {
+        return usersRepository.countByActivityStatus(status);
+    }
+
 }

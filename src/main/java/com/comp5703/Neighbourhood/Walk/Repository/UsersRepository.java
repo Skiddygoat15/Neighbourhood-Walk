@@ -16,4 +16,6 @@ public interface UsersRepository extends JpaRepository<Users, Long>, JpaSpecific
 
     @Override
     Users getById(Long aLong);
+
+    long countByActivityStatus(String status);
 }

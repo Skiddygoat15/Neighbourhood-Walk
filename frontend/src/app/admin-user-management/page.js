@@ -274,35 +274,47 @@ export default function AdminUserManagement() {
                         <p className="text-center">Loading...</p>
                     ) : users.length > 0 ? (
                         users.map((user) => (
-                            <div key={user.id} className="border rounded-lg p-4 flex items-center space-x-4">
-                                <div className="w-16 h-16 bg-gray-200 rounded-lg"></div>
-                                <div>
-                                    <p><strong>Name:</strong> {user.name}</p>
-                                    <p><strong>ID:</strong> {user.id}</p>
-                                    <p><strong>Role:</strong> {user.role}</p>
-                                    <p className={`font-bold ${getStatusStyle(user.activityStatus)}`}>
+                            <div key={user.id}
+                                 className="border rounded-lg p-4 flex items-center justify-between bg-white shadow-sm">
+                                {/* User Details */}
+                                <div className="flex-grow ml-4">
+                                    <p className="text-lg font-semibold text-gray-700">
+                                        <strong>Name:</strong> {user.name}</p>
+                                    <p className="text-sm text-gray-500"><strong>ID:</strong> {user.id}</p>
+                                    <p className="text-sm text-gray-500"><strong>Role:</strong> {user.role}</p>
+                                    <p className={`font-semibold ${getStatusStyle(user.activityStatus)} text-sm`}>
                                         <strong>Activity Status:</strong> {user.activityStatus}
                                     </p>
                                 </div>
+
                                 {/* Buttons */}
-                                <div className="space-x-2">
+                                <div className="flex flex-col space-y-2">
                                     {/* Activate Button */}
                                     <button
                                         onClick={() => handleActivate(user.id)}
-                                        className="py-2 px-4 bg-black text-white rounded-full text-sm font-semibold"> Activate
+                                        className="py-2 px-4 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold text-sm transition-all duration-150 w-24 text-center"
+                                    >
+                                        Activate
                                     </button>
+
                                     {/* Block Button */}
                                     <button
                                         onClick={() => handleBlock(user.id)}
-                                        className="py-2 px-4 bg-black text-white rounded-full text-sm font-semibold"> Block
+                                        className="py-2 px-4 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg font-semibold text-sm transition-all duration-150 w-24 text-center"
+                                    >
+                                        Block
                                     </button>
+
                                     {/* Delete Button */}
                                     <button
                                         onClick={() => handleDelete(user.id)}
-                                        className="py-2 px-4 bg-black text-white rounded-full text-sm font-semibold"> Delete
+                                        className="py-2 px-4 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-sm transition-all duration-150 w-24 text-center"
+                                    >
+                                        Delete
                                     </button>
                                 </div>
                             </div>
+
                         ))
                     ) : (
                         <p className="text-center">No Users found</p>
