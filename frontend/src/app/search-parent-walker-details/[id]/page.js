@@ -63,7 +63,7 @@ export default function SearchParentWalkerDetails({ params }) {
   };
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-white mb-20">
       <div className="max-w-md mx-auto p-4 space-y-8">
         <div>
           {/* Back Button */}

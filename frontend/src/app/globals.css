@@ -42,7 +42,81 @@ body {
 }
 
 .flex.flex-col {
-  max-height: 100vh; /* 确保不超过视口高度 */
-  overflow-y: auto; /* 启用滚动 */
+  max-height: 100vh;
+  overflow-y: auto;
+}
+
+
+.bg-morning {
+  background: linear-gradient(to bottom, #e0f7ff, #fff4d9);
+}
+
+
+.bg-afternoon {
+  background: linear-gradient(to bottom, #ffeb99, #ff8c42);
+}
+
+
+.bg-evening {
+  background: linear-gradient(to bottom, #4c1c6f, #120026);
+}
+
+.bg-midnight {
+  background: linear-gradient(to bottom,#0d1b2a, #000000);
+  position: relative;
+  overflow: hidden;
+}
+
+
+.shooting-star {
+  position: absolute;
+  top: 0;
+  width: 100px;
+  height: 2px;
+  background: linear-gradient(to right, rgba(255, 255, 255, 0), #ffffff);
+  opacity: 0;
+  transform: rotate(-45deg);
+  animation: shootingStarAnimation 10s ease-in-out infinite;
+}
+
+@keyframes shootingStarAnimation {
+  0% {
+    opacity: 1;
+    transform: translateX(-200px) translateY(-200px) rotate(45deg);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(600px) translateY(600px) rotate(45deg);
+  }
+}
+
+.cloud {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  animation: cloudMovement 60s linear infinite;
+  opacity: 0.6;
+}
+
+
+.cloud-part {
+  background: rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  position: absolute;
+}
+
+
+@keyframes cloudMovement {
+  0% {
+    transform: translateX(-100px);
+  }
+  100% {
+    transform: translateX(100vw);
+  }
 }
 
