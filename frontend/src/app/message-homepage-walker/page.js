@@ -3,26 +3,54 @@
 import Head from 'next/head'
 import ChattingStatus from "@/components/ChattingStatus";
 import {useRouter} from "next/navigation";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 
 export default function Home() {
-    const userId = localStorage.getItem('userId'); // 假设的用户ID，你需要根据你的应用逻辑来获取或定义这个值
-    // 假设的用户数据
-    console.info("userId="+userId)
-
-    const token = localStorage.getItem('token');
-    console.info("token="+token)
+    const [searchTerm, setSearchTerm] = useState(''); // 用来存储搜索栏输入的值
+    const [user, setUser] = useState(null);  // 用于存储从后端返回的用户信息
+    const [error, setError] = useState(null);  // 用于存储错误信息
 
     const users = ['Emma', 'Ava', 'Sophia', 'Amelia'];
     const path = '../message-chat-walker'
     const messages = [
         { name: 'Abigail', text: 'Accept', time: '23 min', parentId: '1'},
-        { name: 'Elizabeth', text: 'Ok, see you then.', time: '27 min', parentId: '2'},
-        { name: 'Penelope', text: 'You: Hey! What\'s up, long time.', time: '33 min', parentId: '3'},
-        { name: 'Chloe', text: 'You: Hello how are you?', time: '50 min', parentId: '4'}
+        // { name: 'Elizabeth', text: 'Ok, see you then.', time: '27 min', parentId: '2'},
+        // { name: 'Penelope', text: 'You: Hey! What\'s up, long time.', time: '33 min', parentId: '3'},
+        // { name: 'Chloe', text: 'You: Hello how are you?', time: '50 min', parentId: '4'}
     ];
 
     const router = useRouter();  // 使用 useRouter
+
+    // Fetch请求后端API获取用户信息,并将用户信息保存至user
+    const fetchUserById = async () => {
+        try {
+            const response = await fetch(`http://localhost:8080/Users/getUserById/${searchTerm}`,{
+                method: 'GET',
+                headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')},
+                mode: 'cors',
+                cache: 'default'
+            });
+            if (!response.ok) {
+                throw new Error("User not found");
+            }
+            const userData = await response.json();
+            setUser(userData);  // 设置用户数据
+            setError(null);  // 清除错误
+        } catch (err) {
+            setError(err.message);  // 如果出错，设置错误信息
+            setUser(null);  // 清除用户数据
+        }
+    };
+
+    // useEffect(() => {
+    //     const filtered = userList.filter(user =>
+    //         user.userId.includes(searchTerm) || user.username.toLowerCase().includes(searchTerm.toLowerCase())
+    //     );
+    //     setFilteredUsers(filtered);
+    // }, [searchTerm]); // 每次 searchTerm 变化时，重新计算 filteredUsers
+
+    // ！！！！！！！！接下来要实现的是：后端创建chatbar（记录主用户的地方是否显示副用户），
+    // 创建使用查找到的user信息生成chatbar，并显示在主用户的homepage中，并且为chatbar设置一个关闭
 
     return (
         <div style={{padding: 20, backgroundColor: '#fff', minHeight: '100vh'}}>

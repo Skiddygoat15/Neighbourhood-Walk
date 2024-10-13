@@ -4,8 +4,7 @@ import ChatBar from '../../components/ChatBar';
 import {useEffect, useRef, useState} from "react";
 import {useRouter} from "next/navigation";
 import {format} from "date-fns";
-
-
+//！！！！！！！！接下来要实现的是：通过主user和他的身份，与副user和他的身份，查找他们之间是否有chatroom（聊天历史记录），如果有，则家
 export default function Home() {
 
     const router = useRouter();
