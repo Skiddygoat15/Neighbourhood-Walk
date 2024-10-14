@@ -133,7 +133,6 @@ export default function HomeParent() {
 
   return (
       <BackgroundLayout>
-
         <div className="mt-4 text-center">
           <h1 className={`text-lg font-semibold ${textColor}`}>
             {greeting}
@@ -206,7 +205,6 @@ export default function HomeParent() {
 
           </div>
         </div>
-
       </BackgroundLayout>
   )
       ;

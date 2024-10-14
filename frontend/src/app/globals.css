@@ -64,8 +64,7 @@ body {
 
 
 .bg-midnight {
-  background: linear-gradient(to bottom,#0d1b2a, #000000);
-  position: relative;
+  background: linear-gradient(to bottom, #0c0b1d, #2b1e36, #6e2e6f, #f79ae1);
   overflow: hidden;
 }
 
@@ -132,5 +131,45 @@ body {
   border-radius: 50%;
   box-shadow: 0 0 20px 15px rgba(255, 255, 224, 0.6);
 }
+
+.coastline {
+  position: absolute;
+  bottom: -50%;
+  width: 200%;
+  height: 70%;
+  background: linear-gradient(to top, rgba(255, 255, 255, 0.1),#f79ae1);
+  border-top-left-radius: 50% 20%;
+  border-top-right-radius: 50% 20%;
+  transform: rotate(-10deg);
+  filter: blur(50px);
+}
+
+.star {
+  position: absolute;
+  background-color: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.8), 0 0 12px rgba(255, 255, 255, 0.6);
+  animation: twinkle 3s infinite alternate;
+}
+
+@keyframes twinkle {
+  0% { opacity: 0.6; transform: scale(0.8); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.sun {
+  position: absolute;
+  top: 3%;
+  left: 10%;
+  width: 80px;
+  height: 80px;
+  background: radial-gradient(circle at center, #fff7cc, #ffec99, #ffe066);
+  border-radius: 50%;
+  box-shadow: 0 0 50px rgba(255, 154, 60, 0.1), 0 0 80px rgba(255, 107, 107, 0.2), 0 0 120px rgba(255, 107, 107, 0.2);
+}
+
+
+
+
 
 

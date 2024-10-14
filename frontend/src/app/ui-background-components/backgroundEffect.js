@@ -1,6 +1,20 @@
 import React, { useEffect, useState } from 'react';
 
 export default function BackgroundEffect({ backgroundTheme }) {
+    const numStars = 50;
+    const stars = Array.from({ length: numStars }).map((_, index) => (
+        <div
+            key={index}
+            className="star"
+            style={{
+                top: `${Math.random() * 100}%`,
+                left: `${Math.random() * 100}%`,
+                width: `${Math.random() * 3 + 2}px`,
+                height: `${Math.random() * 3 + 2}px`,
+                animationDelay: `${Math.random() * 3}s`
+            }}
+        />
+    ));
     const shootingStars = Array.from({ length: 10 }).map((_, index) => (
         <div
             key={index}
@@ -42,7 +56,16 @@ export default function BackgroundEffect({ backgroundTheme }) {
         }`}>
             {(backgroundTheme === 'midnight' || backgroundTheme === 'evening') && shootingStars}
             {(backgroundTheme === 'morning' || backgroundTheme === 'afternoon') && clouds}
+            {(backgroundTheme === 'midnight' || backgroundTheme === 'evening') && stars}
+            {backgroundTheme === 'midnight' && (
+                <>
+                    <div className="coastline"></div>
+                </>
+            )}
             {backgroundTheme === 'evening' && <div className="moon"></div>}
+            {backgroundTheme === 'afternoon' && (
+                <div className="sun"></div>
+            )}
         </div>
     );
 }
