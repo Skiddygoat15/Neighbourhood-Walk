@@ -12,6 +12,8 @@ export default function ProfileManagementAccountInformation() {
   };
 
   const [userProfile, setUserProfile] = useState(null); // 用来存储API返回的数据
+  const [textColor, setTextColor] = useState('text-black');
+
   useEffect(() => {
     // 从localStorage获取userId和token
     const userId = localStorage.getItem('userId');
@@ -45,13 +47,24 @@ export default function ProfileManagementAccountInformation() {
     }
   }, []);
 
+  useEffect(() => {
+    const currentHour = new Date().getHours();
+    if (currentHour >= 6 && currentHour < 17) {
+      setTextColor('text-black');
+    } else {
+      setTextColor('text-white');
+    }
+  }, []);
+
 
   // 如果 userProfile 还没有加载，显示 loading 占位符
   if (!userProfile) {
     return <main className="min-h-screen bg-white">
       <div className="max-w-md mx-auto p-4 space-y-8">
         {/* Title */}
-        <h1 className="text-2xl font-bold text-center">Account Information</h1>
+        <h1 className={`text-2xl font-bold ${textColor}`}>
+          Account Information
+        </h1>
 
         {/* User Info Section */}
         <div className="flex items-center justify-between">
@@ -124,12 +137,14 @@ export default function ProfileManagementAccountInformation() {
       <main className="min-h-screen">
         <div className="w-full px-4 sm:px-6 lg:px-8 space-y-8" style={{ height: 'calc(100vh - 55px)', overflowY: 'auto' }}>
           {/* Title */}
-          <h1 className="text-2xl font-bold text-center mt-8">Account Information</h1>
+          <h1 className={`text-2xl font-bold text-center mt-6 ${textColor}`}>
+            Account Information
+          </h1>
 
           {/* User Info Section */}
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-lg font-semibold">{userProfile.name} {userProfile.surname}</h2>
+            <h2 className="text-lg font-semibold">{userProfile.name} {userProfile.surname}</h2>
             </div>
             <div className="w-24 h-24 bg-gray-300 rounded-full flex items-center justify-center">
               <span>Image</span>

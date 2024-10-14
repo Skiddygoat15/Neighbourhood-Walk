@@ -37,6 +37,8 @@ export default function HomeParent() {
   const [greeting, setGreeting] = useState('');
   const [showRedDot, setShowRedDot] = useState(false);
   const [avgUserRating, setAvgUserRating] = useState(null); // 用于存储API返回的avgUserRating值
+  const [backgroundTheme, setBackgroundTheme] = useState('morning');
+  const [textColor, setTextColor] = useState('text-black');
 
 
 
@@ -54,20 +56,24 @@ export default function HomeParent() {
       setGreeting(storedPreferredName && storedPreferredName !== 'null'
           ? `Good morning, ${storedPreferredName}!`
           : `Good morning, ${storedName}!`);
+      setTextColor('text-black');
     } else if (currentHour >= 12 && currentHour < 17) {
 
       setGreeting(storedPreferredName && storedPreferredName !== 'null'
           ? `Good afternoon, ${storedPreferredName}!`
           : `Good afternoon, ${storedName}!`);
+      setTextColor('text-black');
     } else if (currentHour >= 17 && currentHour < 24) {
 
       setGreeting(storedPreferredName && storedPreferredName !== 'null'
           ? `Good evening, ${storedPreferredName}!`
           : `Good evening, ${storedName}!`);
+      setTextColor('text-white');
     } else {
       setGreeting(storedPreferredName && storedPreferredName !== 'null'
           ? `Hi ${storedPreferredName}, It's already midnight!`
           : `Hi ${storedName}, It's already midnight!`);
+      setTextColor('text-white');
     }
   }, []);
 
@@ -129,10 +135,10 @@ export default function HomeParent() {
       <BackgroundLayout>
 
         <div className="mt-4 text-center">
-          <h1 className="text-lg font-semibold">
+          <h1 className={`text-lg font-semibold ${textColor}`}>
             {greeting}
           </h1>
-          <p className="text-base font-normal text-opacity-60">
+          <p className={`text-base font-semibold ${textColor} text-opacity-60`}>
             You are logged in as a parent
           </p>
         </div>
@@ -140,7 +146,7 @@ export default function HomeParent() {
         {/* Stars and History */}
         <div className="mt-8 w-full px-6">
           <div className="grid grid-cols-2 gap-4">
-            <div className="bg-white border rounded-lg p-4 text-center">
+          <div className="bg-white border rounded-lg p-4 text-center">
               <p className="font-semibold">Stars</p>
               <p className="text-xl mr-3">
                 ⭐ {avgUserRating ? `${avgUserRating}/5` : '-/5'}

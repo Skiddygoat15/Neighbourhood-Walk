@@ -36,6 +36,7 @@ export default function HomeWalker() {
   const [greeting, setGreeting] = useState('');
   const [avgUserRating, setAvgUserRating] = useState(null); // 用于存储API返回的avgUserRating值
   const [backgroundTheme, setBackgroundTheme] = useState('morning');
+  const [textColor, setTextColor] = useState('text-black');
 
 
   useEffect(() => {
@@ -54,20 +55,24 @@ export default function HomeWalker() {
       setGreeting(storedPreferredName && storedPreferredName !== 'null'
           ? `Good morning, ${storedPreferredName}!`
           : `Good morning, ${storedName}!`);
+      setTextColor('text-black');
     } else if (currentHour >= 12 && currentHour < 17) {
 
       setGreeting(storedPreferredName && storedPreferredName !== 'null'
           ? `Good afternoon, ${storedPreferredName}!`
           : `Good afternoon, ${storedName}!`);
+      setTextColor('text-black');
     } else if (currentHour >= 17 && currentHour < 24) {
 
       setGreeting(storedPreferredName && storedPreferredName !== 'null'
           ? `Good evening, ${storedPreferredName}!`
           : `Good evening, ${storedName}!`);
+      setTextColor('text-white');
     } else {
       setGreeting(storedPreferredName && storedPreferredName !== 'null'
           ? `Hi ${storedPreferredName}, It's already midnight!`
           : `Hi ${storedName}, It's already midnight!`);
+      setTextColor('text-white');
     }
   }, []);
 
@@ -134,12 +139,12 @@ export default function HomeWalker() {
   return (
       <BackgroundLayout>
         <div className="mt-4 text-center">
-          <h1 className="text-lg font-semibold">
+          <h1 className={`text-lg font-semibold ${textColor}`}>
             {greeting}
           </h1>
-          <p className="text-base font-normal text-opacity-60">
-
-            You are logged in as a walker</p>
+          <p className={`text-base font-semibold ${textColor} text-opacity-60`}>
+            You are logged in as a walker
+          </p>
         </div>
 
         <div className="mt-8 w-full px-6">

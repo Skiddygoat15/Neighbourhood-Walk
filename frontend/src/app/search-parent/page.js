@@ -13,6 +13,7 @@ export default function SearchParent() {
   const [searchTerm, setSearchTerm] = useState('');
   const [walkers, setWalkers] = useState([]);  // store walkers list
   const [error, setError] = useState(null);    // store error message
+  const [textColor, setTextColor] = useState('text-black');
 
   // 第一个参数：() => {} 是一个回调函数，称为副作用函数。当 React 渲染组件时，React 会执行这个函数。
   // 第二个参数：[依赖项] 是一个依赖数组，当这个数组中的变量发生变化时，useEffect 会重新执行。
@@ -21,6 +22,16 @@ export default function SearchParent() {
       handleSearch();  // 如果搜索框清空，执行搜索所有walkers
     }
   }, [searchTerm, gender, distance, rating]);
+
+  useEffect(() => {
+    // 设置字体颜色基于当前时间
+    const currentHour = new Date().getHours();
+    if (currentHour >= 6 && currentHour < 17) {
+      setTextColor('text-black');  // 上午和下午使用黑色字体
+    } else {
+      setTextColor('text-white');  // 晚上和午夜使用白色字体
+    }
+  }, []);
 
   const handleClear = () => {
     setSearchTerm('');
@@ -91,11 +102,13 @@ export default function SearchParent() {
     router.push(`/search-parent-walker-details/${id}`);  // 跳转到 walker 详情页，并携带 walker 的 id
   };
 
+
+
   return (
       <BackgroundLayout>
         <div className="bg-opacity-75 p-4 rounded-lg shadow-md w-full mx-auto mb-20">
 
-          <h1 className="text-2xl font-semibold mb-4 lg:text-3xl">Search</h1>
+          <h1 className={`text-2xl font-semibold mb-4 lg:text-3xl ${textColor}`}>Search</h1>
 
           <div className="relative mb-4">
             <div className="flex items-center space-x-2 mb-2">

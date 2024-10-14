@@ -53,13 +53,15 @@ body {
 
 
 .bg-afternoon {
-  background: linear-gradient(to bottom, #ffeb99, #ff8c42);
+  background: linear-gradient(to bottom, #FFB6C1, #FFD700, #FF8C00, #DA70D6);
 }
 
 
 .bg-evening {
-  background: linear-gradient(to bottom, #4c1c6f, #120026);
+  background: linear-gradient(to bottom, #001C4A, #023E8A, #0077B6, #00B4D8);
+  overflow: hidden;
 }
+
 
 .bg-midnight {
   background: linear-gradient(to bottom,#0d1b2a, #000000);
@@ -119,4 +121,16 @@ body {
     transform: translateX(100vw);
   }
 }
+
+.moon {
+  position: absolute;
+  top: 4%;
+  left: 15%;
+  width: 60px;
+  height: 60px;
+  background-color: #FFF4E1;
+  border-radius: 50%;
+  box-shadow: 0 0 20px 15px rgba(255, 255, 224, 0.6);
+}
+
 

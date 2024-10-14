@@ -19,7 +19,7 @@ export default function BackgroundEffect({ backgroundTheme }) {
             key={index}
             className="cloud"
             style={{
-                top: `${Math.random() * 20}%`,
+                top: `${Math.random() * 10}%`,
                 left: `${Math.random() * 100}vw`,
                 animationDuration: `${20 + Math.random() * 10}s`,
                 animationDelay: `${Math.random() * 10}s`
@@ -33,6 +33,7 @@ export default function BackgroundEffect({ backgroundTheme }) {
         </div>
     ));
 
+
     return (
         <div className={`min-h-screen w-full ${
             backgroundTheme === 'morning' ? 'bg-morning' :
@@ -41,6 +42,7 @@ export default function BackgroundEffect({ backgroundTheme }) {
         }`}>
             {(backgroundTheme === 'midnight' || backgroundTheme === 'evening') && shootingStars}
             {(backgroundTheme === 'morning' || backgroundTheme === 'afternoon') && clouds}
+            {backgroundTheme === 'evening' && <div className="moon"></div>}
         </div>
     );
 }
