@@ -289,8 +289,10 @@ import StatusCard from '../../components/StatusCard';
 import StatusCard_profile from '../../components/StatusCard_profile';
 import Header from "../../components/Header";
 import { format } from 'date-fns';
+import BackgroundLayout from '../ui-background-components/BackgroundLayout';
 
 export default function Home() {
+    const [textColor, setTextColor] = useState('text-black');
     const [requestIds, setrequestIds] = useState([]); // 初始化为空数组
     const [Notifications,setNotifications] = useState([]);
     const [Notifications_Profile, setNotifications_Profile] = useState([]);
@@ -328,7 +330,20 @@ export default function Home() {
                 console.error('Error fetching data:', error);});
     },[parentId, refreshKey]);
 
-    // useEffect(() => {
+    useEffect(() => {
+        const currentTime = new Date();
+        const currentHour = currentTime.getHours();
+        if (currentHour >= 6 && currentHour < 12) {
+            setTextColor('text-black');
+        } else if (currentHour >= 12 && currentHour < 17) {
+            setTextColor('text-black');
+        } else {
+            setTextColor('text-white');
+        }
+    });
+
+
+        // useEffect(() => {
     //     console.log("Current requestIds:", requestIds); // 每次 Notifications 更新时输出当前值
     // }, [requestIds, refreshKey]); // 监控 Notifications 变化
 
@@ -479,6 +494,7 @@ export default function Home() {
     };
 
     return (
+        <BackgroundLayout>
         <div className="flex flex-col h-screen bg-gray-100 p-4" style={{ overflowY: 'auto' }}>
             <Header title="Notification-parent" navigateTo={"/home-parent"} />
 
@@ -540,6 +556,7 @@ export default function Home() {
                 );
             })}
         </div>
+            </BackgroundLayout>
     );
 
 

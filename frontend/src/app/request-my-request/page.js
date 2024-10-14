@@ -11,6 +11,7 @@ export default function MyRequest() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
   const [requestList, setRequestList] = useState([]);
+  const [textColor, setTextColor] = useState('text-black');
   // {
   //   departure: "Darling Harbour",
   //       destination: "Sydney Opera House",
@@ -41,6 +42,17 @@ export default function MyRequest() {
         getRequestsList(); // 在 parentId 更新后调用 API
       }
     }, [parentId]);
+
+  useEffect(() => {
+    // 设置字体颜色基于当前时间
+    const currentHour = new Date().getHours();
+    if (currentHour >= 6 && currentHour < 17) {
+      setTextColor('text-black');  // 上午和下午使用黑色字体
+    } else {
+      setTextColor('text-white');  // 晚上和午夜使用白色字体
+    }
+  }, []);
+
 
   function getRequestsList() {
     const getRequestsListAPI = `http://127.0.0.1:8080/requests/getRequestsByParentId/${parentId}`
@@ -122,7 +134,7 @@ export default function MyRequest() {
 
           {/* Title and Create Button */}
           <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold sm:text-3xl lg:text-4xl">My request</h1>
+            <h1 className={`text-2xl font-bold sm:text-3xl lg:text-4xl ${textColor}`}>My request</h1>
             <button
                 onClick={() => router.push('/request-create')}
                 className="py-2 px-4 bg-black text-white rounded-full font-semibold sm:py-3 sm:px-5 lg:py-4 lg:px-6"
