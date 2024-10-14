@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import BackgroundLayout from '../ui-background-components/BackgroundLayout';
 
 const RequestStatus = () => {
     const router = useRouter();
@@ -97,7 +98,8 @@ const RequestStatus = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-start">
+        <BackgroundLayout>
+        <div className="min-h-screen flex flex-col items-center justify-start">
             {/* Header */}
             <div className="bg-white w-full py-4 px-6 shadow flex items-center">
                 <button onClick={() => router.back()} className="text-xl">
@@ -132,6 +134,7 @@ const RequestStatus = () => {
                 <p>You haven't apply a walk Request</p>
             )}
         </div>
+            </BackgroundLayout>
     );
 };
 

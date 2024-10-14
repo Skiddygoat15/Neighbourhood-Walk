@@ -3,6 +3,7 @@
 
 import {useState, useEffect} from 'react';
 import {useRouter} from "next/navigation";
+import BackgroundLayout from '../ui-background-components/BackgroundLayout';
 
 export default function SearchWalker() {
     const router = useRouter();
@@ -117,13 +118,13 @@ export default function SearchWalker() {
     };
 
     return (
-        <div className="min-h-screen bg-gray-100 pb-20">
-            <div className="bg-white p-4 rounded-lg shadow-md w-full mx-auto">
+        <BackgroundLayout>
+            <div className="bg-opacity-75 p-4 rounded-lg shadow-md w-full mx-auto mb-20">
 
-                <h1 className="text-2xl font-semibold mb-4">Search</h1>
+                <h1 className="text-2xl font-semibold mb-4 lg:text-3xl">Search</h1>
 
                 <div className="relative mb-4">
-                    <div className="flex items-center space-x-2 mb-2">
+                <div className="flex items-center space-x-2 mb-2">
 
                         <div className="relative w-full">
                             {/* 输入框，输入搜索 request 的关键字 */}
@@ -189,7 +190,7 @@ export default function SearchWalker() {
                     {requests.length > 0 ? (
                         requests.map((request) => (
                             <div key={request.requestId}
-                                 className="border rounded-lg p-4 flex items-center space-x-4 cursor-pointer"
+                                 className="border rounded-lg p-4 flex items-center space-x-4 cursor-pointer bg-white"
                                  onClick={() => handleRequestClick(request.requestId)}>
 
                                 <div className="w-16 h-16 bg-gray-200 rounded-lg"></div>
@@ -215,6 +216,6 @@ export default function SearchWalker() {
                 </div>
 
             </div>
-        </div>
+        </BackgroundLayout>
     );
 }

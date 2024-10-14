@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import BackgroundLayout from '../ui-background-components/BackgroundLayout';
 
 export default function ProfileManagementAccountInformationWalker() {
   const router = useRouter();
@@ -173,7 +174,8 @@ export default function ProfileManagementAccountInformationWalker() {
 
 
   return (
-      <main className="min-h-screen bg-white mb-10">
+      <BackgroundLayout>
+        <main className="min-h-screen mb-10">
         <div className="w-full px-4 sm:px-6 lg:px-8 space-y-8" style={{ height: 'calc(100vh - 55px)', overflowY: 'auto' }}>
           {/* Title */}
           <h1 className="text-2xl font-bold text-center mt-6">Account Information</h1>
@@ -189,7 +191,8 @@ export default function ProfileManagementAccountInformationWalker() {
           </div>
 
           {/* Details List */}
-          <div className="space-y-4">
+          <div className="bg-white p-4 rounded-lg shadow-lg w-full space-y-4"
+               style={{margin: '2px', padding: '2px'}}>
             <div className="flex justify-between items-center border-b py-2">
               <span>Preferred Name</span>
               <div className="flex items-center">
@@ -235,23 +238,23 @@ export default function ProfileManagementAccountInformationWalker() {
             </div>
 
             <div className="flex justify-between items-center border-b py-2">
-            <span>Available Dates</span>
-            <div className="flex items-center">
-              <span className="text-sm opacity-70">{startDate} - {endDate}</span>
-            </div>
+              <span>Available Dates</span>
+              <div className="flex items-center">
+                <span className="text-sm opacity-70">{startDate} - {endDate}</span>
+              </div>
             </div>
 
             <div className="flex justify-between items-center border-b py-2">
-            <span>Skills (Multi)</span>
-            <div className="flex items-center">
-              <span>{skill}</span>
+              <span>Skills (Multi)</span>
+              <div className="flex items-center">
+                <span>{skill}</span>
+              </div>
             </div>
           </div>
-          </div>
 
-        {/* Change Button */}
-        <button
-            onClick={() => handleNavigation('/profile-attributes-modification-walker')}
+          {/* Change Button */}
+          <button
+              onClick={() => handleNavigation('/profile-attributes-modification-walker')}
             className="w-full py-3 text-center bg-black text-white rounded-full font-semibold hover:bg-gray-800 mt-8"
         >
           Change Profile
@@ -259,5 +262,6 @@ export default function ProfileManagementAccountInformationWalker() {
       </div>
 
     </main>
+        </BackgroundLayout>
   );
 }

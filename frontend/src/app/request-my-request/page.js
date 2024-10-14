@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import {useEffect, useState} from "react";
 import moment from "moment/moment";
+import BackgroundLayout from '../ui-background-components/BackgroundLayout';
 
 export default function MyRequest() {
   const moment = require('moment');
@@ -111,8 +112,9 @@ export default function MyRequest() {
 
 
   return (
-      <main className="min-h-screen bg-white pb-20">
-        <div className="max-w-md mx-auto p-4 space-y-8 sm:max-w-lg md:max-w-xl lg:max-w-2xl">
+      <BackgroundLayout>
+      <main className="min-h-screen pb-20">
+        <div className="max-w-md mx-auto p-4  space-y-8 sm:max-w-lg md:max-w-xl lg:max-w-2xl">
           {/* Back Button */}
           <button onClick={() => router.back()} className="text-2xl p-2 focus:outline-none">
             &larr;
@@ -137,7 +139,7 @@ export default function MyRequest() {
           ) : (
               <div className="space-y-4">
                 {requestList.map((request, index) => (
-                    <div key={index} className="border p-4 rounded-lg space-y-2">
+                    <div key={index} className="border p-4 bg-white rounded-lg space-y-2">
                       <div className="flex justify-between items-center">
                         <h2 className="text-lg font-bold sm:text-xl lg:text-2xl">Trip request</h2>
                         <button
@@ -184,5 +186,6 @@ export default function MyRequest() {
           )}
         </div>
       </main>
+      </BackgroundLayout>
   );
 }

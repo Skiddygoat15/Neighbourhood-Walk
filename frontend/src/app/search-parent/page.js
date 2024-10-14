@@ -2,6 +2,7 @@
 "use client";
 import { useState, useEffect } from 'react';
 import { useRouter } from "next/navigation";
+import BackgroundLayout from '../ui-background-components/BackgroundLayout';
 
 export default function SearchParent() {
   const router = useRouter();
@@ -91,8 +92,8 @@ export default function SearchParent() {
   };
 
   return (
-      <div className="min-h-screen bg-gray-100 pb-20">
-        <div className="bg-white p-4 rounded-lg shadow-md w-full mx-auto">
+      <BackgroundLayout>
+        <div className="bg-opacity-75 p-4 rounded-lg shadow-md w-full mx-auto mb-20">
 
           <h1 className="text-2xl font-semibold mb-4 lg:text-3xl">Search</h1>
 
@@ -198,7 +199,7 @@ export default function SearchParent() {
             {walkers.length > 0 ? (
                 walkers.map((walker) => (
                     <div key={walker.id}
-                         className="border rounded-lg p-4 flex items-center space-x-4 cursor-pointer"
+                         className="border rounded-lg p-4 flex items-center space-x-4 cursor-pointer bg-white"
                          onClick={() => handleWalkerClick(walker.id)}>
 
                       <div className="w-16 h-16 bg-gray-200 rounded-lg"></div>
@@ -217,6 +218,6 @@ export default function SearchParent() {
           </div>
 
         </div>
-      </div>
+      </BackgroundLayout>
   );
 }

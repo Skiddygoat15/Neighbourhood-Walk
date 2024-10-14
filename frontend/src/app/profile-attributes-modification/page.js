@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import BackgroundLayout from '../ui-background-components/BackgroundLayout';
 
 export default function ProfileAttributesModification() {
   const router = useRouter();
@@ -107,7 +108,8 @@ export default function ProfileAttributesModification() {
   };
 
   return (
-    <main className="min-h-screen bg-white">
+      <BackgroundLayout>
+    <main className="min-h-screen">
       <div className="w-full px-4 sm:px-6 lg:px-8" style={{height: 'calc(100vh - 55px)', overflowY: 'auto'}}>
         {/* Back Button */}
         <button onClick={() => router.back()} className="text-2xl p-2 focus:outline-none">
@@ -196,5 +198,6 @@ export default function ProfileAttributesModification() {
           </button>
         </div>
     </main>
+        </BackgroundLayout>
 );
 }
