@@ -2,6 +2,7 @@
 
 import React, {useEffect, useState} from 'react';
 import { useRouter } from 'next/navigation';
+import BackgroundLayout from '../ui-background-components/BackgroundLayout';
 
 export default function ProfileManagementSelectTimeWalker() {
   const router = useRouter();
@@ -128,8 +129,9 @@ export default function ProfileManagementSelectTimeWalker() {
 
 
   return (
-    <main className="min-h-screen bg-white mb-40">
-      <div className="w-full px-4 sm:px-6 lg:px-8" style={{maxHeight: 'calc(100vh - 55px)'}}>
+      <BackgroundLayout>
+    <main className="min-h-screen mb-10">
+      <div className="w-full px-4 sm:px-6 lg:px-8" style={{height: 'calc(100vh - 55px)', overflowY: 'auto'}}>
         {/* Back Button */}
         <button onClick={() => router.back()} className="text-2xl p-2 focus:outline-none">
           &larr;
@@ -140,7 +142,7 @@ export default function ProfileManagementSelectTimeWalker() {
         {error && <p className="text-red-500 text-center">{error}</p>}
 
         {/* Form Fields */}
-        <div className="space-y-4">
+        <div className="space-y-3">
 
           {/* Phone Number */}
           <div>
@@ -247,12 +249,13 @@ export default function ProfileManagementSelectTimeWalker() {
         {/* Update Button */}
         <button
             onClick={handleUpdate}
-            className="w-full py-3 text-center bg-black text-white rounded-full font-semibold hover:bg-gray-800 mt-8"
+            className="w-full py-3 text-center bg-black text-white rounded-full font-semibold hover:bg-gray-800 mt-5"
         >
           Update
         </button>
       </div>
 
     </main>
+      </BackgroundLayout>
   );
 }

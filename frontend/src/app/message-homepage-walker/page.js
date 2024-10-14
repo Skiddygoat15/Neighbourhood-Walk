@@ -4,6 +4,7 @@ import Head from 'next/head'
 import ChattingStatus from "@/components/ChattingStatus";
 import {useRouter} from "next/navigation";
 import {useEffect} from "react";
+import BackgroundLayout from '../ui-background-components/BackgroundLayout';
 
 export default function Home() {
     const userId = localStorage.getItem('userId'); // 假设的用户ID，你需要根据你的应用逻辑来获取或定义这个值

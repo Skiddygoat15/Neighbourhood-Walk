@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import BackgroundLayout from '../ui-background-components/BackgroundLayout';
 
 export default function HomeWalker() {
   const router = useRouter();
@@ -49,68 +50,27 @@ export default function HomeWalker() {
     const currentHour = currentTime.getHours();
 
     if (currentHour >= 6 && currentHour < 12) {
-      setBackgroundTheme('morning');
-      setGreeting(
-          storedPreferredName && storedPreferredName !== 'null'
-              ? `Good morning, ${storedPreferredName}!`
-              : `Good morning, ${storedName}!`
-      );
+
+      setGreeting(storedPreferredName && storedPreferredName !== 'null'
+          ? `Good morning, ${storedPreferredName}!`
+          : `Good morning, ${storedName}!`);
     } else if (currentHour >= 12 && currentHour < 17) {
-      setBackgroundTheme('afternoon');
-      setGreeting(
-          storedPreferredName && storedPreferredName !== 'null'
-              ? `Good afternoon, ${storedPreferredName}!`
-              : `Good afternoon, ${storedName}!`
-      );
+
+      setGreeting(storedPreferredName && storedPreferredName !== 'null'
+          ? `Good afternoon, ${storedPreferredName}!`
+          : `Good afternoon, ${storedName}!`);
     } else if (currentHour >= 17 && currentHour < 24) {
-      setBackgroundTheme('evening');
-      setGreeting(
-          storedPreferredName && storedPreferredName !== 'null'
-              ? `Good evening, ${storedPreferredName}!`
-              : `Good evening, ${storedName}!`
-      );
+
+      setGreeting(storedPreferredName && storedPreferredName !== 'null'
+          ? `Good evening, ${storedPreferredName}!`
+          : `Good evening, ${storedName}!`);
     } else {
-      setBackgroundTheme('midnight');
-      setGreeting(
-          storedPreferredName && storedPreferredName !== 'null'
-              ? `Hi ${storedPreferredName}, It's already midnight!`
-              : `Hi ${storedName}, It's already midnight!`
-      );
+      setGreeting(storedPreferredName && storedPreferredName !== 'null'
+          ? `Hi ${storedPreferredName}, It's already midnight!`
+          : `Hi ${storedName}, It's already midnight!`);
     }
   }, []);
 
-  const shootingStars = Array.from({ length: 15 }).map((_, index) => (
-      <div
-          key={index}
-          className="shooting-star"
-          style={{
-            top: `${Math.random() * 100}%`,
-            left: `${Math.random() * 100}%`,
-            animationDelay: `${Math.random() * 5}s`,
-            animationDuration: `${5 + Math.random() * 10}s`,
-          }}
-      />
-  ));
-
-  const clouds = Array.from({ length: 3 }).map((_, index) => (
-      <div
-          key={index}
-          className="cloud"
-          style={{
-            top: `${Math.random() * 5}%`,
-            left: `${Math.random() * 100}vw`,
-            animationDuration: `${20 + Math.random() * 15}s`,
-            animationDelay: `${Math.random() * 3}s`
-          }}
-      >
-
-        <div className="cloud-part" style={{ width: '60px', height: '60px', top: '10px', left: '10px' }} />
-        <div className="cloud-part" style={{ width: '90px', height: '90px', top: '0', left: '40px' }} />
-        <div className="cloud-part" style={{ width: '70px', height: '70px', top: '20px', left: '80px' }} />
-        <div className="cloud-part" style={{ width: '50px', height: '50px', top: '40px', left: '30px' }} />
-        <div className="cloud-part" style={{ width: '60px', height: '60px', top: '30px', left: '70px' }} />
-      </div>
-  ));
 
   useEffect(() => {
     const userId = localStorage.getItem('userId');
@@ -172,26 +132,13 @@ export default function HomeWalker() {
   }, []);
 
   return (
-      <main className={`min-h-screen flex flex-col items-center ${
-          backgroundTheme === 'morning' ? 'bg-morning' :
-              backgroundTheme === 'afternoon' ? 'bg-afternoon' :
-                  backgroundTheme === 'evening' ? 'bg-evening' : 'bg-midnight'
-      }`}>
-        {(backgroundTheme === 'midnight' || backgroundTheme === 'evening') && shootingStars}
-        {(backgroundTheme === 'morning' || backgroundTheme === 'afternoon') && clouds}
-
+      <BackgroundLayout>
         <div className="mt-4 text-center">
-
-          <h1 className={`text-lg font-semibold ${
-              backgroundTheme === 'morning' || backgroundTheme === 'afternoon'
-                  ? 'text-black' : 'text-white'
-          }`}>
+          <h1 className="text-lg font-semibold">
             {greeting}
           </h1>
-          <p className={`text-base font-normal text-opacity-60 ${
-              backgroundTheme === 'morning' || backgroundTheme === 'afternoon'
-                  ? 'text-black' : 'text-white'
-          }`}>
+          <p className="text-base font-normal text-opacity-60">
+
             You are logged in as a walker</p>
         </div>
 
@@ -259,6 +206,6 @@ export default function HomeWalker() {
           </div>
         </div>
 
-    </main>
+      </BackgroundLayout>
   );
 }
