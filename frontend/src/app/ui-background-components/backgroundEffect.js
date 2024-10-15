@@ -62,7 +62,9 @@ export default function BackgroundEffect({ backgroundTheme }) {
                     <div className="coastline"></div>
                 </>
             )}
-            {backgroundTheme === 'evening' && <div className="moon"></div>}
+            {backgroundTheme === 'evening' &&
+                <div className="moon"></div>
+            }
             {backgroundTheme === 'afternoon' && (
                 <div className="sun"></div>
             )}

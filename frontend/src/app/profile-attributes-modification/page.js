@@ -3,8 +3,10 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import BackgroundLayout from '../ui-background-components/BackgroundLayout';
+import useTextColor from '../ui-background-components/useTextColor';
 
 export default function ProfileAttributesModification() {
+  const textColor = useTextColor();
   const router = useRouter();
   const [error, setError] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');

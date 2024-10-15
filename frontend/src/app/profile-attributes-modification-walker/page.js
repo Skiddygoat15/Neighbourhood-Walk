@@ -3,6 +3,7 @@
 import React, {useEffect, useState} from 'react';
 import { useRouter } from 'next/navigation';
 import BackgroundLayout from '../ui-background-components/BackgroundLayout';
+import useTextColor from '../ui-background-components/useTextColor';
 
 export default function ProfileManagementSelectTimeWalker() {
   const router = useRouter();
@@ -15,6 +16,7 @@ export default function ProfileManagementSelectTimeWalker() {
   const [emailAddress, setEmailAddress] = useState('');
   const [communicationPreference, setCommunicationPreference] = useState('');
   const [preferredName, setPreferredName] = useState('');
+  const textColor = useTextColor();
 
   const countryCodes = [
     { code: '+61', country: 'Australia' },
@@ -138,20 +140,20 @@ export default function ProfileManagementSelectTimeWalker() {
         </button>
 
         {/* Title */}
-        <h1 className="text-2xl font-bold text-center">Profile Attributes Modification</h1>
-        {error && <p className="text-red-500 text-center">{error}</p>}
+        <h1 className={`text-2xl font-semibold mt-3 ${textColor} text-center`}>Profile Attributes Modification</h1>
+        {error && <p className=" text-red-500 text-center">{error}</p>}
 
         {/* Form Fields */}
-        <div className="space-y-3">
+        <div className=" space-y-3">
 
           {/* Phone Number */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Phone Number</label>
-            <p className="text-xs text-gray-500">You will use this number to receive notifications and to log in and
+            <h2 className={`block text-sm font-medium ${textColor} text-left`}>Phone Number</h2>
+            <p className=" text-xs text-gray-500">You will use this number to receive notifications and to log in and
               restore your account</p>
-            <div className="flex items-center mt-2">
+            <div className=" flex items-center mt-2">
               <select
-                  className="border border-gray-300 p-2 rounded-l-md"
+                  className=" border border-gray-300 p-2 rounded-l-md"
                   value={countryCode}
                   onChange={handleCountryChange}
               >
@@ -162,60 +164,60 @@ export default function ProfileManagementSelectTimeWalker() {
                 ))}
               </select>
               <input
-                  type="text"
-                  className="border border-gray-300 p-2 rounded-r-md w-full"
-                  placeholder="Enter your phone number"
+                  type=" text"
+                  className=" border border-gray-300 p-2 rounded-r-md w-full"
+                  placeholder=" Enter your phone number"
                   value={phoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value)}
               />
             </div>
-            {/*<p className="text-xs text-gray-500">The system will send you a verification code</p>*/}
+            {/*<p className=" text-xs text-gray-500">The system will send you a verification code</p>*/}
           </div>
 
           {/* Email Address */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">E-mail Address</label>
-            <p className="text-xs text-gray-500">You will use this mailbox to receive messages</p>
+            <h2 className={`block text-sm font-medium ${textColor} text-left`}>E-mail Address</h2>
+            <p className=" text-xs text-gray-500">You will use this mailbox to receive messages</p>
             <input
-                type="email"
-                className="border border-gray-300 p-2 rounded-md w-full mt-2"
+                type=" email"
+                className=" border border-gray-300 p-2 rounded-md w-full mt-2"
                 value={emailAddress}
                 onChange={(e) => setEmailAddress(e.target.value)}
             />
-            {/*<p className="text-xs text-gray-500">The system will send you a verification code</p>*/}
+            {/*<p className=" text-xs text-gray-500">The system will send you a verification code</p>*/}
           </div>
 
           {/* Communication Preference */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Communication Preference</label>
+            <h2 className={`block text-sm font-medium ${textColor} text-left`}>Communication Preference</h2>
             <select
-                className="border border-gray-300 p-2 rounded-md w-full mt-2"
+                className=" border border-gray-300 p-2 rounded-md w-full mt-2"
                 value={communicationPreference}
                 onChange={(e) => setCommunicationPreference(e.target.value)}
             >
               <option value="">Select an option</option>
-              <option value="Email">Email</option>
-              <option value="Phone">Phone</option>
+              <option value=" Email">Email</option>
+              <option value=" Phone">Phone</option>
             </select>
           </div>
 
           {/* Preferred Name */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Preferred Name</label>
+            <h2 className={`block text-sm font-medium ${textColor} text-left`}>Preferred Name</h2>
             <input
-                type="text"
-                className="border border-gray-300 p-2 rounded-md w-full mt-2"
+                type=" text"
+                className=" border border-gray-300 p-2 rounded-md w-full mt-2"
                 value={preferredName}
                 onChange={(e) => setPreferredName(e.target.value)}
             />
           </div>
           {/* StartDate */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Start Date</label>
-            <p className="text-xs text-gray-500">Here you will select the start date of your available dates</p>
+            <h2 className={`block text-sm font-medium ${textColor} text-left`}>Start Date</h2>
+            <p className=" text-xs text-gray-500">Here you will select the start date of your available dates</p>
             <input
-                type="datetime-local"  // 使用HTML5的日期时间选择器
-                className="border border-gray-300 p-2 rounded-md w-full mt-2"
+                type=" datetime-local"  // 使用HTML5的日期时间选择器
+                className=" border border-gray-300 p-2 rounded-md w-full mt-2"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
             />
@@ -223,11 +225,11 @@ export default function ProfileManagementSelectTimeWalker() {
 
           {/* EndDate */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">End Date</label>
-            <p className="text-xs text-gray-500">Here you will select the end date of your available dates</p>
+            <h2 className={`block text-sm font-medium ${textColor} text-left`}>End Date</h2>
+            <p className=" text-xs text-gray-500">Here you will select the end date of your available dates</p>
             <input
-                type="datetime-local"  // 使用HTML5的日期时间选择器
-                className="border border-gray-300 p-2 rounded-md w-full mt-2"
+                type=" datetime-local"  // 使用HTML5的日期时间选择器
+                className=" border border-gray-300 p-2 rounded-md w-full mt-2"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
             />
@@ -235,13 +237,13 @@ export default function ProfileManagementSelectTimeWalker() {
 
           {/* Skills */}
           <div>
-            <label className="block text-sm font-medium text-gray-700">Skills (Multi)</label>
+            <h2 className={`block text-sm font-medium ${textColor} text-left`}>Skills (Multi)</h2>
             <input
-                type="text"
-                className="border border-gray-300 p-2 rounded-md w-full mt-2"
+                type=" text"
+                className=" border border-gray-300 p-2 rounded-md w-full mt-2"
                 value={skills}
                 onChange={(e) => setSkills(e.target.value)}
-                placeholder="Enter your skills"
+                placeholder=" Enter your skills"
             />
           </div>
         </div>
@@ -249,7 +251,7 @@ export default function ProfileManagementSelectTimeWalker() {
         {/* Update Button */}
         <button
             onClick={handleUpdate}
-            className="w-full py-3 text-center bg-black text-white rounded-full font-semibold hover:bg-gray-800 mt-5"
+            className=" w-full py-3 text-center bg-black text-white rounded-full font-semibold hover:bg-gray-800 mt-5"
         >
           Update
         </button>
