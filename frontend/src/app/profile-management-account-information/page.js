@@ -17,10 +17,9 @@ export default function ProfileManagementAccountInformation() {
 
   useEffect(() => {
     // 从localStorage获取userId和token
-    if (typeof window !== 'undefined') {
-      const userId = localStorage.getItem('userId');
-      const token = localStorage.getItem('token'); // 假设token保存在localStorage中
-    }
+    const userId = localStorage.getItem('userId');
+    const token = localStorage.getItem('token'); // 假设token保存在localStorage中
+
     // 如果userId和token存在，则调用API获取用户信息
     if (userId && token) {
       const fetchUserProfile = async () => {

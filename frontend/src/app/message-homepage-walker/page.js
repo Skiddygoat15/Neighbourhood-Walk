@@ -10,9 +10,13 @@ import useTextColor from '../ui-background-components/useTextColor';
 
 export default function Home() {
     const textColor = useTextColor();
+    const userId = localStorage.getItem('userId'); // 假设的用户ID，你需要根据你的应用逻辑来获取或定义这个值
+    // 假设的用户数据
+    console.info("userId="+userId)
 
     const token = localStorage.getItem('token');
-    console.info("token=" + token)
+    console.info("token="+token)
+
     const users = ['Emma', 'Ava', 'Sophia', 'Amelia'];
     const path = '../message-chat-walker'
     const messages = [
