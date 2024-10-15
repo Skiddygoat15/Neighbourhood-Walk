@@ -49,11 +49,13 @@ body {
 
 .bg-morning {
   background: linear-gradient(to bottom, #e0f7ff, #fff4d9);
+  overflow: hidden;
 }
 
 
 .bg-afternoon {
   background: linear-gradient(to bottom, #FFB6C1, #FFD700, #FF8C00, #DA70D6);
+  overflow: hidden;
 }
 
 

@@ -20,7 +20,7 @@ export default function BackgroundLayout({ children }) {
     }, []);
 
     return (
-        <div className="w-full h-full flex flex-col items-center overflow-hidden">
+        <div className="w-full min-h-screen h-screen flex flex-col items-center overflow-hidden">
             {/* Background Layer */}
             <div className={`absolute top-0 left-0 w-full h-full -z-10 ${
                 backgroundTheme === 'morning' ? 'bg-morning' :
