@@ -86,6 +86,17 @@ public class Users {
     @OneToMany(mappedBy = "walker", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<PreMeet> preMeetsAsWalker = new ArrayList<>();
 
+    @Override
+    public String toString() {
+        return "Users{" +
+                "userId=" + userId +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
+
     public Users() {
     }
 

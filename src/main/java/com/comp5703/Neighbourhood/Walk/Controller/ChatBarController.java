@@ -1,5 +1,6 @@
 package com.comp5703.Neighbourhood.Walk.Controller;
 
+import com.comp5703.Neighbourhood.Walk.Entities.ChatBar;
 import com.comp5703.Neighbourhood.Walk.Service.ChatBarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +17,8 @@ public class ChatBarController {
 
     @PostMapping("/addChatBar")
     public ResponseEntity<?> saveChatBar(@RequestParam long userIdFrom,@RequestParam long userIdTo) {
-        return new ResponseEntity<>(chatBarService.saveChatBar(userIdFrom, userIdTo), HttpStatus.OK);
+        chatBarService.saveChatBar(userIdFrom, userIdTo);
+        return new ResponseEntity<>("Successfully added chatBar", HttpStatus.OK);
     }
 
     @GetMapping("/getChatBars/{userFromId}")
@@ -29,9 +31,15 @@ public class ChatBarController {
         return new ResponseEntity<>(chatBarService.getChatBar(userIdFrom,userIdTo), HttpStatus.OK);
     }
 
-    @DeleteMapping("/deleteChatBox")
+    @DeleteMapping("/deleteChatBar")
     public ResponseEntity<?>  deleteChatBar(@RequestParam long userIdFrom,@RequestParam long userIdTo) {
-        chatBarService.deleteChatBox(userIdFrom,userIdTo);
+        chatBarService.deleteChatBar(userIdFrom,userIdTo);
         return new ResponseEntity<>("Successfully deleted the chatBar.", HttpStatus.OK);
+    }
+
+    @PostMapping("/updateChatBar")
+    public ResponseEntity<?> updateChatBar(@RequestParam long userIdFrom,@RequestParam long userIdTo,@RequestParam String state) {
+        chatBarService.updateChatBar(userIdFrom,userIdTo,state);
+        return new ResponseEntity<>("Successfully updated the chatBar.", HttpStatus.OK);
     }
 }

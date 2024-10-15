@@ -5,8 +5,6 @@ import com.comp5703.Neighbourhood.Walk.Entities.RoleDTO;
 
 
 import java.util.List;
-import java.util.Optional;
-import java.util.ArrayList;
 
 public interface RoleService {
     RoleDTO saveRole(long userId, String roleType);
@@ -14,5 +12,7 @@ public interface RoleService {
     List<RoleDTO> getRolesByUserId(long userId);
     void deleteRole(long roleId, String roleType);
     Role getRoleUserByUserIdAndRoleType(long userId, String roleType);
+    RoleDTO getWalkerByUserId(long userId);
+    RoleDTO getParentByUserId(long userId);
 }
 

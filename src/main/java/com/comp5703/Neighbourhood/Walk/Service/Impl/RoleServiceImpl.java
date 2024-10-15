@@ -28,9 +28,10 @@ public class RoleServiceImpl implements RoleService {
             throw new IllegalArgumentException("User not found with id: " + userId);
         }
 
-        if (!roleType.equals("parent") && !roleType.equals("walker") && !roleType.equals("admin")){
+        if (!roleType.equals("parent") && !roleType.equals("walker") && !roleType.equals("admin")) {
             throw new IllegalArgumentException("Invalid role type: " + roleType);
-        };
+        }
+        ;
 
         Users user = userOptional.get();
 
@@ -140,4 +141,63 @@ public class RoleServiceImpl implements RoleService {
         return roleOptional.get();
     }
 
+    @Override
+    public RoleDTO getWalkerByUserId(long userId) {
+        Users userCheck = usersRepository.getById(userId);
+        if (userCheck == null) {
+            throw new IllegalArgumentException("User not found");
+        }
+
+        List<Role> roleList = roleRepository.findByUserId(userCheck);
+        if (roleList.isEmpty()) {
+            throw new IllegalArgumentException("The user has no roles");
+        }
+
+        Role parentRole = roleList.stream()
+                .filter(role -> "walker".equals(role.getRoleType()))
+                .findAny()
+                .orElseThrow(() -> new IllegalArgumentException("The user is not a walker"));
+
+        // Create a new RoleDTO from the Role entity
+        RoleDTO roleDTO = new RoleDTO();
+        roleDTO.setRoleId(parentRole.getRoleId());
+        roleDTO.setRoleType(parentRole.getRoleType());
+        roleDTO.setUserId(parentRole.getUser().getId());
+        roleDTO.setPhone(parentRole.getUser().getPhone()); // Assuming Users has a phone field
+        roleDTO.setEmail(parentRole.getUser().getEmail()); // Assuming Users has an email field
+        roleDTO.setName(parentRole.getUser().getName());   // Assuming Users has a name field
+        roleDTO.setSurName(parentRole.getUser().getSurname()); // Assuming Users has a surname field
+
+        return roleDTO;
+    }
+
+    @Override
+    public RoleDTO getParentByUserId(long userId) {
+        Users userCheck = usersRepository.getById(userId);
+        if (userCheck == null) {
+            throw new IllegalArgumentException("User not found");
+        }
+
+        List<Role> roleList = roleRepository.findByUserId(userCheck);
+        if (roleList.isEmpty()) {
+            throw new IllegalArgumentException("The user has no roles");
+        }
+
+        Role parentRole = roleList.stream()
+                .filter(role -> "parent".equals(role.getRoleType()))
+                .findAny()
+                .orElseThrow(() -> new IllegalArgumentException("The user is not a parent"));
+
+        // Create a new RoleDTO from the Role entity
+        RoleDTO roleDTO = new RoleDTO();
+        roleDTO.setRoleId(parentRole.getRoleId());
+        roleDTO.setRoleType(parentRole.getRoleType());
+        roleDTO.setUserId(parentRole.getUser().getId());
+        roleDTO.setPhone(parentRole.getUser().getPhone()); // Assuming Users has a phone field
+        roleDTO.setEmail(parentRole.getUser().getEmail()); // Assuming Users has an email field
+        roleDTO.setName(parentRole.getUser().getName());   // Assuming Users has a name field
+        roleDTO.setSurName(parentRole.getUser().getSurname()); // Assuming Users has a surname field
+
+        return roleDTO;
+    }
 }

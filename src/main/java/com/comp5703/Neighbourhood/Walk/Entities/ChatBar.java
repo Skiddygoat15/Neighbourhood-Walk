@@ -23,16 +23,26 @@ public class ChatBar {
 
     @ManyToOne
     @JoinColumn(name = "userFrom")
-    @JsonIgnore
+//    @JsonIgnore
     private Users userFrom;
 
     @ManyToOne
     @JoinColumn(name = "userTo")
-    @JsonIgnore
+//    @JsonIgnore
     private Users userTo;
 
     @JoinColumn(name = "state")
     private String state;
+
+    @Override
+    public String toString() {
+        return "ChatBar{" +
+                "id=" + id +
+                ", userFrom=" + userFrom +
+                ", userTo=" + userTo +
+                ", state='" + state + '\'' +
+                '}';
+    }
 
     public ChatBar() {
     }

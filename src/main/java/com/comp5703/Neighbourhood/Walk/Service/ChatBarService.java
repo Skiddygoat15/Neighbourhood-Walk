@@ -10,5 +10,6 @@ public interface ChatBarService extends Serializable {
     ChatBar saveChatBar(long userIdFrom, long userIdTo);
     List<ChatBar> getChatBars(long userId);
     ChatBar getChatBar(long userIdFrom, long userIdTo);
-    void deleteChatBox(long userIdFrom, long userIdTo);
+    void deleteChatBar(long userIdFrom, long userIdTo);
+    void updateChatBar(long userIdFrom, long userIdTo, String state);
 }

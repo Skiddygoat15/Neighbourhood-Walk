@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/roles")
@@ -79,5 +80,15 @@ public class RoleController {
         }
 
         return new ResponseEntity<>(roleUserByUserIdAndRoleType, HttpStatus.OK);
+    }
+
+    @GetMapping("/getWalkerByUserId/{userId}")
+    public ResponseEntity<?> getWalkerByUserId(@PathVariable long userId) {
+        return new ResponseEntity<>(roleService.getWalkerByUserId(userId), HttpStatus.OK);
+    }
+
+    @GetMapping("/getParentByUserId/{userId}")
+    public ResponseEntity<?> getParentByUserId(@PathVariable long userId) {
+        return new ResponseEntity<>(roleService.getParentByUserId(userId), HttpStatus.OK);
     }
 }
