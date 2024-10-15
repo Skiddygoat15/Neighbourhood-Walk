@@ -5,9 +5,11 @@ import ChattingStatus from "@/components/ChattingStatus";
 import {useRouter} from "next/navigation";
 import {useEffect, useState} from "react";
 import BackgroundLayout from '../ui-background-components/BackgroundLayout';
+import useTextColor from '../ui-background-components/useTextColor';
+
 
 export default function Home() {
-    const [textColor, setTextColor] = useState('text-black');
+    const textColor = useTextColor();
     const userId = localStorage.getItem('userId'); // 假设的用户ID，你需要根据你的应用逻辑来获取或定义这个值
     // 假设的用户数据
     console.info("userId="+userId)
@@ -26,19 +28,8 @@ export default function Home() {
 
     const router = useRouter();  // 使用 useRouter
 
-    useEffect(() => {
-        // 设置字体颜色基于当前时间
-        const currentHour = new Date().getHours();
-        if (currentHour >= 6 && currentHour < 17) {
-            setTextColor('text-black');  // 上午和下午使用黑色字体
-        } else {
-            setTextColor('text-white');  // 晚上和午夜使用白色字体
-        }
-    }, []);
-
     return (
         <BackgroundLayout>
-
             <div className="max-w-lg w-11/12 rounded-lg py-4 shadow flex items-center mt-4 mx-auto">
                 <h1 className={`text-center w-full text-xl font-semibold ${textColor}`}>Messages</h1>
             </div>

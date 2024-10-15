@@ -495,7 +495,7 @@ export default function Home() {
 
     return (
         <BackgroundLayout>
-        <div className="flex flex-col h-screen bg-gray-100 p-4" style={{ overflowY: 'auto' }}>
+        <div className="flex flex-col h-screen p-4" style={{ overflowY: 'auto' }}>
             <Header title="Notification-parent" navigateTo={"/home-parent"} />
 
             {/* 保护性检查，只有当 Notifications 是非空数组时，才渲染 */}

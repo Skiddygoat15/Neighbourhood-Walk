@@ -4,6 +4,7 @@
 import {useState, useEffect} from 'react';
 import {useRouter} from "next/navigation";
 import BackgroundLayout from '../ui-background-components/BackgroundLayout';
+import useTextColor from '../ui-background-components/useTextColor';
 
 export default function SearchWalker() {
     const router = useRouter();
@@ -12,23 +13,13 @@ export default function SearchWalker() {
     const [searchTerm, setSearchTerm] = useState('');
     const [requests, setRequests] = useState([]);  // store requests list
     const [error, setError] = useState(null);    // store error message
-    const [textColor, setTextColor] = useState('text-black');
+    const textColor = useTextColor();
 
     useEffect(() => {
         if (searchTerm === '') {
             handleSearch();  // Perform search for ALL Request when input box clear
         }
     }, [searchTerm, distance]);
-
-    useEffect(() => {
-        // 设置字体颜色基于当前时间
-        const currentHour = new Date().getHours();
-        if (currentHour >= 6 && currentHour < 17) {
-            setTextColor('text-black');  // 上午和下午使用黑色字体
-        } else {
-            setTextColor('text-white');  // 晚上和午夜使用白色字体
-        }
-    }, []);
 
     const handleClear = () => {
         setSearchTerm('');

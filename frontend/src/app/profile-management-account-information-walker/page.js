@@ -3,6 +3,8 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import BackgroundLayout from '../ui-background-components/BackgroundLayout';
+import useTextColor from '../ui-background-components/useTextColor';
+
 
 export default function ProfileManagementAccountInformationWalker() {
   const router = useRouter();
@@ -12,7 +14,7 @@ export default function ProfileManagementAccountInformationWalker() {
   };
 
   const [userProfile, setUserProfile] = useState(null); // 用来存储API返回的数据
-  const [textColor, setTextColor] = useState('text-black');
+  const textColor = useTextColor();
 
   useEffect(() => {
     // 从localStorage获取userId和token
@@ -45,16 +47,6 @@ export default function ProfileManagementAccountInformationWalker() {
       fetchUserProfile();
     } else {
       console.error('User ID or token not found in localStorage');
-    }
-  }, []);
-
-
-  useEffect(() => {
-    const currentHour = new Date().getHours();
-    if (currentHour >= 6 && currentHour < 17) {
-      setTextColor('text-black');
-    } else {
-      setTextColor('text-white');
     }
   }, []);
 

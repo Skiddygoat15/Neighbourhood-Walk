@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import BackgroundLayout from '../ui-background-components/BackgroundLayout';
+import useTextColor from '../ui-background-components/useTextColor';
 
 export default function ProfileManagementAccountInformation() {
   const router = useRouter();
@@ -12,7 +13,7 @@ export default function ProfileManagementAccountInformation() {
   };
 
   const [userProfile, setUserProfile] = useState(null); // 用来存储API返回的数据
-  const [textColor, setTextColor] = useState('text-black');
+  const textColor = useTextColor();
 
   useEffect(() => {
     // 从localStorage获取userId和token
@@ -44,15 +45,6 @@ export default function ProfileManagementAccountInformation() {
       fetchUserProfile();
     } else {
       console.error('User ID or token not found in localStorage');
-    }
-  }, []);
-
-  useEffect(() => {
-    const currentHour = new Date().getHours();
-    if (currentHour >= 6 && currentHour < 17) {
-      setTextColor('text-black');
-    } else {
-      setTextColor('text-white');
     }
   }, []);
 
@@ -144,7 +136,9 @@ export default function ProfileManagementAccountInformation() {
           {/* User Info Section */}
           <div className="flex items-center justify-between">
             <div>
-            <h2 className="text-lg font-semibold">{userProfile.name} {userProfile.surname}</h2>
+              <h2 className={`text-lg font-semibold ${textColor}`}>
+                {userProfile.name} {userProfile.surname}
+              </h2>
             </div>
             <div className="w-24 h-24 bg-gray-300 rounded-full flex items-center justify-center">
               <span>Image</span>
