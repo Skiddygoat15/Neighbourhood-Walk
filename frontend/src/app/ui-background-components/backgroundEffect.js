@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 export default function BackgroundEffect({ backgroundTheme }) {
-    const numStars = 50;
+    const numStars = 70;
     const stars = Array.from({ length: numStars }).map((_, index) => (
         <div
             key={index}
@@ -15,7 +15,7 @@ export default function BackgroundEffect({ backgroundTheme }) {
             }}
         />
     ));
-    const shootingStars = Array.from({ length: 10 }).map((_, index) => (
+    const shootingStars = Array.from({ length: 20 }).map((_, index) => (
         <div
             key={index}
             className="shooting-star"
@@ -60,10 +60,19 @@ export default function BackgroundEffect({ backgroundTheme }) {
             {backgroundTheme === 'midnight' && (
                 <>
                     <div className="coastline"></div>
+                    <div className="moonlit-scene">
+                        <img src="/Princess and rose.png" alt="Princess and Rose at the Bottom"/>
+                    </div>
                 </>
             )}
             {backgroundTheme === 'evening' &&
-                <div className="moon"></div>
+                <div className="moonlit-scene">
+                    <img src="/Princess and rose.png" alt="Princess and Rose at the Bottom"/>
+
+                <div className="moon">
+
+                </div>
+                </div>
             }
             {backgroundTheme === 'afternoon' && (
                 <div className="sun"></div>

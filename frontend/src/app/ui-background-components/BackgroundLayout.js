@@ -13,9 +13,9 @@ export default function BackgroundLayout({ children }) {
         } else if (currentHour >= 12 && currentHour < 17) {
             setBackgroundTheme('afternoon');
         } else if (currentHour >= 17 && currentHour < 24) {
-            setBackgroundTheme('evening');
-        } else {
             setBackgroundTheme('midnight');
+        } else {
+            setBackgroundTheme('evening');
         }
     }, []);
 

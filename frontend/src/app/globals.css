@@ -139,9 +139,9 @@ body {
   bottom: -50%;
   width: 200%;
   height: 70%;
-  background: linear-gradient(to top, rgba(255, 255, 255, 0.1),#f79ae1);
-  border-top-left-radius: 50% 20%;
-  border-top-right-radius: 50% 20%;
+  background: linear-gradient(to top, rgba(34, 34, 34, 0.2), #d46ba0);
+  border-top-left-radius: 50% 10%;
+  border-top-right-radius: 50% 10%;
   transform: rotate(-10deg);
   filter: blur(50px);
 }
@@ -177,11 +177,14 @@ body {
   }
 }
 
-
-
-
-
-
+.moonlit-scene img {
+  position: absolute;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 200px;
+  opacity: 0.7;
+}
 
 
 
