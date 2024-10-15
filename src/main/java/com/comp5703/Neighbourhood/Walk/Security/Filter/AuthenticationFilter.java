@@ -2,9 +2,11 @@ package com.comp5703.Neighbourhood.Walk.Security.Filter;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.comp5703.Neighbourhood.Walk.Entities.RoleDTO;
 import com.comp5703.Neighbourhood.Walk.Entities.Users;
 import com.comp5703.Neighbourhood.Walk.Security.Manager.CustomAuthenticationManager;
 import com.comp5703.Neighbourhood.Walk.Security.SecurityConstants;
+import com.comp5703.Neighbourhood.Walk.Service.RoleService;
 import com.comp5703.Neighbourhood.Walk.Service.UsersService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
@@ -18,7 +20,9 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 @AllArgsConstructor
@@ -26,6 +30,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private CustomAuthenticationManager authenticationManager;
     private UsersService usersService;
+    private RoleService roleService;
 
 
     @Override
@@ -73,10 +78,23 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
         Users user = userOptional.get();
         long userId = user.getId();
+        List<String> roleTypes = new ArrayList<>();
+        // 获取用户角色
+        List<RoleDTO> roles = roleService.getRolesByUserId(userId); // 例如返回 ["user", "admin"]
+        for (RoleDTO role : roles) {
+            String roleType = role.getRoleType();
+            roleTypes.add(roleType);
+        }
+
+        for (String roleType : roleTypes) {
+            System.out.println(roleType);
+        }
+
 
         String token = JWT.create()
                 .withSubject(authResult.getName())
                 .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.TOKEN_EXPIRATION))
+                .withClaim("roles", roleTypes) // 将角色添加到token中
                 .sign(Algorithm.HMAC512(SecurityConstants.SECRET_KEY));
 
         // 将 token 放入响应体
