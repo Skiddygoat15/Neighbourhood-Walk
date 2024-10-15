@@ -207,5 +207,5 @@ export default function HomeParent() {
         </div>
       </BackgroundLayout>
   )
-      ;
+
 }
