@@ -1,13 +1,7 @@
 package com.comp5703.Neighbourhood.Walk.Repository.DummyDataLoader;
 
-import com.comp5703.Neighbourhood.Walk.Entities.Request;
-import com.comp5703.Neighbourhood.Walk.Entities.Role;
-import com.comp5703.Neighbourhood.Walk.Entities.Users;
-import com.comp5703.Neighbourhood.Walk.Entities.WalkerRequest;
-import com.comp5703.Neighbourhood.Walk.Repository.RequestRepository;
-import com.comp5703.Neighbourhood.Walk.Repository.RoleRepository;
-import com.comp5703.Neighbourhood.Walk.Repository.UsersRepository;
-import com.comp5703.Neighbourhood.Walk.Repository.WalkerRequestRepository;
+import com.comp5703.Neighbourhood.Walk.Entities.*;
+import com.comp5703.Neighbourhood.Walk.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -24,23 +18,39 @@ public class DummyDataLoader implements CommandLineRunner {
     private final RoleRepository roleRepository;
     private final RequestRepository requestRepository;
     private final WalkerRequestRepository walkerRequestRepository;
+    private final PreMeetRepository preMeetRepository;
+    private final ChatBoxRepository chatBoxRepository;
+    private final CommentRepository commentRepository;
+    private final NotificationRepository notificationRepository;
+    private final UserProfileNotificationRepository userProfileNotificationRepository;
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    public DummyDataLoader(UsersRepository usersRepository, RoleRepository roleRepository, com.comp5703.Neighbourhood.Walk.Repository.RequestRepository requestRepository, WalkerRequestRepository walkerRequestRepository, BCryptPasswordEncoder passwordEncoder) {
+    public DummyDataLoader(UsersRepository usersRepository, RoleRepository roleRepository, com.comp5703.Neighbourhood.Walk.Repository.RequestRepository requestRepository, WalkerRequestRepository walkerRequestRepository, PreMeetRepository preMeetRepository, ChatBoxRepository chatBoxRepository, CommentRepository commentRepository, NotificationRepository notificationRepository, UserProfileNotificationRepository userProfileNotificationRepository, BCryptPasswordEncoder passwordEncoder) {
         this.usersRepository = usersRepository;
         this.roleRepository = roleRepository;
         this.requestRepository = requestRepository;
         this.walkerRequestRepository = walkerRequestRepository;
+        this.preMeetRepository = preMeetRepository;
+        this.chatBoxRepository = chatBoxRepository;
+        this.commentRepository = commentRepository;
+        this.notificationRepository = notificationRepository;
+        this.userProfileNotificationRepository = userProfileNotificationRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public void run(String... args) throws Exception {
-        usersRepository.deleteAll();
-        roleRepository.deleteAll();
-        requestRepository.deleteAll();
-        walkerRequestRepository.deleteAll();
+        // 先删除依赖表中的数据，确保删除顺序正确
+        chatBoxRepository.deleteAll();
+        commentRepository.deleteAll();
+        notificationRepository.deleteAll();
+        userProfileNotificationRepository.deleteAll();
+        preMeetRepository.deleteAll();
+        walkerRequestRepository.deleteAll(); // WalkerRequest 可能依赖 Request
+        requestRepository.deleteAll();       // Request 依赖 Users
+        roleRepository.deleteAll();          // Role 依赖 Users
+        usersRepository.deleteAll();         // 依赖关系最少，最后删除
 
         Users user1 = new Users();
         user1.setName("John");
