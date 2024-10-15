@@ -15,19 +15,20 @@ export default function HomeParent() {
 
   const handleLogOut = () => {
     // 清除localStorage中的用户信息
-    localStorage.removeItem('userId');
-    localStorage.removeItem('token');
-    localStorage.removeItem('roles');
-    localStorage.removeItem('preferredName');
-    localStorage.removeItem('name');
-    localStorage.removeItem('currentRole');
-    localStorage.removeItem('clickedRequest');
-    localStorage.removeItem('updateRequest');
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('userId');
+      localStorage.removeItem('token');
+      localStorage.removeItem('roles');
+      localStorage.removeItem('preferredName');
+      localStorage.removeItem('name');
+      localStorage.removeItem('currentRole');
+      localStorage.removeItem('clickedRequest');
+      localStorage.removeItem('updateRequest');
 
-    // 将isLogin和isAdmin设置为false
-    localStorage.setItem('isLogin', 'false');
-    localStorage.setItem('isAdmin', 'false');
-
+      // 将isLogin和isAdmin设置为false
+      localStorage.setItem('isLogin', 'false');
+      localStorage.setItem('isAdmin', 'false');
+    }
     // 重定向到登录页面
     window.location.href = `/registration-login-coverpage`;
   };

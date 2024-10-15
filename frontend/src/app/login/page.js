@@ -30,8 +30,10 @@ export default function Login() {
 
             const data = await res.json();
             const token = data.token;  // Assuming token is returned as 'token'
-            localStorage.setItem('token', token);
-            localStorage.setItem('userId', data.userId);
+            if (typeof window !== 'undefined') {
+                localStorage.setItem('token', token);
+                localStorage.setItem('userId', data.userId);
+            }
             console.log("current userId: ", data.userId);
             router.push('/home-parent');  // Redirect after successful login
         } catch (err) {

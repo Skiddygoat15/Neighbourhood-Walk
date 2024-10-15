@@ -8,7 +8,10 @@ import useTextColor from '../ui-background-components/useTextColor';
 
 export default function SearchWalker() {
     const router = useRouter();
-    const walkerId = localStorage.getItem('userId');
+    if (typeof window !== 'undefined') {
+        const walkerId = localStorage.getItem('userId');
+        const toekn = localStorage.getItem('token');
+    }
     const [distance, setDistance] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
     const [requests, setRequests] = useState([]);  // store requests list
@@ -37,7 +40,7 @@ export default function SearchWalker() {
                 method: 'get',  // 使用 GET 方法
                 credentials: 'include',  // 包含用户凭证
                 headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                    'Authorization': 'Bearer ' + toekn
                 }
             });
             console.log(response);
