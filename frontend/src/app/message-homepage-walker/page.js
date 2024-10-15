@@ -30,7 +30,7 @@ export default function Home() {
 
     return (
         <BackgroundLayout>
-            <div className="max-w-lg w-11/12 rounded-lg py-4 shadow flex items-center mt-4 mx-auto">
+            <div className="max-w-lg w-11/12 rounded-lg py-4 flex items-center mt-4 mx-auto">
                 <h1 className={`text-center w-full text-xl font-semibold ${textColor}`}>Messages</h1>
             </div>
             {/* 主体内容容器 */}

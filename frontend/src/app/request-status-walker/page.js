@@ -115,14 +115,14 @@ const RequestStatus = () => {
 
                 <button
                     onClick={() => router.back()}
-                    className="bg-white flex items-center justify-center w-10 h-10 rounded-lg text-xl"
+                    className="flex items-center justify-center w-10 h-10 rounded-lg text-xl"
                     style={{ position: 'absolute', left: '20px', top: '20px' }}
                 >
                     ←
                 </button>
 
                 {/* Header */}
-                <div className="max-w-lg w-11/12 rounded-lg py-4 shadow flex items-center mt-4 mx-auto">
+                <div className="max-w-lg w-11/12 rounded-lg py-4 flex items-center mt-4 mx-auto">
                     <h1 className={`text-center w-full text-xl font-semibold ${textColor}`}>My Request</h1>
                 </div>
 

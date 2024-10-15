@@ -242,60 +242,62 @@ export default function RequestDetails({params}) {
 
                 return (
                     <BackgroundLayout>
-                    <div className="p-4 rounded-lg shadow-md">
-                        <div className="mb-4">
-                            <p className="text-gray-600">Parent Name:</p>
-                            <p className="text-black text-lg">{request.parent.name}</p>
-                        </div>
+                        <div className="p-2 rounded-lg px-8">
+                            <div className="bg-white p-4 rounded-lg shadow-lg w-full">
+                                <div className="mb-4">
+                                    <p className="text-gray-600">Parent Name:</p>
+                                    <p className="text-black text-lg">{request.parent.name}</p>
+                                </div>
 
-                        <div className="mb-4">
-                            <p className="text-gray-600">Departure:</p>
-                            <p className="text-black text-lg">{request.departure}</p>
-                        </div>
+                                <div className="mb-4">
+                                    <p className="text-gray-600">Departure:</p>
+                                    <p className="text-black text-lg">{request.departure}</p>
+                                </div>
 
-                        <div className="mb-4">
-                            <p className="text-gray-600">Destination:</p>
-                            <p className="text-black text-lg">{request.destination}</p>
-                        </div>
+                                <div className="mb-4">
+                                    <p className="text-gray-600">Destination:</p>
+                                    <p className="text-black text-lg">{request.destination}</p>
+                                </div>
 
-                        <div className="mb-4">
-                            <p className="text-gray-600">Start Time:</p>
-                            <p className="text-black text-lg">
-                                {formatDateTime(request.startTime)}
-                            </p>
-                        </div>
+                                <div className="mb-4">
+                                    <p className="text-gray-600">Start Time:</p>
+                                    <p className="text-black text-lg">
+                                        {formatDateTime(request.startTime)}
+                                    </p>
+                                </div>
 
-                        <div className="mb-4">
-                            <p className="text-gray-600">Arrive Time:</p>
-                            <p className="text-black text-lg">
-                                {formatDateTime(request.arriveTime)}
-                            </p>
-                        </div>
+                                <div className="mb-4">
+                                    <p className="text-gray-600">Arrive Time:</p>
+                                    <p className="text-black text-lg">
+                                        {formatDateTime(request.arriveTime)}
+                                    </p>
+                                </div>
 
-                        <div className="mb-4">
-                            <p className="text-gray-600">Duration:</p>
-                            <p className="text-black text-lg">
-                                {getDuration(request.startTime, request.arriveTime)}
-                            </p>
-                        </div>
+                                <div className="mb-4">
+                                    <p className="text-gray-600">Duration:</p>
+                                    <p className="text-black text-lg">
+                                        {getDuration(request.startTime, request.arriveTime)}
+                                    </p>
+                                </div>
 
-                        <div className="mb-4">
-                            <p className="text-gray-600">Details:</p>
-                            <p className="text-black text-lg">{request.details}</p>
-                        </div>
+                                <div className="mb-4">
+                                    <p className="text-gray-600">Details:</p>
+                                    <p className="text-black text-lg">{request.details}</p>
+                                </div>
 
-                        <div className="mb-4 text-gray-500">
-                            {timeSince(request.publishDate)}
-                        </div>
+                                <div className="mb-4 text-gray-500">
+                                    {timeSince(request.publishDate)}
+                                </div>
 
-                        <button
-                            onClick={applyRequest}
-                            className="bg-black text-white px-4 py-2 rounded-lg w-full">
-                            Apply
-                        </button>
-                    </div>
-                        </BackgroundLayout>
-                );
+                                <button
+                                    onClick={applyRequest}
+                                    className="bg-black text-white px-4 py-2 rounded-lg w-full">
+                                    Apply
+                                </button>
+                            </div>
+                        </div>
+                    </BackgroundLayout>
+            );
             }
         }
 
@@ -304,12 +306,12 @@ export default function RequestDetails({params}) {
 
     return (
     <BackgroundLayout>
-        <div className="min-h-screen flex flex-col items-center justify-between">
+        <main className="h-auto mb-2 shadow-md flex justify-center items-center">
 
-            <div className="bg-white p-4 shadow-md w-full mt-5" style={{paddingTop: '5px'}}>
+            <div className="shadow-md w-full" style={{paddingTop: '5px'}}>
 
-            {/* show back icon and title*/}
-                <div className="flex items-center mt-4">
+                {/* show back icon and title*/}
+                <div className="flex items-center mt-2">
                     <button onClick={() => handleBack()} className="mr-4">
                         <svg
                             className="w-6 h-6 text-black"
@@ -331,39 +333,38 @@ export default function RequestDetails({params}) {
 
                 {/* display content*/}
                 {error && <p className="text-red-500">{error}</p>}
-            {renderContent()}
-            {/*<div className="p-4 bg-white rounded-lg shadow-md">*/}
+                {renderContent()}
+                {/*<div className="p-4 bg-white rounded-lg shadow-md">*/}
 
-            {/*  <div className="mb-4">*/}
-            {/*    <p className="text-gray-600">Departure:</p>*/}
-            {/*    <p className="text-black text-lg">Darling Harbour</p>*/}
-            {/*  </div>*/}
+                {/*  <div className="mb-4">*/}
+                {/*    <p className="text-gray-600">Departure:</p>*/}
+                {/*    <p className="text-black text-lg">Darling Harbour</p>*/}
+                {/*  </div>*/}
 
-            {/*  <div className="mb-4">*/}
-            {/*    <p className="text-gray-600">Destination:</p>*/}
-            {/*    <p className="text-black text-lg">Sydney Opera House</p>*/}
-            {/*  </div>*/}
+                {/*  <div className="mb-4">*/}
+                {/*    <p className="text-gray-600">Destination:</p>*/}
+                {/*    <p className="text-black text-lg">Sydney Opera House</p>*/}
+                {/*  </div>*/}
 
-            {/*  <div className="mb-4">*/}
-            {/*    <p className="text-gray-600">Estimated time:</p>*/}
-            {/*    <p className="text-black text-lg">*/}
-            {/*      8:00 AM Sun 11 Aug - 8:15 AM Sun 11 Aug*/}
-            {/*    </p>*/}
-            {/*  </div>*/}
+                {/*  <div className="mb-4">*/}
+                {/*    <p className="text-gray-600">Estimated time:</p>*/}
+                {/*    <p className="text-black text-lg">*/}
+                {/*      8:00 AM Sun 11 Aug - 8:15 AM Sun 11 Aug*/}
+                {/*    </p>*/}
+                {/*  </div>*/}
 
-            {/*  <div className="mb-4 text-gray-500">*/}
-            {/*    Published by 1 hour ago*/}
-            {/*  </div>*/}
+                {/*  <div className="mb-4 text-gray-500">*/}
+                {/*    Published by 1 hour ago*/}
+                {/*  </div>*/}
 
 
-            {/*  <button className="bg-black text-white px-4 py-2 rounded-lg w-full">*/}
-            {/*    Apply*/}
-            {/*  </button>*/}
-            {/*</div>*/}
+                {/*  <button className="bg-black text-white px-4 py-2 rounded-lg w-full">*/}
+                {/*    Apply*/}
+                {/*  </button>*/}
+                {/*</div>*/}
 
-        </div>
-    </div>
+            </div>
+        </main>
     </BackgroundLayout>
-)
-    ;
+    );
 }
