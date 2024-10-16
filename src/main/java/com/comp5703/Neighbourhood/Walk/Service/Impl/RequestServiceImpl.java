@@ -18,7 +18,7 @@ import java.util.*;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
-
+import java.util.stream.Collectors;
 
 
 @Service
@@ -47,6 +47,29 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
+    public List<RequestDTO> getAllRequests() {
+        // List<Request> requests = requestRepository.findAll();
+        // 获取所有的 Request 列表
+        List<Request> requests = requestRepository.findAll();
+
+        // 将每个 Request 转换为 RequestDTO
+        List<RequestDTO> requestDTOs = requests.stream().map(request -> new RequestDTO(
+                request.getRequestId(),
+                request.getWalker(),  // 这里 Walker 可能是一个实体类，你可以根据需要将其转换为DTO或直接返回
+                request.getParent(),
+                request.getPublishDate(),
+                request.getStartTime(),
+                request.getArriveTime(),
+                request.getDeparture(),
+                request.getDestination(),
+                request.getDetails(),
+                request.getStatus()
+        )).collect(Collectors.toList());
+
+        return requestDTOs;
+    }
+
+    @Override
     public RequestDTO getRequestById(int requestId) {
         Request request = requestRepository.findById(requestId).orElseThrow(() -> new ResourceNotFoundException("Request not found"));
         // Convert Request to RequestDTO
@@ -72,8 +95,16 @@ public class RequestServiceImpl implements RequestService {
         if (request.getDeparture() == null || request.getDeparture().isEmpty()) {
             throw new IllegalArgumentException("Departure cannot be null or empty.");
         }
+        if (request.getDepartureLatitude() == null || request.getDepartureLatitude().isNaN() ||
+                request.getDepartureLongitude() == null || request.getDepartureLongitude().isNaN()) {
+            throw new IllegalArgumentException("Departure address is not valid.");
+        }
         if (request.getDestination() == null || request.getDestination().isEmpty()) {
             throw new IllegalArgumentException("Destination cannot be null or empty.");
+        }
+        if (request.getDestinationLatitude() == null || request.getDestinationLatitude().isNaN() ||
+                request.getDestinationLongitude() == null || request.getDestinationLongitude().isNaN()) {
+            throw new IllegalArgumentException("Destination address is not valid.");
         }
 
         Date currentDate = new Date();
@@ -121,7 +152,11 @@ public class RequestServiceImpl implements RequestService {
         request.setStartTime(updatedRequest.getStartTime());
         request.setArriveTime(updatedRequest.getArriveTime());
         request.setDeparture(updatedRequest.getDeparture());
+        request.setDepartureLatitude(updatedRequest.getDepartureLatitude());
+        request.setDepartureLongitude(updatedRequest.getDepartureLongitude());
         request.setDestination(updatedRequest.getDestination());
+        request.setDestinationLatitude(updatedRequest.getDestinationLatitude());
+        request.setDestinationLongitude(updatedRequest.getDestinationLongitude());
         request.setDetails(updatedRequest.getDetails());
 
         return requestRepository.save(request);
@@ -270,14 +305,26 @@ public class RequestServiceImpl implements RequestService {
         notificationService.addNotification(new Notification(walkerRequest,previousStatus,"Cancelled"));
     }
 
+    @Override
+    public double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+        final int R = 6371; // The radius of the earth in kilometers
+        double latDistance = Math.toRadians(lat2 - lat1);
+        double lonDistance = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double distance = R * c; // Return distance in kilometers
+        return distance;
+    }
 
     @Override
-    public List<Request> searchRequests(String searchTerm, String distance, Date startTime, Date arriveTime) {
+    public List<Request> searchRequests(Long walkerId, String searchTerm, String distance, Date startTime, Date arriveTime) {
         Specification<Request> spec = Specification.where(RequestSpecifications.statusIs("Published"));
 
-        // 检查 searchTerm 是否为空或仅包含空格
+        // Check whether the search term is empty or contains only Spaces
         if (searchTerm == null || searchTerm.trim().isEmpty()) {
-            // 如果搜索条件为空，则返回所有 requests
+            // If the search condition is empty, all requests are returned
         } else {
             // Combine Specifications
             spec = spec.and(RequestSpecifications.hasDeparture(searchTerm)
@@ -291,14 +338,46 @@ public class RequestServiceImpl implements RequestService {
         if (arriveTime != null) {
             spec = spec.and(RequestSpecifications.hasArriveTime(arriveTime));
         }
-//        if (distance != null && !distance.isEmpty()) {
-//            spec = spec.and(UsersSpecifications.containsAttribute("distance", distance));
-//        }
 
         List<Request> requests = requestRepository.findAll(spec);
         // check if request exists
         if (requests.isEmpty()) {
             throw new ResourceNotFoundException("No requests found for the given search criteria.");
+        }
+
+        Users currentWalker = usersRepository.findById(walkerId)
+                .orElseThrow(() -> new ResourceNotFoundException("User Information not found"));
+        double walkerLatitude = currentWalker.getLatitude();
+        double walkerLongitude = currentWalker.getLongitude();
+
+        // 距离筛选
+        if (distance != null && !distance.isEmpty()) {
+            double maxDistanceKm = distance.equals("1km") ? 1 : 2;
+
+            // 使用 Haversine 公式计算距离并过滤
+            requests = requests.stream()
+                    .filter(request -> {
+                        // 检查是否有出发点的经纬度
+                        Double requestLatitude = request.getDepartureLatitude();
+                        Double requestLongitude = request.getDepartureLongitude();
+
+                        // 如果出发点的经纬度为空，跳过此请求
+                        if (requestLatitude == null || requestLongitude == null) {
+                            return false; // 过滤掉这个请求
+                        }
+
+                        // 计算两个经纬度之间的距离
+                        double calculatedDistance = calculateDistance(walkerLatitude, walkerLongitude, requestLatitude, requestLongitude);
+
+                        // 只保留在距离范围内的请求
+                        return calculatedDistance <= maxDistanceKm;
+                    })
+                    .collect(Collectors.toList());
+        }
+
+        // check whether request list is empty after filtering
+        if (requests.isEmpty()) {
+            throw new ResourceNotFoundException("No requests found for the given distance constraint.");
         }
 
         return requests;
@@ -307,6 +386,14 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public Request getById(int requestId) {
         return requestRepository.getById(requestId);
+    }
+
+    public long getTotalRequests() {
+        return requestRepository.count();
+    }
+
+    public long getRequestsByStatus(String status) {
+        return requestRepository.countByStatus(status);
     }
 
 }

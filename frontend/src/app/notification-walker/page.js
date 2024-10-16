@@ -86,6 +86,7 @@ import StatusCard from '../../components/StatusCard';
 import Header from "../../components/Header";
 import { format } from 'date-fns';
 import StatusCard_profile from "@/components/StatusCard_profile";
+import BackgroundLayout from '../ui-background-components/BackgroundLayout';
 
 export default function Home() {
     const [statusCards, setStatusCards] = useState([]); // 初始化为空数组
@@ -93,6 +94,7 @@ export default function Home() {
     const [walkerRequestId, setwalkerRequestId] = useState(0); // 初始化为空数组
     const [refreshKey, setRefreshKey] = useState(0); // 用于触发重新渲染的状态
     const [Notifications_Profile, setNotifications_Profile] = useState([]);
+    const [textColor, setTextColor] = useState('text-black');
 
     const userId = localStorage.getItem('userId');
     const role = localStorage.getItem('currentRole');
@@ -126,6 +128,16 @@ export default function Home() {
             .catch(error => {
                 console.error('Error fetching data:', error);});
         },[userId]);
+
+    useEffect(() => {
+        // 设置字体颜色基于当前时间
+        const currentHour = new Date().getHours();
+        if (currentHour >= 6 && currentHour < 17) {
+            setTextColor('text-black');  // 上午和下午使用黑色字体
+        } else {
+            setTextColor('text-white');  // 晚上和午夜使用白色字体
+        }
+    }, []);
 
     //根据walkerId获取walkerRequestId
     useEffect(() => {
@@ -221,25 +233,28 @@ export default function Home() {
         setRefreshKey(prevKey => prevKey + 1);
     };
 
+
     // const isoString = ;
     // const date = new Date(isoString);
     //
     // console.log(date.toString());
-    return (
-        <div className="flex flex-col h-screen bg-gray-100 p-4" style={{ overflowY: 'auto' }}>
-            <Header title="Notification-walker" navigateTo={"/home-walker"}/>
-            {/* 保护性检查，只有当statusCards是非空数组时，才渲染 */}
 
-            {statusCards && statusCards.length > 0 && statusCards
-                .filter(card => card && card.statusChanged !== "Applied") // 过滤掉statusChanged为"Applied"的通知
-                .map((card, index) => {
-                    if (card && card.notificationClose === true) {
-                        return null;
-                    }
-                    // console.info(parentSurname);
-                    // console.info(card.notificationCheck);
-                    // console.info("upupup");
-                    return(
+    return (
+        <BackgroundLayout>
+            <div className="flex flex-col h-screen p-4" style={{overflowY: 'auto'}}>
+                <Header title="Notification-parent" navigateTo={"/home-walker"}/>
+                {/* 保护性检查，只有当statusCards是非空数组时，才渲染 */}
+
+                {statusCards && statusCards.length > 0 && statusCards
+                    .filter(card => card && card.statusChanged !== "Applied") // 过滤掉statusChanged为"Applied"的通知
+                    .map((card, index) => {
+                        if (card && card.notificationClose === true) {
+                            return null;
+                        }
+                        // console.info(parentSurname);
+                        // console.info(card.notificationCheck);
+                        // console.info("upupup");
+                        return (
                             <StatusCard
                                 key={index}
                                 onRefresh={refreshPage}
@@ -252,40 +267,44 @@ export default function Home() {
                             />
                         )
 
+                    })}
+
+                {Notifications_Profile && Notifications_Profile.length > 0 && Notifications_Profile.map((notification, index) => {
+                    console.info(notification);
+                    console.info("refreshPage" + refreshKey);
+                    // 如果 notification.NotificationClose 为 true，则不渲染该组件
+                    if (notification.notificationClose === true) {
+                        return null;
+                    }
+                    // console.info(notification.notificationClose);
+                    // console.info("upupup2");
+                    // console.info(notification.notificationCheck);
+                    // console.info("upupup3");
+                    return (
+                        <StatusCard_profile
+                            key={index}
+                            onRefresh={refreshPage}
+                            title={notification.notifyType}
+                            statusChanged={notification.message}
+                            time={format(notification.time, 'EEEE, MMMM do, yyyy, hh:mm:ss a')}
+                            notificationId={notification.notifyId}
+                            showRedDot={!notification.notificationCheck} // 如果 NotificationCheck 为 false 则显示红点
+                            role={role}
+                            // 你可以定义 handleDelete 函数来处理删除逻辑
+
+                        />
+                    );
                 })}
-
-            {Notifications_Profile && Notifications_Profile.length > 0 && Notifications_Profile.map((notification, index) => {
-                console.info(notification);
-                console.info("refreshPage"+refreshKey);
-                // 如果 notification.NotificationClose 为 true，则不渲染该组件
-                if (notification.notificationClose === true) {
-                    return null;
-                }
-                // console.info(notification.notificationClose);
-                // console.info("upupup2");
-                // console.info(notification.notificationCheck);
-                // console.info("upupup3");
-                return (
-                    <StatusCard_profile
-                        key={index}
-                        onRefresh={refreshPage}
-                        title={notification.notifyType}
-                        statusChanged={notification.message}
-                        time={format(notification.time, 'EEEE, MMMM do, yyyy, hh:mm:ss a')}
-                        notificationId={notification.notifyId}
-                        showRedDot={!notification.notificationCheck} // 如果 NotificationCheck 为 false 则显示红点
-                        role={role}
-                        // 你可以定义 handleDelete 函数来处理删除逻辑
-
-                    />
-                );
-            })}
-        </div>
+            </div>
+        </BackgroundLayout>
     );
-    原来页面
-    // return (
-    //     <div className="flex flex-col h-screen bg-gray-100 p-4" style={{ overflowY: 'auto' }}>
-    //         <Header title="Notification" navigateTo={"/message"}/>
+
+
+// //原来页面
+// // return (
+// //
+//     <div className="flex flex-col h-screen bg-gray-100 p-4" style={{overflowY: 'auto'}}>
+//         // <Header title="Notification" navigateTo={"/message"}/>
     //         {/* 保护性检查，只有当statusCards是非空数组时，才渲染 */}
     //
     //         {statusCards && statusCards.length > 0 && statusCards.map((card, index) => (

@@ -15,6 +15,8 @@ public interface UsersService {
     Optional<Users> getUsersByPhone(String phone);
     Optional<Map<String, String>> getUserNamesById(long id);
     UserProfileDTO getUserProfileById(long id);
+    void activeUser(long id);
+    void blockUser(long id);
 
     void deleteUsers(long id);
     List<Users> getAllUsers();
@@ -24,8 +26,13 @@ public interface UsersService {
     Users registerUser(Users user, String roleType);
     Users updateUserProfile(long userId, Users updatedUser);
     //byron
-    List<Users> searchWalkers(String searchTerm, String gender, String distance, String rating);
+    double calculateDistance(double lat1, double lon1, double lat2, double lon2);
+    List<Users> searchWalkers(Long parentId, String searchTerm, String gender, String distance, String rating);
     Optional<Users> getUserByEmailOrPhone(String emailOrPhone);
+
+    //admin user statistics
+    long getTotalUsers();
+    long getUsersByStatus(String status);
 
 }
 

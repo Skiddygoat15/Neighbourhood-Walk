@@ -19,11 +19,17 @@ public interface RequestService {
     void deleteRequest(int requestId);
     void cancelApply(int requestId, long walkerId);
     RequestDTO getRequestById(int requestId);
+    public List<RequestDTO> getAllRequests();
 
     WalkerRequest applyRequest(int requestId, long walkerId);
 
 
     // byron
-    List<Request> searchRequests(String searchTerm, String distance, Date startTime, Date arriveTime);
+    double calculateDistance(double lat1, double lon1, double lat2, double lon2);
+    List<Request> searchRequests(Long walkerId, String searchTerm, String distance, Date startTime, Date arriveTime);
     Request getById(int requestId);
+
+    //admin statistics
+    long getTotalRequests();
+    long getRequestsByStatus(String status);
 }

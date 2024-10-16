@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service
 public class UsersServiceImpl implements UsersService {
@@ -69,6 +70,20 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
+    public void activeUser(long id) {
+        Users user =  usersRepository.getById(id);
+        user.setActivityStatus("Active");
+        usersRepository.save(user);
+    }
+
+    @Override
+    public void blockUser(long id) {
+        Users user =  usersRepository.getById(id);
+        user.setActivityStatus("Blocked");
+        usersRepository.save(user);
+    }
+
+    @Override
     public List<Users> getAllUsers() {
         return (List<Users>) usersRepository.findAll();
     }
@@ -88,6 +103,8 @@ public class UsersServiceImpl implements UsersService {
                 user.getPhone() == null || user.getPhone().isEmpty() ||
                 user.getEmail() == null || user.getEmail().isEmpty() ||
                 user.getAddress() == null || user.getAddress().isEmpty() ||
+                user.getLatitude() == null || user.getLatitude().isNaN() ||
+                user.getLongitude() == null || user.getLongitude().isNaN() ||
                 user.getPassword() == null || user.getPassword().isEmpty() ||
                 user.getGender() == null || user.getGender().isEmpty() ||
                 user.getBirthDate() == null) {
@@ -285,14 +302,26 @@ public class UsersServiceImpl implements UsersService {
         throw new IllegalArgumentException("User with ID " + id + " not found");
     }
 
-    //byron
     @Override
-    public List<Users> searchWalkers(String searchTerm, String gender, String distance, String rating) {
+    public double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+        final int R = 6371; // The radius of the earth in kilometers
+        double latDistance = Math.toRadians(lat2 - lat1);
+        double lonDistance = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(latDistance / 2) * Math.sin(latDistance / 2)
+                + Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2))
+                * Math.sin(lonDistance / 2) * Math.sin(lonDistance / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        double distance = R * c; // Return distance in kilometers
+        return distance;
+    }
+
+    @Override
+    public List<Users> searchWalkers(Long parentId, String searchTerm, String gender, String distance, String rating) {
         Specification<Users> spec = Specification.where(UsersSpecifications.hasRole("walker"));
 
-        // 检查 searchTerm 是否为空或仅包含空格
+        // Check whether the searchTerm is empty or contains only Spaces
         if (searchTerm == null || searchTerm.trim().isEmpty()) {
-            // 如果搜索条件为空，则返回所有 Walkers
+            // If the search criteria are empty, all Walkers are returned
             spec = spec.and(UsersSpecifications.orderByAverageRate());
         } else {
             // Combine Specifications
@@ -310,11 +339,6 @@ public class UsersServiceImpl implements UsersService {
             spec = spec.and(UsersSpecifications.hasGender(gender));
         }
 
-        // Add distance filter
-        if (distance != null && !distance.isEmpty()) {
-            spec = spec.and(UsersSpecifications.containsAttribute("distance", distance));
-        }
-
         // Add rating filter
         if (rating != null && !rating.isEmpty()) {
             spec = switch (rating) {
@@ -327,9 +351,43 @@ public class UsersServiceImpl implements UsersService {
         }
 
         List<Users> users = usersRepository.findAll(spec);
-
         if (users.isEmpty()) {
-            throw new ResourceNotFoundException("No matching users found for the given search criteria.");
+            throw new ResourceNotFoundException("No matching walkers found for the given search criteria.");
+        }
+
+        Users currentParent = usersRepository.findById(parentId)
+                .orElseThrow(() -> new ResourceNotFoundException("User Information not found"));
+        double parentLatitude = currentParent.getLatitude();
+        double parentLongitude = currentParent.getLongitude();
+
+        // Add distance filter
+        if (distance != null && !distance.isEmpty()) {
+            double maxDistanceKm = distance.equals("1km") ? 1 : 2;
+
+            // 使用 Haversine 公式计算距离并过滤
+            users = users.stream()
+                    .filter(user -> {
+                        // 检查是否有出发点的经纬度
+                        Double walkerLatitude = user.getLatitude();
+                        Double walkerLongitude = user.getLongitude();
+
+                        // 如果出发点的经纬度为空，跳过此请求
+                        if (walkerLatitude == null || walkerLongitude == null) {
+                            return false; // 过滤掉这个请求
+                        }
+
+                        // 计算两个经纬度之间的距离
+                        double calculatedDistance = calculateDistance(parentLatitude, parentLongitude, walkerLatitude, walkerLongitude);
+
+                        // 只保留在距离范围内的请求
+                        return calculatedDistance <= maxDistanceKm;
+                    })
+                    .collect(Collectors.toList());
+        }
+
+        // check whether walkers list is empty after filtering
+        if (users.isEmpty()) {
+            throw new ResourceNotFoundException("No walkers found for the given distance constraint.");
         }
 
         return users;
@@ -347,6 +405,14 @@ public class UsersServiceImpl implements UsersService {
 
         // 最终返回 Optional<Users>，不论是通过 Email 还是 Phone 查找到的
         return userOptional;
+    }
+
+    public long getTotalUsers() {
+        return usersRepository.count();
+    }
+
+    public long getUsersByStatus(String status) {
+        return usersRepository.countByActivityStatus(status);
     }
 
 }

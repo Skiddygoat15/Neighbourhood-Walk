@@ -3,13 +3,17 @@
 
 import {useState, useEffect} from 'react';
 import {useRouter} from "next/navigation";
+import BackgroundLayout from '../ui-background-components/BackgroundLayout';
+import useTextColor from '../ui-background-components/useTextColor';
 
 export default function SearchWalker() {
     const router = useRouter();
+    const walkerId = localStorage.getItem('userId');
     const [distance, setDistance] = useState('');
     const [searchTerm, setSearchTerm] = useState('');
     const [requests, setRequests] = useState([]);  // store requests list
     const [error, setError] = useState(null);    // store error message
+    const textColor = useTextColor();
 
     useEffect(() => {
         if (searchTerm === '') {
@@ -26,7 +30,7 @@ export default function SearchWalker() {
         setRequests([]); // 点击搜索按钮时先清空之前的结果
         setError(null); // 清空之前的错误消息
 
-        const searchRequestsAPI = `http://127.0.0.1:8080/requests/searchRequests?searchTerm=${searchTerm}`;
+        const searchRequestsAPI = `http://127.0.0.1:8080/requests/searchRequests?walkerId=${walkerId}&searchTerm=${searchTerm}&distance=${distance}`;
 
         try {
             const response = await fetch(searchRequestsAPI, {
@@ -113,13 +117,15 @@ export default function SearchWalker() {
 
             return minutes > 0 ? `${hourText} ${minuteText}` : hourText;
         }
+
+
     };
 
     return (
-        <div className="min-h-screen bg-gray-100">
-            <div className="bg-white p-4 rounded-lg shadow-md max-w-md mx-auto mt-4">
+        <BackgroundLayout>
+            <div className="bg-opacity-75 p-4 rounded-lg shadow-md w-full mx-auto mb-20">
 
-                <h1 className="text-2xl font-semibold mb-4">Search</h1>
+                <h1 className={`text-2xl font-semibold mb-4 lg:text-3xl ${textColor}`}>Search</h1>
 
                 <div className="relative mb-4">
                     <div className="flex items-center space-x-2 mb-2">
@@ -171,7 +177,6 @@ export default function SearchWalker() {
                     {error && <p className="text-red-500">{error}</p>}
                 </div>
 
-
                 <div className="relative mb-4">
                     <select
                         value={distance}
@@ -189,7 +194,7 @@ export default function SearchWalker() {
                     {requests.length > 0 ? (
                         requests.map((request) => (
                             <div key={request.requestId}
-                                 className="border rounded-lg p-4 flex items-center space-x-4 cursor-pointer"
+                                 className="border rounded-lg p-4 flex items-center space-x-4 cursor-pointer bg-white"
                                  onClick={() => handleRequestClick(request.requestId)}>
 
                                 <div className="w-16 h-16 bg-gray-200 rounded-lg"></div>
@@ -215,6 +220,6 @@ export default function SearchWalker() {
                 </div>
 
             </div>
-        </div>
+        </BackgroundLayout>
     );
 }

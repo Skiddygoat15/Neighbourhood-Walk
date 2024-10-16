@@ -29,6 +29,12 @@ public class Users {
     private String phone;
     @Column(name = "address", nullable = false)
     private String address;
+//    @Column(name = "full_address", nullable = false)
+//    private String fullAddress;
+    @Column(name = "latitude")
+    private Double latitude;
+    @Column(name = "longitude")
+    private Double longitude;
     @Column(name = "birth_date")
     private Date birthDate;
     @Column(name = "preferred_name")
@@ -53,6 +59,8 @@ public class Users {
     private String veriMethod;
     @Column(name = "avgUserRating")
     private double avgUserRating;
+    @Column(name = "activityStatus")
+    private String activityStatus;
     /*
     @OneToMany(mappedBy = "userId")：表示 Users 和 Role 之间是一对多的关系。
     mappedBy 指定了在 Role 实体中定义了关系的字段，即 userId。
@@ -160,6 +168,28 @@ public class Users {
         this.address = address;
     }
 
+//    public String getFullAddress() {
+//        return fullAddress;
+//    }
+//
+//    public void setFullAddress(String fullAddress) {
+//        this.fullAddress = fullAddress;
+//    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) { this.longitude = longitude; }
+
     public Date getBirthDate() {
         return birthDate;
     }
@@ -227,6 +257,13 @@ public class Users {
     }
     public void setComments(List<Comment> comments) {
         this.comments = comments;
+    }
+    public String getActivityStatus() {
+        return activityStatus;
+    }
+
+    public void setActivityStatus(String activityStatus) {
+        this.activityStatus = activityStatus;
     }
 
 }

@@ -3,6 +3,8 @@
 
 import {useState, useEffect} from 'react';
 import {useRouter} from 'next/navigation';
+import BackgroundLayout from '../../ui-background-components/BackgroundLayout';
+import useTextColor from '../../ui-background-components/useTextColor';
 
 export default function RequestDetails({params}) {
     const router = useRouter();
@@ -12,6 +14,7 @@ export default function RequestDetails({params}) {
     const [error, setError] = useState(null);    // store error message
     const getRequestInfoAPI = `http://127.0.0.1:8080/WalkerRequest/getRequestDetailByRequestIdAndWalkerId/${requestId}/${walkerId}`;
     const applyRequestAPI = `http://127.0.0.1:8080/requests/${requestId}/apply?walkerId=${walkerId}`;
+    const textColor = useTextColor();
 
     // get request details info by request's id
     useEffect(() => {
@@ -181,7 +184,8 @@ export default function RequestDetails({params}) {
                 }
 
                 return (
-                    <div className="p-4 bg-white rounded-lg shadow-md">
+                    <BackgroundLayout>
+                    <div className="p-4 rounded-lg shadow-md">
                         <div className="mb-4">
                             <p className="text-gray-600">Parent Name:</p>
                             <p className="text-black text-lg">{request.parent.name}</p>
@@ -229,6 +233,7 @@ export default function RequestDetails({params}) {
 
                         {statusCheck()}
                     </div>
+                        </BackgroundLayout>
                 );
             } else {
                 // this means walker does not apply this request yet
@@ -236,59 +241,63 @@ export default function RequestDetails({params}) {
                 const request = requestDetails;
 
                 return (
-                    <div className="p-4 bg-white rounded-lg shadow-md">
-                        <div className="mb-4">
-                            <p className="text-gray-600">Parent Name:</p>
-                            <p className="text-black text-lg">{request.parent.name}</p>
-                        </div>
+                    <BackgroundLayout>
+                        <div className="p-2 rounded-lg px-8">
+                            <div className="bg-white p-4 rounded-lg shadow-lg w-full">
+                                <div className="mb-4">
+                                    <p className="text-gray-600">Parent Name:</p>
+                                    <p className="text-black text-lg">{request.parent.name}</p>
+                                </div>
 
-                        <div className="mb-4">
-                            <p className="text-gray-600">Departure:</p>
-                            <p className="text-black text-lg">{request.departure}</p>
-                        </div>
+                                <div className="mb-4">
+                                    <p className="text-gray-600">Departure:</p>
+                                    <p className="text-black text-lg">{request.departure}</p>
+                                </div>
 
-                        <div className="mb-4">
-                            <p className="text-gray-600">Destination:</p>
-                            <p className="text-black text-lg">{request.destination}</p>
-                        </div>
+                                <div className="mb-4">
+                                    <p className="text-gray-600">Destination:</p>
+                                    <p className="text-black text-lg">{request.destination}</p>
+                                </div>
 
-                        <div className="mb-4">
-                            <p className="text-gray-600">Start Time:</p>
-                            <p className="text-black text-lg">
-                                {formatDateTime(request.startTime)}
-                            </p>
-                        </div>
+                                <div className="mb-4">
+                                    <p className="text-gray-600">Start Time:</p>
+                                    <p className="text-black text-lg">
+                                        {formatDateTime(request.startTime)}
+                                    </p>
+                                </div>
 
-                        <div className="mb-4">
-                            <p className="text-gray-600">Arrive Time:</p>
-                            <p className="text-black text-lg">
-                                {formatDateTime(request.arriveTime)}
-                            </p>
-                        </div>
+                                <div className="mb-4">
+                                    <p className="text-gray-600">Arrive Time:</p>
+                                    <p className="text-black text-lg">
+                                        {formatDateTime(request.arriveTime)}
+                                    </p>
+                                </div>
 
-                        <div className="mb-4">
-                            <p className="text-gray-600">Duration:</p>
-                            <p className="text-black text-lg">
-                                {getDuration(request.startTime, request.arriveTime)}
-                            </p>
-                        </div>
+                                <div className="mb-4">
+                                    <p className="text-gray-600">Duration:</p>
+                                    <p className="text-black text-lg">
+                                        {getDuration(request.startTime, request.arriveTime)}
+                                    </p>
+                                </div>
 
-                        <div className="mb-4">
-                            <p className="text-gray-600">Details:</p>
-                            <p className="text-black text-lg">{request.details}</p>
-                        </div>
+                                <div className="mb-4">
+                                    <p className="text-gray-600">Details:</p>
+                                    <p className="text-black text-lg">{request.details}</p>
+                                </div>
 
-                        <div className="mb-4 text-gray-500">
-                            {timeSince(request.publishDate)}
-                        </div>
+                                <div className="mb-4 text-gray-500">
+                                    {timeSince(request.publishDate)}
+                                </div>
 
-                        <button
-                            onClick={applyRequest}
-                            className="bg-black text-white px-4 py-2 rounded-lg w-full">
-                            Apply
-                        </button>
-                    </div>
-                );
+                                <button
+                                    onClick={applyRequest}
+                                    className="bg-black text-white px-4 py-2 rounded-lg w-full">
+                                    Apply
+                                </button>
+                            </div>
+                        </div>
+                    </BackgroundLayout>
+            );
             }
         }
 
@@ -296,11 +305,13 @@ export default function RequestDetails({params}) {
     };
 
     return (
-        <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-between">
+    <BackgroundLayout>
+        <main className="h-auto mb-2 shadow-md flex justify-center items-center">
 
-            <div className="bg-white p-4 shadow-md w-full max-w-md mx-auto">
+            <div className="shadow-md w-full" style={{paddingTop: '5px'}}>
+
                 {/* show back icon and title*/}
-                <div className="flex items-center mb-4">
+                <div className="flex items-center mt-2">
                     <button onClick={() => handleBack()} className="mr-4">
                         <svg
                             className="w-6 h-6 text-black"
@@ -317,7 +328,7 @@ export default function RequestDetails({params}) {
                             />
                         </svg>
                     </button>
-                    <h1 className="text-2xl font-semibold">Request details</h1>
+                    <h1 className={`text-2xl font-semibold mt-3 ${textColor} text-center`}>Request details</h1>
                 </div>
 
                 {/* display content*/}
@@ -353,6 +364,7 @@ export default function RequestDetails({params}) {
                 {/*</div>*/}
 
             </div>
-        </div>
+        </main>
+    </BackgroundLayout>
     );
 }

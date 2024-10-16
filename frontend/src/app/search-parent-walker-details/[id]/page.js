@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import BackgroundLayout from '../../ui-background-components/BackgroundLayout';
+import useTextColor from '../../ui-background-components/useTextColor';
 
 export default function SearchParentWalkerDetails({ params }) {
   const router = useRouter();
@@ -9,6 +11,7 @@ export default function SearchParentWalkerDetails({ params }) {
   const [walker, setWalker] = useState(null);  // store walker details
   const [error, setError] = useState(null);    // store error message
   const getUserByIdAPI = `http://127.0.0.1:8080/Users/getUserById/${id}`;
+  const textColor = useTextColor();
 
   // get walker details info by walker's id
   useEffect(() => {
@@ -63,46 +66,50 @@ export default function SearchParentWalkerDetails({ params }) {
   };
 
   return (
-    <main className="min-h-screen bg-white">
-      <div className="max-w-md mx-auto p-4 space-y-8">
-        <div>
-          {/* Back Button */}
-          <button onClick={() => handleBack()} className="text-2xl p-2 focus:outline-none">
-            &larr;
-          </button>
+      <BackgroundLayout>
+        <main className="min-h-screen mb-10 flex justify-center items-center">
+          <div className="mb-1">
+            <div>
+              {/* Back Button */}
+              <button onClick={() => handleBack()} className="text-2xl p-2 focus:outline-none absolute top-2 left-2">
+                &larr;
+              </button>
 
-          {/* Title */}
-          <h1 className="text-2xl font-bold text-center">Walker details</h1>
-        </div>
-
-        {/* Walker Information */}
-        {error && <p className="text-red-500">{error}</p>}
-        {!walker && !error && <p>Loading...</p>}
-        {walker && (
-            <div className="space-y-4">
-              <h2 className="text-xl font-semibold">Walker information</h2>
-              <p><strong>Name:</strong> {`${walker.name} ${walker.surname}`}</p>
-              <p><strong>Preferred Name:</strong> {walker.preferredName}</p>
-              <p><strong>Gender:</strong> {walker.gender}</p>
-              <p><strong>Address:</strong> {walker.address}</p>
-              <p><strong>Email:</strong> {walker.email}</p>
-              <p><strong>Phone:</strong> {walker.phone}</p>
-              <p><strong>Communication Preference:</strong> {walker.communicatePref}</p>
-              <p><strong>Preferred time From:</strong> </p>
-              <p>{walker.availableDate[0] ? formatDateTime(walker.availableDate[0]) : 'N/A'}</p>
-              <p><strong>Preferred time To:</strong> </p>
-              <p>{walker.availableDate[0] ? formatDateTime(walker.availableDate[1]) : 'N/A'}</p>
-              <p><strong>Skill:</strong> {walker.skill}</p>
-              <p><strong>Average Rating:</strong> ⭐ {walker.avgUserRating} / 5</p>
+              {/* Title */}
+              <h1 className={`text-2xl font-semibold mt-3 ${textColor} text-center`}>Walker details</h1>
             </div>
-        )}
 
-        {/* Contact Button */}
-        <button className="w-full py-3 text-center bg-black text-white rounded-full font-semibold hover:bg-gray-800">
-          Contact
-        </button>
-      </div>
+            {/* Walker Information */}
+            <div className="bg-white max-w-md p-3 rounded-lg shadow-lg relative">
+              {error && <p className="text-red-500">{error}</p>}
+              {!walker && !error && <p>Loading...</p>}
+              {walker && (
+                  <div className="space-y-4">
+                    <h2 className="text-xl font-semibold">Walker information</h2>
+                    <p><strong>Name:</strong> {`${walker.name} ${walker.surname}`}</p>
+                    <p><strong>Preferred Name:</strong> {walker.preferredName}</p>
+                    <p><strong>Gender:</strong> {walker.gender}</p>
+                    <p><strong>Address:</strong> {walker.address}</p>
+                    <p><strong>Email:</strong> {walker.email}</p>
+                    <p><strong>Phone:</strong> {walker.phone}</p>
+                    <p><strong>Communication Preference:</strong> {walker.communicatePref}</p>
+                    <p><strong>Preferred time From:</strong></p>
+                    <p>{walker.availableDate[0] ? formatDateTime(walker.availableDate[0]) : 'N/A'}</p>
+                    <p><strong>Preferred time To:</strong></p>
+                    <p>{walker.availableDate[0] ? formatDateTime(walker.availableDate[1]) : 'N/A'}</p>
+                    <p><strong>Skill:</strong> {walker.skill}</p>
+                    <p><strong>Average Rating:</strong> ⭐ {walker.avgUserRating} / 5</p>
+                  </div>
+              )}
 
-    </main>
+              {/* Contact Button */}
+              <button
+                  className="w-full py-2 text-center bg-black text-white rounded-full font-semibold hover:bg-gray-800">
+                Contact
+              </button>
+            </div>
+          </div>
+        </main>
+      </BackgroundLayout>
   );
 }

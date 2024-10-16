@@ -1,6 +1,8 @@
 "use client";
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { geocodeAddress } from '@/components/geocode';
+
 
 const RegistrationSignup = () => {
   const [roleType, setRoleType] = useState('walker'); // Ĭ�Ͻ�ɫΪ walker
@@ -18,7 +20,6 @@ const RegistrationSignup = () => {
   const [error, setError] = useState('');
   const router = useRouter();
 
-
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -26,10 +27,8 @@ const RegistrationSignup = () => {
     });
   };
 
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     // 每次提交前清空错误信息
     setError('');
 
@@ -38,21 +37,27 @@ const RegistrationSignup = () => {
       return;
     }
 
-    const requestData = {
-      name: formData.name,
-      surname: formData.surname,
-      phone: formData.phone,
-      email: formData.email,
-      address: formData.address,
-      password: formData.password,
-      gender: formData.gender,
-      birthDate: new Date(formData.birthDate).toISOString(),
-      avgUserRating: 5.0
-    };
-
-    const apiUrl = `http://localhost:8080/Users/register?roleType=${roleType}`;
-
     try {
+      // convert the address to latitude and longitude
+      const { lat, lng , formatted_address } = await geocodeAddress(formData.address);
+
+      const requestData = {
+        name: formData.name,
+        surname: formData.surname,
+        phone: formData.phone,
+        email: formData.email,
+        address: formatted_address, // 地址文本
+        // fullAddress: formatted_address,
+        latitude: lat, // 经纬度
+        longitude: lng, // 经纬度
+        password: formData.password,
+        gender: formData.gender,
+        birthDate: new Date(formData.birthDate).toISOString(),
+        avgUserRating: 5.0,
+      };
+
+      const apiUrl = `http://localhost:8080/Users/register?roleType=${roleType}`;
+
       const res = await fetch(apiUrl, {
         method: 'POST',
         headers: {
@@ -69,7 +74,7 @@ const RegistrationSignup = () => {
 
       router.push('/registration-loginform');
     } catch (err) {
-      setError(err);
+      setError(err.message || 'Registration failed');
       console.error(err);
     }
   };

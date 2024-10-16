@@ -2,6 +2,7 @@
 
 import {useEffect, useState} from 'react';
 import { useRouter } from 'next/navigation';
+import { geocodeAddress } from '@/components/geocode';
 
 export default function UpdateRequest() {
   const router = useRouter();
@@ -44,49 +45,85 @@ export default function UpdateRequest() {
     }
   }, [request]);
 
-  const handleUpdate = () => {
+  const handleUpdate = async () => {
     const updateRequestAPI = `http://127.0.0.1:8080/requests/update/${request.requestId}`;
-    setSendBody((prevSendBody) => ({
-      ...prevSendBody,  // keep other attributes same
-      startTime: combineDateAndTime(date, departureTime),
-      arriveTime: combineDateAndTime(date, arriveTime)
-    }));
 
-    fetch(updateRequestAPI, {
-      method: 'put', // Method is GET to fetch data
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json', // Set the content type header for JSON data
-        'Authorization': 'Bearer ' + localStorage.getItem('token')
-      },
-      body: JSON.stringify(sendBody)
-    })
-        .then(response => {
-          if (!response.ok) {
-            if (response.status === 401) {
-              alert('Please log in.');
-              router.push('/Login');
-              return;
+    try{
+      if (!sendBody.departure || sendBody.departure.trim() === '' ||
+          !sendBody.destination || sendBody.destination.trim() === '') {
+        throw new Error("departure and destination is required.");
+      }
+
+      // 获取 departure 的经纬度
+      const departureCoords = await geocodeAddress(sendBody.departure);
+      // 获取 destination 的经纬度
+      const destinationCoords = await geocodeAddress(sendBody.destination);
+
+      // 创建新的 sendBody 数据
+      const updatedSendBody = {
+        ...sendBody,  // keep other attributes same
+        startTime: combineDateAndTime(date, departureTime),
+        arriveTime: combineDateAndTime(date, arriveTime),
+        departure: departureCoords.formatted_address,
+        departureLatitude: departureCoords.lat,
+        departureLongitude: departureCoords.lng,
+        destination: destinationCoords.formatted_address,
+        destinationLatitude: destinationCoords.lat,
+        destinationLongitude: destinationCoords.lng
+      };
+      // setSendBody((prevSendBody) => ({
+      //   ...prevSendBody,  // keep other attributes same
+      //   startTime: combineDateAndTime(date, departureTime),
+      //   arriveTime: combineDateAndTime(date, arriveTime),
+      //   departure: departureCoords.formatted_address,
+      //   departureLatitude: departureCoords.lat,
+      //   departureLongitude: departureCoords.lng,
+      //   destination: destinationCoords.formatted_address,
+      //   destinationLatitude: destinationCoords.lat,
+      //   destinationLongitude: destinationCoords.lng
+      // }));
+
+      fetch(updateRequestAPI, {
+        method: 'put', // Method is GET to fetch data
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json', // Set the content type header for JSON data
+          'Authorization': 'Bearer ' + localStorage.getItem('token')
+        },
+        body: JSON.stringify(updatedSendBody)
+      })
+          .then(response => {
+            if (!response.ok) {
+              if (response.status === 401) {
+                alert('Please log in.');
+                router.push('/Login');
+                return;
+              }
+              return response.text().then(text => {
+                setError(text);
+                //alert(text);
+                throw new Error(text);
+              });
             }
-            return response.text().then(text => {
-              setError(text);
-              //alert(text);
-              throw new Error(text);
-            });
-          }
-          return response.json();
-        })
-        .then(data => {
-          console.log("update request successful", data)
-          alert("update request successful")
-          router.push('/request-my-request')
-        })
-        .catch(err => {
-          console.log(err);
-          const errorMessage = err.message || 'create request failed';
-          setError(errorMessage);
-          //setError('Failed to get contribution. Please try again.');
-        });
+            return response.json();
+          })
+          .then(data => {
+            console.log("update request successful", data)
+            alert("update request successful")
+            router.push('/request-my-request')
+          })
+          .catch(err => {
+            console.log(err);
+            const errorMessage = err.message || 'create request failed';
+            setError(errorMessage);
+            //setError('Failed to get contribution. Please try again.');
+          });
+
+    } catch (err) {
+      console.log("Error in geocoding:", err);
+      const errorMessage = err.message || 'Geocoding failed';
+      setError(errorMessage);
+    }
   };
 
   function convertTo24HourTime(time) {

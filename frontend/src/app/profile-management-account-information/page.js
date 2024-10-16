@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import BackgroundLayout from '../ui-background-components/BackgroundLayout';
+import useTextColor from '../ui-background-components/useTextColor';
 
 export default function ProfileManagementAccountInformation() {
   const router = useRouter();
@@ -11,6 +13,8 @@ export default function ProfileManagementAccountInformation() {
   };
 
   const [userProfile, setUserProfile] = useState(null); // 用来存储API返回的数据
+  const textColor = useTextColor();
+
   useEffect(() => {
     // 从localStorage获取userId和token
     const userId = localStorage.getItem('userId');
@@ -50,7 +54,9 @@ export default function ProfileManagementAccountInformation() {
     return <main className="min-h-screen bg-white">
       <div className="max-w-md mx-auto p-4 space-y-8">
         {/* Title */}
-        <h1 className="text-2xl font-bold text-center">Account Information</h1>
+        <h1 className={`text-2xl font-bold ${textColor}`}>
+          Account Information
+        </h1>
 
         {/* User Info Section */}
         <div className="flex items-center justify-between">
@@ -119,15 +125,20 @@ export default function ProfileManagementAccountInformation() {
 
 
   return (
-      <main className="min-h-screen bg-white">
-        <div className="max-w-md mx-auto p-4 space-y-8" style={{ height: 'calc(100vh - 55px)', overflowY: 'auto' }}>
+      <BackgroundLayout>
+      <main className="min-h-screen">
+        <div className="w-full px-4 sm:px-6 lg:px-8 space-y-8" style={{ height: 'calc(100vh - 55px)', overflowY: 'auto' }}>
           {/* Title */}
-          <h1 className="text-2xl font-bold text-center">Account Information</h1>
+          <h1 className={`text-2xl font-bold text-center mt-6 ${textColor}`}>
+            Account Information
+          </h1>
 
           {/* User Info Section */}
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="text-lg font-semibold">{userProfile.name} {userProfile.surname}</h2>
+              <h2 className={`text-lg font-semibold ${textColor}`}>
+                {userProfile.name} {userProfile.surname}
+              </h2>
             </div>
             <div className="w-24 h-24 bg-gray-300 rounded-full flex items-center justify-center">
               <span>Image</span>
@@ -135,43 +146,44 @@ export default function ProfileManagementAccountInformation() {
           </div>
 
           {/* Details List */}
-          <div className="space-y-4">
-            <div className="flex justify-between items-center border-b py-2">
+          <div className="bg-white p-4 rounded-lg shadow-lg w-full space-y-4"
+               style={{margin: '5px', padding: '5px'}}>
+            <div className="flex justify-between items-center border-b py-2 text-sm sm:text-base">
               <span>Preferred Name</span>
               <div className="flex items-center">
                 <span>{userProfile.preferredName || 'N/A'}</span>
               </div>
             </div>
 
-            <div className="flex justify-between items-center border-b py-2">
+            <div className="flex justify-between items-center border-b py-2 text-sm sm:text-base">
               <span>Date of Birth</span>
               <div className="flex items-center">
                 <span>{new Date(userProfile.birthDate).toLocaleDateString()}</span>
               </div>
             </div>
 
-            <div className="flex justify-between items-center border-b py-2">
+            <div className="flex justify-between items-center border-b py-2 text-sm sm:text-base">
               <span>Phone Number</span>
               <div className="flex items-center">
                 <span>+61 {userProfile.phone}</span>
               </div>
             </div>
 
-            <div className="flex justify-between items-center border-b py-2">
+            <div className="flex justify-between items-center border-b py-2 text-sm sm:text-base">
               <span>E-mail Address</span>
               <div className="flex items-center">
                 <span>{userProfile.email}</span>
               </div>
             </div>
 
-            <div className="flex justify-between items-center border-b py-2">
+            <div className="flex justify-between items-center border-b py-2 text-sm sm:text-base">
               <span>Address</span>
               <div className="flex items-center">
                 <span>{userProfile.address}</span>
               </div>
             </div>
 
-            <div className="flex justify-between items-center border-b py-2">
+            <div className="flex justify-between items-center border-b py-2 text-sm sm:text-base">
               <span>Communication Preference</span>
               <div className="flex items-center">
                 <span>{userProfile.communicatePref || 'N/A'}</span>
@@ -187,5 +199,6 @@ export default function ProfileManagementAccountInformation() {
           </button>
         </div>
     </main>
+    </BackgroundLayout>
   );
 }

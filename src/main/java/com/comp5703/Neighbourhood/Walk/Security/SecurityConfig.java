@@ -4,6 +4,7 @@ import com.comp5703.Neighbourhood.Walk.Security.Filter.AuthenticationFilter;
 import com.comp5703.Neighbourhood.Walk.Security.Filter.ExceptionHandlerFilter;
 import com.comp5703.Neighbourhood.Walk.Security.Filter.JWTAuthorizationFilter;
 import com.comp5703.Neighbourhood.Walk.Security.Manager.CustomAuthenticationManager;
+import com.comp5703.Neighbourhood.Walk.Service.RoleService;
 import com.comp5703.Neighbourhood.Walk.Service.UsersService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -28,10 +29,11 @@ public class SecurityConfig {
 
     CustomAuthenticationManager customAuthenticationManager;
     UsersService usersService;
+    RoleService roleService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        AuthenticationFilter authenticationFilter = new AuthenticationFilter(customAuthenticationManager, usersService);
+        AuthenticationFilter authenticationFilter = new AuthenticationFilter(customAuthenticationManager, usersService, roleService);
         authenticationFilter.setFilterProcessesUrl("/login");
 
         http
@@ -41,7 +43,13 @@ public class SecurityConfig {
                 .authorizeHttpRequests() // Change from authorizeRequests to authorizeHttpRequests
                 .requestMatchers("/h2/**").permitAll() // Change from antMatchers to requestMatchers
                 .requestMatchers(HttpMethod.POST, SecurityConstants.REGISTER_PATH).permitAll()
+                .requestMatchers("/geocode/**").permitAll()
                 .requestMatchers("/ws/**").permitAll()
+                // 限制特定URL只允许具有"admin"角色的用户访问
+                .requestMatchers("/Users/blockUser/**").hasAuthority("admin")
+                .requestMatchers("/Users/activeUser/**").hasAuthority("admin")
+                .requestMatchers("/requests/stats").hasAuthority("admin")
+                .requestMatchers("/Users/stats").hasAuthority("admin")
                 .anyRequest().authenticated()
                 .and()
                 .addFilterBefore(new ExceptionHandlerFilter(), AuthenticationFilter.class)

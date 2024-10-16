@@ -3,6 +3,8 @@
 import { useRouter } from 'next/navigation';
 import {useEffect, useState} from "react";
 import moment from "moment/moment";
+import BackgroundLayout from '../ui-background-components/BackgroundLayout';
+import useTextColor from '../ui-background-components/useTextColor';
 
 export default function MyRequest() {
   const moment = require('moment');
@@ -10,6 +12,7 @@ export default function MyRequest() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(true);
   const [requestList, setRequestList] = useState([]);
+  const textColor = useTextColor();
   // {
   //   departure: "Darling Harbour",
   //       destination: "Sydney Opera House",
@@ -40,6 +43,7 @@ export default function MyRequest() {
         getRequestsList(); // 在 parentId 更新后调用 API
       }
     }, [parentId]);
+
 
   function getRequestsList() {
     const getRequestsListAPI = `http://127.0.0.1:8080/requests/getRequestsByParentId/${parentId}`
@@ -111,74 +115,80 @@ export default function MyRequest() {
 
 
   return (
-    <main className="min-h-screen bg-white">
-      <div className="max-w-md mx-auto p-4 space-y-8">
-        {/* Back Button */}
-        <button onClick={() => router.back()} className="text-2xl p-2 focus:outline-none">
-          &larr;
-        </button>
-
-        {/* Title and Create Button */}
-        <div className="flex justify-between items-center">
-          <h1 className="text-2xl font-bold">My request</h1>
-          <button 
-            onClick={() => router.push('/request-create')}
-            className="py-2 px-4 bg-black text-white rounded-full font-semibold"
-          >
-            Create new request
+      <BackgroundLayout>
+      <main className="min-h-screen pb-20">
+        <div className="max-w-md mx-auto p-4  space-y-8 sm:max-w-lg md:max-w-xl lg:max-w-2xl">
+          {/* Back Button */}
+          <button onClick={() => router.back()} className="text-2xl p-2 focus:outline-none">
+            &larr;
           </button>
-        </div>
 
-        {/* Request Items */}
-        {loading ? (
-            <p>Loading...</p>
-        ) : requestList.length === 0 ? (
-            <p>You haven't created any requests yet.</p>
-        ) : (
-          <div className="space-y-4">
-            {requestList.map((request, index) => (
-                <div key={index} className="border p-4 rounded-lg space-y-2">
-                  <div className="flex justify-between items-center">
-                    <h2 className="text-lg font-bold">Trip request</h2>
-                    <button
-                        onClick={() => {
-                            // localStorage.setItem('clickedRequest', JSON.stringify(request));
-                          router.push(`/request-my-request-application/${request.requestId}`);
-                        }}
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                           className="w-6 h-6">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
-                              d="M3 8l7.89 7.89a2 2 0 002.83 0L21 8M5 5h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2z"/>
-                      </svg>
-                    </button>
-                  </div>
-                  <p className="text-sm"><strong>Departure:</strong> {request.departure}</p>
-                  <p className="text-sm"><strong>Destination:</strong> {request.destination}</p>
-                  <p className="text-sm"><strong>Estimated time:</strong> {moment(request.startTime).format("MM/DD/YYYY HH:mm")}</p>
-                  <p className="text-sm"><strong>arrive time:</strong> {moment(request.arriveTime).format("MM/DD/YYYY HH:mm:ss")}</p>
-                  <p className="text-xs text-gray-500">Published by {moment(request.publishDate).format("MM/DD HH:mm")}</p>
-                  <div className="flex justify-between mt-2">
-                    <button
-                        onClick={() => {localStorage.setItem('updateRequest', JSON.stringify(request));
-                          router.push('/request-update');
-                        }}
-                        className="py-2 px-4 bg-black text-white rounded-full text-sm font-semibold"
-                    >
-                      Update
-                    </button>
-                    <button
-                        onClick={() => deleteRequest(request.requestId)}
-                        className="py-2 px-4 bg-black text-white rounded-full text-sm font-semibold"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </div>
-            ))}
+          {/* Title and Create Button */}
+          <div className="flex justify-between items-center">
+            <h1 className={`text-2xl font-bold sm:text-3xl lg:text-4xl ${textColor}`}>My request</h1>
+            <button
+                onClick={() => router.push('/request-create')}
+                className="py-2 px-4 bg-black text-white rounded-full font-semibold sm:py-3 sm:px-5 lg:py-4 lg:px-6"
+            >
+              Create new request
+            </button>
           </div>
+
+          {/* Request Items */}
+          {loading ? (
+              <p>Loading...</p>
+          ) : requestList.length === 0 ? (
+              <p>You haven't created any requests yet.</p>
+          ) : (
+              <div className="space-y-4">
+                {requestList.map((request, index) => (
+                    <div key={index} className="border p-4 bg-white rounded-lg space-y-2">
+                      <div className="flex justify-between items-center">
+                        <h2 className="text-lg font-bold sm:text-xl lg:text-2xl">Trip request</h2>
+                        <button
+                            onClick={() => {
+                              // localStorage.setItem('clickedRequest', JSON.stringify(request));
+                              router.push(`/request-my-request-application/${request.requestId}`);
+                            }}
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                               className="w-6 h-6 sm:w-8 sm:h-8">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                                  d="M3 8l7.89 7.89a2 2 0 002.83 0L21 8M5 5h14a2 2 0 012 2v12a2 2 0 01-2 2H5a2 2 0 01-2-2V7a2 2 0 012-2z"/>
+                          </svg>
+                        </button>
+                      </div>
+                      <p className="text-sm sm:text-base"><strong>Departure:</strong> {request.departure}</p>
+                      <p className="text-sm sm:text-base"><strong>Destination:</strong> {request.destination}</p>
+                      <p className="text-sm sm:text-base"><strong>Estimated
+                        time:</strong> {moment(request.startTime).format("MM/DD/YYYY HH:mm")}</p>
+                      <p className="text-sm sm:text-base"><strong>arrive
+                        time:</strong> {moment(request.arriveTime).format("MM/DD/YYYY HH:mm:ss")}</p>
+                      <p className="text-xs text-gray-500 sm:text-sm">Published
+                        by {moment(request.publishDate).format("MM/DD HH:mm")}</p>
+                      <div className="flex justify-between mt-2">
+                        <button
+                            onClick={() => {
+                              localStorage.setItem('updateRequest', JSON.stringify(request));
+                              router.push('/request-update');
+                            }}
+                            className="py-2 px-4 bg-black text-white rounded-full text-sm font-semibold sm:py-3 sm:px-5"
+                        >
+                          Update
+                        </button>
+                        <button
+                            onClick={() => deleteRequest(request.requestId)}
+                            className="py-2 px-4 bg-black text-white rounded-full text-sm font-semibold"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    </div>
+                ))}
+              </div>
           )}
-      </div>
-    </main>
+        </div>
+      </main>
+      </BackgroundLayout>
   );
 }

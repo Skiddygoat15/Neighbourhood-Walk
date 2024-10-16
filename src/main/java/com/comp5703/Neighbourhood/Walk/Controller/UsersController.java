@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -64,6 +65,18 @@ public class UsersController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @GetMapping("/blockUser/{id}")
+    public ResponseEntity<HttpStatus> blockUser(@PathVariable int id) {
+        usersService.blockUser(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/activeUser/{id}")
+    public ResponseEntity<HttpStatus> activeUser(@PathVariable int id) {
+        usersService.activeUser(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
     @GetMapping("/allUsers")
     public ResponseEntity<List<Users>> getAllUsers() {
         return new ResponseEntity<>(usersService.getAllUsers(), HttpStatus.OK);
@@ -72,12 +85,13 @@ public class UsersController {
 
     //byron
     @GetMapping("/searchWalkers")
-    public ResponseEntity<?> searchWalkers(@RequestParam String searchTerm,
+    public ResponseEntity<?> searchWalkers(@RequestParam long parentId,
+                                           @RequestParam String searchTerm,
                                            @RequestParam(required = false) String gender,
                                            @RequestParam(required = false) String distance,
                                            @RequestParam(required = false) String rating) {
         try {
-            List<Users> walkers = usersService.searchWalkers(searchTerm, gender, distance, rating);
+            List<Users> walkers = usersService.searchWalkers(parentId, searchTerm, gender, distance, rating);
             return new ResponseEntity<>(walkers, HttpStatus.OK);
         } catch (ResourceNotFoundException e) {
             // 处理找不到资源的自定义异常
@@ -121,6 +135,20 @@ public class UsersController {
         } catch (Exception e) {
             return new ResponseEntity<>("An error occurred while updating user profile.", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @GetMapping("/stats")
+    public ResponseEntity<Map<String, Object>> getUserStats() {
+        Map<String, Object> stats = new HashMap<>();
+        long totalUsers = usersService.getTotalUsers();
+        long activeUsers = usersService.getUsersByStatus("Active");
+        long offlineUsers = usersService.getUsersByStatus("Offline");
+
+        stats.put("totalUsers", totalUsers);
+        stats.put("activeUsers", activeUsers);
+        stats.put("offlineUsers", offlineUsers);
+
+        return ResponseEntity.ok(stats);
     }
 
 }

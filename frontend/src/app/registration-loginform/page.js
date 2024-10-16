@@ -104,6 +104,9 @@ export default function LoginForm() {
         } else if (roles[0] === 'walker') {
           localStorage.setItem('currentRole', 'walker')
           window.location.href = `/home-walker`;
+        } else if (roles[0] === 'admin') {
+          localStorage.setItem('currentRole', 'admin')
+          window.location.href = `/admin-coverpage`;
         }
       } else if (roles.length > 1) {
         router.push('/registration-login-identity-select');

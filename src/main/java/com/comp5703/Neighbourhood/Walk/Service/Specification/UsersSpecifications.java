@@ -18,7 +18,7 @@ public class UsersSpecifications {
     criteriaBuilder.equal(...)：生成一个等式条件，检查 roleType 是否等于传入的 roleType 参数。
      */
     // Specification to filter by role type
-    // 确认用户身份类型
+    // Confirm the user identity type
     public static Specification<Users> hasRole(String roleType) {
         return (root, query, criteriaBuilder) ->
                 criteriaBuilder.equal(root.join("roles").get("roleType"), roleType);
@@ -37,20 +37,18 @@ public class UsersSpecifications {
     }
 
     // Specification to check if an attribute contains a value (case-insensitive)
-    // 检查输入和数据库的匹配项
+    // Check the match between the input and the database
     public static Specification<Users> containsAttribute(String attributeName, String value) {
         return (root, query, criteriaBuilder) ->
                 criteriaBuilder.like(criteriaBuilder.lower(root.get(attributeName)), "%" + value.toLowerCase() + "%");
     }
 
     // Specification to order by average rate in Comment
-    // 根据用户评分排序
+    // Sort by user average rating
     public static Specification<Users> orderByAverageRate() {
         return (root, query, criteriaBuilder) -> {
             // Make sure query is not null before using groupBy and orderBy
             if (query != null) {
-                // Perform a left join with the comments
-//                Join<Users, Comment> comments = root.join("comments", JoinType.LEFT);
                 // Group by userId to calculate the average rate
                 query.groupBy(root.get("userId"));
                 // Order by the average rate in descending order

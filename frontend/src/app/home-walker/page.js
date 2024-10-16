@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
+import BackgroundLayout from '../ui-background-components/BackgroundLayout';
 
 export default function HomeWalker() {
   const router = useRouter();
@@ -34,6 +35,8 @@ export default function HomeWalker() {
   const [preferredName, setPreferredName] = useState('');
   const [greeting, setGreeting] = useState('');
   const [avgUserRating, setAvgUserRating] = useState(null); // 用于存储API返回的avgUserRating值
+  const [backgroundTheme, setBackgroundTheme] = useState('morning');
+  const [textColor, setTextColor] = useState('text-black');
 
 
   useEffect(() => {
@@ -48,33 +51,31 @@ export default function HomeWalker() {
     const currentHour = currentTime.getHours();
 
     if (currentHour >= 6 && currentHour < 12) {
-      if (!storedPreferredName || storedPreferredName === 'null') {
-        setGreeting(`Good morning, ${storedName}!`);
-      } else {
-        setGreeting(`Good morning, ${storedPreferredName}!`);
-      }
+
+      setGreeting(storedPreferredName && storedPreferredName !== 'null'
+          ? `Good morning, ${storedPreferredName}!`
+          : `Good morning, ${storedName}!`);
+      setTextColor('text-black');
     } else if (currentHour >= 12 && currentHour < 17) {
-      if (!storedPreferredName || storedPreferredName === 'null') {
-        setGreeting(`Good afternoon, ${storedName}!`);
-      } else {
-        setGreeting(`Good afternoon, ${storedPreferredName}!`);
-      }
+
+      setGreeting(storedPreferredName && storedPreferredName !== 'null'
+          ? `Good afternoon, ${storedPreferredName}!`
+          : `Good afternoon, ${storedName}!`);
+      setTextColor('text-black');
     } else if (currentHour >= 17 && currentHour < 24) {
-      if (!storedPreferredName || storedPreferredName === 'null') {
-        setGreeting(`Good evening, ${storedName}!`);
-      } else {
-        setGreeting(`Good evening, ${storedPreferredName}!`);
-      }
+
+      setGreeting(storedPreferredName && storedPreferredName !== 'null'
+          ? `Good evening, ${storedPreferredName}!`
+          : `Good evening, ${storedName}!`);
+      setTextColor('text-white');
     } else {
-      if (!storedPreferredName || storedPreferredName === 'null') {
-        setGreeting(`Hi ${storedName}, It's already midnight!`);
-        console.log("preferredName == null")
-      } else {
-        setGreeting(`Hi ${storedPreferredName}, It's already midnight!`);
-        console.log("preferredName != null")
-      }
+      setGreeting(storedPreferredName && storedPreferredName !== 'null'
+          ? `Hi ${storedPreferredName}, It's already midnight!`
+          : `Hi ${storedName}, It's already midnight!`);
+      setTextColor('text-white');
     }
   }, []);
+
 
   useEffect(() => {
     const userId = localStorage.getItem('userId');
@@ -136,77 +137,80 @@ export default function HomeWalker() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center">
-      <div className="mt-4 text-center">
-        <p className="text-lg font-semibold">{greeting}</p>
-        <div className="w-16 h-0.5 bg-black opacity-0 mx-auto mt-1"></div>
-        <p className="text-base font-normal text-opacity-60 text-black">You are logged in as a walker</p>
-      </div>
+      <BackgroundLayout>
+        <div className="mt-4 text-center">
+          <h1 className={`text-lg font-semibold ${textColor}`}>
+            {greeting}
+          </h1>
+          <p className={`text-base font-semibold ${textColor} text-opacity-60`}>
+            You are logged in as a walker
+          </p>
+        </div>
 
-      <div className="mt-8 w-full px-6">
-        <div className="grid grid-cols-2 gap-4">
-          <div className="bg-white border rounded-lg p-4 text-center">
-            <p className="font-semibold">Stars</p>
-            <p className="text-xl mr-3">
-              ⭐ {avgUserRating ? `${avgUserRating}/5` : '-/5'}
-            </p>
+        <div className="mt-8 w-full px-6">
+          <div className="grid grid-cols-2 gap-4">
+            <div className="bg-white border rounded-lg p-4 text-center">
+              <p className="font-semibold">Stars</p>
+              <p className="text-xl mr-3">
+                ⭐ {avgUserRating ? `${avgUserRating}/5` : '-/5'}
+              </p>
+            </div>
+            <div className="bg-white border rounded-lg p-4 text-center">
+              <p className="font-semibold">History</p>
+            </div>
           </div>
-          <div className="bg-white border rounded-lg p-4 text-center">
-            <p className="font-semibold">History</p>
+
+          <div className="mt-8">
+            <button onClick={() => handleNavigation('/search-walker')}
+                    className="w-full bg-white border rounded-lg p-4 text-center font-semibold">
+              Search Request
+            </button>
+          </div>
+
+          <div className="mt-4">
+            <button onClick={() => handleNavigation('/pre-meet-walker')}
+                    className="w-full bg-white border rounded-lg p-4 text-center font-semibold">
+              Pre-meet Requests
+            </button>
+          </div>
+
+          <div className="mt-4">
+            <button onClick={() => handleNavigation('/request-status-walker')}
+                    className="w-full bg-white border rounded-lg p-4 text-center font-semibold">
+              Request Respond
+            </button>
+          </div>
+
+          <div className="mt-4">
+            <button
+                onClick={() => handleNavigation('/notification-walker')}
+                className="w-full bg-white border rounded-lg p-4 text-center font-semibold relative"
+            >
+              Notification
+              {showRedDot && (
+                  <span style={{
+                    position: 'absolute',
+                    top: '10px',
+                    right: '10px',
+                    height: '10px',
+                    width: '10px',
+                    borderRadius: '50%',
+                    backgroundColor: 'red',
+                  }}></span>
+              )}
+            </button>
+          </div>
+
+          <div className="mt-4">
+            <button
+                onClick={() => handleLogOut()}
+                className="w-full bg-white border rounded-lg p-4 text-center font-semibold"
+            >
+              Log out
+            </button>
           </div>
         </div>
 
-        <div className="mt-8">
-          <button onClick={() => handleNavigation('/search-walker')}
-                  className="w-full bg-white border rounded-lg p-4 text-center font-semibold">
-            Search Request
-          </button>
-        </div>
-
-        <div className="mt-4">
-          <button onClick={() => handleNavigation('/pre-meet-walker')}
-                  className="w-full bg-white border rounded-lg p-4 text-center font-semibold">
-            Pre-meet Requests
-          </button>
-        </div>
-
-        <div className="mt-4">
-          <button onClick={() => handleNavigation('/request-status-walker')}
-              className="w-full bg-white border rounded-lg p-4 text-center font-semibold">
-            Request Respond
-          </button>
-        </div>
-
-        <div className="mt-4">
-          <button
-              onClick={() => handleNavigation('/notification-walker')}
-              className="w-full bg-white border rounded-lg p-4 text-center font-semibold relative"
-          >
-            Notification
-            {showRedDot && (
-                <span style={{
-                  position: 'absolute',
-                  top: '10px',
-                  right: '10px',
-                  height: '10px',
-                  width: '10px',
-                  borderRadius: '50%',
-                  backgroundColor: 'red',
-                }}></span>
-            )}
-          </button>
-        </div>
-
-        <div className="mt-4">
-          <button
-              onClick={() => handleLogOut()}
-              className="w-full bg-white border rounded-lg p-4 text-center font-semibold"
-          >
-            Log out
-          </button>
-        </div>
-      </div>
-
-    </div>
+      </BackgroundLayout>
   );
 }

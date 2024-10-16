@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import BackgroundLayout from '../ui-background-components/BackgroundLayout';
 
 const RequestStatus = () => {
     const router = useRouter();
@@ -10,13 +11,25 @@ const RequestStatus = () => {
     const [error, setError] = useState('');
     const walkerId = localStorage.getItem("userId");
     const token = localStorage.getItem("token");
+    const [textColor, setTextColor] = useState('text-black');
 
-    useEffect(() => {
-        if (!walkerId || !token) {
-            alert('please login');
-            router.push('/Login');
-            return;
-        }
+
+        useEffect(() => {
+            const currentTime = new Date();
+            const currentHour = currentTime.getHours();
+            if (currentHour >= 6 && currentHour < 12) {
+                setTextColor('text-black');
+            } else if (currentHour >= 12 && currentHour < 17) {
+                setTextColor('text-black');
+            } else {
+                setTextColor('text-white');
+            }
+
+            if (!walkerId || !token) {
+                alert('please login');
+                router.push('/Login');
+                return;
+            }
 
         const getRequestsListAPI = `http://127.0.0.1:8080/WalkerRequest/getWalkerRequestByWalkerId/${walkerId}`;
 
@@ -97,41 +110,52 @@ const RequestStatus = () => {
     };
 
     return (
-        <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-start">
-            {/* Header */}
-            <div className="bg-white w-full py-4 px-6 shadow flex items-center">
-                <button onClick={() => router.back()} className="text-xl">
+        <BackgroundLayout>
+            <div className="min-h-screen flex flex-col items-center justify-start">
+
+                <button
+                    onClick={() => router.back()}
+                    className="flex items-center justify-center w-10 h-10 rounded-lg text-xl"
+                    style={{ position: 'absolute', left: '20px', top: '20px' }}
+                >
                     ←
                 </button>
-                <h1 className="text-center w-full text-xl font-semibold">My Request</h1>
-            </div>
 
-            {/* Content */}
-            {loading ? (
-                <p>Loading...</p>
-            ) : error ? (
-                <p className="text-red-500">{error}</p>
-            ) : requests.length > 0 ? (
-                requests.map((request, index) => (
-                    <div key={index} className="bg-white shadow-md rounded-lg mt-6 p-6 w-11/12 max-w-lg border border-gray-300">
-                        <h2 className="text-xl font-semibold">Trip request</h2>
-                        <div className="mt-4">
-                            <p><strong>Departure:</strong> {request.request.departure}</p>
-                            <p><strong>Destination:</strong> {request.request.destination}</p>
-                            <p><strong>Start time:</strong> {formatDateTime(request.request.startTime)}</p>
-                            <p><strong>Arrive time:</strong> {formatDateTime(request.request.arriveTime)}</p>
-                            <p className="text-gray-500 text-sm mt-2">Published by {formatDateTime(request.request.publishDate)}</p>
+                {/* Header */}
+                <div className="max-w-lg w-11/12 rounded-lg py-4 flex items-center mt-4 mx-auto">
+                    <h1 className={`text-center w-full text-xl font-semibold ${textColor}`}>My Request</h1>
+                </div>
+
+
+                {/* Content */}
+                {loading ? (
+                    <p>Loading...</p>
+                ) : error ? (
+                    <p className="text-red-500">{error}</p>
+                ) : requests.length > 0 ? (
+                    requests.map((request, index) => (
+                        <div key={index}
+                             className="bg-white shadow-md rounded-lg mt-6 p-4 w-11/12 max-w-lg">
+                            <h2 className="text-xl font-semibold">Trip request</h2>
+                            <div className="mt-4">
+                                <p><strong>Departure:</strong> {request.request.departure}</p>
+                                <p><strong>Destination:</strong> {request.request.destination}</p>
+                                <p><strong>Start time:</strong> {formatDateTime(request.request.startTime)}</p>
+                                <p><strong>Arrive time:</strong> {formatDateTime(request.request.arriveTime)}</p>
+                                <p className="text-gray-500 text-sm mt-2">Published
+                                    by {formatDateTime(request.request.publishDate)}</p>
+                            </div>
+                            <div className="mt-4 border-t pt-4">
+                                {/* Status Display */}
+                                {renderStatusMessage(request.status)}
+                            </div>
                         </div>
-                        <div className="mt-4 border-t pt-4">
-                        {/* Status Display */}
-                            {renderStatusMessage(request.status)}
-                        </div>
-                    </div>
-                ))
-            ) : (
-                <p>You haven't apply a walk Request</p>
-            )}
-        </div>
+                    ))
+                ) : (
+                    <p>You haven't apply a walk Request</p>
+                )}
+            </div>
+        </BackgroundLayout>
     );
 };
 
