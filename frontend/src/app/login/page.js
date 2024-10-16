@@ -23,11 +23,9 @@ export default function Login() {
                 },
                 body: JSON.stringify(loginData),
             });
-
             if (!res.ok) {
                 throw new Error('Login failed');
             }
-
             const data = await res.json();
             const token = data.token;  // Assuming token is returned as 'token'
             localStorage.setItem('token', token);
