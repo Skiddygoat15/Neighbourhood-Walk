@@ -17,6 +17,7 @@ export default function ProfileManagementSelectTimeWalker() {
   const [communicationPreference, setCommunicationPreference] = useState('');
   const [preferredName, setPreferredName] = useState('');
   const textColor = useTextColor();
+  const [date, setDate] = useState('');
 
   const countryCodes = [
     { code: '+61', country: 'Australia' },
@@ -126,16 +127,17 @@ export default function ProfileManagementSelectTimeWalker() {
       }
     } catch (error) {
       console.error('Error updating profile:', error);
+
     }
   };
 
 
   return (
-      <BackgroundLayout>
+     <BackgroundLayout>
     <main className="min-h-screen mb-10">
       <div className="w-full px-4 sm:px-6 lg:px-8" style={{height: 'calc(100vh - 55px)', overflowY: 'auto'}}>
         {/* Back Button */}
-        <button onClick={() => router.back()} className="text-2xl p-2 focus:outline-none">
+        <button onClick={() => router.back()} className={`${textColor} text-2xl p-2 focus:outline-none}`}>
           &larr;
         </button>
 
@@ -149,7 +151,7 @@ export default function ProfileManagementSelectTimeWalker() {
           {/* Phone Number */}
           <div>
             <h2 className={`block text-sm font-medium ${textColor} text-left`}>Phone Number</h2>
-            <p className=" text-xs text-gray-500">You will use this number to receive notifications and to log in and
+            <p className={`text-xs ${textColor}`}>You will use this number to receive notifications and to log in and
               restore your account</p>
             <div className=" flex items-center mt-2">
               <select
@@ -177,7 +179,7 @@ export default function ProfileManagementSelectTimeWalker() {
           {/* Email Address */}
           <div>
             <h2 className={`block text-sm font-medium ${textColor} text-left`}>E-mail Address</h2>
-            <p className=" text-xs text-gray-500">You will use this mailbox to receive messages</p>
+            <p className={`text-xs ${textColor}`}>You will use this mailbox to receive messages</p>
             <input
                 type=" email"
                 className=" border border-gray-300 p-2 rounded-md w-full mt-2"
@@ -214,11 +216,15 @@ export default function ProfileManagementSelectTimeWalker() {
           {/* StartDate */}
           <div>
             <h2 className={`block text-sm font-medium ${textColor} text-left`}>Start Date</h2>
-            <p className=" text-xs text-gray-500">Here you will select the start date of your available dates</p>
+            <p className={`text-xs ${textColor}`}>Here you will select the start date of your available dates</p>
             <input
-                type=" datetime-local"  // 使用HTML5的日期时间选择器
-                className=" border border-gray-300 p-2 rounded-md w-full mt-2"
+                // type=" datetime-local"  // 使用HTML5的日期时间选择器
+                // className=" border border-gray-300 p-2 rounded-md w-full mt-2"
+                // value={startDate}
+                // onChange={(e) => setStartDate(e.target.value)}
+                type="date"
                 value={startDate}
+                className=" border border-gray-300 p-2 rounded-md w-full mt-2"
                 onChange={(e) => setStartDate(e.target.value)}
             />
           </div>
@@ -226,11 +232,15 @@ export default function ProfileManagementSelectTimeWalker() {
           {/* EndDate */}
           <div>
             <h2 className={`block text-sm font-medium ${textColor} text-left`}>End Date</h2>
-            <p className=" text-xs text-gray-500">Here you will select the end date of your available dates</p>
+            <p className={`text-xs ${textColor}`}>Here you will select the end date of your available dates</p>
             <input
-                type=" datetime-local"  // 使用HTML5的日期时间选择器
-                className=" border border-gray-300 p-2 rounded-md w-full mt-2"
+                // type=" datetime-local"  // 使用HTML5的日期时间选择器
+                // className=" border border-gray-300 p-2 rounded-md w-full mt-2"
+                // value={endDate}
+                // onChange={(e) => setEndDate(e.target.value)}
+                type="date"
                 value={endDate}
+                className=" border border-gray-300 p-2 rounded-md w-full mt-2"
                 onChange={(e) => setEndDate(e.target.value)}
             />
           </div>
@@ -258,6 +268,6 @@ export default function ProfileManagementSelectTimeWalker() {
       </div>
 
     </main>
-      </BackgroundLayout>
+  </BackgroundLayout>
   );
 }

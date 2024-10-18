@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import BackgroundLayout from '../ui-background-components/BackgroundLayout';
+import useTextColor from '../ui-background-components/useTextColor';
 
 const RequestStatus = () => {
     const router = useRouter();
@@ -11,19 +12,10 @@ const RequestStatus = () => {
     const [error, setError] = useState('');
     const walkerId = localStorage.getItem("userId");
     const token = localStorage.getItem("token");
-    const [textColor, setTextColor] = useState('text-black');
+    const textColor = useTextColor();
 
 
         useEffect(() => {
-            const currentTime = new Date();
-            const currentHour = currentTime.getHours();
-            if (currentHour >= 6 && currentHour < 12) {
-                setTextColor('text-black');
-            } else if (currentHour >= 12 && currentHour < 17) {
-                setTextColor('text-black');
-            } else {
-                setTextColor('text-white');
-            }
 
             if (!walkerId || !token) {
                 alert('please login');
@@ -115,7 +107,7 @@ const RequestStatus = () => {
 
                 <button
                     onClick={() => router.back()}
-                    className="flex items-center justify-center w-10 h-10 rounded-lg text-xl"
+                    className={`flex items-center justify-center w-10 h-10 rounded-lg text-xl ${textColor}`}
                     style={{ position: 'absolute', left: '20px', top: '20px' }}
                 >
                     ←
@@ -136,7 +128,7 @@ const RequestStatus = () => {
                     requests.map((request, index) => (
                         <div key={index}
                              className="bg-white shadow-md rounded-lg mt-6 p-4 w-11/12 max-w-lg">
-                            <h2 className="text-xl font-semibold">Trip request</h2>
+                            <h2 className={`text-xl font-semibold ${textColor}`}>Trip request</h2>
                             <div className="mt-4">
                                 <p><strong>Departure:</strong> {request.request.departure}</p>
                                 <p><strong>Destination:</strong> {request.request.destination}</p>
@@ -152,7 +144,7 @@ const RequestStatus = () => {
                         </div>
                     ))
                 ) : (
-                    <p>You haven't apply a walk Request</p>
+                    <p className={`${textColor}`}>You haven't apply a walk Request</p>
                 )}
             </div>
         </BackgroundLayout>

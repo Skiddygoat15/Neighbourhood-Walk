@@ -71,7 +71,7 @@ export default function SearchParentWalkerDetails({ params }) {
           <div className="mb-1">
             <div>
               {/* Back Button */}
-              <button onClick={() => handleBack()} className="text-2xl p-2 focus:outline-none absolute top-2 left-2">
+              <button onClick={() => handleBack()} className={`text-2xl ${textColor} p-2 focus:outline-none absolute top-2 left-2`}>
                 &larr;
               </button>
 

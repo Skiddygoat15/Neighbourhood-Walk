@@ -114,20 +114,20 @@ export default function ProfileAttributesModification() {
     <main className="min-h-screen">
       <div className="w-full px-4 sm:px-6 lg:px-8" style={{height: 'calc(100vh - 55px)', overflowY: 'auto'}}>
         {/* Back Button */}
-        <button onClick={() => router.back()} className="text-2xl p-2 focus:outline-none">
+        <button onClick={() => router.back()} className={`text-2xl p-2 ${textColor} focus:outline-none`}>
           &larr;
         </button>
 
         {/* Title */}
-        <h1 className="text-2xl font-bold text-center mb-2">Profile Attributes Modification</h1>
+        <h1 className={`block text-2xl ${textColor} font-bold text-center mb-2`}>Profile Attributes Modification</h1>
           {error && <p className="text-red-500 text-center">{error}</p>}
 
           {/* Form Fields */}
           <div className="space-y-6">
             {/* Phone Number */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">Phone Number</label>
-              <p className="text-xs text-gray-500">You will use this number to receive notifications and to log in and
+              <label className= {`block text-sm  ${textColor} font-bold text-left"`}>Phone Number</label>
+              <p className={`block text-xs  ${textColor} font-medium text-left`}>You will use this number to receive notifications and to log in and
                 restore your account</p>
               <div className="flex items-center mt-2">
                 <select
@@ -154,8 +154,8 @@ export default function ProfileAttributesModification() {
 
             {/* Email Address */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">E-mail Address</label>
-              <p className="text-xs text-gray-500">You will use this mailbox to receive messages</p>
+              <label className={`block text-sm  ${textColor} font-bold text-left"`}>E-mail Address</label>
+              <p className={`block text-xs  ${textColor} font-medium text-left`}>You will use this mailbox to receive messages</p>
               <input
                   type="email"
                   className="border border-gray-300 p-4 rounded-md w-full mt-2"
@@ -167,7 +167,7 @@ export default function ProfileAttributesModification() {
 
             {/* Communication Preference */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">Communication Preference</label>
+              <label className={`block text-sm  ${textColor} font-bold text-left"`}>Communication Preference</label>
               <select
                   className="border border-gray-300 p-4 rounded-md w-full mt-2"
                   value={communicationPreference}
@@ -181,7 +181,7 @@ export default function ProfileAttributesModification() {
 
             {/* Preferred Name */}
             <div>
-              <label className="block text-sm font-medium text-gray-700">Preferred Name</label>
+              <label className={`block text-sm  ${textColor} font-bold text-left"`}>Preferred Name</label>
               <input
                   type="text"
                   className="border border-gray-300 p-4 rounded-md w-full mt-2"
