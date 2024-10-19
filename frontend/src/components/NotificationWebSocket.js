@@ -1,3 +1,4 @@
+"use client"
 import React, { useEffect, useState } from 'react';
 
 // NotificationWebSocket 组件：接收通知并通过回调函数将数据传递给父组件

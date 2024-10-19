@@ -96,14 +96,22 @@ export default function Home() {
     const [Notifications_Profile, setNotifications_Profile] = useState([]);
     const [textColor, setTextColor] = useState('text-black');
 
-    const userId = localStorage.getItem('userId');
-    const role = localStorage.getItem('currentRole');
     // const token = localStorage.getItem('token');
     // if (!role.includes("walker")) {
     //     console.error('Not a walker, no fetch executed');
     //     return; // 如果不是 walker 角色，直接返回
     // }
-    const walkerId = parseInt(userId, 10); // 直接将 userId 设置为 walkerId
+    let walkerId = null;
+    let userId = null;
+    let role = null;
+    let token = null;
+    if (typeof window !== 'undefined' && window.localStorage) {
+        walkerId = localStorage.getItem('userId');
+        userId = localStorage.getItem('userId');
+        role = localStorage.getItem('currentRole');
+        token = localStorage.getItem('token');
+    }
+    //const walkerId = parseInt(userId, 10); // 直接将 userId 设置为 walkerId
     console.info("Walker ID set to: " + walkerId);
     console.info("Walker role set to: " + role);
     //根据walkerId获取notification
@@ -112,7 +120,7 @@ export default function Home() {
 
         const myInit = {
             method: 'GET',
-            headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')},
+            headers: {'Authorization': 'Bearer ' + token},
             mode: 'cors',
             cache: 'default'
         };
@@ -143,7 +151,7 @@ export default function Home() {
     useEffect(() => {
         const myInit = {
             method: 'GET',
-            headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')},
+            headers: {'Authorization': 'Bearer ' + token},
             mode: 'cors',
             cache: 'default'
         };
@@ -169,7 +177,7 @@ export default function Home() {
     function fetchData_Profile(userId) {
         return fetch(`http://localhost:8080/UPNotifications/getUPNotificationsByUserId/${userId}`, {
             method: 'GET',
-            headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')},
+            headers: {'Authorization': 'Bearer ' + token},
             mode: 'cors',
             cache: 'default'
         })
@@ -206,7 +214,7 @@ export default function Home() {
     useEffect(() => {
         const myInit = {
             method: 'GET',
-            headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')},
+            headers: {'Authorization': 'Bearer ' + token},
             mode: 'cors',
             cache: 'default'
         };
@@ -298,41 +306,5 @@ export default function Home() {
             </div>
         </BackgroundLayout>
     );
-
-
-// //原来页面
-// // return (
-// //
-//     <div className="flex flex-col h-screen bg-gray-100 p-4" style={{overflowY: 'auto'}}>
-//         // <Header title="Notification" navigateTo={"/message"}/>
-    //         {/* 保护性检查，只有当statusCards是非空数组时，才渲染 */}
-    //
-    //         {statusCards && statusCards.length > 0 && statusCards.map((card, index) => (
-    //             <StatusCard
-    //                 key={index}
-    //                 parentId={parentId}
-    //                 walkerId={walkerId}
-    //                 statusPrevious={card.statusPrevious}
-    //                 statusChanged={card.statusChanged}
-    //                 time={format(card.time, 'EEEE, MMMM do, yyyy, hh:mm:ss a')}
-    //             />
-    //         ))}
-    //     </div>
-    // );
-    测试页面
-    // {statusCards && statusCards.length > 0 && statusCards.map((card, index) => {
-    //     // 直接在 map 回调中执行 console.log
-    //     console.log(new Date(card.time));
-    //     return (
-    //         <StatusCard
-    //             key={index}
-    //             parentId={parentId}
-    //             walkerId={walkerId}
-    //             statusPrevious={card.statusPrevious}
-    //             statusChanged={card.statusChanged}
-    //             time={card.time}
-    //         />
-    //     );
-    // })}
 }
 

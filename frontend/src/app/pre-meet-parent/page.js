@@ -9,9 +9,16 @@ export default function PreMeetParent() {
   const [contactMethod, setContactMethod] = useState("phone");
   const [meetingDate, setMeetingDate] = useState("");
   const [meetingInfo, setMeetingInfo] = useState("");
-  const parentId = localStorage.getItem("preMeetIds")[0];
-  const walkerId = localStorage.getItem("preMeetIds")[2];
-  const requestId = localStorage.getItem("preMeetIds")[4];
+  let parentId = null;
+  let walkerId = null;
+  let requestId = null;
+  let token = null;
+  if (typeof window !== 'undefined' && window.localStorage) {
+    parentId = localStorage.getItem("preMeetIds")[0];
+    walkerId = localStorage.getItem("preMeetIds")[2];
+    requestId = localStorage.getItem("preMeetIds")[4];
+    token = localStorage.getItem('token');
+  }
 
   const data = {
     "time": "2024-10-01T14:00:00",
@@ -46,7 +53,7 @@ export default function PreMeetParent() {
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem('token')
+        'Authorization': 'Bearer ' + token
       },
       body: JSON.stringify(finalSendBody)
     })

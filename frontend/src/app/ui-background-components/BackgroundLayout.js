@@ -1,3 +1,4 @@
+"use client"
 // src/ui-background-components/BackgroundLayout.js
 
 import React, { useState, useEffect } from 'react';

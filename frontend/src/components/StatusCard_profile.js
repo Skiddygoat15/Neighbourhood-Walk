@@ -101,7 +101,7 @@
 //     );
 // }
 
-
+"use client"
 import React, {useEffect, useState} from 'react';
 
 export default function StatusCard({ showRedDot, title, statusChanged, time, notificationId, role}) {

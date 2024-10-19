@@ -26,8 +26,12 @@ export default function Home() {
     const [isDataReady, setIsDataReady] = useState(false);
 
     useEffect(() => {
-        const storedRole = localStorage.getItem("roles")?.slice(2, -2);
-        const storedUser = localStorage.getItem("userId");
+        let storedRole = null;
+        let storedUser = null;
+        if (typeof window !== 'undefined' && window.localStorage) {
+            storedRole = localStorage.getItem("roles")?.slice(2, -2);
+            storedUser = localStorage.getItem("userId");
+        }
         if (storedUser && storedRole) {
             setRoleFrom(storedRole);
             setUserIdFrom(storedUser);

@@ -1,3 +1,4 @@
+"use client"
 // ui-background-components/useTextColor.js
 import { useState, useEffect } from 'react';
 

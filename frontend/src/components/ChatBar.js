@@ -1,3 +1,4 @@
+"use client"
 // components/ChatBar.js
 import React, { useState } from 'react';
 

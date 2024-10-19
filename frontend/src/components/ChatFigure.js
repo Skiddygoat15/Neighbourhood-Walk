@@ -1,4 +1,4 @@
-
+"use client"
 // components/ChatMFigure.js
 function ChatMessage({ initials, message, time, backgroundColor = 'bg-black' }) {
     return (

@@ -6,7 +6,12 @@ import {useRouter} from "next/navigation";
 
 export default function PreMeetWalker() {
     const router = useRouter();
-    const walkerId = localStorage.getItem('userId');
+    let walkerId = null;
+    let token = null;
+    if (typeof window !== 'undefined' && window.localStorage) {
+        walkerId = localStorage.getItem('userId');
+        token = localStorage.getItem('token');
+    }
     const [preMeet, setPreMeet] = useState([]);  // store pre meet list
     const [error, setError] = useState(null);    // store error message
 
@@ -26,7 +31,7 @@ export default function PreMeetWalker() {
                 method: 'get', // use get method
                 credentials: 'include',  // Contains user credentials
                 headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                    'Authorization': 'Bearer ' + token
                 }
             });
             console.log(response);

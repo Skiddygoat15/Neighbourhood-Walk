@@ -1,19 +1,40 @@
 services:
   backend:
     build:
-      context: ./src
+      context: /
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/nwdb?useSSL=false&serverTimezone=UTC
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=123456
       - H2_CONSOLE_ENABLED=true
     depends_on:
-      - frontend
+          - mysql  # 指定依赖 MySQL 服务
 
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        - ESLINT_NO_DEV_ERRORS=true
+    command: ["npm", "run", "build"]  # 确保只运行 next build
     ports:
       - "3000:3000"
+    environment:
+      - ESLINT_NO_DEV_ERRORS=true
+
+  mysql:
+    image: mysql:latest  # 使用最新的 MySQL 镜像
+    ports:
+      - "3306:3306"  # 将 MySQL 端口映射到主机
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456  # 设置 MySQL root 用户密码
+      MYSQL_DATABASE: nwdb  # 创建一个名为 nwdb 的数据库
+    volumes:
+      - mysql_data:/var/lib/mysql  # 持久化 MySQL 数据
+
+volumes:
+  mysql_data:  # 定义持久化卷

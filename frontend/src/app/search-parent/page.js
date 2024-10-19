@@ -7,7 +7,12 @@ import useTextColor from '../ui-background-components/useTextColor';
 
 export default function SearchParent() {
   const router = useRouter();
-  const parentId = localStorage.getItem('userId');
+  let parentId = null;
+  let token = null;
+  if (typeof window !== 'undefined' && window.localStorage) {
+    parentId = localStorage.getItem('userId');
+    token = localStorage.getItem('token');
+  }
   const [gender, setGender] = useState('');
   const [distance, setDistance] = useState('');
   const [rating, setRating] = useState('');
@@ -42,7 +47,7 @@ export default function SearchParent() {
         method: 'get',  // 使用 GET 方法
         credentials: 'include',  // 包含用户凭证
         headers: {
-          'Authorization': 'Bearer ' + localStorage.getItem('token')
+          'Authorization': 'Bearer ' + token
         }
       });
       console.log(response);

@@ -1,5 +1,5 @@
 // components/TimeBar.js
-
+"use client"
 const TimeBar = ({time}) =>{
     return (
         <div className="text-center mx-auto">

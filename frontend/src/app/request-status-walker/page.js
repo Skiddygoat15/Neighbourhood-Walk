@@ -9,8 +9,12 @@ const RequestStatus = () => {
     const [requests, setRequests] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
-    const walkerId = localStorage.getItem("userId");
-    const token = localStorage.getItem("token");
+    let walkerId = null;
+    let token = null;
+    if (typeof window !== 'undefined' && window.localStorage) {
+        walkerId = localStorage.getItem('userId');
+        token = localStorage.getItem('token');
+    }
     const [textColor, setTextColor] = useState('text-black');
 
 

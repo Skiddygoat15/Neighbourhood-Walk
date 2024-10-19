@@ -1,6 +1,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import ClientOnlyNav from "../components/ClientOnlyNav";
+import NoSSRWrapper from '../components/NoSSRWrapper';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -13,7 +14,9 @@ export default function RootLayout({ children }) {
     return (
         <html lang="en">
         <body className={inter.className}>
+        <NoSSRWrapper>
         {children}
+        </NoSSRWrapper>
         {/* 导入客户端的底部导航栏组件 */}
         <ClientOnlyNav />
         </body>

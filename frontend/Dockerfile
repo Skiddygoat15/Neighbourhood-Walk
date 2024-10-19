@@ -6,7 +6,18 @@ WORKDIR /app
 
 # 复制 package.json 和 package-lock.json 安装依赖
 COPY package.json package-lock.json /app/
+
+# 安装依赖
 RUN npm install
+
+# 定义环境变量
+#ENV ESLINT_NO_DEV_ERRORS true
+
+# 5. 接受构建参数
+ARG ESLINT_NO_DEV_ERRORS
+
+# 6. 定义环境变量（确保从构建参数中接收）
+ENV ESLINT_NO_DEV_ERRORS=${ESLINT_NO_DEV_ERRORS}
 
 # 复制前端项目所有文件
 COPY . /app
