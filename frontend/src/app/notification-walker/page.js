@@ -87,6 +87,7 @@ import Header from "../../components/Header";
 import { format } from 'date-fns';
 import StatusCard_profile from "@/components/StatusCard_profile";
 import BackgroundLayout from '../ui-background-components/BackgroundLayout';
+import useTextColor from '../ui-background-components/useTextColor';
 
 export default function Home() {
     const [statusCards, setStatusCards] = useState([]); // 初始化为空数组
@@ -94,7 +95,7 @@ export default function Home() {
     const [walkerRequestId, setwalkerRequestId] = useState(0); // 初始化为空数组
     const [refreshKey, setRefreshKey] = useState(0); // 用于触发重新渲染的状态
     const [Notifications_Profile, setNotifications_Profile] = useState([]);
-    const [textColor, setTextColor] = useState('text-black');
+    const textColor = useTextColor();
 
     // const token = localStorage.getItem('token');
     // if (!role.includes("walker")) {
@@ -250,7 +251,7 @@ export default function Home() {
     return (
         <BackgroundLayout>
             <div className="flex flex-col h-screen p-4" style={{overflowY: 'auto'}}>
-                <Header title="Notification-parent" navigateTo={"/home-walker"}/>
+                <Header title="Notification-parent" navigateTo={"/home-walker"} textColor={textColor}/>
                 {/* 保护性检查，只有当statusCards是非空数组时，才渲染 */}
 
                 {statusCards && statusCards.length > 0 && statusCards

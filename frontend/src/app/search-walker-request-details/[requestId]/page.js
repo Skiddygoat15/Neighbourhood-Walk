@@ -185,7 +185,7 @@ export default function RequestDetails({params}) {
 
                 return (
                     <BackgroundLayout>
-                    <div className="p-4 rounded-lg shadow-md">
+                    <div className="p-4 rounded-lg bg-white shadow-md">
                         <div className="mb-4">
                             <p className="text-gray-600">Parent Name:</p>
                             <p className="text-black text-lg">{request.parent.name}</p>

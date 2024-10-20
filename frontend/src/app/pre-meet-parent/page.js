@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import BackgroundLayout from '../ui-background-components/BackgroundLayout';
+import useTextColor from '../ui-background-components/useTextColor';
 
 export default function PreMeetParent() {
   const router = useRouter();
@@ -9,6 +11,7 @@ export default function PreMeetParent() {
   const [contactMethod, setContactMethod] = useState("phone");
   const [meetingDate, setMeetingDate] = useState("");
   const [meetingInfo, setMeetingInfo] = useState("");
+  const textColor = useTextColor();
   let parentId = null;
   let walkerId = null;
   let requestId = null;
@@ -78,96 +81,99 @@ export default function PreMeetParent() {
   };
 
   return (
-      <main className="min-h-screen bg-white">
-        <div className="max-w-md mx-auto p-4 space-y-8">
+      <BackgroundLayout>
+        <main className="min-h-screen">
+          {/*<div className="max-w-md mx-auto p-4 space-y-8">*/}
           {/* Back Button */}
-          <button onClick={() => router.back()} className="text-2xl p-2 focus:outline-none">
+          <button onClick={() => router.back()} className={`text-2xl p-2 focus:outline-none ${textColor}`}>
             &larr;
           </button>
 
           {/* Title */}
-          <h1 className="text-3xl font-bold text-center">Pre-meet Form</h1>
+          <h1 className={`text-3xl font-bold text-center ${textColor}`}>Pre-meet Form</h1>
 
           {/* Subtitle */}
-          <p className="text-center text-sm text-gray-600">
+          <p className={`text-center text-sm ${textColor}`}>
             Please fill in the details to invite the walker for a pre-meet
           </p>
 
           {/* Form */}
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {/* Meeting Type */}
-            <div>
-              <label htmlFor="meetingType" className="block text-lg font-medium">
-                Meeting Type
-              </label>
-              <select
-                  id="meetingType"
-                  value={meetingType}
-                  onChange={(e) => setMeetingType(e.target.value)}
-                  className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+          <div className="max-w-md mx-auto p-4 bg-white">
+            <form onSubmit={handleSubmit} className="space-y-4">
+              {/* Meeting Type */}
+              <div>
+                <label htmlFor="meetingType" className="block text-lg font-medium">
+                  Meeting Type
+                </label>
+                <select
+                    id="meetingType"
+                    value={meetingType}
+                    onChange={(e) => setMeetingType(e.target.value)}
+                    className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+                >
+                  <option value="online">Online</option>
+                  <option value="offline">Face-to-Face</option>
+                </select>
+              </div>
+
+              {/* Contact Method */}
+              <div>
+                <label htmlFor="contactMethod" className="block text-lg font-medium">
+                  Contact Method
+                </label>
+                <p className="text-left text-sm text-gray-600">
+                  By providing contact method, your contact information will be sent to the walker you just accepted.
+                </p>
+                <select
+                    id="contactMethod"
+                    value={contactMethod}
+                    onChange={(e) => setContactMethod(e.target.value)}
+                    className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+                >
+                  <option value="Phone">Phone</option>
+                  <option value="Email">Email</option>
+                </select>
+              </div>
+
+              {/* Meeting Date and Time */}
+              <div>
+                <label htmlFor="meetingDate" className="block text-lg font-medium">
+                  Meeting Date and Time
+                </label>
+                <input
+                    type="datetime-local"
+                    id="meetingDate"
+                    value={meetingDate}
+                    onChange={(e) => setMeetingDate(e.target.value)}
+                    className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+                />
+              </div>
+
+              {/* Meeting Info */}
+              <div>
+                <label htmlFor="meetingInfo" className="block text-lg font-medium">
+                  Meeting Link or Address
+                </label>
+                <input
+                    type="text"
+                    id="meetingInfo"
+                    placeholder="Enter the meeting link or address"
+                    value={meetingInfo}
+                    onChange={(e) => setMeetingInfo(e.target.value)}
+                    className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+                />
+              </div>
+
+              {/* Submit Button */}
+              <button
+                  type="submit"
+                  className="w-full py-4 text-center bg-black text-white rounded-lg text-xl"
               >
-                <option value="online">Online</option>
-                <option value="offline">Face-to-Face</option>
-              </select>
+                Submit
+              </button>
+            </form>
             </div>
-
-            {/* Contact Method */}
-            <div>
-              <label htmlFor="contactMethod" className="block text-lg font-medium">
-                Contact Method
-              </label>
-              <p className="text-left text-sm text-gray-600">
-                By providing contact method, your contact information will be sent to the walker you just accepted.
-              </p>
-              <select
-                  id="contactMethod"
-                  value={contactMethod}
-                  onChange={(e) => setContactMethod(e.target.value)}
-                  className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-              >
-                <option value="Phone">Phone</option>
-                <option value="Email">Email</option>
-              </select>
-            </div>
-
-            {/* Meeting Date and Time */}
-            <div>
-              <label htmlFor="meetingDate" className="block text-lg font-medium">
-                Meeting Date and Time
-              </label>
-              <input
-                  type="datetime-local"
-                  id="meetingDate"
-                  value={meetingDate}
-                  onChange={(e) => setMeetingDate(e.target.value)}
-                  className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-              />
-            </div>
-
-            {/* Meeting Info */}
-            <div>
-              <label htmlFor="meetingInfo" className="block text-lg font-medium">
-                Meeting Link or Address
-              </label>
-              <input
-                  type="text"
-                  id="meetingInfo"
-                  placeholder="Enter the meeting link or address"
-                  value={meetingInfo}
-                  onChange={(e) => setMeetingInfo(e.target.value)}
-                  className="mt-1 block w-full border border-gray-300 rounded-md p-2"
-              />
-            </div>
-
-            {/* Submit Button */}
-            <button
-                type="submit"
-                className="w-full py-4 text-center bg-black text-white rounded-lg text-xl"
-            >
-              Submit
-            </button>
-          </form>
-        </div>
-      </main>
-  );
+        </main>
+      </BackgroundLayout>
+);
 }

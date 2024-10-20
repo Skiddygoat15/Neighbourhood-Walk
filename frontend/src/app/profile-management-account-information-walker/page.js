@@ -239,7 +239,7 @@ export default function ProfileManagementAccountInformationWalker() {
               <div className="flex justify-between items-center border-b py-2">
                 <span>Address</span>
                 <div className="flex items-center">
-                  <span>{userProfile.address}</span>
+                  <span className="text-right w-full">{userProfile.address}</span>
                 </div>
               </div>
 
