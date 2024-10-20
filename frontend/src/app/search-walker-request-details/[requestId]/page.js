@@ -185,7 +185,7 @@ export default function RequestDetails({params}) {
 
                 return (
                     <BackgroundLayout>
-                    <div className="p-4 rounded-lg shadow-md">
+                    <div className="p-4 bg-white rounded-lg shadow-md">
                         <div className="mb-4">
                             <p className="text-gray-600">Parent Name:</p>
                             <p className="text-black text-lg">{request.parent.name}</p>
@@ -312,9 +312,9 @@ export default function RequestDetails({params}) {
 
                 {/* show back icon and title*/}
                 <div className="flex items-center mt-2">
-                    <button onClick={() => handleBack()} className="mr-4">
+                    <button onClick={() => handleBack()} className={`mr-4 ${textColor}`}>
                         <svg
-                            className="w-6 h-6 text-black"
+                            className="w-6 h-6"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -334,34 +334,7 @@ export default function RequestDetails({params}) {
                 {/* display content*/}
                 {error && <p className="text-red-500">{error}</p>}
                 {renderContent()}
-                {/*<div className="p-4 bg-white rounded-lg shadow-md">*/}
 
-                {/*  <div className="mb-4">*/}
-                {/*    <p className="text-gray-600">Departure:</p>*/}
-                {/*    <p className="text-black text-lg">Darling Harbour</p>*/}
-                {/*  </div>*/}
-
-                {/*  <div className="mb-4">*/}
-                {/*    <p className="text-gray-600">Destination:</p>*/}
-                {/*    <p className="text-black text-lg">Sydney Opera House</p>*/}
-                {/*  </div>*/}
-
-                {/*  <div className="mb-4">*/}
-                {/*    <p className="text-gray-600">Estimated time:</p>*/}
-                {/*    <p className="text-black text-lg">*/}
-                {/*      8:00 AM Sun 11 Aug - 8:15 AM Sun 11 Aug*/}
-                {/*    </p>*/}
-                {/*  </div>*/}
-
-                {/*  <div className="mb-4 text-gray-500">*/}
-                {/*    Published by 1 hour ago*/}
-                {/*  </div>*/}
-
-
-                {/*  <button className="bg-black text-white px-4 py-2 rounded-lg w-full">*/}
-                {/*    Apply*/}
-                {/*  </button>*/}
-                {/*</div>*/}
 
             </div>
         </main>

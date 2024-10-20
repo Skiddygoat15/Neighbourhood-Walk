@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import BackgroundLayout from '../ui-background-components/BackgroundLayout';
+import useTextColor from '../ui-background-components/useTextColor';
 
 export default function PreMeetParent() {
   const router = useRouter();
@@ -12,6 +14,7 @@ export default function PreMeetParent() {
   const parentId = localStorage.getItem("preMeetIds")[0];
   const walkerId = localStorage.getItem("preMeetIds")[2];
   const requestId = localStorage.getItem("preMeetIds")[4];
+  const textColor = useTextColor();
 
   const data = {
     "time": "2024-10-01T14:00:00",
@@ -71,22 +74,24 @@ export default function PreMeetParent() {
   };
 
   return (
-      <main className="min-h-screen bg-white">
-        <div className="max-w-md mx-auto p-4 space-y-8">
-          {/* Back Button */}
-          <button onClick={() => router.back()} className="text-2xl p-2 focus:outline-none">
-            &larr;
-          </button>
+      <BackgroundLayout>
+      <main className="min-h-screen">
 
-          {/* Title */}
-          <h1 className="text-3xl font-bold text-center">Pre-meet Form</h1>
+        {/* Back Button */}
+        <button onClick={() => router.back()} className={`text-2xl p-2 focus:outline-none ${textColor}`}>
+          &larr;
+        </button>
 
-          {/* Subtitle */}
-          <p className="text-center text-sm text-gray-600">
-            Please fill in the details to invite the walker for a pre-meet
-          </p>
+        {/* Title */}
+        <h1 className={`text-3xl font-bold text-center ${textColor}`}>Pre-meet Form</h1>
 
-          {/* Form */}
+        {/* Subtitle */}
+        <p className={`text-center text-sm ${textColor}`}>
+          Please fill in the details to invite the walker for a pre-meet
+        </p>
+
+        {/* Form */}
+        <div className="max-w-md mx-auto p-4 bg-white">
           <form onSubmit={handleSubmit} className="space-y-4">
             {/* Meeting Type */}
             <div>
@@ -162,5 +167,6 @@ export default function PreMeetParent() {
           </form>
         </div>
       </main>
+        </BackgroundLayout>
   );
 }

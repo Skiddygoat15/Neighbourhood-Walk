@@ -129,7 +129,7 @@ const RequestStatus = () => {
                         <div key={index}
                              className="bg-white shadow-md rounded-lg mt-6 p-4 w-11/12 max-w-lg">
                             <h2 className={`text-xl font-semibold ${textColor}`}>Trip request</h2>
-                            <div className="mt-4">
+                            <div className="mt-1">
                                 <p><strong>Departure:</strong> {request.request.departure}</p>
                                 <p><strong>Destination:</strong> {request.request.destination}</p>
                                 <p><strong>Start time:</strong> {formatDateTime(request.request.startTime)}</p>
@@ -137,7 +137,7 @@ const RequestStatus = () => {
                                 <p className="text-gray-500 text-sm mt-2">Published
                                     by {formatDateTime(request.request.publishDate)}</p>
                             </div>
-                            <div className="mt-4 border-t pt-4">
+                            <div className="mt-2 border-t pt-2">
                                 {/* Status Display */}
                                 {renderStatusMessage(request.status)}
                             </div>
