@@ -3,6 +3,8 @@
 import {useEffect, useState} from 'react';
 import { useRouter } from 'next/navigation';
 import { geocodeAddress } from '@/components/geocode';
+import useTextColor from '../ui-background-components/useTextColor';
+import BackgroundLayout from '../ui-background-components/BackgroundLayout';
 
 export default function UpdateRequest() {
   const router = useRouter();
@@ -14,6 +16,7 @@ export default function UpdateRequest() {
   const [request, setRequest] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const textColor = useTextColor();
 
   const [sendBody, setSendBody] = useState({
     startTime: new Date(),
@@ -149,107 +152,142 @@ export default function UpdateRequest() {
   }
 
   return (
-    <main className="min-h-screen bg-white">
-      <div className="max-w-md mx-auto p-4 space-y-8">
-        {/* Back Button */}
-        <button onClick={() => router.push("/request-my-request")} className="text-2xl p-2 focus:outline-none">
-          &larr;
-        </button>
-        {error && <p className="text-red-500 text-center">{error}</p>}
+      <BackgroundLayout>
+    <main className="min-h-screen">
+      {/* Back Button */}
+      <button onClick={() => router.push("/request-my-request")} className={`text-2xl ${textColor} p-4 text-left`}>
+        &larr;
+      </button>
+      {error && <p className="text-red-500 text-center">{error}</p>}
 
-        {/* Title */}
-        <h1 className="text-2xl font-bold text-center">Update request</h1>
+      <div className="max-w-md mx-auto p-4 space-y-8 sm:max-w-lg md:max-w-xl lg:max-w-2xl">
+        <div className="border p-4 bg-white rounded-lg space-y-2">
 
-        {/* Update Fields */}
-        <div className="space-y-4">
-          {/* Departure Field */}
-          <div>
-            <label className="block text-lg font-medium mb-2">Departure:</label>
-            <div className="flex justify-between items-center">
-              <input
-                type="text"
-                value={sendBody.departure}
-                onChange={(e) => setSendBody(
-                    (prevSendBody) => ({
-                      ...prevSendBody,
-                      departure: e.target.value
-                    }))}
-                className="w-full border-b-2 border-black focus:outline-none"
-              />
-              <button>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6 ml-2">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                </svg>
-              </button>
+          {/* Title */}
+          <h1 className="text-2xl font-bold text-center">Update request</h1>
+
+          {/* Update Fields */}
+          <div className="space-y-4">
+            {/* Departure Field */}
+            <div>
+              <label className="block text-lg font-medium mb-2">Departure:</label>
+              <div className="flex justify-between items-center">
+                <input
+                    type="text"
+                    value={sendBody.departure}
+                    onChange={(e) => setSendBody(
+                        (prevSendBody) => ({
+                          ...prevSendBody,
+                          departure: e.target.value
+                        }))}
+                    className="w-full border-b-2 border-black focus:outline-none"
+                />
+                <button>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                       className="w-6 h-6 ml-2">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4"/>
+                  </svg>
+                </button>
+              </div>
             </div>
-          </div>
 
-          {/* Destination Field */}
-          <div>
-            <label className="block text-lg font-medium mb-2">Destination:</label>
-            <div className="flex justify-between items-center">
-              <input
-                type="text"
-                value={sendBody.destination}
-                onChange={(e) => setSendBody(
-                    (prevSendBody) => ({
-                      ...prevSendBody,
-                      destination: e.target.value
-                    }))}
-                className="w-full border-b-2 border-black focus:outline-none"
-              />
-              <button>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6 ml-2">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                </svg>
-              </button>
+            {/* Destination Field */}
+            <div>
+              <label className="block text-lg font-medium mb-2">Destination:</label>
+              <div className="flex justify-between items-center">
+                <input
+                    type="text"
+                    value={sendBody.destination}
+                    onChange={(e) => setSendBody(
+                        (prevSendBody) => ({
+                          ...prevSendBody,
+                          destination: e.target.value
+                        }))}
+                    className="w-full border-b-2 border-black focus:outline-none"
+                />
+                <button>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                       className="w-6 h-6 ml-2">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4"/>
+                  </svg>
+                </button>
+              </div>
             </div>
-          </div>
 
-          <div>
-            <label className="block text-lg font-semibold">Details:</label>
-            <input
-                type="text"
-                value={sendBody.details}
-                onChange={(e) => setSendBody(
-                    (prevSendBody) => ({
-                      ...prevSendBody,
-                      details: e.target.value
-                    }))}
-                placeholder="Enter walk details"
-                className="w-full p-3 border border-black rounded-lg"
-            />
-          </div>
-
-          {/* Estimated Departure */}
-          <div>
-            <label className="block text-lg font-semibold">Estimated departure:</label>
-            <div className="flex space-x-4">
+            <div>
+              <label className="block text-lg font-semibold">Details:</label>
               <input
-                  type="date"
-                  value={date}
-                  onChange={(e) => setDate(e.target.value)}
+                  type="text"
+                  value={sendBody.details}
+                  onChange={(e) => setSendBody(
+                      (prevSendBody) => ({
+                        ...prevSendBody,
+                        details: e.target.value
+                      }))}
+                  placeholder="Enter walk details"
                   className="w-full p-3 border border-black rounded-lg"
               />
+            </div>
+
+            {/* Estimated Departure */}
+            <div>
+              <label className="block text-lg font-semibold">Estimated departure:</label>
+              <div className="flex text-sm space-x-2">
+                <input
+                    type="date"
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
+                    className="w-full p-3 border border-black rounded-lg"
+                />
+                <div className="flex text-sm space-x-2">
+                  <input
+                      type="number"
+                      value={departureTime.hour}
+                      onChange={(e) => setDepartureTime({...departureTime, hour: e.target.value})}
+                      placeholder="HH"
+                      className="w-12 p-3 border border-black rounded-lg text-center"
+                  />
+                  <span className="text-sm">:</span>
+                  <input
+                      type="number"
+                      value={departureTime.minute}
+                      onChange={(e) => setDepartureTime({...departureTime, minute: e.target.value})}
+                      placeholder="MM"
+                      className="w-12 p-3 border border-black rounded-lg text-center"
+                  />
+                  <select
+                      value={departureTime.period}
+                      onChange={(e) => setDepartureTime({...departureTime, period: e.target.value})}
+                      className="w-15 p-2 border border-black rounded-lg text-sm ml-[10px]"
+                  >
+                    <option value="AM">AM</option>
+                    <option value="PM">PM</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            {/* Estimated Arrival */}
+            <div>
+              <label className="block text-lg font-semibold">Estimated Arrival:</label>
               <div className="flex space-x-2">
                 <input
                     type="number"
-                    value={departureTime.hour}
-                    onChange={(e) => setDepartureTime({ ...departureTime, hour: e.target.value })}
+                    value={arriveTime.hour}
+                    onChange={(e) => setArriveTime({...arriveTime, hour: e.target.value})}
                     placeholder="HH"
                     className="w-16 p-3 border border-black rounded-lg text-center"
                 />
                 <span className="text-lg">:</span>
                 <input
                     type="number"
-                    value={departureTime.minute}
-                    onChange={(e) => setDepartureTime({ ...departureTime, minute: e.target.value })}
+                    value={arriveTime.minute}
+                    onChange={(e) => setArriveTime({...arriveTime, minute: e.target.value})}
                     placeholder="MM"
                     className="w-16 p-3 border border-black rounded-lg text-center"
                 />
                 <select
-                    value={departureTime.period}
-                    onChange={(e) => setDepartureTime({ ...departureTime, period: e.target.value })}
+                    value={arriveTime.period}
+                    onChange={(e) => setArriveTime({...arriveTime, period: e.target.value})}
                     className="p-3 border border-black rounded-lg"
                 >
                   <option value="AM">AM</option>
@@ -257,46 +295,18 @@ export default function UpdateRequest() {
                 </select>
               </div>
             </div>
-          </div>
-          {/* Estimated Arrival */}
-          <div>
-            <label className="block text-lg font-semibold">Estimated Arrival:</label>
-            <div className="flex space-x-2">
-              <input
-                  type="number"
-                  value={arriveTime.hour}
-                  onChange={(e) => setArriveTime({ ...arriveTime, hour: e.target.value })}
-                  placeholder="HH"
-                  className="w-16 p-3 border border-black rounded-lg text-center"
-              />
-              <span className="text-lg">:</span>
-              <input
-                  type="number"
-                  value={arriveTime.minute}
-                  onChange={(e) => setArriveTime({ ...arriveTime, minute: e.target.value })}
-                  placeholder="MM"
-                  className="w-16 p-3 border border-black rounded-lg text-center"
-              />
-              <select
-                  value={arriveTime.period}
-                  onChange={(e) => setArriveTime({ ...arriveTime, period: e.target.value })}
-                  className="p-3 border border-black rounded-lg"
-              >
-                <option value="AM">AM</option>
-                <option value="PM">PM</option>
-              </select>
-            </div>
-          </div>
 
-          {/* Update Button */}
-          <button
-            onClick={handleUpdate}
-            className="w-full py-3 bg-black text-white rounded-full font-semibold hover:bg-gray-800"
-          >
-            Update
-          </button>
+            {/* Update Button */}
+            <button
+                onClick={handleUpdate}
+                className="w-full py-3 bg-black text-white rounded-full font-semibold hover:bg-gray-800"
+            >
+              Update
+            </button>
+          </div>
         </div>
-      </div>
+        </div>
     </main>
-  );
+      </BackgroundLayout>
+);
 }

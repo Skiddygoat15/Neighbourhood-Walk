@@ -161,18 +161,19 @@ export default function WalkRequestManagementParent() {
 
     return (
         <BackgroundLayout>
+            {/* Back Button */}
+            <button onClick={() => router.back()} className={`text-2xl ${textColor} p-4 text-left`}>
+                &larr;
+            </button>
         <main className="h-screen flex flex-col justify-center pb-10">
             <div className="w-full px-4 space-y-6 pb-14">
-                {/* Back Button */}
-                <button onClick={() => router.back()} className="text-2xl p-2 focus:outline-none">
-                    &larr;
-                </button>
+
                 {/* Title */}
                 <h1 className={`text-2xl font-semibold mt-3 ${textColor} text-center`}>Create your request</h1>
                 {error && <p className="text-red-500 text-center">{error}</p>}
                 {/* Departure Input */}
                 <div>
-                    <label className="block text-lg font-semibold">Departure:</label>
+                    <label className={`block text-lg ${textColor} font-semibold"`}>Departure:</label>
                     <input
                         type="text"
                         value={sendBody.departure}
@@ -187,7 +188,7 @@ export default function WalkRequestManagementParent() {
                 </div>
                 {/* Destination Input */}
                 <div>
-                    <label className="block text-lg font-semibold">Destination:</label>
+                    <label className={`block text-lg ${textColor} font-semibold"`}>Destination:</label>
                     <input
                         type="text"
                         value={sendBody.destination}
@@ -202,7 +203,7 @@ export default function WalkRequestManagementParent() {
                 </div>
                 {/* details Input */}
                 <div>
-                    <label className="block text-lg font-semibold">Details:</label>
+                    <label className={`block text-lg ${textColor} font-semibold"`}>Details:</label>
                     <input
                         type="text"
                         value={sendBody.details}
@@ -217,7 +218,7 @@ export default function WalkRequestManagementParent() {
                 </div>
                 {/* Estimated Departure */}
                 <div>
-                    <label className="block text-lg font-semibold">Estimated departure:</label>
+                    <label className={`block text-lg ${textColor} font-semibold"`}>Estimated departure:</label>
                     <div className="flex space-x-3">
                         <input
                             type="date"
@@ -254,7 +255,7 @@ export default function WalkRequestManagementParent() {
                 </div>
                 {/* Estimated Arrival */}
                 <div>
-                    <label className="block text-lg font-semibold">Estimated Arrival:</label>
+                    <label className={`block text-lg ${textColor} font-semibold"`}>Estimated Arrival:</label>
                     <div className="flex text-sm space-x-2">
                         <input
                             type="number"

@@ -5,9 +5,10 @@ import StatusCard_profile from '../../components/StatusCard_profile';
 import Header from "../../components/Header";
 import { format } from 'date-fns';
 import BackgroundLayout from '../ui-background-components/BackgroundLayout';
+import useTextColor from '../ui-background-components/useTextColor';
 
 export default function Home() {
-    const [textColor, setTextColor] = useState('text-black');
+    //const [textColor, setTextColor] = useState('text-black');
     const [requestIds, setrequestIds] = useState([]); // 初始化为空数组
     const [Notifications,setNotifications] = useState([]);
     const [Notifications_Profile, setNotifications_Profile] = useState([]);
@@ -28,6 +29,7 @@ export default function Home() {
         token = localStorage.getItem('token');
     }
     //const parentId = parseInt(userId, 10); // 直接将 userId 设置为 parentId
+    const textColor = useTextColor();
     // console.info("parentId ID set to: " + parentId);
     // console.info("parentId role set to: " + role);
 
@@ -53,18 +55,6 @@ export default function Home() {
             .catch(error => {
                 console.error('Error fetching data:', error);});
     },[parentId, refreshKey]);
-
-    useEffect(() => {
-        const currentTime = new Date();
-        const currentHour = currentTime.getHours();
-        if (currentHour >= 6 && currentHour < 12) {
-            setTextColor('text-black');
-        } else if (currentHour >= 12 && currentHour < 17) {
-            setTextColor('text-black');
-        } else {
-            setTextColor('text-white');
-        }
-    });
 
 
         // useEffect(() => {
@@ -220,7 +210,7 @@ export default function Home() {
     return (
         <BackgroundLayout>
         <div className="flex flex-col h-screen p-4" style={{ overflowY: 'auto' }}>
-            <Header title="Notification-parent" navigateTo={"/home-parent"} />
+            <Header title="Notification-parent" navigateTo={"/home-parent"} textColor={textColor} />
 
             {/* 保护性检查，只有当 Notifications 是非空数组时，才渲染 */}
             {Notifications && Notifications.length > 0 && Notifications.map((notification, index) => {

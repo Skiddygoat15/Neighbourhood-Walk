@@ -4,6 +4,8 @@ import {useRouter} from 'next/navigation';
 
 // import { useRouter } from 'next/router';
 import {useEffect, useState} from 'react';
+import useTextColor from '../../ui-background-components/useTextColor';
+import BackgroundLayout from '../../ui-background-components/BackgroundLayout';
 
 
 export default function MyRequestApplication({ params }) {
@@ -14,6 +16,7 @@ export default function MyRequestApplication({ params }) {
   const [error, setError] = useState('');
   const [request, setRequest] = useState(null); // 使用 useState 管理 request
   const [acceptedWalker, setAcceptedWalker] = useState(null); // 用于管理被接受的 walker
+  const textColor = useTextColor();
   function formatDateTimeToCustom(dateString) {
     const date = new Date(dateString);
     const formattedDate = date.toLocaleDateString('en-US', {
@@ -224,17 +227,20 @@ export default function MyRequestApplication({ params }) {
 
 
   if (loading) {
-    return <main className="min-h-screen bg-white">
-      <div className="max-w-md mx-auto p-4 space-y-8">
+    return <BackgroundLayout>
+    <main className="min-h-screen">
+      {/* 标题 */}
+      <h1 className="text-2xl font-bold text-center mt-10">My Request Application</h1>
+
+      <div className="mx-auto p-16 space-y-8">
         {/* 返回按钮 */}
         <button onClick={() => router.back()} className="text-2xl p-2 focus:outline-none">
           &larr;
         </button>
-        {/* 标题 */}
-        <h1 className="text-2xl font-bold text-center">My Request Application</h1>
+
 
         {/* 展示 request 详情 */}
-        <div className="border p-4 rounded-lg space-y-2">
+        <div className="border rounded-lg space-y-2 mt-20">
           <div className="flex justify-between">
             <span className="font-bold">Trip request</span>
             <button className="text-lg">
@@ -284,20 +290,23 @@ export default function MyRequestApplication({ params }) {
         </div>
       </div>
     </main>
+    </BackgroundLayout>
   }
   if (error) return <p>{error}</p>;
   return (
-      <main className="min-h-screen bg-white">
-        <div className="max-w-md mx-auto p-4 space-y-8">
-          {/* 返回按钮 */}
-          <button onClick={() => router.back()} className="text-2xl p-2 focus:outline-none">
-            &larr;
-          </button>
-          {/* 标题 */}
-          <h1 className="text-2xl font-bold text-center">My Request Application</h1>
+    <BackgroundLayout>
+      <main className="min-h-screen">
+        {/* 返回按钮 */}
+        <button onClick={() => router.back()} className={`text-2xl ${textColor} p-2 focus:outline-none`}>
+          &larr;
+        </button>
+        {/* 标题 */}
+
+          <h1 className={`text-2xl ${textColor} font-bold text-center mb-10`}>My Request Application</h1>
 
           {/* 展示 request 详情 */}
-          <div className="border p-4 rounded-lg space-y-2">
+        {/*<div className="border p-4 rounded-lg space-y-2">*/}
+          <div className="border p-4 bg-white rounded-lg space-y-2">
             <div className="flex justify-between">
               <span className="font-bold">Trip request</span>
               <button className="text-lg">
@@ -346,8 +355,8 @@ export default function MyRequestApplication({ params }) {
                     <p>No applicants found.</p>
                 )
             )}
-          </div>
         </div>
       </main>
+    </BackgroundLayout>
   );
 }

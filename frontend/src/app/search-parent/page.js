@@ -102,7 +102,7 @@ export default function SearchParent() {
 
   return (
       <BackgroundLayout>
-        <div className="bg-opacity-75 p-4 rounded-lg shadow-md w-full mx-auto mb-20">
+        <div className="bg-opacity-75 p-4 rounded-lg w-full mx-auto mb-20">
 
           <h1 className={`text-2xl font-semibold mb-4 lg:text-3xl ${textColor}`}>Search</h1>
 

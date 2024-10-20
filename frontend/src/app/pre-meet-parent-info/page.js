@@ -3,6 +3,8 @@
 
 import {useState, useEffect} from 'react';
 import {useRouter} from "next/navigation";
+import BackgroundLayout from '../ui-background-components/BackgroundLayout';
+import useTextColor from '../ui-background-components/useTextColor';
 
 export default function PreMeetParent() {
     const router = useRouter();
@@ -14,6 +16,7 @@ export default function PreMeetParent() {
     }
     const [preMeet, setPreMeet] = useState([]);  // store pre meet list
     const [error, setError] = useState(null);    // store error message
+    const textColor = useTextColor();
 
     useEffect(() => {
         handleSearch();  // Perform search for ALL pre-meet at first render
@@ -90,13 +93,14 @@ export default function PreMeetParent() {
     };
 
     return (
-        <div className="min-h-screen bg-gray-100">
-            <div className="bg-white p-4 rounded-lg shadow-md max-w-md mx-auto mt-4">
+        <BackgroundLayout>
+        <div className="min-h-screen">
+            <div className=" p-4 rounded-lg mt-4">
                 {/* show back icon and title*/}
                 <div className="flex items-center mb-4">
-                    <button onClick={() => handleBack()} className="mr-4">
+                    <button onClick={() => handleBack()} className={`mr-4 ${textColor}`}>
                         <svg
-                            className="w-6 h-6 text-black"
+                            className={`w-6 h-6 text-black ${textColor}`}
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -110,7 +114,7 @@ export default function PreMeetParent() {
                             />
                         </svg>
                     </button>
-                    <h1 className="text-2xl font-semibold">Pre-Meet Details</h1>
+                    <h1 className={`text-2xl ${textColor} font-semibold`}>Pre-Meet Details</h1>
                 </div>
 
                 {/* display content*/}
@@ -137,11 +141,12 @@ export default function PreMeetParent() {
                             </div>
                         ))
                     ) : (
-                        <p className="text-center">No pre-meet request found</p>
+                        <p className={`text-center ${textColor}`}>No pre-meet request found</p>
                     )}
                 </div>
 
             </div>
         </div>
+        </BackgroundLayout>
     );
 }
