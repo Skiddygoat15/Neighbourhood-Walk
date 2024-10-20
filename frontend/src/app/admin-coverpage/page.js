@@ -1,11 +1,15 @@
 // src/app/Admin/page.js
 "use client";
 
-import React, { useEffect, useState } from 'react';
+// import React, { useEffect, useState } from 'react';
 import {useRouter} from "next/navigation";
+import BackgroundLayout from '../ui-background-components/BackgroundLayout';
+import useTextColor from '../ui-background-components/useTextColor';
+import { useEffect, useState } from 'react';
 
 export default function AdminPage() {
   const router = useRouter();
+  const textColor = useTextColor();
 
     const [userStats, setUserStats] = useState({
         totalUsers: 0,
@@ -65,9 +69,9 @@ export default function AdminPage() {
     };
 
   return (
-      <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-start py-12">
+    <BackgroundLayout>
           {/* Admin Dashboard Title */}
-          <h1 className="text-4xl font-bold text-gray-800 mb-8">Admin Dashboard</h1>
+                <h1 className={`text-3xl font-bold text-center mt-8 mb-4 ${textColor}`}>Admin Dashboard</h1>
 
           {/* Statistics Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl px-4">
@@ -108,22 +112,22 @@ export default function AdminPage() {
           </div>
 
           {/* Management Buttons Section */}
-          <div className="flex flex-col space-y-4 w-full max-w-sm mt-10">
-              <button
-                  onClick={() => router.push("/admin-user-management")}
-                  className="w-full bg-blue-600 text-white py-3 rounded-lg border-black shadow-lg hover:bg-blue-700 transition duration-200"
-              >
-                  User Management
-              </button>
+              <div className="space-y-2 items-center w-full max-w-sm mt-60">
+                  <button
+                      onClick={() => router.push("/admin-user-management")}
+                      className="w-full mt-2 bg-blue-600 text-white py-3 rounded-lg border-black shadow-lg hover:bg-blue-900 transition duration-100"
+                  >
+                      User Management
+                  </button>
 
               <button
-                  onClick={() => router.push("/admin-content-management")}
-                  className="w-full bg-green-600 text-white py-3 rounded-lg shadow-lg hover:bg-green-700 transition duration-200"
-              >
-                  Content Management
-              </button>
-          </div>
-      </div>
+                      onClick={() => router.push("/admin-content-management")}
+                      className="w-full mt-2 bg-green-600 text-white py-3 rounded-lg shadow-lg hover:bg-green-900 transition duration-100"
+                  >
+                      Content Management
+                  </button>
+              </div>
+      </BackgroundLayout>
 
   );
 }
