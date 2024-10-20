@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from "next/navigation";
 import moment from 'moment';
+import BackgroundLayout from '../ui-background-components/BackgroundLayout';
+import useTextColor from '../ui-background-components/useTextColor';
 
 export default function AdminContentManagement() {
     const router = useRouter();
@@ -10,6 +12,7 @@ export default function AdminContentManagement() {
     const [requests, setRequests] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
+    const textColor = useTextColor();
 
     // 每次搜索框内容变化时触发
     useEffect(() => {
@@ -160,13 +163,14 @@ export default function AdminContentManagement() {
     };
 
     return (
-        <div className="min-h-screen bg-gray-100">
-            <div className="bg-white p-4 rounded-lg shadow-md max-w-md mx-auto mt-4">
+        <BackgroundLayout>
+        <div className="min-h-screen px-2 mb-8">
+             {/*<div className="bg-white p-4 rounded-lg shadow-md max-w-md mx-auto mt-4">*/}
                 {/* Back Button */}
-                <button onClick={() => router.back()} className="text-2xl p-2 focus:outline-none">
+                <button onClick={() => router.back()} className={`text-2xl p-2 focus:outline-none ${textColor}`}>
                     &larr;
                 </button>
-                <h1 className="text-2xl font-semibold mb-4">Admin Content Management</h1>
+                 <h1 className={`text-2xl font-semibold ${textColor} mb-4`}>Admin Content Management</h1>
                 <div className="relative mb-4">
                     <div className="flex items-center space-x-2 mb-2">
                         {/* input bar */}
@@ -215,7 +219,7 @@ export default function AdminContentManagement() {
                         <p className="text-center">Loading...</p>
                     ) : requests.length > 0 ? (
                         requests.map((request) => (
-                            <div key={request.requestId} className="border rounded-lg p-4 flex items-center space-x-4">
+                            <div key={request.requestId} className="border rounded-lg p-4 flex items-center space-x-4 bg-white">
                                 <div>
                                     <p><strong>Departure:</strong> {request.departure}</p>
                                     <p><strong>Destination:</strong> {request.destination}</p>
@@ -242,5 +246,6 @@ export default function AdminContentManagement() {
                 </div>
             </div>
         </div>
+    </BackgroundLayout>
     );
 }
