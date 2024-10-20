@@ -3,6 +3,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from "next/navigation";
+import BackgroundLayout from '../ui-background-components/BackgroundLayout';
+import useTextColor from '../ui-background-components/useTextColor';
 
 export default function AdminUserManagement() {
     const router = useRouter();
@@ -10,6 +12,7 @@ export default function AdminUserManagement() {
     const [users, setUsers] = useState([]);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
+    const textColor = useTextColor();
 
     // 每次输入框内容变化时触发搜索
     useEffect(() => {
@@ -209,14 +212,13 @@ export default function AdminUserManagement() {
     };
 
     return (
-        <div className="min-h-screen bg-gray-100">
-
-            <div className="bg-white p-4 rounded-lg shadow-md max-w-md mx-auto mt-4">
+        <BackgroundLayout>
+        <div className="min-h-screen px-2 mb-8">
                 {/* Back Button */}
-                <button onClick={() => router.back()} className="text-2xl p-2 focus:outline-none">
+                <button onClick={() => router.back()} className={`text-2xl p-2 focus:outline-none ${textColor}`}>
                     &larr;
                 </button>
-                <h1 className="text-2xl font-semibold mb-4">Admin User Management</h1>
+                <h1 className={`text-2xl font-semibold ${textColor} mb-4`}>Admin User Management</h1>
 
                 <div className="relative mb-4">
                     <div className="flex items-center space-x-2 mb-2">
@@ -321,6 +323,5 @@ export default function AdminUserManagement() {
                     )}
                 </div>
             </div>
-        </div>
+    </BackgroundLayout>
     );
-}
