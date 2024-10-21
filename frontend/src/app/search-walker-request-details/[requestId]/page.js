@@ -312,7 +312,7 @@ export default function RequestDetails({params}) {
 
                 {/* show back icon and title*/}
                 <div className="flex items-center mt-2">
-                    <button onClick={() => handleBack()} className="mr-4">
+                    <button onClick={() => handleBack()} className={`mr-4 ${textColor}`}>
                         <svg
                             className="w-6 h-6 text-black"
                             fill="none"

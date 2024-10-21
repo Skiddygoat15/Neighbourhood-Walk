@@ -224,7 +224,8 @@ export default function StatusCard({ showRedDot, title, statusChanged, time, not
             margin: '10px 0',
             display: 'flex',
             flexDirection: 'column',
-            justifyContent: 'space-between'
+            justifyContent: 'space-between',
+            backgroundColor: 'white'
         }}>
             {/*<div style={{marginBottom: '8px', color: 'blue'}}>*/}
             {/*    <strong>showRedDot: {showRedDot === true ? 'true' : 'false'}</strong>*/}
