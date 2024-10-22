@@ -17,9 +17,10 @@ export default function PreMeetParent() {
   let requestId = null;
   let token = null;
   if (typeof window !== 'undefined' && window.sessionStorage) {
-    parentId = sessionStorage.getItem("preMeetIds")[0];
-    walkerId = sessionStorage.getItem("preMeetIds")[2];
-    requestId = sessionStorage.getItem("preMeetIds")[4];
+    let preMeetIds = sessionStorage.getItem("preMeetIds").split(',');
+    parentId = preMeetIds[0];
+    walkerId = preMeetIds[1];
+    requestId = preMeetIds[2];
     token = sessionStorage.getItem('token');
   }
 
