@@ -47,6 +47,16 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
+    public List<Request> getRequestsByWalkerId(Long userId) {
+        List<Request> requests = requestRepository.findByWalkerId(userId);
+        return requests;
+    }
+    @Override
+    public Users getWalkerByRequestId(int requestId){
+        return requestRepository.findWalkerByRequestId(requestId);
+    }
+
+    @Override
     public List<RequestDTO> getAllRequests() {
         // List<Request> requests = requestRepository.findAll();
         // 获取所有的 Request 列表

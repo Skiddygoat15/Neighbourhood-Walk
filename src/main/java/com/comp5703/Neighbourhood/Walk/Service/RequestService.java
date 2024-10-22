@@ -1,6 +1,7 @@
 package com.comp5703.Neighbourhood.Walk.Service;
 
 import com.comp5703.Neighbourhood.Walk.Entities.Request;
+import com.comp5703.Neighbourhood.Walk.Entities.Users;
 import com.comp5703.Neighbourhood.Walk.Entities.RequestDTO;
 import com.comp5703.Neighbourhood.Walk.Entities.WalkerRequest;
 
@@ -19,9 +20,11 @@ public interface RequestService {
     void deleteRequest(int requestId);
     void cancelApply(int requestId, long walkerId);
     RequestDTO getRequestById(int requestId);
+    List<Request> getRequestsByWalkerId(Long userId);
     public List<RequestDTO> getAllRequests();
 
     WalkerRequest applyRequest(int requestId, long walkerId);
+    Users getWalkerByRequestId(int requestId);
 
 
     // byron

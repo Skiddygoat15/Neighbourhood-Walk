@@ -138,15 +138,15 @@ export default function Home() {
                 console.error('Error fetching data:', error);});
         },[userId]);
 
-    useEffect(() => {
-        // 设置字体颜色基于当前时间
-        const currentHour = new Date().getHours();
-        if (currentHour >= 6 && currentHour < 17) {
-            setTextColor('text-black');  // 上午和下午使用黑色字体
-        } else {
-            setTextColor('text-white');  // 晚上和午夜使用白色字体
-        }
-    }, []);
+    // useEffect(() => {
+    //     // 设置字体颜色基于当前时间
+    //     const currentHour = new Date().getHours();
+    //     if (currentHour >= 6 && currentHour < 17) {
+    //         setTextColor('text-black');  // 上午和下午使用黑色字体
+    //     } else {
+    //         setTextColor('text-white');  // 晚上和午夜使用白色字体
+    //     }
+    // }, []);
 
     //根据walkerId获取walkerRequestId
     useEffect(() => {

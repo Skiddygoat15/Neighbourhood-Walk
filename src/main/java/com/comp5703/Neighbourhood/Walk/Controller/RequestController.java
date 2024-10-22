@@ -31,12 +31,28 @@ public class RequestController {
         return new ResponseEntity<>(requests, HttpStatus.OK);
     }
 
+    @GetMapping("/getRequestsByWalkerId/{walkerId}")
+    public ResponseEntity<List<Request>> getRequestsByWalkerId(@PathVariable Long walkerId) {
+        List<Request> requests = requestService.getRequestsByWalkerId(walkerId);
+        return new ResponseEntity<>(requests, HttpStatus.OK);
+    }
+
     @GetMapping("/getRequestByRequestId/{requestId}")
     public ResponseEntity<?> getRequestById(@PathVariable int requestId) {
         try {
             RequestDTO request = requestService.getRequestById(requestId);
             return new ResponseEntity<>(request, HttpStatus.OK);
         } catch (ResourceNotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @GetMapping("/getWalkerByRequestId/{requestId}")
+    public ResponseEntity<?> getWalkerByRequestId(@PathVariable int requestId) {
+        try {
+            Users user = requestService.getWalkerByRequestId(requestId);
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } catch (ResourceNotFoundException e){
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         }
     }
