@@ -26,9 +26,14 @@ public class UsersController {
     }
 
     @GetMapping("/getUserById/{userId}")
-    public ResponseEntity<Users> getUserById(@PathVariable long userId){
-        Users user = usersService.getUserById(userId);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+    public ResponseEntity<?> getUserById(@PathVariable long userId){
+        try {
+            Users user = usersService.getUserById(userId);
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } catch (ResourceNotFoundException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+
     }
 
     @GetMapping("/userNamesById/{userId}")

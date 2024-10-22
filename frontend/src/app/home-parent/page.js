@@ -80,6 +80,7 @@ export default function HomeParent() {
   useEffect(() => {
     // 从 sessionStorage 获取 userId
     const userId = sessionStorage.getItem('userId');
+    console.log("Fetching avgUserRating for userId:", userId); // 输出userId以便检查
 
     if (!userId) {
       console.error('UserId not found in sessionStorage');
@@ -99,6 +100,7 @@ export default function HomeParent() {
         if (response.ok) {
           const data = await response.json();
           setAvgUserRating(data.avgUserRating); // 将API返回的avgUserRating存储到state
+          console.log(data.avgUserRating);
         } else {
           console.error('Failed to fetch user rating:', response.statusText);
         }

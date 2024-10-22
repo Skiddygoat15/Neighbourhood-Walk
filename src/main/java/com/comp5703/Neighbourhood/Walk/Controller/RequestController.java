@@ -57,6 +57,16 @@ public class RequestController {
         }
     }
 
+    @GetMapping("/getParentByRequestId/{requestId}")
+    public ResponseEntity<?> getParentByRequestId(@PathVariable int requestId) {
+        try {
+            Users user = requestService.getParentByRequestId(requestId);
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } catch (ResourceNotFoundException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+    }
+
     @GetMapping("/getAllRequests")
     public ResponseEntity<?> getAllRequests() {
         try {

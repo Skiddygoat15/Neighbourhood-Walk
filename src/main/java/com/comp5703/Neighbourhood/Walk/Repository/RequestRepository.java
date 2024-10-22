@@ -42,4 +42,6 @@ public interface RequestRepository extends JpaRepository<Request, Integer>, JpaS
 
     @Query("SELECT r.walker FROM Request r WHERE r.requestId = :requestId")
     Users findWalkerByRequestId(@Param("requestId") Integer requestId);
+    @Query("SELECT r.parent FROM Request r WHERE r.requestId = :requestId")
+    Users findParentByRequestId(@Param("requestId") Integer requestId);
 }

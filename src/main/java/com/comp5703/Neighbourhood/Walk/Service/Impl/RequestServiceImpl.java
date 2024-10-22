@@ -57,6 +57,11 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
+    public Users getParentByRequestId(int requestId){
+        return requestRepository.findParentByRequestId(requestId);
+    }
+
+    @Override
     public List<RequestDTO> getAllRequests() {
         // List<Request> requests = requestRepository.findAll();
         // 获取所有的 Request 列表

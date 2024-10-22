@@ -25,6 +25,7 @@ public interface RequestService {
 
     WalkerRequest applyRequest(int requestId, long walkerId);
     Users getWalkerByRequestId(int requestId);
+    Users getParentByRequestId(int requestId);
 
 
     // byron

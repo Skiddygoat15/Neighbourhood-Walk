@@ -1,5 +1,6 @@
 package com.comp5703.Neighbourhood.Walk.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
@@ -71,14 +72,14 @@ public class Users {
     private List<Role> roles = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference(value = "user-comments")
+    @JsonIgnore
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Request> Requests_parentId = new ArrayList<>();
 
     @OneToMany(mappedBy = "walker", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference(value = "request-walker")
+    @JsonIgnore
     private List<Request> Requests_walkerId = new ArrayList<>();
 
     @OneToMany(mappedBy = "walkerRequestId", cascade = CascadeType.ALL, orphanRemoval = true)
