@@ -17,9 +17,9 @@ export default function ProfileManagementAccountInformationWalker() {
   const textColor = useTextColor();
 
   useEffect(() => {
-    // 从localStorage获取userId和token
-    const userId = localStorage.getItem('userId');
-    const token = localStorage.getItem('token'); // 假设token保存在localStorage中
+    // 从sessionStorage获取userId和token
+    const userId = sessionStorage.getItem('userId');
+    const token = sessionStorage.getItem('token'); // 假设token保存在sessionStorage中
 
 
     // 如果userId和token存在，则调用API获取用户信息
@@ -46,7 +46,7 @@ export default function ProfileManagementAccountInformationWalker() {
 
       fetchUserProfile();
     } else {
-      console.error('User ID or token not found in localStorage');
+      console.error('User ID or token not found in sessionStorage');
     }
   }, []);
 

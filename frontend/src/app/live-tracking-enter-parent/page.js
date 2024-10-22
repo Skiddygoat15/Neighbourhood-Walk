@@ -9,11 +9,11 @@ export default function LiveTrackingEnterParent() {
     useEffect(() => {
         async function fetchRequests() {
             try {
-                const parentId = localStorage.getItem('userId'); // 从localStorage获取parentId
-                const token = localStorage.getItem('token'); // 从localStorage获取token
+                const parentId = sessionStorage.getItem('userId'); // 从sessionStorage获取parentId
+                const token = sessionStorage.getItem('token'); // 从sessionStorage获取token
 
                 if (!token || !parentId) {
-                    console.error('No token or parentId found in localStorage');
+                    console.error('No token or parentId found in sessionStorage');
                     return;
                 }
 
@@ -73,7 +73,7 @@ export default function LiveTrackingEnterParent() {
         fetchRequests();
     }, []);
 
-    // 跳转函数并将walkerId存入LocalStorage
+    // 跳转函数并将walkerId存入sessionStorage
     const handleEnterLiveTracking = (requestId) => {
         router.push(`/live-tracking-sharing-parent/${requestId}`);
     }

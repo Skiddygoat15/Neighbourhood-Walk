@@ -57,8 +57,8 @@ export default function LoginForm() {
       const data = await res.json();
       const token = data.token;
       const userId = data.userId;
-      localStorage.setItem('token', token);
-      localStorage.setItem('userId', userId);
+      sessionStorage.setItem('token', token);
+      sessionStorage.setItem('userId', userId);
 
       // Fetch user's roles based on userId
       const roleRes = await fetch(`http://localhost:8080/roles/user/${userId}`, {
@@ -74,8 +74,8 @@ export default function LoginForm() {
       const rolesData = await roleRes.json();
       const roles = rolesData.map(role => role.roleType);
 
-      // Store roles in localStorage
-      localStorage.setItem('roles', JSON.stringify(roles));
+      // Store roles in sessionStorage
+      sessionStorage.setItem('roles', JSON.stringify(roles));
 
       // Fetch user's name and preferredName using userId
       const userNamesRes = await fetch(`http://localhost:8080/Users/userNamesById/${userId}`, {
@@ -92,20 +92,20 @@ export default function LoginForm() {
       const name = userNamesData.name;
       const preferredName = userNamesData.preferredName;
 
-      // Store name and preferredName in localStorage
-      localStorage.setItem('name', name);
-      localStorage.setItem('preferredName', preferredName);
+      // Store name and preferredName in sessionStorage
+      sessionStorage.setItem('name', name);
+      sessionStorage.setItem('preferredName', preferredName);
 
       // Determine redirection based on the roles
       if (roles.length === 1) {
         if (roles[0] === 'parent') {
-          localStorage.setItem('currentRole', 'parent')
+          sessionStorage.setItem('currentRole', 'parent')
           window.location.href = `/home-parent`;
         } else if (roles[0] === 'walker') {
-          localStorage.setItem('currentRole', 'walker')
+          sessionStorage.setItem('currentRole', 'walker')
           window.location.href = `/home-walker`;
         } else if (roles[0] === 'admin') {
-          localStorage.setItem('currentRole', 'admin')
+          sessionStorage.setItem('currentRole', 'admin')
           window.location.href = `/admin-coverpage`;
         }
       } else if (roles.length > 1) {

@@ -8,7 +8,7 @@ export default function RequestBox({walkerId}){
         credentials: 'include',
         headers: {
             'Content-Type': 'application/json', // Set the content type header for JSON data
-            'Authorization': 'Bearer ' + localStorage.getItem('token')
+            'Authorization': 'Bearer ' + sessionStorage.getItem('token')
         },
     };
     const [requestStatus, setRequestStatus] = useState('Pending...'); // 默认值为 'Pending...'
