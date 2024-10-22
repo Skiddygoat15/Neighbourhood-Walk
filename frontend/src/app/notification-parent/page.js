@@ -22,11 +22,11 @@ export default function Home() {
     let userId = null;
     let role = null;
     let token = null;
-    if (typeof window !== 'undefined' && window.localStorage) {
-        parentId = localStorage.getItem('userId');
-        userId = localStorage.getItem('userId');
-        role = localStorage.getItem('currentRole');
-        token = localStorage.getItem('token');
+    if (typeof window !== 'undefined' && window.sessionStorage) {
+        parentId = sessionStorage.getItem('userId');
+        userId = sessionStorage.getItem('userId');
+        role = sessionStorage.getItem('currentRole');
+        token = sessionStorage.getItem('token');
     }
     //const parentId = parseInt(userId, 10); // 直接将 userId 设置为 parentId
     const textColor = useTextColor();

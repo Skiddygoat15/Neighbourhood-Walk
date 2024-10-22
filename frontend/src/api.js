@@ -4,7 +4,7 @@ export const API_URL = 'http://localhost:8080';
 
 export async function sendRequest(url, method = 'GET', parameters = null, body = null) {
 
-    const token = localStorage.getItem('token');
+    const token = sessionStorage.getItem('token');
     
     const headers = {
         'Content-Type': 'application/json',

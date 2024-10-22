@@ -14,19 +14,19 @@ export default function HomeParent() {
   };
 
   const handleLogOut = () => {
-    // 清除localStorage中的用户信息
-    localStorage.removeItem('userId');
-    localStorage.removeItem('token');
-    localStorage.removeItem('roles');
-    localStorage.removeItem('preferredName');
-    localStorage.removeItem('name');
-    localStorage.removeItem('currentRole');
-    localStorage.removeItem('clickedRequest');
-    localStorage.removeItem('updateRequest');
+    // 清除sessionStorage中的用户信息
+    sessionStorage.removeItem('userId');
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('roles');
+    sessionStorage.removeItem('preferredName');
+    sessionStorage.removeItem('name');
+    sessionStorage.removeItem('currentRole');
+    sessionStorage.removeItem('clickedRequest');
+    sessionStorage.removeItem('updateRequest');
 
     // 将isLogin和isAdmin设置为false
-    localStorage.setItem('isLogin', 'false');
-    localStorage.setItem('isAdmin', 'false');
+    sessionStorage.setItem('isLogin', 'false');
+    sessionStorage.setItem('isAdmin', 'false');
 
     // 重定向到登录页面
     window.location.href = `/registration-login-coverpage`;
@@ -43,8 +43,8 @@ export default function HomeParent() {
 
 
   useEffect(() => {
-    const storedName = localStorage.getItem('name') || 'Guest';
-    const storedPreferredName = localStorage.getItem('preferredName') || null;
+    const storedName = sessionStorage.getItem('name') || 'Guest';
+    const storedPreferredName = sessionStorage.getItem('preferredName') || null;
     setName(storedName);
     setPreferredName(storedPreferredName);
 
@@ -78,11 +78,11 @@ export default function HomeParent() {
   }, []);
 
   useEffect(() => {
-    // 从 localStorage 获取 userId
-    const userId = localStorage.getItem('userId');
+    // 从 sessionStorage 获取 userId
+    const userId = sessionStorage.getItem('userId');
 
     if (!userId) {
-      console.error('UserId not found in localStorage');
+      console.error('UserId not found in sessionStorage');
       return;
     }
 
@@ -92,7 +92,7 @@ export default function HomeParent() {
         const response = await fetch(`http://localhost:8080/Users/getUserById/${userId}`, {
           method: 'GET',
           headers: {
-            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+            'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
           },
         });
 
@@ -114,7 +114,7 @@ export default function HomeParent() {
         const response = await fetch(`http://localhost:8080/UPNotifications/check-any-notification-unchecked-parent/${userId}`, {
           method: 'GET',
           headers: {
-            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+            'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
           },
         });
         const data = await response.json();

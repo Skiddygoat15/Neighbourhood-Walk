@@ -14,9 +14,9 @@ export default function CommentPage() {
         // 获取 walkerId
         async function fetchWalkerId() {
             try {
-                const token = localStorage.getItem('token'); // 获取 token
+                const token = sessionStorage.getItem('token'); // 获取 token
                 if (!token) {
-                    console.error('No token found in localStorage');
+                    console.error('No token found in sessionStorage');
                     return;
                 }
 
@@ -45,7 +45,7 @@ export default function CommentPage() {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const token = localStorage.getItem('token'); // 获取 token
+        const token = sessionStorage.getItem('token'); // 获取 token
         // 创建当前时间
         const date = new Date();
         // 将时间向后移动 11 小时（11 * 60 * 60 * 1000 毫秒）

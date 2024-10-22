@@ -9,8 +9,8 @@ const ClientOnlyNav = () => {
     const [currentRole, setCurrentRole] = useState(null);
 
     useEffect(() => {
-        // 从 localStorage 获取 currentRole
-        const role = localStorage.getItem("currentRole");
+        // 从 sessionStorage 获取 currentRole
+        const role = sessionStorage.getItem("currentRole");
         setCurrentRole(role);
     }, []);
 

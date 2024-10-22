@@ -24,11 +24,11 @@ export default function ProfileManagementSelectTimeWalker() {
   ];
 
   useEffect(() => {
-    const userId = localStorage.getItem('userId');
-    const token = localStorage.getItem('token');
+    const userId = sessionStorage.getItem('userId');
+    const token = sessionStorage.getItem('token');
 
     if (!userId || !token) {
-      console.error('User ID or token not found in localStorage');
+      console.error('User ID or token not found in sessionStorage');
       return;
     }
 
@@ -79,11 +79,11 @@ export default function ProfileManagementSelectTimeWalker() {
   };
 
   const handleUpdate = async () => {
-    const userId = localStorage.getItem('userId');
-    const token = localStorage.getItem('token');
+    const userId = sessionStorage.getItem('userId');
+    const token = sessionStorage.getItem('token');
 
     if (!userId || !token) {
-      console.error('User ID or token not found in localStorage');
+      console.error('User ID or token not found in sessionStorage');
       return;
     }
 
@@ -116,8 +116,8 @@ export default function ProfileManagementSelectTimeWalker() {
 
       if (response.ok) {
         console.log('Profile updated successfully');
-        // 将 preferredName 写入 localStorage
-        localStorage.setItem('preferredName', preferredName);
+        // 将 preferredName 写入 sessionStorage
+        sessionStorage.setItem('preferredName', preferredName);
         // 更新成功后跳转到profile-management-account-information页面
         router.push('/profile-management-account-information-walker');
       } else {

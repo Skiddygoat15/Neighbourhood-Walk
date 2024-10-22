@@ -22,11 +22,11 @@ export default function ProfileAttributesModification() {
 
 
   useEffect(() => {
-    const userId = localStorage.getItem('userId');
-    const token = localStorage.getItem('token');
+    const userId = sessionStorage.getItem('userId');
+    const token = sessionStorage.getItem('token');
 
     if (!userId || !token) {
-      console.error('User ID or token not found in localStorage');
+      console.error('User ID or token not found in sessionStorage');
       return;
     }
 
@@ -65,13 +65,13 @@ export default function ProfileAttributesModification() {
   };
 
   const handleUpdate = async () => {
-    // 从localStorage获取userId和token
-    const userId = localStorage.getItem('userId');
-    const token = localStorage.getItem('token');
+    // 从sessionStorage获取userId和token
+    const userId = sessionStorage.getItem('userId');
+    const token = sessionStorage.getItem('token');
 
 
     if (!userId || !token) {
-      console.error('User ID or token not found in localStorage');
+      console.error('User ID or token not found in sessionStorage');
       return;
     }
 
@@ -96,7 +96,7 @@ export default function ProfileAttributesModification() {
 
       if (response.ok) {
         console.log('Profile updated successfully');
-        localStorage.setItem('preferredName', preferredName);
+        sessionStorage.setItem('preferredName', preferredName);
         // 更新成功后跳转到 profile-management-account-information 页面
         router.push('/profile-management-account-information');
       } else {

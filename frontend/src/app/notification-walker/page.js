@@ -32,7 +32,7 @@
 //
 //     const myInit = {
 //         method: 'GET',
-//         headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')},
+//         headers: {'Authorization': 'Bearer ' + sessionStorage.getItem('token')},
 //         mode: 'cors',
 //         cache: 'default'
 //     };
@@ -97,7 +97,7 @@ export default function Home() {
     const [Notifications_Profile, setNotifications_Profile] = useState([]);
     const textColor = useTextColor();
 
-    // const token = localStorage.getItem('token');
+    // const token = sessionStorage.getItem('token');
     // if (!role.includes("walker")) {
     //     console.error('Not a walker, no fetch executed');
     //     return; // 如果不是 walker 角色，直接返回
@@ -106,11 +106,11 @@ export default function Home() {
     let userId = null;
     let role = null;
     let token = null;
-    if (typeof window !== 'undefined' && window.localStorage) {
-        walkerId = localStorage.getItem('userId');
-        userId = localStorage.getItem('userId');
-        role = localStorage.getItem('currentRole');
-        token = localStorage.getItem('token');
+    if (typeof window !== 'undefined' && window.sessionStorage) {
+        walkerId = sessionStorage.getItem('userId');
+        userId = sessionStorage.getItem('userId');
+        role = sessionStorage.getItem('currentRole');
+        token = sessionStorage.getItem('token');
     }
     //const walkerId = parseInt(userId, 10); // 直接将 userId 设置为 walkerId
     console.info("Walker ID set to: " + walkerId);

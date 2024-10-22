@@ -10,7 +10,7 @@ function ChattingStatus({ name, text, time, parentId, path }) {
     const router = useRouter();  // 使用 useRouter
 
     useEffect(()=>{
-        setRole(localStorage.getItem("role"));
+        setRole(sessionStorage.getItem("role"));
     },[])
 
     const goToNotificationChatPage = () => {
@@ -23,7 +23,7 @@ function ChattingStatus({ name, text, time, parentId, path }) {
 
     const myInit = {
         method: 'GET',
-        headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')},
+        headers: {'Authorization': 'Bearer ' + sessionStorage.getItem('token')},
         mode: 'cors',
         cache: 'default'
     };

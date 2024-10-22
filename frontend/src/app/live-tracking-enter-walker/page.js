@@ -9,11 +9,11 @@ export default function LiveTrackingEnterWalker() {
     useEffect(() => {
         async function fetchRequests() {
             try {
-                const walkerId = localStorage.getItem('userId'); // 从localStorage获取walkerId
-                const token = localStorage.getItem('token'); // 从localStorage获取token
+                const walkerId = sessionStorage.getItem('userId'); // 从sessionStorage获取walkerId
+                const token = sessionStorage.getItem('token'); // 从sessionStorage获取token
 
                 if (!token || !walkerId) {
-                    console.error('No token or walkerId found in localStorage');
+                    console.error('No token or walkerId found in sessionStorage');
                     return;
                 }
 
