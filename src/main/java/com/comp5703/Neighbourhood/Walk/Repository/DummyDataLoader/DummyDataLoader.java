@@ -65,6 +65,7 @@ public class DummyDataLoader implements CommandLineRunner {
         user1.setGender("male");
         user1.setAvgUserRating(5.0);
         user1.setActivityStatus("Offline");
+        user1.setProfileCompleted(true);
 
         Users user2 = new Users();
         user2.setName("Jane");
@@ -79,6 +80,7 @@ public class DummyDataLoader implements CommandLineRunner {
         user2.setGender("female");
         user2.setAvgUserRating(5.0);
         user2.setActivityStatus("Active");
+        user2.setProfileCompleted(true);
 
         Users user3 = new Users();
         user3.setName("Alice");
@@ -93,6 +95,8 @@ public class DummyDataLoader implements CommandLineRunner {
         user3.setGender("female");
         user3.setAvgUserRating(5.0);
         user3.setActivityStatus("Blocked");
+        user3.setProfileCompleted(true);
+
 
         Users user4 = new Users();
         user4.setName("Bob");
@@ -107,6 +111,8 @@ public class DummyDataLoader implements CommandLineRunner {
         user4.setGender("other");
         user4.setAvgUserRating(5.0);
         user4.setActivityStatus("Active");
+        user4.setProfileCompleted(true);
+
 
         Users user5 = new Users();
         user5.setName("admin");
@@ -119,6 +125,7 @@ public class DummyDataLoader implements CommandLineRunner {
         user5.setGender("other");
         user5.setAvgUserRating(5.0);
         user5.setActivityStatus("Active");
+        user5.setProfileCompleted(true);
 
         // 将用户保存到数据库
         usersRepository.saveAll(Arrays.asList(user1, user2, user3, user4, user5));

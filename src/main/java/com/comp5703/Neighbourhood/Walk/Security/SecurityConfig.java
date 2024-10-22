@@ -4,6 +4,7 @@ import com.comp5703.Neighbourhood.Walk.Security.Filter.AuthenticationFilter;
 import com.comp5703.Neighbourhood.Walk.Security.Filter.ExceptionHandlerFilter;
 import com.comp5703.Neighbourhood.Walk.Security.Filter.JWTAuthorizationFilter;
 import com.comp5703.Neighbourhood.Walk.Security.Manager.CustomAuthenticationManager;
+import com.comp5703.Neighbourhood.Walk.Security.Manager.CustomOAuth2LoginSuccessHandler;
 import com.comp5703.Neighbourhood.Walk.Service.RoleService;
 import com.comp5703.Neighbourhood.Walk.Service.UsersService;
 import lombok.AllArgsConstructor;
@@ -19,6 +20,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 
 @Configuration
@@ -30,6 +32,7 @@ public class SecurityConfig {
     CustomAuthenticationManager customAuthenticationManager;
     UsersService usersService;
     RoleService roleService;
+    private final CustomOAuth2LoginSuccessHandler customOAuth2LoginSuccessHandler; // æ³¨å…¥ CustomOAuth2LoginSuccessHandler
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -45,12 +48,17 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, SecurityConstants.REGISTER_PATH).permitAll()
                 .requestMatchers("/geocode/**").permitAll()
                 .requestMatchers("/ws/**").permitAll()
-                // ÏŞÖÆÌØ¶¨URLÖ»ÔÊĞí¾ßÓĞ"admin"½ÇÉ«µÄÓÃ»§·ÃÎÊ
+                // å…è®¸è®¿é—®Google OAuthç™»å½•é¡µé¢
+                .requestMatchers("/oauth2/**").permitAll()
                 .requestMatchers("/Users/blockUser/**").hasAuthority("admin")
                 .requestMatchers("/Users/activeUser/**").hasAuthority("admin")
                 .requestMatchers("/requests/stats").hasAuthority("admin")
                 .requestMatchers("/Users/stats").hasAuthority("admin")
                 .anyRequest().authenticated()
+                .and()
+                .oauth2Login() // å¯ç”¨OAuth2ç™»å½•
+                    .successHandler(customOAuth2LoginSuccessHandler) // ä½¿ç”¨è‡ªå®šä¹‰æˆåŠŸå¤„ç†ç¨‹åº
+                    .failureUrl("http://localhost:3000/registration-loginform") // ç™»å½•å¤±è´¥é‡å®šå‘
                 .and()
                 .addFilterBefore(new ExceptionHandlerFilter(), AuthenticationFilter.class)
                 .addFilter(authenticationFilter)

@@ -184,6 +184,7 @@ export default function LoginForm() {
             {/* OAuth Buttons */}
             <div className="space-y-4">
               <button
+                  onClick={() => window.location.href = "http://localhost:8080/oauth2/authorization/google"}
                   className="flex items-center justify-center w-full py-3 border border-gray-300 rounded-full font-semibold text-black hover:bg-gray-100">
                 <img src="/google-icon.svg" alt="Google" className="w-6 h-6 mr-2"/>
                 Login with Google

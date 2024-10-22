@@ -62,6 +62,8 @@ public class Users {
     private double avgUserRating;
     @Column(name = "activityStatus")
     private String activityStatus;
+    @Column(name = "profileCompleted")
+    private Boolean profileCompleted = false; // 默认为 false
     /*
     @OneToMany(mappedBy = "userId")：表示 Users 和 Role 之间是一对多的关系。
     mappedBy 指定了在 Role 实体中定义了关系的字段，即 userId。
@@ -169,7 +171,15 @@ public class Users {
         this.address = address;
     }
 
-//    public String getFullAddress() {
+    public boolean isProfileCompleted() {
+        return profileCompleted;
+    }
+
+    public void setProfileCompleted(Boolean val) {
+        this.profileCompleted = val;
+    }
+
+    //    public String getFullAddress() {
 //        return fullAddress;
 //    }
 //
