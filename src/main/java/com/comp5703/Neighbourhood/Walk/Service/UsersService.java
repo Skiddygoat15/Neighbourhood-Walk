@@ -22,6 +22,7 @@ public interface UsersService {
     List<Users> getAllUsers();
 
     Users getUserById(long id);
+    String getUserStatusById(long id);
 
     Users registerUser(Users user, String roleType);
     Users updateUserProfile(long userId, Users updatedUser);

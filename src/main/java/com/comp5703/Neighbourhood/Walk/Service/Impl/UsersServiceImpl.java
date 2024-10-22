@@ -269,6 +269,10 @@ public class UsersServiceImpl implements UsersService {
         return usersRepository.findUserByUserId(id);
     }
 
+    public String getUserStatusById(long id) {
+        return usersRepository.findActivityStatusByUserId(id);
+    }
+
     @Override
     public UserProfileDTO getUserProfileById(long id) {
         Users user = null;

@@ -77,6 +77,17 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         }
 
         Users user = userOptional.get();
+
+        // 检查用户的 ActivityStatus
+        String activityStatus = usersService.getUserStatusById(user.getId());
+
+        // 如果用户被 block，则拒绝登录
+        if ("Blocked".equals(activityStatus)) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("{\"error\": \"User account is blocked.\"}");
+            response.getWriter().flush();
+            return; // 阻止继续执行
+        }
         long userId = user.getId();
         List<String> roleTypes = new ArrayList<>();
         // 获取用户角色

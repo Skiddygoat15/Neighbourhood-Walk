@@ -20,6 +20,8 @@ public interface UsersRepository extends JpaRepository<Users, Long>, JpaSpecific
 //    Users getById(Long aLong);
     @Query("SELECT u FROM Users u WHERE u.userId = :userId")
     Users findUserByUserId(@Param("userId") Long userId);
+    @Query("SELECT u.activityStatus FROM Users u WHERE u.userId = :userId")
+    String findActivityStatusByUserId(@Param("userId") Long userId);
 
     long countByActivityStatus(String status);
 }
