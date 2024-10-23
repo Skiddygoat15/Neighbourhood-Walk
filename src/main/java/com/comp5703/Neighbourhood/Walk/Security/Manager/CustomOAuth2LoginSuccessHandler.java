@@ -1,9 +1,13 @@
 package com.comp5703.Neighbourhood.Walk.Security.Manager;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import com.comp5703.Neighbourhood.Walk.Entities.RoleDTO;
 import com.comp5703.Neighbourhood.Walk.Entities.Users;
+import com.comp5703.Neighbourhood.Walk.Security.SecurityConstants;
 import com.comp5703.Neighbourhood.Walk.Service.RoleService;
 import com.comp5703.Neighbourhood.Walk.Service.UsersService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
@@ -15,9 +19,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -72,26 +74,54 @@ public class CustomOAuth2LoginSuccessHandler implements AuthenticationSuccessHan
 
         // 检查用户的 profile 是否完成
         if (!user.isProfileCompleted()) {
-            // 如果 profile 未完成，重定向到 complete-profile 页面
-            response.sendRedirect("http://localhost:3000/registration-signup-oauth");
+            // 通过 URL 参数传递 userId, name 和 surname
+            String redirectUrl = String.format(
+                    "http://localhost:3000/registration-signup-oauth?userId=%d&name=%s&surname=%s",
+                    user.getId(),
+                    user.getName(),
+                    user.getSurname()
+            );
+            response.sendRedirect(redirectUrl);
         } else {
             // 提取所有角色
             List<RoleDTO> roles = roleService.getRolesByUserId(user.getId());
             List<String> roleTypes = roles.stream().map(RoleDTO::getRoleType).collect(Collectors.toList());
 
-            // 构建 JSON 响应体
-            String jsonResponse = String.format(
-                    "{\"userId\":\"%d\", \"name\":\"%s\", \"roles\":%s, \"token\":\"%s\", \"redirectUrl\":\"%s\"}",
+            String status = user.getActivityStatus();
+
+            // 检查用户状态是否为 "Blocked"
+            if ("Blocked".equals(status)) {
+                // 如果用户状态为 Blocked，返回 403 禁止访问
+                response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+                String errorResponse = String.format(
+                        "{\"error\": \"User account is blocked\", \"userId\":\"%d\", \"name\":\"%s\", \"status\":\"%s\"}",
+                        user.getId(),
+                        user.getName(),
+                        status
+                );
+                response.setContentType("application/json");
+                response.setCharacterEncoding("UTF-8");
+                response.getWriter().write(errorResponse);
+                return;  // 阻止进一步的处理
+            }
+
+            // 生成 JWT token
+            String jwtToken = JWT.create()
+                    .withSubject(user.getName())
+                    .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.TOKEN_EXPIRATION))
+                    .withClaim("roles", roleTypes)  // 将角色添加到 JWT token 中
+                    .sign(Algorithm.HMAC512(SecurityConstants.SECRET_KEY));
+
+            // **这里放置重定向到 oauth-redirect 页面**
+            String redirectUrl = String.format(
+                    "http://localhost:3000/oauth-redirect?userId=%d&name=%s&preferredName=%s&roles=%s&token=%s",
                     user.getId(),
                     user.getName(),
-                    roleTypes.toString(),
-                    token, // 返回获取到的 OAuth2 token
-                    "http://localhost:3000/oauth-redirect"
+                    user.getPreferredName(),
+                    String.join(",", roleTypes),
+                    jwtToken
             );
-
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");
-            response.getWriter().write(jsonResponse);
+            response.sendRedirect(redirectUrl);
         }
     }
 

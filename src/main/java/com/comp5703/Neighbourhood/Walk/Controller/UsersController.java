@@ -130,20 +130,21 @@ public class UsersController {
         }
     }
 
-    @PostMapping("/oauthRegister")
-    public ResponseEntity<String> registerUser_OAuth(@RequestBody Users user, @RequestParam String roleType) {
+    @CrossOrigin(origins = "http://localhost:3000")
+    @PostMapping("/registerOA")
+    public ResponseEntity<String> updateUserViaAuth(@RequestBody Users user, @RequestParam String roleType, @RequestParam long userId) {
         try {
-            // 调用服务层的 registerUser 方法
-            Users registeredUser = usersService.registerUser_OAuth(user, roleType);
+            // Call the service method to update user details
+            Users updatedUser = usersService.updateUserViaAuth(user, roleType, userId);
 
-            // 返回成功响应
-            return new ResponseEntity<>("User registered successfully with ID: " + registeredUser.getId(), HttpStatus.CREATED);
+            // Return success response
+            return new ResponseEntity<>("User updated successfully with ID: " + userId, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
-            // 返回错误信息，状态码为400 (Bad Request)
+            // Return error response if any validation fails
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
-            // 处理其他可能的异常
-            return new ResponseEntity<>("An error occurred during user registration", HttpStatus.INTERNAL_SERVER_ERROR);
+            // Return internal server error for any other exception
+            return new ResponseEntity<>("An error occurred during user update", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
