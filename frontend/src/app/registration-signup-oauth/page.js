@@ -1,14 +1,31 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { geocodeAddress } from '@/components/geocode';
 
 
 const RegistrationSignup = () => {
-    const [roleType, setRoleType] = useState('walker'); // Ĭ�Ͻ�ɫΪ walker
+    console.log('Component RegistrationSignup is rendering');
+    const router = useRouter();
+
+    // 直接获取 URL 参数
+    let userId = '';
+    let name = '';
+    let surname = '';
+
+    if (typeof window !== 'undefined') {
+        const searchParams = new URLSearchParams(window.location.search);
+        userId = searchParams.get('userId') || '';
+        name = searchParams.get('name') || '';
+        surname = searchParams.get('surname') || '';
+        console.log('URL Params:', { userId, name, surname });
+    }
+
+    const [roleType, setRoleType] = useState('walker'); // 默认角色为 walker
     const [formData, setFormData] = useState({
-        name: '',
-        surname: '',
+        userId: userId,
+        name: name,
+        surname: surname,
         phone: '',
         email: '',
         address: '',
@@ -18,7 +35,6 @@ const RegistrationSignup = () => {
         birthDate: '',
     });
     const [error, setError] = useState('');
-    const router = useRouter();
 
     const handleChange = (e) => {
         setFormData({
@@ -29,7 +45,6 @@ const RegistrationSignup = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // 每次提交前清空错误信息
         setError('');
 
         if (formData.password !== formData.confirmPassword) {
@@ -38,37 +53,34 @@ const RegistrationSignup = () => {
         }
 
         try {
-            // convert the address to latitude and longitude
-            const { lat, lng , formatted_address } = await geocodeAddress(formData.address);
+            const { lat, lng, formatted_address } = await geocodeAddress(formData.address); // 地址转换为经纬度
 
             const requestData = {
+                userId: formData.userId,
                 phone: formData.phone,
-                address: formatted_address, // 地址文本
-                // fullAddress: formatted_address,
-                latitude: lat, // 经纬度
-                longitude: lng, // 经纬度
+                address: formatted_address,
+                latitude: lat,
+                longitude: lng,
                 password: formData.password,
                 gender: formData.gender,
                 birthDate: new Date(formData.birthDate).toISOString(),
-                avgUserRating: 5.0,
-                profileCompleted: true,
-                activityStatus: 'Active',
             };
 
-            const apiUrl = `http://localhost:8080/Users/oauthRegister?roleType=${roleType}`;
+            const apiUrl = `http://localhost:8080/Users/registerOA?roleType=${roleType}&userId=${formData.userId}`;
 
             const res = await fetch(apiUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'Authorization': '',
                 },
                 body: JSON.stringify(requestData),
             });
 
             if (!res.ok) {
-                const errorMessage = await res.text(); // 捕获后端返回的错误消息
-                setError(errorMessage || 'Registration failed'); // 直接设置错误信息
-                return; // 直接返回，防止继续执行后续逻辑
+                const errorMessage = await res.text();
+                setError(errorMessage || 'Registration failed');
+                return;
             }
 
             router.push('/registration-loginform');
