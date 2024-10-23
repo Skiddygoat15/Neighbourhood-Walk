@@ -9,9 +9,9 @@ export default function SearchParent() {
   const router = useRouter();
   let parentId = null;
   let token = null;
-  if (typeof window !== 'undefined' && window.localStorage) {
-    parentId = localStorage.getItem('userId');
-    token = localStorage.getItem('token');
+  if (typeof window !== 'undefined' && window.sessionStorage) {
+    parentId = sessionStorage.getItem('userId');
+    token = sessionStorage.getItem('token');
   }
   const [gender, setGender] = useState('');
   const [distance, setDistance] = useState('');

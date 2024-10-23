@@ -26,7 +26,7 @@ export default function SearchParentWalkerDetails({ params }) {
         method: 'get',
         credentials: 'include',
         headers: {
-          'Authorization': 'Bearer ' + localStorage.getItem('token')
+          'Authorization': 'Bearer ' + sessionStorage.getItem('token')
         }
       });
 

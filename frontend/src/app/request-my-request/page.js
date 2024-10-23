@@ -19,8 +19,8 @@ export default function MyRequest() {
   const [parentId, setParentId] = useState();
 
   useEffect(() => {
-    // 从 localStorage 获取 userId 并更新 parentId
-    const storedUserId = localStorage.getItem('userId');
+    // 从 sessionStorage 获取 userId 并更新 parentId
+    const storedUserId = sessionStorage.getItem('userId');
     if (storedUserId) {
       setParentId(storedUserId);
     }
@@ -41,7 +41,7 @@ export default function MyRequest() {
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json', // Set the content type header for JSON data
-        'Authorization': 'Bearer ' + localStorage.getItem('token')
+        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
       },
     })
         .then(response => {
@@ -81,7 +81,7 @@ export default function MyRequest() {
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json', // 设置请求头为 JSON 类型
-        'Authorization': 'Bearer ' + localStorage.getItem('token')
+        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
       },
     })
         .then(response => {
@@ -136,7 +136,7 @@ export default function MyRequest() {
                           <h2 className="text-lg font-bold sm:text-xl lg:text-2xl">Trip request</h2>
                           <button
                               onClick={() => {
-                                // localStorage.setItem('clickedRequest', JSON.stringify(request));
+                                // sessionStorage.setItem('clickedRequest', JSON.stringify(request));
                                 router.push(`/request-my-request-application/${request.requestId}`);
                               }}
                           >
@@ -159,7 +159,7 @@ export default function MyRequest() {
                         <div className="flex justify-between mt-2">
                           <button
                               onClick={() => {
-                                localStorage.setItem('updateRequest', JSON.stringify(request));
+                                sessionStorage.setItem('updateRequest', JSON.stringify(request));
                                 router.push('/request-update');
                               }}
                               className="py-2 px-4 bg-black text-white rounded-full text-sm font-semibold sm:py-3 sm:px-5"

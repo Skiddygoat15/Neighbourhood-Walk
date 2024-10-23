@@ -32,7 +32,7 @@
 //
 //     const myInit = {
 //         method: 'GET',
-//         headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')},
+//         headers: {'Authorization': 'Bearer ' + sessionStorage.getItem('token')},
 //         mode: 'cors',
 //         cache: 'default'
 //     };
@@ -97,7 +97,7 @@ export default function Home() {
     const [Notifications_Profile, setNotifications_Profile] = useState([]);
     const textColor = useTextColor();
 
-    // const token = localStorage.getItem('token');
+    // const token = sessionStorage.getItem('token');
     // if (!role.includes("walker")) {
     //     console.error('Not a walker, no fetch executed');
     //     return; // 如果不是 walker 角色，直接返回
@@ -106,11 +106,11 @@ export default function Home() {
     let userId = null;
     let role = null;
     let token = null;
-    if (typeof window !== 'undefined' && window.localStorage) {
-        walkerId = localStorage.getItem('userId');
-        userId = localStorage.getItem('userId');
-        role = localStorage.getItem('currentRole');
-        token = localStorage.getItem('token');
+    if (typeof window !== 'undefined' && window.sessionStorage) {
+        walkerId = sessionStorage.getItem('userId');
+        userId = sessionStorage.getItem('userId');
+        role = sessionStorage.getItem('currentRole');
+        token = sessionStorage.getItem('token');
     }
     //const walkerId = parseInt(userId, 10); // 直接将 userId 设置为 walkerId
     console.info("Walker ID set to: " + walkerId);
@@ -138,15 +138,15 @@ export default function Home() {
                 console.error('Error fetching data:', error);});
         },[userId]);
 
-    useEffect(() => {
-        // 设置字体颜色基于当前时间
-        const currentHour = new Date().getHours();
-        if (currentHour >= 6 && currentHour < 17) {
-            setTextColor('text-black');  // 上午和下午使用黑色字体
-        } else {
-            setTextColor('text-white');  // 晚上和午夜使用白色字体
-        }
-    }, []);
+    // useEffect(() => {
+    //     // 设置字体颜色基于当前时间
+    //     const currentHour = new Date().getHours();
+    //     if (currentHour >= 6 && currentHour < 17) {
+    //         setTextColor('text-black');  // 上午和下午使用黑色字体
+    //     } else {
+    //         setTextColor('text-white');  // 晚上和午夜使用白色字体
+    //     }
+    // }, []);
 
     //根据walkerId获取walkerRequestId
     useEffect(() => {

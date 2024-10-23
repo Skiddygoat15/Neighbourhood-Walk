@@ -22,8 +22,10 @@ public interface UsersService {
     List<Users> getAllUsers();
 
     Users getUserById(long id);
+    String getUserStatusById(long id);
 
     Users registerUser(Users user, String roleType);
+    Users registerUser_OAuth(Users user, String roleType);
     Users updateUserProfile(long userId, Users updatedUser);
     //byron
     double calculateDistance(double lat1, double lon1, double lat2, double lon2);

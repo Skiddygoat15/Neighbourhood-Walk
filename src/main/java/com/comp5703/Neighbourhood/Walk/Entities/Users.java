@@ -1,5 +1,6 @@
 package com.comp5703.Neighbourhood.Walk.Entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
@@ -61,6 +62,8 @@ public class Users {
     private double avgUserRating;
     @Column(name = "activityStatus")
     private String activityStatus;
+    @Column(name = "profileCompleted")
+    private Boolean profileCompleted = false; // 默认为 false
     /*
     @OneToMany(mappedBy = "userId")：表示 Users 和 Role 之间是一对多的关系。
     mappedBy 指定了在 Role 实体中定义了关系的字段，即 userId。
@@ -71,14 +74,14 @@ public class Users {
     private List<Role> roles = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference(value = "user-comments")
+    @JsonIgnore
     private List<Comment> comments = new ArrayList<>();
 
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Request> Requests_parentId = new ArrayList<>();
 
     @OneToMany(mappedBy = "walker", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference(value = "request-walker")
+    @JsonIgnore
     private List<Request> Requests_walkerId = new ArrayList<>();
 
     @OneToMany(mappedBy = "walkerRequestId", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -168,7 +171,15 @@ public class Users {
         this.address = address;
     }
 
-//    public String getFullAddress() {
+    public boolean isProfileCompleted() {
+        return profileCompleted;
+    }
+
+    public void setProfileCompleted(Boolean val) {
+        this.profileCompleted = val;
+    }
+
+    //    public String getFullAddress() {
 //        return fullAddress;
 //    }
 //

@@ -10,9 +10,9 @@ export default function PreMeetWalker() {
     const router = useRouter();
     let walkerId = null;
     let token = null;
-    if (typeof window !== 'undefined' && window.localStorage) {
-        walkerId = localStorage.getItem('userId');
-        token = localStorage.getItem('token');
+    if (typeof window !== 'undefined' && window.sessionStorage) {
+        walkerId = sessionStorage.getItem('userId');
+        token = sessionStorage.getItem('token');
     }
     const [preMeet, setPreMeet] = useState([]);  // store pre meet list
     const [error, setError] = useState(null);    // store error message

@@ -16,11 +16,12 @@ export default function PreMeetParent() {
   let walkerId = null;
   let requestId = null;
   let token = null;
-  if (typeof window !== 'undefined' && window.localStorage) {
-    parentId = localStorage.getItem("preMeetIds")[0];
-    walkerId = localStorage.getItem("preMeetIds")[2];
-    requestId = localStorage.getItem("preMeetIds")[4];
-    token = localStorage.getItem('token');
+  if (typeof window !== 'undefined' && window.sessionStorage) {
+    let preMeetIds = sessionStorage.getItem("preMeetIds").split(',');
+    parentId = preMeetIds[0];
+    walkerId = preMeetIds[1];
+    requestId = preMeetIds[2];
+    token = sessionStorage.getItem('token');
   }
 
   const data = {

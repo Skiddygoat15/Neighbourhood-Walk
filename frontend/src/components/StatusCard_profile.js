@@ -3,13 +3,13 @@
 //
 // export default function StatusCard({ title, statusChanged, time}) {
 //
-//     const userId = localStorage.getItem('userId');
-//     const [role, setRole] = useState(localStorage.getItem('roles'));
+//     const userId = sessionStorage.getItem('userId');
+//     const [role, setRole] = useState(sessionStorage.getItem('roles'));
 //     const [RequestStatus,setRequestStatus] = useState("Pending...");
 //     // const [parentId, setparentId] = useState();
 //     const myInit = {
 //         method: 'GET',
-//         headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')},
+//         headers: {'Authorization': 'Bearer ' + sessionStorage.getItem('token')},
 //         mode: 'cors',
 //         cache: 'default'
 //     };
@@ -106,12 +106,12 @@ import React, {useEffect, useState} from 'react';
 
 export default function StatusCard({ showRedDot, title, statusChanged, time, notificationId, role}) {
 
-    const userId = localStorage.getItem('userId');
-    // const [role, setRole] = useState(localStorage.getItem('roles'));
+    const userId = sessionStorage.getItem('userId');
+    // const [role, setRole] = useState(sessionStorage.getItem('roles'));
     const [RequestStatus, setRequestStatus] = useState("Pending...");
     const myInit = {
         method: 'GET',
-        headers: {'Authorization': 'Bearer ' + localStorage.getItem('token')},
+        headers: {'Authorization': 'Bearer ' + sessionStorage.getItem('token')},
         mode: 'cors',
         cache: 'default'
     };
@@ -151,7 +151,7 @@ export default function StatusCard({ showRedDot, title, statusChanged, time, not
         fetch(`http://127.0.0.1:8080/UPNotifications/check/${notificationId}`, {
             method: 'POST',
             headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
                 'Content-Type': 'application/json'
             }
         }).then(response => {
@@ -180,7 +180,7 @@ export default function StatusCard({ showRedDot, title, statusChanged, time, not
         fetch(`http://127.0.0.1:8080/UPNotifications/close/${notificationId}`, {
             method: 'POST',
             headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
                 'Content-Type': 'application/json'
             }
         }).then(response => {

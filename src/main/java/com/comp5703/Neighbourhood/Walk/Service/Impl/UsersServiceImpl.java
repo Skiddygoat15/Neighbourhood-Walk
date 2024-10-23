@@ -171,6 +171,85 @@ public class UsersServiceImpl implements UsersService {
 
         return savedUser;
     }
+    public Users registerUser_OAuth(Users user, String roleType) {
+        // 验证角色是否有效
+        if (!roleType.equals("parent") && !roleType.equals("walker")) {
+            throw new IllegalArgumentException("Invalid role type: " + roleType);
+        }
+
+        // 验证必填字段是否为空
+        // 写给自己：注意这里的user.getName等方法并不是在数据库中调用的方法，而是在Users实例中定义的getter方法！
+        // 因为此时用户传入了一个user实例，直接通过getter来获取对应信息即可
+        if (user.getPhone() == null || user.getPhone().isEmpty() ||
+                user.getAddress() == null || user.getAddress().isEmpty() ||
+                user.getLatitude() == null || user.getLatitude().isNaN() ||
+                user.getLongitude() == null || user.getLongitude().isNaN() ||
+                user.getPassword() == null || user.getPassword().isEmpty() ||
+                user.getGender() == null || user.getGender().isEmpty() ||
+                user.getBirthDate() == null) {
+            throw new IllegalArgumentException("All required fields must be filled.");
+        }
+
+        // 验证生日不能早于当前系统时间
+        Date currentDate = new Date(); // 获取当前系统时间
+        if (user.getBirthDate().after(currentDate)) {
+            throw new IllegalArgumentException("Birthdate cannot be in the future.");
+        }
+
+        // 验证邮箱是否已存在
+        if (usersRepository.findByEmail(user.getEmail()).isPresent()) {
+            throw new IllegalArgumentException("Email already in use");
+        }
+
+        // 验证手机号是否已存在
+        if (usersRepository.findByPhone(user.getPhone()).isPresent()) {
+            throw new IllegalArgumentException("Phone number already in use");
+        }
+
+        // 验证邮箱格式
+        if (!user.getEmail().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
+            throw new IllegalArgumentException("Invalid email format");
+        }
+
+        if (!(Objects.equals(user.getGender(), "male") || Objects.equals(user.getGender(), "female") || Objects.equals(user.getGender(), "other"))) {
+            throw new IllegalArgumentException("Invalid gender");
+        }
+
+
+        // 验证手机号格式
+        if (!user.getPhone().matches("^\\d{10}$")) {
+            throw new IllegalArgumentException("Phone number must be numeric and 10 digits");
+        }
+
+        // 验证名字和姓氏格式（不包含空格和特殊字符）
+        if (!user.getName().matches("^[A-Za-z]+$") || !user.getSurname().matches("^[A-Za-z]+$")) {
+            throw new IllegalArgumentException("Name and surname must not contain spaces or special characters");
+        }
+
+        // 验证密码长度必须大于6
+        if (user.getPassword().length() < 6) {
+            throw new IllegalArgumentException("The password length must be at least 6 characters.");
+        }
+
+        // 对密码进行bcrypt加密
+        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+
+        // 保存用户信息到 Users 表
+        Users savedUser = usersRepository.save(user);
+
+        // 保存角色信息到 Role 表，并关联到用户
+        roleService.saveRole(savedUser.getId(), roleType);
+
+        // 添加通知信息
+        UserProfileNotification notification = new UserProfileNotification(
+                savedUser,
+                "You have successfully registered",
+                "We're thrilled to welcome you! Feel free to explore the app and its features.",
+                new Date());
+        notificationService.saveUserProfileNotification(notification);
+
+        return savedUser;
+    }
     @Override
     public Users updateUserProfile(long userId, Users updatedUser) {
         // 获取用户信息
@@ -266,12 +345,11 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public Users getUserById(long id) {
-        // 确保 Optional 中有值，然后调用 get()
-        Users user = null;
-        if (usersRepository.findById(id).isPresent()) {
-            user = usersRepository.findById(id).get();
-        }
-        return user;
+        return usersRepository.findUserByUserId(id);
+    }
+
+    public String getUserStatusById(long id) {
+        return usersRepository.findActivityStatusByUserId(id);
     }
 
     @Override

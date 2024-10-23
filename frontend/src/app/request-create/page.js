@@ -19,8 +19,8 @@ export default function WalkRequestManagementParent() {
     const textColor = useTextColor();
 
     useEffect(() => {
-        // 从 localStorage 获取 userId 并更新 parentId
-        const storedUserId = localStorage.getItem('userId');
+        // 从 sessionStorage 获取 userId 并更新 parentId
+        const storedUserId = sessionStorage.getItem('userId');
         if (storedUserId) {
             setParentId(storedUserId);
         }
@@ -101,7 +101,7 @@ export default function WalkRequestManagementParent() {
             credentials: 'include',
             headers: {
                 'Content-Type': 'application/json', // Set the content type header for JSON data
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
+                'Authorization': 'Bearer ' + sessionStorage.getItem('token')
             },
             body: JSON.stringify(finalSendBody)
         })
