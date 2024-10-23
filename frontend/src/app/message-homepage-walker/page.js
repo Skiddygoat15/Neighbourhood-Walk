@@ -18,7 +18,7 @@ export default function Home() {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ` + localStorage.getItem('token')
+                'Authorization': `Bearer ` + sessionStorage.getItem('token')
             }
         })
             .then(response => {
@@ -37,7 +37,7 @@ export default function Home() {
 
     //1.初始化，获取并设置主用户的userId
     useEffect(() => {
-        const storedUserId = localStorage.getItem("userId"); // 从localStorage获取userId
+        const storedUserId = sessionStorage.getItem("userId"); // 从localStorage获取userId
         const userIdLong = parseInt(storedUserId, 10); // 将userId字符串转换为长整型
         if (!isNaN(userIdLong)) { // 检查转换结果是否为有效数字
             setUserId(userIdLong); // 如果是有效数字，则设置到状态变量中
@@ -45,14 +45,14 @@ export default function Home() {
         getAllRoles();
     }, []); // 空依赖数组，确保只在组件加载时执行一次
 
-    //2.点击Confim后触发，检查当输入userId存在且角色为walker的时候才会修改searchTerm，从这以后保证每个searchTerm都是正确的walkerId
+    //2.点击Confim后触发，检查当输入userId存在且角色为parent的时候才会修改searchTerm，从这以后保证每个searchTerm都是正确的parentId
     function handleSearch() {
-        const walkerRole = allRoles.find(role => role.userId.toString() === tempSearch && role.roleType === 'walker');
-        if (walkerRole) {
-            console.info("Found a match for a walker role with userId:", walkerRole);
+        const parentRole = allRoles.find(role => role.userId.toString() === tempSearch && role.roleType === 'parent');
+        if (parentRole) {
+            console.info("Found a match for a parent role with userId:", parentRole);
             setSearchTerm(tempSearch);  // 如果找到匹配，设置searchTerm
         } else {
-            console.info("No match found for the given tempSearch as a walker userId. Input another userId please.");
+            console.info("No match found for the given tempSearch as a parent userId. Input another userId please.");
             setSearchTerm('');
         }
         setConfirmClick(prev => prev + 1); // 更新点击计数
@@ -84,7 +84,7 @@ export default function Home() {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ` + localStorage.getItem('token')
+                'Authorization': `Bearer ` + sessionStorage.getItem('token')
             },
         })
             .then(response => response.json())
@@ -114,11 +114,11 @@ export default function Home() {
         fetch(`http://localhost:8080/ChatBar/addChatBar?userIdFrom=${userIdLong}&userIdTo=${searchTermLong}`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json',
-                'Authorization': `Bearer ` + localStorage.getItem('token') },
+                'Authorization': `Bearer ` + sessionStorage.getItem('token') },
         })
             .then(response => {
                 if (!response.ok) {
-                    console.info("Failed to create the chatBar, maybe you put in a wrong userId or a walker's userId.")
+                    console.info("Failed to create the chatBar, maybe you put in a wrong userId or a parent's userId.")
                 }else {
                     console.info("Successfully create the chatBar")
                 }})
@@ -131,7 +131,7 @@ export default function Home() {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ` + localStorage.getItem('token')
+                'Authorization': `Bearer ` + sessionStorage.getItem('token')
             },
         })
             .then(response => {
@@ -157,7 +157,7 @@ export default function Home() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ` + localStorage.getItem('token')
+                'Authorization': `Bearer ` + sessionStorage.getItem('token')
             },
             body: JSON.stringify({ state: 'close' }) // 确认API需要的具体格式
         })
@@ -176,7 +176,7 @@ export default function Home() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ` + localStorage.getItem('token')
+                'Authorization': `Bearer ` + sessionStorage.getItem('token')
             },
             body: JSON.stringify({ state: 'open' }) // 确认API需要的具体格式
         })
@@ -347,7 +347,7 @@ export default function Home() {
                     .map((bar, index) => {
                         const router = useRouter();
                         const handleChatClick = () => {
-                            router.push(`/message-chat-parent-final/${searchTerm}`);};
+                            router.push(`/message-chat-walker-final/${searchTerm}`);};
                         return (
                             <div key={index} style={{
                                 border: '1px solid #ccc',

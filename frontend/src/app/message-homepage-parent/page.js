@@ -18,7 +18,7 @@ export default function Home() {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ` + localStorage.getItem('token')
+                'Authorization': `Bearer ` + sessionStorage.getItem('token')
             }
         })
             .then(response => {
@@ -37,7 +37,7 @@ export default function Home() {
 
     //1.初始化，获取并设置主用户的userId
     useEffect(() => {
-        const storedUserId = localStorage.getItem("userId"); // 从localStorage获取userId
+        const storedUserId = sessionStorage.getItem("userId"); // 从localStorage获取userId
         const userIdLong = parseInt(storedUserId, 10); // 将userId字符串转换为长整型
         if (!isNaN(userIdLong)) { // 检查转换结果是否为有效数字
             setUserId(userIdLong); // 如果是有效数字，则设置到状态变量中
@@ -84,7 +84,7 @@ export default function Home() {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ` + localStorage.getItem('token')
+                'Authorization': `Bearer ` + sessionStorage.getItem('token')
             },
         })
             .then(response => response.json())
@@ -114,7 +114,7 @@ export default function Home() {
         fetch(`http://localhost:8080/ChatBar/addChatBar?userIdFrom=${userIdLong}&userIdTo=${searchTermLong}`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json',
-                'Authorization': `Bearer ` + localStorage.getItem('token') },
+                'Authorization': `Bearer ` + sessionStorage.getItem('token') },
         })
             .then(response => {
                 if (!response.ok) {
@@ -131,7 +131,7 @@ export default function Home() {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ` + localStorage.getItem('token')
+                'Authorization': `Bearer ` + sessionStorage.getItem('token')
             },
         })
             .then(response => {
@@ -157,7 +157,7 @@ export default function Home() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ` + localStorage.getItem('token')
+                'Authorization': `Bearer ` + sessionStorage.getItem('token')
             },
             body: JSON.stringify({ state: 'close' }) // 确认API需要的具体格式
         })
@@ -176,7 +176,7 @@ export default function Home() {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ` + localStorage.getItem('token')
+                'Authorization': `Bearer ` + sessionStorage.getItem('token')
             },
             body: JSON.stringify({ state: 'open' }) // 确认API需要的具体格式
         })

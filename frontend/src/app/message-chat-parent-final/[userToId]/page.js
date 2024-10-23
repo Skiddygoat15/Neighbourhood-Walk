@@ -18,8 +18,8 @@ export default function Home({params}) {
     const userIdTo = params.userToId;
 
     useEffect(() => {
-        const storedRole = localStorage.getItem("roles")?.slice(2, -2);
-        const storedUser = localStorage.getItem("userId");
+        const storedRole = sessionStorage.getItem("roles")?.slice(2, -2);
+        const storedUser = sessionStorage.getItem("userId");
         if (storedUser && storedRole) {
             setRoleFrom("parent");
             setUserIdFrom(storedUser);
