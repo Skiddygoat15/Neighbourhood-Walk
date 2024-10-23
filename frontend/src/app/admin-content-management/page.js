@@ -245,7 +245,6 @@ export default function AdminContentManagement() {
                     )}
                 </div>
             </div>
-        </div>
     </BackgroundLayout>
     );
 }
