@@ -24,24 +24,63 @@ public class DummyDataLoader implements CommandLineRunner {
     private final RoleRepository roleRepository;
     private final RequestRepository requestRepository;
     private final WalkerRequestRepository walkerRequestRepository;
+<<<<<<< Updated upstream
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
     public DummyDataLoader(UsersRepository usersRepository, RoleRepository roleRepository, com.comp5703.Neighbourhood.Walk.Repository.RequestRepository requestRepository, WalkerRequestRepository walkerRequestRepository, BCryptPasswordEncoder passwordEncoder) {
+=======
+    private final PreMeetRepository preMeetRepository;
+    private final ChatBoxRepository chatBoxRepository;
+    private final CommentRepository commentRepository;
+    private final ChatRoomRepository chatRoomRepository;
+    private final ChatRoomRepository chatBarRepository;
+    private final NotificationRepository notificationRepository;
+    private final UserProfileNotificationRepository userProfileNotificationRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    public DummyDataLoader(UsersRepository usersRepository, RoleRepository roleRepository, com.comp5703.Neighbourhood.Walk.Repository.RequestRepository requestRepository, WalkerRequestRepository walkerRequestRepository, PreMeetRepository preMeetRepository, ChatBoxRepository chatBoxRepository, CommentRepository commentRepository, ChatRoomRepository chatRoomRepository, ChatRoomRepository chatBarRepository, NotificationRepository notificationRepository, UserProfileNotificationRepository userProfileNotificationRepository, BCryptPasswordEncoder passwordEncoder) {
+>>>>>>> Stashed changes
         this.usersRepository = usersRepository;
         this.roleRepository = roleRepository;
         this.requestRepository = requestRepository;
         this.walkerRequestRepository = walkerRequestRepository;
+<<<<<<< Updated upstream
+=======
+        this.preMeetRepository = preMeetRepository;
+        this.chatBoxRepository = chatBoxRepository;
+        this.commentRepository = commentRepository;
+        this.chatRoomRepository = chatRoomRepository;
+        this.chatBarRepository = chatBarRepository;
+        this.notificationRepository = notificationRepository;
+        this.userProfileNotificationRepository = userProfileNotificationRepository;
+>>>>>>> Stashed changes
         this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public void run(String... args) throws Exception {
+<<<<<<< Updated upstream
         usersRepository.deleteAll();
         roleRepository.deleteAll();
         requestRepository.deleteAll();
         walkerRequestRepository.deleteAll();
 
+=======
+        // 先删除依赖表中的数据，确保删除顺序正确
+        chatBarRepository.deleteAll();
+        chatBoxRepository.deleteAll();
+        chatRoomRepository.deleteAll();
+        commentRepository.deleteAll();
+        notificationRepository.deleteAll();
+        userProfileNotificationRepository.deleteAll();
+        preMeetRepository.deleteAll();
+        walkerRequestRepository.deleteAll(); // WalkerRequest 可能依赖 Request
+        requestRepository.deleteAll();       // Request 依赖 Users
+        roleRepository.deleteAll();          // Role 依赖 Users
+        usersRepository.deleteAll();         // 依赖关系最少，最后删除
+>>>>>>> Stashed changes
         Users user1 = new Users();
         user1.setName("John");
         user1.setSurname("Doe");
