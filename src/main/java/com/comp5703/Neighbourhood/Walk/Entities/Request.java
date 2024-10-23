@@ -61,6 +61,18 @@ public class Request {
     @Column(name = "status")
     private String status;
 
+    @Column(name = "parentLatitude")
+    private Double parentLatitude;
+
+    @Column(name = "parentLongitude")
+    private Double parentLongitude;
+
+    @Column(name = "walkerLatitude")
+    private Double walkerLatitude;
+
+    @Column(name = "walkerLongitude")
+    private Double walkerLongitude;
+
     @OneToMany(mappedBy = "request", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<WalkerRequest> walkerRequests = new ArrayList<>();
 
@@ -190,5 +202,37 @@ public class Request {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Double getParentLatitude() {
+        return parentLatitude;
+    }
+
+    public void setParentLatitude(Double parentLatitude) {
+        this.parentLatitude = parentLatitude;
+    }
+
+    public Double getParentLongitude() {
+        return parentLongitude;
+    }
+
+    public void setParentLongitude(Double parentLongitude) {
+        this.parentLongitude = parentLongitude;
+    }
+
+    public Double getWalkerLatitude() {
+        return walkerLatitude;
+    }
+
+    public void setWalkerLatitude(Double walkerLatitude) {
+        this.walkerLatitude = walkerLatitude;
+    }
+
+    public Double getWalkerLongitude() {
+        return walkerLongitude;
+    }
+
+    public void setWalkerLongitude(Double walkerLongitude) {
+        this.walkerLongitude = walkerLongitude;
     }
 }

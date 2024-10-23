@@ -92,12 +92,14 @@ export default function LiveTrackingAfterEnter() {
                 </div>
 
                 <div className="absolute bg-white p-3 rounded-full shadow" style={{top: '80px', right: '20px'}}>
-                    <Image
-                        src="/Icon.png"
-                        alt="Person icon"
-                        width={30}
-                        height={30}
-                    />
+                    {/*<Image*/}
+                    {/*    src="/Icon.png"*/}
+                    {/*    alt="Person icon"*/}
+                    {/*    width={30}*/}
+                    {/*    height={30}*/}
+                    {/*/>*/}
+                    <p><strong>Parent: </strong></p>
+                    <p><strong>Walker: </strong></p>
                 </div>
             </div>
 

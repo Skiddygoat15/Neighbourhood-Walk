@@ -2,6 +2,7 @@ package com.comp5703.Neighbourhood.Walk.Service;
 
 import com.comp5703.Neighbourhood.Walk.Entities.Request;
 import com.comp5703.Neighbourhood.Walk.Entities.RequestDTO;
+import com.comp5703.Neighbourhood.Walk.Entities.RequestLiveLocationDTO;
 import com.comp5703.Neighbourhood.Walk.Entities.WalkerRequest;
 
 import java.util.Date;
@@ -27,6 +28,9 @@ public interface RequestService {
     // byron
     double calculateDistance(double lat1, double lon1, double lat2, double lon2);
     List<Request> searchRequests(Long walkerId, String searchTerm, String distance, Date startTime, Date arriveTime);
+    Request updateLocation(int requestId, Double parentLatitude, Double parentLongitude, Double walkerLatitude, Double walkerLongitude);
+    RequestLiveLocationDTO getLiveLocationByRequestId(int requestId);
+
     Request getById(int requestId);
 
     //admin statistics

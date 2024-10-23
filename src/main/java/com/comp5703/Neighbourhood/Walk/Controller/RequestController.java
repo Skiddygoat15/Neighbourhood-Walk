@@ -41,6 +41,18 @@ public class RequestController {
         }
     }
 
+    @GetMapping("/getLiveLocationByRequestId/{requestId}")
+    public ResponseEntity<?> getLiveLocationByRequestId(@PathVariable int requestId) {
+        try {
+            RequestLiveLocationDTO requestLiveLocation = requestService.getLiveLocationByRequestId(requestId);
+            return new ResponseEntity<>(requestLiveLocation, HttpStatus.OK);
+        } catch (ResourceNotFoundException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @GetMapping("/getAllRequests")
     public ResponseEntity<?> getAllRequests() {
         try {
@@ -84,6 +96,23 @@ public class RequestController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
             // 处理其他可能的异常
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/updateLocation/{requestId}/")
+    public ResponseEntity<?> updateLocation(@PathVariable int requestId,
+                                            @RequestParam(required = false) Double parentLatitude,
+                                            @RequestParam(required = false) Double parentLongitude,
+                                            @RequestParam(required = false) Double walkerLatitude,
+                                            @RequestParam(required = false) Double walkerLongitude) {
+        try {
+            return new ResponseEntity<>(requestService.updateLocation(requestId, parentLatitude, parentLongitude, walkerLatitude, walkerLongitude), HttpStatus.OK);
+        } catch (ResourceNotFoundException e) {
+            // Returns an error message with status code 404 (Not found)
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        } catch (Exception e) {
+            // Handling other possible exceptions
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

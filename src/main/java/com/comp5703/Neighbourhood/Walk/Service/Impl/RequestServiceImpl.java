@@ -90,6 +90,23 @@ public class RequestServiceImpl implements RequestService {
     }
 
     @Override
+    public RequestLiveLocationDTO getLiveLocationByRequestId(int requestId) {
+        Request request = requestRepository.findById(requestId).orElseThrow(() -> new ResourceNotFoundException("Request not found"));
+        // Convert Request to RequestDTO
+        RequestLiveLocationDTO requestLiveLocation = new RequestLiveLocationDTO(
+                request.getRequestId(),
+                request.getWalker(),
+                request.getParent(),
+                request.getParentLatitude(),
+                request.getParentLongitude(),
+                request.getWalkerLatitude(),
+                request.getWalkerLongitude()
+        );
+
+        return requestLiveLocation;
+    }
+
+    @Override
     public Request createRequest(Request request) {
         // 确保 departure 和 destination 不为空
         if (request.getDeparture() == null || request.getDeparture().isEmpty()) {
@@ -136,7 +153,6 @@ public class RequestServiceImpl implements RequestService {
         return requestRepository.save(request);
     }
 
-
     @Override
     public Request updateRequest(int requestId, Request updatedRequest) {
         Date currentDate = new Date();
@@ -160,7 +176,26 @@ public class RequestServiceImpl implements RequestService {
         request.setDetails(updatedRequest.getDetails());
 
         return requestRepository.save(request);
+    }
 
+    @Override
+    public Request updateLocation(int requestId, Double parentLatitude, Double parentLongitude, Double walkerLatitude, Double walkerLongitude) {
+
+        Request request = requestRepository.findById(requestId).orElseThrow(() -> new ResourceNotFoundException("Request not found"));
+        if (parentLatitude != null) {
+            request.setParentLatitude(parentLatitude);
+        }
+        if (parentLongitude != null) {
+            request.setParentLongitude(parentLongitude);
+        }
+        if (walkerLatitude != null) {
+            request.setWalkerLatitude(walkerLatitude);
+        }
+        if (walkerLongitude != null) {
+            request.setWalkerLongitude(walkerLongitude);
+        }
+
+        return requestRepository.save(request);
     }
 
     @Override
