@@ -26,9 +26,14 @@ public class UsersController {
     }
 
     @GetMapping("/getUserById/{userId}")
-    public ResponseEntity<Users> getUserById(@PathVariable long userId){
-        Users user = usersService.getUserById(userId);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+    public ResponseEntity<?> getUserById(@PathVariable long userId){
+        try {
+            Users user = usersService.getUserById(userId);
+            return new ResponseEntity<>(user, HttpStatus.OK);
+        } catch (ResourceNotFoundException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+        }
+
     }
 
     @GetMapping("/userNamesById/{userId}")
@@ -113,6 +118,23 @@ public class UsersController {
         try {
             // 调用服务层的 registerUser 方法
             Users registeredUser = usersService.registerUser(user, roleType);
+
+            // 返回成功响应
+            return new ResponseEntity<>("User registered successfully with ID: " + registeredUser.getId(), HttpStatus.CREATED);
+        } catch (IllegalArgumentException e) {
+            // 返回错误信息，状态码为400 (Bad Request)
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            // 处理其他可能的异常
+            return new ResponseEntity<>("An error occurred during user registration", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PostMapping("/oauthRegister")
+    public ResponseEntity<String> registerUser_OAuth(@RequestBody Users user, @RequestParam String roleType) {
+        try {
+            // 调用服务层的 registerUser 方法
+            Users registeredUser = usersService.registerUser_OAuth(user, roleType);
 
             // 返回成功响应
             return new ResponseEntity<>("User registered successfully with ID: " + registeredUser.getId(), HttpStatus.CREATED);

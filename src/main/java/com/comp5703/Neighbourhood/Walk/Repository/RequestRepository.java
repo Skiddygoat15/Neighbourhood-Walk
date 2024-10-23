@@ -13,6 +13,7 @@ import java.util.Optional;
 
 public interface RequestRepository extends JpaRepository<Request, Integer>, JpaSpecificationExecutor<Request> {
     List<Request> findByParentId(Long parentId);
+    List<Request> findByWalkerId(Long walkerId);
     /*
     @Query("SELECT r FROM Request r " +
             "JOIN r.parent p " +
@@ -38,4 +39,9 @@ public interface RequestRepository extends JpaRepository<Request, Integer>, JpaS
     Optional<Request> findById(Integer integer);
 
     long countByStatus(String status);
+
+    @Query("SELECT r.walker FROM Request r WHERE r.requestId = :requestId")
+    Users findWalkerByRequestId(@Param("requestId") Integer requestId);
+    @Query("SELECT r.parent FROM Request r WHERE r.requestId = :requestId")
+    Users findParentByRequestId(@Param("requestId") Integer requestId);
 }

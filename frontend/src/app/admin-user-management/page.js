@@ -38,7 +38,7 @@ export default function AdminUserManagement() {
                 method: 'get',
                 credentials: 'include',
                 headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                    'Authorization': 'Bearer ' + sessionStorage.getItem('token')
                 }
             });
 
@@ -75,7 +75,7 @@ export default function AdminUserManagement() {
             credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
+                'Authorization': 'Bearer ' + sessionStorage.getItem('token')
             },
         })
             .then(response => {
@@ -99,7 +99,7 @@ export default function AdminUserManagement() {
                         method: 'get',
                         credentials: 'include',
                         headers: {
-                            'Authorization': 'Bearer ' + localStorage.getItem('token'),
+                            'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
                             'Content-Type': 'application/json',
                         },
                     });
@@ -139,7 +139,7 @@ export default function AdminUserManagement() {
                 method: 'get',
                 credentials: 'include',
                 headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                    'Authorization': 'Bearer ' + sessionStorage.getItem('token')
                 }
             });
             if (response.ok) {
@@ -161,7 +161,7 @@ export default function AdminUserManagement() {
                 method: 'get',
                 credentials: 'include',
                 headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                    'Authorization': 'Bearer ' + sessionStorage.getItem('token')
                 }
             });
             if (response.ok) {
@@ -183,7 +183,7 @@ export default function AdminUserManagement() {
                 method: 'delete',
                 credentials: 'include',
                 headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                    'Authorization': 'Bearer ' + sessionStorage.getItem('token')
                 }
             });
             if (response.ok) {

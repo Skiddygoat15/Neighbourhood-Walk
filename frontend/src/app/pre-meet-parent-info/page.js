@@ -10,9 +10,9 @@ export default function PreMeetParent() {
     const router = useRouter();
     let parentId = null;
     let token = null;
-    if (typeof window !== 'undefined' && window.localStorage) {
-        parentId = localStorage.getItem('userId');
-        token = localStorage.getItem('token');
+    if (typeof window !== 'undefined' && window.sessionStorage) {
+        parentId = sessionStorage.getItem('userId');
+        token = sessionStorage.getItem('token');
     }
     const [preMeet, setPreMeet] = useState([]);  // store pre meet list
     const [error, setError] = useState(null);    // store error message

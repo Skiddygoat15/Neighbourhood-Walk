@@ -9,7 +9,7 @@ import useTextColor from '../../ui-background-components/useTextColor';
 export default function RequestDetails({params}) {
     const router = useRouter();
     const {requestId} = params;  // obtain dynamic route param
-    const walkerId = localStorage.getItem('userId');
+    const walkerId = sessionStorage.getItem('userId');
     const [requestDetails, setRequestDetails] = useState(null); // store request details
     const [error, setError] = useState(null);    // store error message
     const getRequestInfoAPI = `http://127.0.0.1:8080/WalkerRequest/getRequestDetailByRequestIdAndWalkerId/${requestId}/${walkerId}`;
@@ -30,7 +30,7 @@ export default function RequestDetails({params}) {
                 method: 'get',
                 credentials: 'include',
                 headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                    'Authorization': 'Bearer ' + sessionStorage.getItem('token')
                 }
             });
 
@@ -51,7 +51,7 @@ export default function RequestDetails({params}) {
                 method: 'post',
                 credentials: 'include',
                 headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                    'Authorization': 'Bearer ' + sessionStorage.getItem('token')
                 }
             });
             console.log(response);

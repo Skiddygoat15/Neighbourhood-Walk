@@ -65,6 +65,7 @@ public class DummyDataLoader implements CommandLineRunner {
         user1.setGender("male");
         user1.setAvgUserRating(5.0);
         user1.setActivityStatus("Offline");
+        user1.setProfileCompleted(true);
 
         Users user2 = new Users();
         user2.setName("Jane");
@@ -79,6 +80,7 @@ public class DummyDataLoader implements CommandLineRunner {
         user2.setGender("female");
         user2.setAvgUserRating(5.0);
         user2.setActivityStatus("Active");
+        user2.setProfileCompleted(true);
 
         Users user3 = new Users();
         user3.setName("Alice");
@@ -93,6 +95,8 @@ public class DummyDataLoader implements CommandLineRunner {
         user3.setGender("female");
         user3.setAvgUserRating(5.0);
         user3.setActivityStatus("Blocked");
+        user3.setProfileCompleted(true);
+
 
         Users user4 = new Users();
         user4.setName("Bob");
@@ -107,6 +111,8 @@ public class DummyDataLoader implements CommandLineRunner {
         user4.setGender("other");
         user4.setAvgUserRating(5.0);
         user4.setActivityStatus("Active");
+        user4.setProfileCompleted(true);
+
 
         Users user5 = new Users();
         user5.setName("admin");
@@ -119,6 +125,7 @@ public class DummyDataLoader implements CommandLineRunner {
         user5.setGender("other");
         user5.setAvgUserRating(5.0);
         user5.setActivityStatus("Active");
+        user5.setProfileCompleted(true);
 
         // 将用户保存到数据库
         usersRepository.saveAll(Arrays.asList(user1, user2, user3, user4, user5));
@@ -139,8 +146,8 @@ public class DummyDataLoader implements CommandLineRunner {
         Request request1 = new Request();
         request1.setParent(user1);
         request1.setPublishDate( new Date() );
-        request1.setStartTime( (Date) formatter.parse("2024-10-20T09:00:00.111") );
-        request1.setArriveTime( (Date) formatter.parse("2024-10-20T09:20:00.111") );
+        request1.setStartTime( (Date) formatter.parse("2024-10-24T09:00:00.111") );
+        request1.setArriveTime( (Date) formatter.parse("2024-10-24T09:20:00.111") );
         request1.setDeparture("54 Fitzroy St, Newtown NSW 2042, Australia");
         request1.setDepartureLatitude(-33.8960373);
         request1.setDepartureLongitude(151.1869439);
@@ -153,8 +160,8 @@ public class DummyDataLoader implements CommandLineRunner {
         Request request2 = new Request();
         request2.setParent(user3);
         request2.setPublishDate( (Date) formatter.parse("2024-09-15T09:00:00.111") );
-        request2.setStartTime( (Date) formatter.parse("2024-10-17T07:00:00.111") );
-        request2.setArriveTime( (Date) formatter.parse("2024-10-17T08:00:00.111") );
+        request2.setStartTime( (Date) formatter.parse("2024-10-24T07:00:00.111") );
+        request2.setArriveTime( (Date) formatter.parse("2024-10-24T08:00:00.111") );
         request2.setDeparture("77 Pyrmont Bridge Rd, Annandale NSW 2038, Australia");
         request2.setDepartureLatitude(-33.8859592);
         request2.setDepartureLongitude(151.1755954);
@@ -167,8 +174,8 @@ public class DummyDataLoader implements CommandLineRunner {
         Request request3 = new Request();
         request3.setParent(user4);
         request3.setPublishDate( (Date) formatter.parse("2024-08-10T09:00:00.111") );
-        request3.setStartTime( (Date) formatter.parse("2024-10-17T07:00:00.111") );
-        request3.setArriveTime( (Date) formatter.parse("2024-10-17T08:30:00.111") );
+        request3.setStartTime( (Date) formatter.parse("2024-10-24T07:00:00.111") );
+        request3.setArriveTime( (Date) formatter.parse("2024-10-24T08:30:00.111") );
         request3.setDeparture("107 Annandale St, Annandale NSW 2038, Australia");
         request3.setDepartureLatitude(-33.8824012);
         request3.setDepartureLongitude(151.1689731);
@@ -182,10 +189,14 @@ public class DummyDataLoader implements CommandLineRunner {
         request4.setParent(user1);
         request4.setWalker(user2);
         request4.setPublishDate( (Date) formatter.parse("2024-08-10T09:00:00.111") );
-        request4.setStartTime( (Date) formatter.parse("2024-10-18T07:00:00.111") );
-        request4.setArriveTime( (Date) formatter.parse("2024-10-18T08:30:00.111") );
-        request4.setDeparture("Westfield");
-        request4.setDestination("UNSW");
+        request4.setStartTime( (Date) formatter.parse("2024-10-24T012:00:00.111") );
+        request4.setArriveTime( (Date) formatter.parse("2024-10-24T013:30:00.111") );
+        request4.setDeparture("107 Annandale St, Annandale NSW 2038, Australia");
+        request4.setDepartureLatitude(-33.8824012);
+        request4.setDepartureLongitude(151.1689731);
+        request4.setDestination("50 Carillon Ave, Newtown NSW 2042, Australia");
+        request4.setDepartureLatitude(-33.8915856);
+        request4.setDepartureLongitude(151.185331);
         request4.setDetails("Please meet us at KFC");
         request4.setStatus("Accepted");
 

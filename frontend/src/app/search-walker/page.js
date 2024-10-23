@@ -10,9 +10,9 @@ export default function SearchWalker() {
     const router = useRouter();
     let walkerId = null;
     let token = null;
-    if (typeof window !== 'undefined' && window.localStorage) {
-        walkerId = localStorage.getItem('userId');
-        token = localStorage.getItem('token');
+    if (typeof window !== 'undefined' && window.sessionStorage) {
+        walkerId = sessionStorage.getItem('userId');
+        token = sessionStorage.getItem('token');
     }
     const [distance, setDistance] = useState('');
     const [searchTerm, setSearchTerm] = useState('');

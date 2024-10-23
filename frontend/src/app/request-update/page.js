@@ -27,7 +27,7 @@ export default function UpdateRequest() {
   });
 
   useEffect(() => {
-    const storedRequest = localStorage.getItem('updateRequest');
+    const storedRequest = sessionStorage.getItem('updateRequest');
     //console.log("storedRequest: ", storedRequest);
     if (storedRequest) {
       setRequest(JSON.parse(storedRequest));
@@ -91,7 +91,7 @@ export default function UpdateRequest() {
         credentials: 'include',
         headers: {
           'Content-Type': 'application/json', // Set the content type header for JSON data
-          'Authorization': 'Bearer ' + localStorage.getItem('token')
+          'Authorization': 'Bearer ' + sessionStorage.getItem('token')
         },
         body: JSON.stringify(updatedSendBody)
       })

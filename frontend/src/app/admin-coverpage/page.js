@@ -38,7 +38,7 @@ export default function AdminPage() {
             const response = await fetch('http://127.0.0.1:8080/Users/stats', {
                 method: 'get',
                 headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                    'Authorization': 'Bearer ' + sessionStorage.getItem('token')
                 }
             });
             const data = await response.json();
@@ -56,7 +56,7 @@ export default function AdminPage() {
             const response = await fetch('http://127.0.0.1:8080/requests/stats', {
                 method: 'get',
                 headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                    'Authorization': 'Bearer ' + sessionStorage.getItem('token')
                 }
             });
             const data = await response.json();

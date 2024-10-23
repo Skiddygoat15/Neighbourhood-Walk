@@ -49,9 +49,9 @@ export default function MyRequestApplication({ params }) {
     };
     return date.toLocaleString('en-US', options);
   }
-  // 第一次渲染时，获取 localStorage 中的 request 数据
+  // 第一次渲染时，获取 sessionStorage 中的 request 数据
   // useEffect(() => {
-  //   const storedRequest = localStorage.getItem('clickedRequest');
+  //   const storedRequest = sessionStorage.getItem('clickedRequest');
   //   //console.log("storedRequest: ", storedRequest);
   //   if (storedRequest) {
   //     setRequest(JSON.parse(storedRequest));
@@ -73,7 +73,7 @@ export default function MyRequestApplication({ params }) {
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem('token')
+        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
       }
     })
         .then(response => {
@@ -97,8 +97,8 @@ export default function MyRequestApplication({ params }) {
           if (data.walker) {
             console.log("accepted-walker:", data.walker);
             setAcceptedWalker(data.walker); // 设置被接受的 walker
-            localStorage.setItem("preMeetIds", [data.parent.id,data.walker.id,id])
-            console.log("preMeetIds 1:", localStorage.getItem("preMeetIds"))
+            sessionStorage.setItem("preMeetIds", [data.parent.id,data.walker.id,id])
+            console.log("preMeetIds 1:", sessionStorage.getItem("preMeetIds"))
             setLoading(false);
           }
         })
@@ -121,7 +121,7 @@ export default function MyRequestApplication({ params }) {
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem('token')
+        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
       }
     })
         .then(response => {
@@ -167,7 +167,7 @@ export default function MyRequestApplication({ params }) {
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem('token')
+        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
       }
     })
         .then(response => {
@@ -181,8 +181,8 @@ export default function MyRequestApplication({ params }) {
           alert('Request accepted successfully.');
           setAcceptedWalker(walkers.find(walker => walker.id === walkerId));
           setWalkers(walkers.filter(walker => walker.id === walkerId));
-          localStorage.setItem("preMeetIds", [request.parent.id, walkerId, id])
-          console.log("preMeetIds 2:", localStorage.getItem("preMeetIds"))
+          sessionStorage.setItem("preMeetIds", [request.parent.id, walkerId, id])
+          console.log("preMeetIds 2:", sessionStorage.getItem("preMeetIds"))
           //router.reload(); // 刷新页面
           setLoading(false);
         })
@@ -202,7 +202,7 @@ export default function MyRequestApplication({ params }) {
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + localStorage.getItem('token')
+        'Authorization': 'Bearer ' + sessionStorage.getItem('token')
       }
     })
         .then(response => {

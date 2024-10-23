@@ -38,7 +38,7 @@ export default function AdminContentManagement() {
                 method: 'get',
                 credentials: 'include',
                 headers: {
-                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                    'Authorization': 'Bearer ' + sessionStorage.getItem('token')
                 }
             });
 
@@ -75,7 +75,7 @@ export default function AdminContentManagement() {
             credentials: 'include',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
+                'Authorization': 'Bearer ' + sessionStorage.getItem('token')
             },
         })
             .then(response => {
@@ -112,7 +112,7 @@ export default function AdminContentManagement() {
             credentials: 'include',
             headers: {
                 'Content-Type': 'application/json', // 设置请求头为 JSON 类型
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
+                'Authorization': 'Bearer ' + sessionStorage.getItem('token')
             },
         })
             .then(response => {

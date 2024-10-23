@@ -13,10 +13,10 @@ const LoginIdentitySelect = () => {
 
   const handleContinue = () => {
     if (selectedRole === "walker") {
-      localStorage.setItem('currentRole', 'walker')
+      sessionStorage.setItem('currentRole', 'walker')
       router.push("/home-walker"); // replace with actual route for walker
     } else if (selectedRole === "parent") {
-      localStorage.setItem('currentRole', 'parent')
+      sessionStorage.setItem('currentRole', 'parent')
       router.push("/home-parent"); // replace with actual route for parent
     } else {
       alert("Please select a role to continue.");

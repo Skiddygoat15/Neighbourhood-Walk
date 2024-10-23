@@ -9,7 +9,7 @@ export default function UserDetail() {
         websocket.onopen = function() {
             console.log("WebSocket连接成功");
 
-            const token = localStorage.getItem('token'); // 获取存储的令牌
+            const token = sessionStorage.getItem('token'); // 获取存储的令牌
             console.info(token);
             if (token) {
                 // 发送身份验证消息
