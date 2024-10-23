@@ -56,6 +56,9 @@ public class RequestController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @GetMapping("/getWalkerByRequestId/{requestId}")
     public ResponseEntity<?> getWalkerByRequestId(@PathVariable int requestId) {
         try {
