@@ -13,13 +13,17 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "ChatBar")
+//@Table(name = "ChatBar")
+@Table(name = "ChatBar", uniqueConstraints = @UniqueConstraint(columnNames = {"userFrom", "userTo"}))
+
 public class ChatBar {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JoinColumn(name = "ChatBarId")
     private long id;
+//    private Long id;
+
 
     @ManyToOne
     @JoinColumn(name = "userFrom")
@@ -53,7 +57,8 @@ public class ChatBar {
     }
 
 
-    public long getId() {
+//    public long getId() {
+    public Long getId() {
         return id;
     }
 

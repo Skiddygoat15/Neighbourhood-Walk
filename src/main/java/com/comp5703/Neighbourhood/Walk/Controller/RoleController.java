@@ -58,6 +58,7 @@ public class RoleController {
         }
     }
 
+
     @DeleteMapping("/delete")
     public ResponseEntity<String> deleteRole(@RequestParam long userId, @RequestParam String roleType) {
         try {
