@@ -43,6 +43,7 @@ export default function LoginForm() {
 
     try {
       // Call login API
+      console.log("apiUrl"+apiUrl)
       const res = await fetch(`${apiUrl}/login`, {
         method: 'POST',
         headers: {
