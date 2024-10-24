@@ -1,8 +1,5 @@
 package com.comp5703.Neighbourhood.Walk.websocket;
-import com.comp5703.Neighbourhood.Walk.Entities.ChatBox;
-import com.comp5703.Neighbourhood.Walk.Entities.ChatRoom;
-import com.comp5703.Neighbourhood.Walk.Entities.Role;
-import com.comp5703.Neighbourhood.Walk.Entities.Users;
+import com.comp5703.Neighbourhood.Walk.Entities.*;
 import com.comp5703.Neighbourhood.Walk.Repository.ChatBoxRepository;
 import com.comp5703.Neighbourhood.Walk.Repository.ChatRoomRepository;
 import com.comp5703.Neighbourhood.Walk.Repository.RoleRepository;
@@ -14,7 +11,10 @@ import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
-
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
@@ -24,6 +24,8 @@ import java.util.*;
 
 @Component
 public class MyWebSocketHandler extends TextWebSocketHandler {
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     //用于管理聊天室对应的会话内容
     private Map<String, List<WebSocketSession>> roomSessions = new HashMap<>();
@@ -131,8 +133,28 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
 
                 chatRoomRepository.save(chatRoom);
 
+                ChatBoxDTO chatBoxDTO = new ChatBoxDTO();
+                if (chatBoxMessage != null) {
+                    // 从Role对象中获取roleType
+                    if (chatBoxMessage.getRoleFrom() != null) {
+                        chatBoxDTO.setRoleFromRoleType(chatBoxMessage.getRoleFrom().getRoleType());
+                    }
+                    if (chatBoxMessage.getRoleTo() != null) {
+                        chatBoxDTO.setRoleToRoleType(chatBoxMessage.getRoleTo().getRoleType());
+                    }
+                    chatBoxDTO.setMessage(chatBoxMessage.getMessage());
+                    chatBoxDTO.setTime(chatBoxMessage.getTime());
+                    // 从ChatRoom对象中获取ID，这里假设ChatRoom类有getId方法
+                    if (chatBoxMessage.getChatRoom() != null) {
+                        chatBoxDTO.setChatRoomId(String.valueOf(chatBoxMessage.getChatRoom().getId()));
+                    }
+                }
+
+                String chatBoxJson = objectMapper.writeValueAsString(chatBoxDTO);
+                // 创建一个 TextMessage
+                TextMessage DtoToMessage = new TextMessage(chatBoxJson);
                 //房间内广播消息
-                broadcastMessage(roomId, new TextMessage("Broadcast: " + chatBoxMessage));
+                broadcastMessage(roomId, DtoToMessage);
 
                 break;
             default:

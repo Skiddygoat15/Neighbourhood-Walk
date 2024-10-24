@@ -16,6 +16,7 @@ export default function Home({params}) {
     // const [userIdTo, setUserIdTo] = useState("101");
     const [isDataReady, setIsDataReady] = useState(false);
     const userIdTo = params.userToId;
+    const [chatRoomId, setChatRoomId] = useState("");
 
     useEffect(() => {
         const storedRole = sessionStorage.getItem("roles")?.slice(2, -2);
@@ -46,11 +47,14 @@ export default function Home({params}) {
     const websocket = useRef(null);
     const [inputMessage, setInputMessage] = useState("");
     const [messages, setMessages] = useState([]);  // 用于存储消息的状态
-
+    const [allChatMessages, setAllChatMessages] = useState([]);
     useEffect(() => {
         console.info("messages are:", messages)
     }, [messages]);
 
+    useEffect(() => {
+        console.info("allChatMessages are:", allChatMessages)
+    }, [allChatMessages]);
     //websocket连接
     // useEffect(() => {
     function initializeWebSocket(userIdFrom, userIdTo) {
@@ -60,6 +64,7 @@ export default function Home({params}) {
             console.log("WebSocket连接成功");
             console.log("userIdFrom is: " + userIdFrom);
             console.log("userIdTo is: " + userIdTo);
+            GetChatHistory();
             // setMessages((prev) => [...prev, `用户[${username}] 已经加入聊天室`]);
 
             // 获取并发送chat双方的userId给服务器
@@ -72,23 +77,24 @@ export default function Home({params}) {
                         userIdFrom: userIdFrom,
                         userIdTo: userIdTo,
                     });
-                    console.log("已发送initData到服务器");
                     console.info(initData);
                     websocket.current.send(initData);
+
                 }
             }
             // setMessages((prev) => [...prev, `用户1 已经加入聊天室`]);
         };
-
         // 当接收到 WebSocket 消息时
         websocket.current.onmessage = function (event) {
-            console.log("Get message from server: ", event.data);
-            // try {
-            //     const parsedData = JSON.parse(event.data);
-            //     setMessages(prev => [...prev, parsedData]);
-            // } catch (error) {
-            //     console.error("Error parsing message data:", error);
-            // }
+            // console.info("server message test:")
+            // console.log(event.data);
+
+            try {
+                const newMessage = JSON.parse(event.data);
+                setAllChatMessages(prevMessages => [...prevMessages, newMessage]); // 使用函数式更新以保证状态正确更新
+            } catch (error) {
+                console.error("Error parsing message data:", error);
+            }
         };
 
         // WebSocket 错误处理
@@ -142,6 +148,31 @@ export default function Home({params}) {
     const getMessageStyle = (role) => {
         return role === 'walker' ? "message-left" : "message-right";
     };
+
+    function GetChatHistory() {
+        const userIdFromLong = parseInt(userIdFrom, 10);
+        const userIdToLong = parseInt(userIdTo, 10);
+        const chatRoomId = "room_" + Math.min(userIdFromLong, userIdToLong) + "_" + Math.max(userIdFromLong, userIdToLong);
+        setChatRoomId(chatRoomId);
+        fetch(`http://localhost:8080/ChatRoom/getChatBoxesFromChatRoom/${chatRoomId}`, {
+            method: 'GET',
+            headers: {'Content-Type': 'application/json',
+                'Authorization': `Bearer ` + sessionStorage.getItem('token') },
+        })
+            .then(response => {
+                if (!response.ok) {
+                    console.info("Failed to get the Chatting history.")
+                }else {
+                    console.info("Successfully to get the Chatting history.")
+                }
+                return response.json();
+            })
+            .then(data =>{
+                // console.info("Chatting history is:", data);
+                setAllChatMessages(data);  // 直接更新 allChatMessages 状态为从后端获取的数组
+            })
+            .catch(error => console.error('Error:', error));
+    }
 
     return (
 

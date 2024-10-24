@@ -1,18 +1,19 @@
 package com.comp5703.Neighbourhood.Walk.Service.Impl;
 
 import com.comp5703.Neighbourhood.Walk.Entities.ChatBox;
+import com.comp5703.Neighbourhood.Walk.Entities.ChatBoxDTO;
 import com.comp5703.Neighbourhood.Walk.Entities.ChatRoom;
 import com.comp5703.Neighbourhood.Walk.Entities.Role;
 import com.comp5703.Neighbourhood.Walk.Repository.ChatRoomRepository;
 import com.comp5703.Neighbourhood.Walk.Repository.RoleRepository;
 import com.comp5703.Neighbourhood.Walk.Repository.UsersRepository;
 import com.comp5703.Neighbourhood.Walk.Service.ChatRoomService;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ChatRoomServiceImpl implements ChatRoomService {
@@ -59,10 +60,20 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     }
 
     @Override
-    public List<ChatBox> getChatBoxes(String chatRoomId) {
+    public List<ChatBoxDTO> getChatBoxes(String chatRoomId) {
         Optional<ChatRoom> chatRoomCheck = chatRoomRepository.findById(chatRoomId);
         if (chatRoomCheck.isPresent()){
-            return chatRoomCheck.get().getChatBoxes();
+            List<ChatBox> chatBoxes = chatRoomCheck.get().getChatBoxes();
+            List<ChatBoxDTO> chatBoxDTOs = chatBoxes.stream().map(chatBox -> {
+                ChatBoxDTO chatBoxDTO = new ChatBoxDTO();
+                chatBoxDTO.setChatRoomId(chatBox.getChatRoom().getId());
+                chatBoxDTO.setRoleFromRoleType(chatBox.getRoleFrom().getRoleType());
+                chatBoxDTO.setRoleToRoleType(chatBox.getRoleTo().getRoleType());
+                chatBoxDTO.setTime(chatBox.getTime());
+                chatBoxDTO.setMessage(chatBox.getMessage());
+                return chatBoxDTO;
+            }).collect(Collectors.toList());
+            return chatBoxDTOs;
         }else {
             throw new IllegalArgumentException("ChatRoom not found.");
         }
