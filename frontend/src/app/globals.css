@@ -186,6 +186,27 @@ body {
   opacity: 0.7;
 }
 
+.messages {
+  overflow-y: auto;
+  flex-grow: 1;
+  padding-bottom: 100px; /* 留出足够的空间，避免 ChatBar 遮挡消息 */
+}
+
+.fixed {
+  position: fixed;
+}
+
+.bottom-16 {
+  bottom: 80px; /* 将 ChatBar 移动到距离屏幕底部 60px 的位置 */
+}
+
+.w-full {
+  width: 100%;
+}
+
+.flex-grow {
+  flex-grow: 1;
+}
 
 
 

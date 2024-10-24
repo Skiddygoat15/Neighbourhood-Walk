@@ -145,10 +145,12 @@ export default function Home({params}) {
         }
     };
 
-    const getMessageStyle = (role) => {
-        return role === 'walker' ? "message-left" : "message-right";
+    // const getMessageStyle = (role) => {
+    //     return role === 'walker' ? "message-left" : "message-right";
+    // };
+    const getMessageStyle = (roleFromRoleType) => {
+        return roleFromRoleType === 'walker' ? 'message-left' : 'message-right';
     };
-
     function GetChatHistory() {
         const userIdFromLong = parseInt(userIdFrom, 10);
         const userIdToLong = parseInt(userIdTo, 10);
@@ -174,17 +176,46 @@ export default function Home({params}) {
             .catch(error => console.error('Error:', error));
     }
 
+    // return (
+    //     <div className="flex flex-col h-screen bg-gray-100 p-4">
+    //         <div className="messages">
+    //             {messages.map((msg) => (
+    //                 <div key={uuidv4()} className={`message ${getMessageStyle(msg.roleFrom)}`}>
+    //                     {msg.message} <span>{msg.time}</span>
+    //                 </div>
+    //             ))}
+    //         </div>
+    //         <ChatBar onSendMessage={sendMessage}/>
+    //     </div>
+    // );
     return (
-
         <div className="flex flex-col h-screen bg-gray-100 p-4">
             <div className="messages">
-                {messages.map((msg) => (
-                    <div key={uuidv4()} className={`message ${getMessageStyle(msg.roleFrom)}`}>
-                        {msg.message} <span>{msg.time}</span>
+                {allChatMessages.map((msg, index) => (
+                    // <div key={uuidv4()} className={`message ${getMessageStyle(msg.roleFromRoleType)}`}>
+                    <div
+                        key={uuidv4()}
+                        style={{
+                            // backgroundColor: msg.roleFromRoleType === 'walker' ? '#f1f1f1' : '#d1f0f7',
+                            backgroundColor: msg.roleFromRoleType === 'walker' ? '#d1f0f7' : '#f1f1f1',
+                            textAlign: msg.roleFromRoleType === 'walker' ? 'right' : 'left',
+                            float: msg.roleFromRoleType === 'walker' ? 'right' : 'left',
+                            clear: 'both',
+                            margin: '10px',
+                            padding: '10px',
+                            borderRadius: '10px',
+                            maxWidth: '60%',
+                        }}
+                    >
+                        <p>{msg.message}</p>
+                        <span>{new Date(msg.time).toLocaleString()}</span>
                     </div>
                 ))}
             </div>
-            <ChatBar onSendMessage={sendMessage}/>
+            <div className="fixed bottom-16 w-full"> {/* bottom-16 代表向上移动 16px，可以根据需要调整 */}
+                <ChatBar onSendMessage={sendMessage}/>
+            </div>
+            {/*<ChatBar onSendMessage={sendMessage}/>*/}
         </div>
     );
 }

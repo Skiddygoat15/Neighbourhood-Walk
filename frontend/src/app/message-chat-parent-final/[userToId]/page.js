@@ -2,10 +2,8 @@
 
 import ChatBar from '../../../components/ChatBar';
 import {useEffect, useRef, useState} from "react";
-import {useRouter} from "next/navigation";
 import {format} from "date-fns";
 import { v4 as uuidv4 } from 'uuid';
-//！！！！！！！！接下来要实现的是：通过主user和他的身份，与副user和他的身份，查找他们之间是否有chatroom（聊天历史记录），如果有，则家
 export default function Home({params}) {
 
 
@@ -16,11 +14,13 @@ export default function Home({params}) {
     // const [userIdTo, setUserIdTo] = useState("101");
     const [isDataReady, setIsDataReady] = useState(false);
     const userIdTo = params.userToId;
+    const [chatRoomId, setChatRoomId] = useState("");
 
     useEffect(() => {
         const storedRole = sessionStorage.getItem("roles")?.slice(2, -2);
         const storedUser = sessionStorage.getItem("userId");
         if (storedUser && storedRole) {
+            // setRoleFrom(storedRole);
             setRoleFrom("parent");
             setUserIdFrom(storedUser);
             setIsDataReady(true);  // 设置数据准备完毕的状态
@@ -34,6 +34,7 @@ export default function Home({params}) {
             console.info("userRoleFrom is", roleFrom)
             console.info("userIdTo is",userIdTo)
             console.info("userRoleFrom is", roleTo)
+            console.info(typeof userIdTo)
             initializeWebSocket(userIdFrom, userIdTo);
         }
     }, [isDataReady, userIdFrom, userIdTo]);
@@ -44,11 +45,14 @@ export default function Home({params}) {
     const websocket = useRef(null);
     const [inputMessage, setInputMessage] = useState("");
     const [messages, setMessages] = useState([]);  // 用于存储消息的状态
-
+    const [allChatMessages, setAllChatMessages] = useState([]);
     useEffect(() => {
         console.info("messages are:", messages)
     }, [messages]);
 
+    useEffect(() => {
+        console.info("allChatMessages are:", allChatMessages)
+    }, [allChatMessages]);
     //websocket连接
     // useEffect(() => {
     function initializeWebSocket(userIdFrom, userIdTo) {
@@ -58,6 +62,7 @@ export default function Home({params}) {
             console.log("WebSocket连接成功");
             console.log("userIdFrom is: " + userIdFrom);
             console.log("userIdTo is: " + userIdTo);
+            GetChatHistory();
             // setMessages((prev) => [...prev, `用户[${username}] 已经加入聊天室`]);
 
             // 获取并发送chat双方的userId给服务器
@@ -70,23 +75,24 @@ export default function Home({params}) {
                         userIdFrom: userIdFrom,
                         userIdTo: userIdTo,
                     });
-                    console.log("已发送initData到服务器");
                     console.info(initData);
                     websocket.current.send(initData);
+
                 }
             }
             // setMessages((prev) => [...prev, `用户1 已经加入聊天室`]);
         };
-
         // 当接收到 WebSocket 消息时
         websocket.current.onmessage = function (event) {
-            console.log("Get message from server: ", event.data);
-            // try {
-            //     const parsedData = JSON.parse(event.data);
-            //     setMessages(prev => [...prev, parsedData]);
-            // } catch (error) {
-            //     console.error("Error parsing message data:", error);
-            // }
+            // console.info("server message test:")
+            // console.log(event.data);
+
+            try {
+                const newMessage = JSON.parse(event.data);
+                setAllChatMessages(prevMessages => [...prevMessages, newMessage]); // 使用函数式更新以保证状态正确更新
+            } catch (error) {
+                console.error("Error parsing message data:", error);
+            }
         };
 
         // WebSocket 错误处理
@@ -117,41 +123,84 @@ export default function Home({params}) {
         const formattedTime = format(currentTime, "EEEE, MMMM do, yyyy, hh:mm:ss a"); // 格式化时间
 
         if(websocket.current && websocket.current.readyState === WebSocket.OPEN) {
-                const messageData = JSON.stringify({
-                    // time={format(notification.time, 'EEEE, MMMM do, yyyy, hh:mm:ss a')}
-                        type: "message",
-                        userIdFrom: userIdFrom,
-                        userIdTo: userIdTo,
-                        roleFrom: roleFrom,
-                        roleTo: roleTo,
-                        message: inputMessage,
-                        time: formattedTime,
-                    });
+            const messageData = JSON.stringify({
+                // time={format(notification.time, 'EEEE, MMMM do, yyyy, hh:mm:ss a')}
+                type: "message",
+                userIdFrom: userIdFrom,
+                userIdTo: userIdTo,
+                roleFrom: roleFrom,
+                roleTo: roleTo,
+                message: inputMessage,
+                time: formattedTime,
+            });
 
-                console.info("inputMessage is: " + inputMessage);
-                websocket.current.send(messageData);
+            console.info("inputMessage is: " + inputMessage);
+            websocket.current.send(messageData);
 
-                setMessages([...messages, messageData]);
-            } else {
+            setMessages([...messages, messageData]);
+        } else {
             alert("WebSocket 连接未建立！");
         }
     };
 
-    const getMessageStyle = (role) => {
-        return role === 'walker' ? "message-left" : "message-right";
-    };
+
+    // const getMessageStyle = (roleFromRoleType) => {
+    //     return roleFromRoleType === 'parent' ? 'message-left' : 'message-right';
+    // };
+
+    function GetChatHistory() {
+        const userIdFromLong = parseInt(userIdFrom, 10);
+        const userIdToLong = parseInt(userIdTo, 10);
+        const chatRoomId = "room_" + Math.min(userIdFromLong, userIdToLong) + "_" + Math.max(userIdFromLong, userIdToLong);
+        setChatRoomId(chatRoomId);
+        fetch(`http://localhost:8080/ChatRoom/getChatBoxesFromChatRoom/${chatRoomId}`, {
+            method: 'GET',
+            headers: {'Content-Type': 'application/json',
+                'Authorization': `Bearer ` + sessionStorage.getItem('token') },
+        })
+            .then(response => {
+                if (!response.ok) {
+                    console.info("Failed to get the Chatting history.")
+                }else {
+                    console.info("Successfully to get the Chatting history.")
+                }
+                return response.json();
+            })
+            .then(data =>{
+                // console.info("Chatting history is:", data);
+                setAllChatMessages(data);  // 直接更新 allChatMessages 状态为从后端获取的数组
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
 
     return (
-
         <div className="flex flex-col h-screen bg-gray-100 p-4">
             <div className="messages">
-                {messages.map((msg) => (
-                    <div key={uuidv4()} className={`message ${getMessageStyle(msg.roleFrom)}`}>
-                        {msg.message} <span>{msg.time}</span>
+                {allChatMessages.map((msg, index) => (
+                    <div
+                        key={uuidv4()}
+                        style={{
+                            // backgroundColor: msg.roleFromRoleType === 'parent' ? '#f1f1f1' : '#d1f0f7',
+                            backgroundColor: msg.roleFromRoleType === 'parent' ? '#d1f0f7' : '#f1f1f1',
+                            textAlign: msg.roleFromRoleType === 'parent' ? 'right' : 'left',
+                            float: msg.roleFromRoleType === 'parent' ? 'right' : 'left',
+                            clear: 'both',
+                            margin: '10px',
+                            padding: '10px',
+                            borderRadius: '10px',
+                            maxWidth: '60%',
+                        }}
+                    >
+                        <p>{msg.message}</p>
+                        <span>{new Date(msg.time).toLocaleString()}</span>
                     </div>
                 ))}
             </div>
-            <ChatBar onSendMessage={sendMessage}/>
+            <div className="fixed bottom-16 w-full"> {/* bottom-16 代表向上移动 16px，可以根据需要调整 */}
+                <ChatBar onSendMessage={sendMessage}/>
+            </div>
+            {/*<ChatBar onSendMessage={sendMessage}/>*/}
         </div>
     );
 }
