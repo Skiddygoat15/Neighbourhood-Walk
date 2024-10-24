@@ -12,6 +12,8 @@ export default function PreMeetParent() {
   const [meetingDate, setMeetingDate] = useState("");
   const [meetingInfo, setMeetingInfo] = useState("");
   const textColor = useTextColor();
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
   let parentId = null;
   let walkerId = null;
   let requestId = null;
@@ -51,7 +53,7 @@ export default function PreMeetParent() {
       urlOrAddress: meetingInfo,
       newOrNot: true
     }
-    const createPreMeetAPI = `http://127.0.0.1:8080/preMeet/create/${parentId}/${walkerId}/${requestId}`
+    const createPreMeetAPI = `http://${apiUrl}/preMeet/create/${parentId}/${walkerId}/${requestId}`
     fetch(createPreMeetAPI, {
       method: 'post',
       credentials: 'include',

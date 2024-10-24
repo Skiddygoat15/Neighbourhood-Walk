@@ -17,6 +17,7 @@ export default function UpdateRequest() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const textColor = useTextColor();
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const [sendBody, setSendBody] = useState({
     startTime: new Date(),
@@ -49,7 +50,7 @@ export default function UpdateRequest() {
   }, [request]);
 
   const handleUpdate = async () => {
-    const updateRequestAPI = `http://127.0.0.1:8080/requests/update/${request.requestId}`;
+    const updateRequestAPI = `http://${apiUrl}/requests/update/${request.requestId}`;
 
     try{
       if (!sendBody.departure || sendBody.departure.trim() === '' ||

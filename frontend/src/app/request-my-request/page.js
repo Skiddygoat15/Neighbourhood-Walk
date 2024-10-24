@@ -15,6 +15,7 @@ export default function MyRequest() {
   const textColor = useTextColor();
   const [formattedStartTime, setFormattedStartTime] = useState("00:00:00");
   const [formattedArriveTime, setFormattedArriveTime] = useState("00:00:00");
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const [parentId, setParentId] = useState();
 
@@ -34,7 +35,7 @@ export default function MyRequest() {
 
 
   function getRequestsList() {
-    const getRequestsListAPI = `http://127.0.0.1:8080/requests/getRequestsByParentId/${parentId}`
+    const getRequestsListAPI = `http://${apiUrl}/requests/getRequestsByParentId/${parentId}`
     console.log("current userId: " + parentId)
     fetch(getRequestsListAPI, {
       method: 'get', // Method is GET to fetch data
@@ -76,7 +77,7 @@ export default function MyRequest() {
 
   function deleteRequest(requestId) {
     console.log('requestId', requestId);
-    fetch(`http://127.0.0.1:8080/requests/${requestId}`, {
+    fetch(`http://${apiUrl}/requests/${requestId}`, {
       method: 'DELETE', // DELETE 方法用于删除请求
       credentials: 'include',
       headers: {

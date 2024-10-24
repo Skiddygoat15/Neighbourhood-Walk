@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 export default function LiveTrackingEnterWalker() {
     const router = useRouter();
     const [requests, setRequests] = useState([]);
-
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     useEffect(() => {
         async function fetchRequests() {
             try {
@@ -17,7 +17,7 @@ export default function LiveTrackingEnterWalker() {
                     return;
                 }
 
-                const response = await fetch(`http://127.0.0.1:8080/requests/getRequestsByWalkerId/${walkerId}`, {
+                const response = await fetch(`http://${apiUrl}/requests/getRequestsByWalkerId/${walkerId}`, {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${token}`, // 添加token到请求头

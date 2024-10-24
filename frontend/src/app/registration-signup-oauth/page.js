@@ -5,6 +5,7 @@ import { geocodeAddress } from '@/components/geocode';
 
 
 const RegistrationSignup = () => {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     console.log('Component RegistrationSignup is rendering');
     const router = useRouter();
 
@@ -66,9 +67,9 @@ const RegistrationSignup = () => {
                 birthDate: new Date(formData.birthDate).toISOString(),
             };
 
-            const apiUrl = `http://localhost:8080/Users/registerOA?roleType=${roleType}&userId=${formData.userId}`;
+            const postUrl = `http://${apiUrl}/Users/registerOA?roleType=${roleType}&userId=${formData.userId}`;
 
-            const res = await fetch(apiUrl, {
+            const res = await fetch(postUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

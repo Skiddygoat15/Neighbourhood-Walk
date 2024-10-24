@@ -17,6 +17,7 @@ export default function WalkRequestManagementParent() {
     const [error, setError] = useState('');
     const [parentId, setParentId] = useState();
     const textColor = useTextColor();
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
     useEffect(() => {
         // 从 sessionStorage 获取 userId 并更新 parentId
@@ -48,7 +49,7 @@ export default function WalkRequestManagementParent() {
 
     const handlePublish = async () => {
         console.log('UserId: ', parentId);
-        const addRequestAPI = `http://127.0.0.1:8080/requests`;
+        const addRequestAPI = `http://${apiUrl}/requests`;
         const updatedStartTime = combineDateAndTime(date, departureTime);
         const updatedArriveTime = combineDateAndTime(date, arriveTime);
 

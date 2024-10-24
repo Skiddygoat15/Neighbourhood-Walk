@@ -37,7 +37,7 @@
 //         cache: 'default'
 //     };
 //     const walkerRequestId = 1;
-//     const requestURL = new Request(`http://127.0.0.1:8080/Notification/findNotificationByWalkerRequestId/${walkerRequestId}`, myInit);
+//     const requestURL = new Request(`http://${apiUrl}/Notification/findNotificationByWalkerRequestId/${walkerRequestId}`, myInit);
 //
 //     fetch(requestURL)
 //         .then(response => {
@@ -90,13 +90,13 @@ import BackgroundLayout from '../ui-background-components/BackgroundLayout';
 import useTextColor from '../ui-background-components/useTextColor';
 
 export default function Home() {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     const [statusCards, setStatusCards] = useState([]); // 初始化为空数组
     const [parentSurname, setparentSurname] = useState(0); // 初始化为空数组
     const [walkerRequestId, setwalkerRequestId] = useState(0); // 初始化为空数组
     const [refreshKey, setRefreshKey] = useState(0); // 用于触发重新渲染的状态
     const [Notifications_Profile, setNotifications_Profile] = useState([]);
     const textColor = useTextColor();
-
     // const token = sessionStorage.getItem('token');
     // if (!role.includes("walker")) {
     //     console.error('Not a walker, no fetch executed');
@@ -125,7 +125,7 @@ export default function Home() {
             mode: 'cors',
             cache: 'default'
         };
-        const requestURL = `http://127.0.0.1:8080/Notification/findNotificationByWalkerId/${walkerId}`;
+        const requestURL = `http://${apiUrl}/Notification/findNotificationByWalkerId/${walkerId}`;
         fetch(requestURL, myInit)
             .then(response => {
                 if (!response.ok) {throw new Error('Network response was not ok1');}
@@ -156,7 +156,7 @@ export default function Home() {
             mode: 'cors',
             cache: 'default'
         };
-        const requestURL_walkerRequestId = new Request(`http://127.0.0.1:8080/WalkerRequest/getWalkerRequestByWalkerId/${walkerId}`, myInit);
+        const requestURL_walkerRequestId = new Request(`http://${apiUrl}/WalkerRequest/getWalkerRequestByWalkerId/${walkerId}`, myInit);
         fetch(requestURL_walkerRequestId)
             .then(response => {
                 if (!response.ok) {
@@ -176,7 +176,7 @@ export default function Home() {
 
     // 获取UPNotifications
     function fetchData_Profile(userId) {
-        return fetch(`http://localhost:8080/UPNotifications/getUPNotificationsByUserId/${userId}`, {
+        return fetch(`http://${apiUrl}/UPNotifications/getUPNotificationsByUserId/${userId}`, {
             method: 'GET',
             headers: {'Authorization': 'Bearer ' + token},
             mode: 'cors',
@@ -219,7 +219,7 @@ export default function Home() {
             mode: 'cors',
             cache: 'default'
         };
-        const requestURL_parentId = `http://127.0.0.1:8080/WalkerRequest/getParentIdByWalkerRequestId/${walkerRequestId}`;
+        const requestURL_parentId = `http://${apiUrl}/WalkerRequest/getParentIdByWalkerRequestId/${walkerRequestId}`;
         fetch(requestURL_parentId, myInit)
             .then(response => {
                 if (!response.ok) {

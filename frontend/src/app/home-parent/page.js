@@ -12,6 +12,7 @@ export default function HomeParent() {
   const handleNavigation = (path) => {
     router.push(path);
   };
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const handleLogOut = () => {
     // 清除sessionStorage中的用户信息
@@ -90,7 +91,7 @@ export default function HomeParent() {
     // 调用API获取 avgUserRating
     const fetchAvgUserRating = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/Users/getUserById/${userId}`, {
+        const response = await fetch(`http://${apiUrl}/Users/getUserById/${userId}`, {
           method: 'GET',
           headers: {
             'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
@@ -113,7 +114,7 @@ export default function HomeParent() {
     // 检查未读通知
     const checkNotifications = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/UPNotifications/check-any-notification-unchecked-parent/${userId}`, {
+        const response = await fetch(`http://${apiUrl}/UPNotifications/check-any-notification-unchecked-parent/${userId}`, {
           method: 'GET',
           headers: {
             'Authorization': 'Bearer ' + sessionStorage.getItem('token'),

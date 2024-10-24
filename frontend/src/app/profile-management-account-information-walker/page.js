@@ -7,6 +7,7 @@ import useTextColor from '../ui-background-components/useTextColor';
 
 
 export default function ProfileManagementAccountInformationWalker() {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   const router = useRouter();
 
   const handleNavigation = (path) => {
@@ -26,7 +27,7 @@ export default function ProfileManagementAccountInformationWalker() {
     if (userId && token) {
       const fetchUserProfile = async () => {
         try {
-          const response = await fetch(`http://localhost:8080/Users/getUserProfileByUserId/${userId}`, {
+          const response = await fetch(`http://${apiUrl}/Users/getUserProfileByUserId/${userId}`, {
             method: 'GET',
             headers: {
               'Authorization': `Bearer ${token}`, // 在请求头中添加Bearer token

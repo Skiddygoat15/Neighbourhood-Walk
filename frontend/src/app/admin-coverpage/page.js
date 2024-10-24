@@ -27,6 +27,9 @@ export default function AdminPage() {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
 
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
+
     useEffect(() => {
         fetchUserStats();
         fetchRequestStats();
@@ -35,7 +38,7 @@ export default function AdminPage() {
     const fetchUserStats = async () => {
         setLoading(true);
         try {
-            const response = await fetch('http://127.0.0.1:8080/Users/stats', {
+            const response = await fetch(`http://${apiUrl}/Users/stats`, {
                 method: 'get',
                 headers: {
                     'Authorization': 'Bearer ' + sessionStorage.getItem('token')
@@ -53,7 +56,7 @@ export default function AdminPage() {
     const fetchRequestStats = async () => {
         setLoading(true);
         try {
-            const response = await fetch('http://127.0.0.1:8080/requests/stats', {
+            const response = await fetch(`http://${apiUrl}/requests/stats`, {
                 method: 'get',
                 headers: {
                     'Authorization': 'Bearer ' + sessionStorage.getItem('token')

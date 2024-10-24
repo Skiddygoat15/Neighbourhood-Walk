@@ -3,9 +3,10 @@ import React, { useEffect, useState } from 'react';
 
 // NotificationWebSocket 组件：接收通知并通过回调函数将数据传递给父组件
 const NotificationWebSocket = ({ onNewNotification }) => {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     useEffect(() => {
         // 创建 WebSocket 连接
-        const ws = new WebSocket('ws://localhost:8080/ws/notifications');
+        const ws = new WebSocket(`ws://${apiUrl}/ws/notifications`);
 
         ws.onmessage = (event) => {
             const notification = JSON.parse(event.data);

@@ -33,6 +33,7 @@ export default function MyRequestApplication({ params }) {
     });
     return `${formattedDate} ${formattedTime}`;
   }
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   // 格式化日期为 Fri, 16 Aug 2024, 7:00 PM 的形式，强制为UTC时区
   function formatDateTime(dateString) {
@@ -67,7 +68,7 @@ export default function MyRequestApplication({ params }) {
     //   return;
     // }
 
-    const getRequestDetailsAPI = `http://127.0.0.1:8080/requests/getRequestByRequestId/${id}`;
+    const getRequestDetailsAPI = `http://${apiUrl}/requests/getRequestByRequestId/${id}`;
     fetch(getRequestDetailsAPI, {
       method: 'get',
       credentials: 'include',
@@ -115,7 +116,7 @@ export default function MyRequestApplication({ params }) {
       return;
     }
 
-    const getWalkersAPI = `http://127.0.0.1:8080/WalkerRequest/getWalkersByRequestId/${id}`;
+    const getWalkersAPI = `http://${apiUrl}/WalkerRequest/getWalkersByRequestId/${id}`;
     fetch(getWalkersAPI, {
       method: 'get',
       credentials: 'include',
@@ -160,7 +161,7 @@ export default function MyRequestApplication({ params }) {
 
   // 处理接受 walker 的请求
   const acceptWalker = (walkerId) => {
-    const acceptAPI = `http://127.0.0.1:8080/requests/${id}/accept?walkerId=${walkerId}`;
+    const acceptAPI = `http://${apiUrl}/requests/${id}/accept?walkerId=${walkerId}`;
     console.log("acceptAPI: " + acceptAPI)
     fetch(acceptAPI, {
       method: 'post',
@@ -195,7 +196,7 @@ export default function MyRequestApplication({ params }) {
 
   // 处理拒绝 walker 的请求
   const rejectWalker = (walkerId) => {
-    const rejectAPI = `http://127.0.0.1:8080/requests/${id}/reject?walkerId=${walkerId}`;
+    const rejectAPI = `http://${apiUrl}/requests/${id}/reject?walkerId=${walkerId}`;
     console.log("rejectAPI: " + rejectAPI)
     fetch(rejectAPI, {
       method: 'post',

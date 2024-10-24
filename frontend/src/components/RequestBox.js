@@ -2,6 +2,7 @@
 import {useState} from "react";
 
 export default function RequestBox({walkerId}){
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
     const myInit = {
         method: 'get', // Method is GET to fetch data
@@ -13,7 +14,7 @@ export default function RequestBox({walkerId}){
     };
     const [requestStatus, setRequestStatus] = useState('Pending...'); // 默认值为 'Pending...'
 
-    const requestURL = new Request(`http://127.0.0.1:8080/WalkerRequest/getWalkerRequest/${walkerId}`, myInit);
+    const requestURL = new Request(`http://${apiUrl}/WalkerRequest/getWalkerRequest/${walkerId}`, myInit);
 
     fetch(requestURL)
         .then(response => {

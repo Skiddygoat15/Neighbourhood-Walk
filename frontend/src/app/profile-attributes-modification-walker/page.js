@@ -6,6 +6,7 @@ import BackgroundLayout from '../ui-background-components/BackgroundLayout';
 import useTextColor from '../ui-background-components/useTextColor';
 
 export default function ProfileManagementSelectTimeWalker() {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   const router = useRouter();
   const [error, setError] = useState('');
   const [startDate, setStartDate] = useState('');
@@ -35,7 +36,7 @@ export default function ProfileManagementSelectTimeWalker() {
     // 获取用户的现有个人信息
     const fetchUserProfile = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/Users/getUserProfileByUserId/${userId}`, {
+        const response = await fetch(`http://${apiUrl}/Users/getUserProfileByUserId/${userId}`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -105,7 +106,7 @@ export default function ProfileManagementSelectTimeWalker() {
 
     try {
       // 调用API将数据传入数据库
-      const response = await fetch(`http://localhost:8080/Users/${userId}/profile`, {
+      const response = await fetch(`http://${apiUrl}/Users/${userId}/profile`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`, // 传入token进行身份验证

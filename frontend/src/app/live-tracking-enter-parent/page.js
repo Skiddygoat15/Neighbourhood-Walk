@@ -5,7 +5,7 @@ import { useState, useEffect } from 'react';
 export default function LiveTrackingEnterParent() {
     const router = useRouter();
     const [requests, setRequests] = useState([]);
-
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     useEffect(() => {
         async function fetchRequests() {
             try {
@@ -18,7 +18,7 @@ export default function LiveTrackingEnterParent() {
                 }
 
                 // 获取requests
-                const response = await fetch(`http://127.0.0.1:8080/requests/getRequestsByParentId/${parentId}`, {
+                const response = await fetch(`http://${apiUrl}/requests/getRequestsByParentId/${parentId}`, {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${token}`, // 添加token到请求头
@@ -44,7 +44,7 @@ export default function LiveTrackingEnterParent() {
 
                 // 遍历filteredRequests并获取每个request的walker信息
                 const requestsWithWalkerInfo = await Promise.all(filteredRequests.map(async (request) => {
-                    const walkerResponse = await fetch(`http://127.0.0.1:8080/requests/getWalkerByRequestId/${request.requestId}`, {
+                    const walkerResponse = await fetch(`http://${apiUrl}/requests/getWalkerByRequestId/${request.requestId}`, {
                         method: 'GET',
                         headers: {
                             'Authorization': `Bearer ${token}`, // 使用token获取walker信息

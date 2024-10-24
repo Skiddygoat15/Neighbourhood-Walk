@@ -14,7 +14,7 @@
 //         cache: 'default'
 //     };
 //
-//     const requestURL = new Request(`http://127.0.0.1:8080/WalkerRequest/getWalkerRequestByWalkerId/${userId}`, myInit);
+//     const requestURL = new Request(`http://${apiUrl}/WalkerRequest/getWalkerRequestByWalkerId/${userId}`, myInit);
 //     fetch(requestURL)
 //         .then(response => {
 //             if (!response.ok) {
@@ -105,6 +105,7 @@
 import React, {useEffect, useState} from 'react';
 
 export default function StatusCard({ showRedDot, title, statusChanged, time, notificationId, role}) {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
     const userId = sessionStorage.getItem('userId');
     // const [role, setRole] = useState(sessionStorage.getItem('roles'));
@@ -117,7 +118,7 @@ export default function StatusCard({ showRedDot, title, statusChanged, time, not
     };
 
     // 初始化通知状态
-    const requestURL = new Request(`http://127.0.0.1:8080/WalkerRequest/getWalkerRequestByWalkerId/${userId}`, myInit);
+    const requestURL = new Request(`http://${apiUrl}/WalkerRequest/getWalkerRequestByWalkerId/${userId}`, myInit);
 
     console.log("showRedDot value:", showRedDot);
 
@@ -148,7 +149,7 @@ export default function StatusCard({ showRedDot, title, statusChanged, time, not
     const handleClick = () => {
         // setShowDot(false);  // 点击后设置状态为不显示
         // 调用后端接口检查通知
-        fetch(`http://127.0.0.1:8080/UPNotifications/check/${notificationId}`, {
+        fetch(`http://${apiUrl}/UPNotifications/check/${notificationId}`, {
             method: 'POST',
             headers: {
                 'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
@@ -177,7 +178,7 @@ export default function StatusCard({ showRedDot, title, statusChanged, time, not
     // 关闭通知函数
     const handleCloseNotification = () => {
         // 调用后端接口关闭通知
-        fetch(`http://127.0.0.1:8080/UPNotifications/close/${notificationId}`, {
+        fetch(`http://${apiUrl}/UPNotifications/close/${notificationId}`, {
             method: 'POST',
             headers: {
                 'Authorization': 'Bearer ' + sessionStorage.getItem('token'),

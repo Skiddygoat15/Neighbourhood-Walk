@@ -3,8 +3,8 @@ import { useEffect } from 'react';
 
 export default function UserDetail() {
     useEffect(() => {
-
-        const websocket = new WebSocket('ws://localhost:8080/ws');
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+        const websocket = new WebSocket(`ws://${apiUrl}/ws`);
 
         websocket.onopen = function() {
             console.log("WebSocket连接成功");

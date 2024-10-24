@@ -10,6 +10,7 @@ const RequestStatus = () => {
     const [requests, setRequests] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
     let walkerId = null;
     let token = null;
@@ -31,7 +32,7 @@ const RequestStatus = () => {
                 return;
             }
 
-        const getRequestsListAPI = `http://127.0.0.1:8080/WalkerRequest/getWalkerRequestByWalkerId/${walkerId}`;
+        const getRequestsListAPI = `http://${apiUrl}/WalkerRequest/getWalkerRequestByWalkerId/${walkerId}`;
 
         fetch(getRequestsListAPI, {
             method: 'GET',

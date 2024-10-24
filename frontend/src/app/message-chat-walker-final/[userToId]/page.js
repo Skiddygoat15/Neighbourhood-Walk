@@ -17,6 +17,7 @@ export default function Home({params}) {
     const [isDataReady, setIsDataReady] = useState(false);
     const userIdTo = params.userToId;
     const [chatRoomId, setChatRoomId] = useState("");
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
     useEffect(() => {
         const storedRole = sessionStorage.getItem("roles")?.slice(2, -2);
@@ -58,7 +59,7 @@ export default function Home({params}) {
     //websocket连接
     // useEffect(() => {
     function initializeWebSocket(userIdFrom, userIdTo) {
-        websocket.current = new WebSocket('ws://localhost:8080/ws');
+        websocket.current = new WebSocket(`ws://${apiUrl}/ws`);
 
         websocket.current.onopen = function () {
             console.log("WebSocket连接成功");
@@ -156,7 +157,7 @@ export default function Home({params}) {
         const userIdToLong = parseInt(userIdTo, 10);
         const chatRoomId = "room_" + Math.min(userIdFromLong, userIdToLong) + "_" + Math.max(userIdFromLong, userIdToLong);
         setChatRoomId(chatRoomId);
-        fetch(`http://localhost:8080/ChatRoom/getChatBoxesFromChatRoom/${chatRoomId}`, {
+        fetch(`http://${apiUrl}/ChatRoom/getChatBoxesFromChatRoom/${chatRoomId}`, {
             method: 'GET',
             headers: {'Content-Type': 'application/json',
                 'Authorization': `Bearer ` + sessionStorage.getItem('token') },

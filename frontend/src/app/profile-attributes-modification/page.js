@@ -14,6 +14,7 @@ export default function ProfileAttributesModification() {
   const [emailAddress, setEmailAddress] = useState('');
   const [communicationPreference, setCommunicationPreference] = useState('');
   const [preferredName, setPreferredName] = useState('');
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const countryCodes = [
     { code: '+61', country: 'Australia' },
@@ -33,7 +34,7 @@ export default function ProfileAttributesModification() {
     // 获取用户的现有个人信息
     const fetchUserProfile = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/Users/getUserProfileByUserId/${userId}`, {
+        const response = await fetch(`http://${apiUrl}/Users/getUserProfileByUserId/${userId}`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
@@ -85,7 +86,7 @@ export default function ProfileAttributesModification() {
 
     try {
       // 调用API将数据传入数据库
-      const response = await fetch(`http://localhost:8080/Users/${userId}/profile`, {
+      const response = await fetch(`http://${apiUrl}/Users/${userId}/profile`, {
         method: 'PUT', // 使用PUT方法更新用户数据
         headers: {
           'Authorization': `Bearer ${token}`, // 传入token进行身份验证
