@@ -2,8 +2,11 @@
 import { useRouter, useParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import ReactStars from "react-rating-stars-component"; // 需要安装 react-rating-stars-component 库
+import BackgroundLayout from '../../ui-background-components/BackgroundLayout';
+import useTextColor from '../../ui-background-components/useTextColor';
 
 export default function CommentPage() {
+    const textColor = useTextColor();
     const router = useRouter();
     const { id: requestId } = useParams(); // 获取 URL 中的 requestId
     const [comment, setComment] = useState('');
@@ -93,8 +96,9 @@ export default function CommentPage() {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100 p-6">
-            <h1 className="text-3xl font-bold mb-6">Leave a Comment</h1>
+        <BackgroundLayout>
+        <div className="flex flex-col items-center justify-center min-h-screen p-6">
+            <h1 className={`text-3xl font-bold mb-6 ${textColor}`}>Leave a Comment</h1>
             <form onSubmit={handleSubmit} className="bg-white shadow-lg rounded-lg p-8 w-full max-w-lg">
                 <div className="mb-4">
                     <label htmlFor="rate" className="block text-lg font-medium">
@@ -129,5 +133,6 @@ export default function CommentPage() {
                 </button>
             </form>
         </div>
+            </BackgroundLayout>
     );
 }

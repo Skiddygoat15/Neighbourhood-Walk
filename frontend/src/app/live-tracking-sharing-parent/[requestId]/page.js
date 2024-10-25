@@ -2,6 +2,8 @@
 import { useRouter } from 'next/navigation';
 import { GoogleMap, LoadScript, LoadScriptNext, Marker } from '@react-google-maps/api';
 import {useState, useEffect, useRef, useCallback} from 'react';
+import BackgroundLayout from '../../ui-background-components/BackgroundLayout';
+import useTextColor from '../../ui-background-components/useTextColor';
 
 const containerStyle = {
     width: '100%',
@@ -9,6 +11,7 @@ const containerStyle = {
 };
 
 export default function LiveTrackingSharingParent( {params} ) {
+    const textColor = useTextColor();
     const router = useRouter();
     const { requestId } = params;  // obtain dynamic route param
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -208,7 +211,8 @@ export default function LiveTrackingSharingParent( {params} ) {
     };
 
     return (
-        <div className="relative flex flex-col items-center justify-start min-h-screen bg-gray-100 p-8">
+        <BackgroundLayout>
+        <div className="relative flex flex-col items-center justify-start min-h-screen p-8">
             <div className="fixed top-0 left-0 w-full p-4 bg-white shadow-md z-10">
                 <div className="flex items-center space-x-4">
                     <button onClick={() => router.back()} className="text-black text-2xl">
@@ -219,7 +223,7 @@ export default function LiveTrackingSharingParent( {params} ) {
             </div>
 
             <div className="mt-10 text-center">
-                <p className="text-lg">
+                <p className={`text-lg ${textColor}`}>
                     You are tracking the location of{' '}
                     <span className="text-green-600 font-bold">Walker</span>
                 </p>
@@ -314,14 +318,15 @@ export default function LiveTrackingSharingParent( {params} ) {
                 </div>
             )}
 
-            <div className="fixed left-0 right-0 bottom-20 w-full max-w-lg px-8 mx-auto">
+            <div className="fixed left-0 right-0 bottom-20 w-full max-w-lg px-8 mx-auto mt-30">
                 <button
                     onClick={fetchLocations}
-                    className="w-full bg-black text-white text-xl py-4 rounded-lg hover:bg-gray-800"
+                    className="w-full bg-black text-white text-xl py-2 rounded-lg hover:bg-gray-800"
                 >
                     Refresh Walker Location
                 </button>
             </div>
         </div>
+            </BackgroundLayout>
     );
 }

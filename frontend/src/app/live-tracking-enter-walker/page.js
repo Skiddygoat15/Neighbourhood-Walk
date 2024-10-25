@@ -1,6 +1,7 @@
 "use client"
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import BackgroundLayout from '../ui-background-components/BackgroundLayout';
 
 export default function LiveTrackingEnterWalker() {
     const router = useRouter();
@@ -59,7 +60,8 @@ export default function LiveTrackingEnterWalker() {
     }
 
     return (
-        <div className="relative flex flex-col items-center justify-start min-h-screen bg-gray-100 p-8">
+        <BackgroundLayout>
+        <div className="relative flex flex-col items-center justify-start min-h-screen p-8">
             <div className="fixed top-0 left-0 w-full p-4 bg-white shadow-md z-10">
                 <div className="flex items-center space-x-4">
                     <button onClick={() => router.back()} className="text-black text-2xl">
@@ -104,5 +106,6 @@ export default function LiveTrackingEnterWalker() {
                 )}
             </div>
         </div>
+            </BackgroundLayout>
     );
 }

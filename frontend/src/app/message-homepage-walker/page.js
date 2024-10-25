@@ -3,8 +3,11 @@
 import Head from 'next/head'
 import {useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
+import BackgroundLayout from '../ui-background-components/BackgroundLayout';
+import useTextColor from '../ui-background-components/useTextColor';
 
 export default function Home() {
+    const textColor = useTextColor();
     const [tempSearch, setTempSearch] = useState(''); // 用来临时存储搜索栏输入的值
     const [searchTerm, setSearchTerm] = useState(''); // 用来存储确认后的搜索值
     // const [user, setUser] = useState(null);  // 用于存储从后端返回的用户信息
@@ -292,7 +295,8 @@ export default function Home() {
     // );
 
     return (
-        <div style={{padding: 20, backgroundColor: '#fff', minHeight: '100vh'}}>
+        <BackgroundLayout>
+        <div style={{padding: 20, minHeight: '100vh'}}>
             <Head>
                 <title>Notifications</title>
                 <meta name="description" content="Notification page"/>
@@ -307,9 +311,9 @@ export default function Home() {
                 position: 'sticky',
                 top: 0,
                 zIndex: 1000
-            }}>9:41
+            }}>
             </div>
-            <h1 style={{color: '#333', fontSize: '24px', margin: '20px 0'}}>Messages</h1>
+            <h1 className={textColor} style={{fontSize: '24px', margin: '20px 0'}}>Messages</h1>
 
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '10px 0' }}>
                 <input type="text" placeholder="Search notifications..."
@@ -334,8 +338,7 @@ export default function Home() {
                 }}>Confirm</button>
 
             </div>
-            <h2 style={{
-                color: '#333',
+            <h2 className={textColor}  style={{
                 fontSize: '15px',  // 增加字体大小
                 textAlign: 'center',  // 居中标题
                 margin: '20px 0'  // 增加上下外边距以提供空间
@@ -395,5 +398,6 @@ export default function Home() {
                 }
             </div>
         </div>
+            </BackgroundLayout>
     );
 };
