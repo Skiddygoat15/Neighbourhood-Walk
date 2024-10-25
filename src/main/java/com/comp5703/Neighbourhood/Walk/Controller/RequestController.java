@@ -242,6 +242,12 @@ public class RequestController {
         return new ResponseEntity<>("Walker request cancelled successfully.", HttpStatus.OK);
     }
 
+    @PutMapping("/completeRequest/{requestId}/{walkerId}")
+    public ResponseEntity<String> completeRequest(@PathVariable int requestId, @PathVariable long walkerId) {
+        requestService.completeRequest(requestId, walkerId);
+        return new ResponseEntity<>("Request Complete successfully.", HttpStatus.OK);
+    }
+
     @DeleteMapping("/{requestId}/{walkerRequestId}/cancel")
     public ResponseEntity<Void> cancelRequest(@PathVariable int requestId, @PathVariable long walkerRequestId) {
         requestService.cancelRequest(requestId);

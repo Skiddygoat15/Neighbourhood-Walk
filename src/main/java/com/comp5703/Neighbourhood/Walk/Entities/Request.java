@@ -61,7 +61,7 @@ public class Request {
     @Column(name = "status")
     private String status;
 
-    @Column(name = "parentLatitude")
+    @Column(name = "parentLatitude" )
     private Double parentLatitude;
 
     @Column(name = "parentLongitude")

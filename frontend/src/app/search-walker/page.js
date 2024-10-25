@@ -52,7 +52,7 @@ export default function SearchWalker() {
             if (!response.ok) {
                 if (response.status === 403) {
                     alert('Please log in.');
-                    router.push('/login');
+                    router.push('/registration-loginform');
                     return;
                 }
 

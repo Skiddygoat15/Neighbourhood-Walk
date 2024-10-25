@@ -41,8 +41,8 @@ public class CommentController {
         Comment saveComment = null;
         System.out.println("comment.getRequest().getId() is "+comment.getRequest().getRequestId());
         System.out.println("comment.getRequest().getStatus() is "+comment.getRequest().getStatus());
-        if (!Objects.equals(requestService.getById(comment.getRequest().getRequestId()).getStatus(), "Accepted")){
-            return new ResponseEntity<>("This request has not been Accepted by any walker.", HttpStatus.FAILED_DEPENDENCY);
+        if (!Objects.equals(requestService.getById(comment.getRequest().getRequestId()).getStatus(), "Completed")){
+            return new ResponseEntity<>("This request has not been Completed.", HttpStatus.FAILED_DEPENDENCY);
         }
         try {
             saveComment = commentService.saveComment(comment);

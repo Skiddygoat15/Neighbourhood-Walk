@@ -112,6 +112,15 @@ public class RequestServiceImpl implements RequestService {
                 request.getRequestId(),
                 request.getWalker(),
                 request.getParent(),
+                request.getStartTime(),
+                request.getArriveTime(),
+                request.getStatus(),
+                request.getDeparture(),
+                request.getDepartureLatitude(),
+                request.getDepartureLongitude(),
+                request.getDestination(),
+                request.getDestinationLatitude(),
+                request.getDestinationLongitude(),
                 request.getParentLatitude(),
                 request.getParentLongitude(),
                 request.getWalkerLatitude(),
@@ -217,6 +226,22 @@ public class RequestServiceImpl implements RequestService {
     public void cancelRequest(int requestId) {
         Request request = requestRepository.findById(requestId).orElseThrow(() -> new ResourceNotFoundException("Request not found"));
         request.setStatus("Canceled");
+        requestRepository.save(request);
+    }
+
+    @Override
+    public void completeRequest(int requestId, long walkerId) {
+        Request request = requestRepository.findById(requestId).orElseThrow(() -> new ResourceNotFoundException("Request not found"));
+        Optional<WalkerRequest> walkerRequestOpt = walkerRequestRepository.findByRequestRequestIdAndWalkerUserId(requestId, walkerId);
+        // Update the status of the walkerRequest if it exists.
+        if (walkerRequestOpt.isPresent()) {
+            WalkerRequest walkerRequest = walkerRequestOpt.get();
+            walkerRequest.setStatus("Completed");
+            walkerRequestRepository.save(walkerRequest);
+        } else {
+            throw new ResourceNotFoundException("WalkerRequest not found for the given walker and request");
+        }
+        request.setStatus("Completed");
         requestRepository.save(request);
     }
 

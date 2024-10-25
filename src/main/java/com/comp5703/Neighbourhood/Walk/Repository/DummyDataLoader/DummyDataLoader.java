@@ -166,8 +166,8 @@ public class DummyDataLoader implements CommandLineRunner {
         request2.setDepartureLatitude(-33.8859592);
         request2.setDepartureLongitude(151.1755954);
         request2.setDestination("50 Carillon Ave, Newtown NSW 2042, Australia");
-        request2.setDepartureLatitude(-33.8915856);
-        request2.setDepartureLongitude(151.185331);
+        request2.setDestinationLatitude(-33.8915856);
+        request2.setDestinationLongitude(151.185331);
         request2.setDetails("Please meet us at Coles");
         request2.setStatus("Published");
 
@@ -180,34 +180,34 @@ public class DummyDataLoader implements CommandLineRunner {
         request3.setDepartureLatitude(-33.8824012);
         request3.setDepartureLongitude(151.1689731);
         request3.setDestination("50 Carillon Ave, Newtown NSW 2042, Australia");
-        request3.setDepartureLatitude(-33.8915856);
-        request3.setDepartureLongitude(151.185331);
+        request3.setDestinationLatitude(-33.8915856);
+        request3.setDestinationLongitude(151.185331);
         request3.setDetails("Please meet us at KFC");
         request3.setStatus("Published");
 
         Request request4 = new Request();
         request4.setParent(user1);
         request4.setWalker(user2);
-        request4.setPublishDate( (Date) formatter.parse("2024-08-10T09:00:00.111") );
-        request4.setStartTime( (Date) formatter.parse("2024-10-24T012:00:00.111") );
-        request4.setArriveTime( (Date) formatter.parse("2024-10-24T013:30:00.111") );
-        request4.setDeparture("107 Annandale St, Annandale NSW 2038, Australia");
-        request4.setDepartureLatitude(-33.8824012);
-        request4.setDepartureLongitude(151.1689731);
+        request4.setPublishDate( (Date) formatter.parse("2024-10-10T09:00:00.111") );
+        request4.setStartTime( (Date) formatter.parse("2024-10-26T012:00:00.111") );
+        request4.setArriveTime( (Date) formatter.parse("2024-10-26T013:30:00.111") );
+        request4.setDeparture("54 Fitzroy St, Newtown NSW 2042, Australia");
+        request4.setDepartureLatitude(-33.8945024);
+        request4.setDepartureLongitude(151.1866821);
         request4.setDestination("50 Carillon Ave, Newtown NSW 2042, Australia");
-        request4.setDepartureLatitude(-33.8915856);
-        request4.setDepartureLongitude(151.185331);
+        request4.setDestinationLatitude(-33.8915856);
+        request4.setDestinationLongitude(151.185331);
         request4.setDetails("Please meet us at KFC");
         request4.setStatus("Accepted");
 
         requestRepository.saveAll(Arrays.asList(request1, request2, request3, request4));
-//
-//        WalkerRequest walkerRequest1 = new WalkerRequest();
-//        walkerRequest1.setRequest(request4);
-//        walkerRequest1.setWalker(user2);
-//        walkerRequest1.setStatus("Accepted");
-//
-//        walkerRequestRepository.saveAll(Arrays.asList(walkerRequest1));
+
+        WalkerRequest walkerRequest1 = new WalkerRequest();
+        walkerRequest1.setRequest(request4);
+        walkerRequest1.setWalker(user2);
+        walkerRequest1.setStatus("Accepted");
+
+        walkerRequestRepository.saveAll(Arrays.asList(walkerRequest1));
 
         System.out.println("Dummy data has been inserted into the Users and Roles tables.");
     }

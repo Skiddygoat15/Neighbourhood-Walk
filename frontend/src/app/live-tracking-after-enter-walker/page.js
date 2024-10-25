@@ -9,11 +9,6 @@ const containerStyle = {
     height: '530px',
 };
 
-const center = {
-    lat: -33.8688, // longitude
-    lng: 151.2093, // latitude
-};
-
 export default function LiveTrackingAfterEnter() {
     const router = useRouter();
     const [currentPosition, setCurrentPosition] = useState(null); // Initially null, waiting to get the current location

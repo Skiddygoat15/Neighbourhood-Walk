@@ -34,6 +34,7 @@ public interface RequestService {
     List<Request> searchRequests(Long walkerId, String searchTerm, String distance, Date startTime, Date arriveTime);
     Request updateLocation(int requestId, Double parentLatitude, Double parentLongitude, Double walkerLatitude, Double walkerLongitude);
     RequestLiveLocationDTO getLiveLocationByRequestId(int requestId);
+    void completeRequest(int requestId, long walkerId);
 
     Request getById(int requestId);
 
