@@ -2,6 +2,7 @@
 
 import ChatBar from '../../../components/ChatBar';
 import {useEffect, useRef, useState} from "react";
+import BackgroundLayout from '../../ui-background-components/BackgroundLayout';
 import {useRouter} from "next/navigation";
 import {format} from "date-fns";
 import { v4 as uuidv4 } from 'uuid';
@@ -190,7 +191,8 @@ export default function Home({params}) {
     //     </div>
     // );
     return (
-        <div className="flex flex-col h-screen bg-gray-100 p-4">
+        <BackgroundLayout>
+        <div className="flex flex-col h-screen p-4">
             <div className="messages">
                 {allChatMessages.map((msg, index) => (
                     // <div key={uuidv4()} className={`message ${getMessageStyle(msg.roleFromRoleType)}`}>
@@ -213,10 +215,11 @@ export default function Home({params}) {
                     </div>
                 ))}
             </div>
-            <div className="fixed bottom-16 w-full"> {/* bottom-16 代表向上移动 16px，可以根据需要调整 */}
+            <div className="fixed bottom-16 w-full max-w-[calc(100%-20px)] px-2 mx-auto"> {/* bottom-16 代表向上移动 16px，可以根据需要调整 */}
                 <ChatBar onSendMessage={sendMessage}/>
             </div>
             {/*<ChatBar onSendMessage={sendMessage}/>*/}
         </div>
+            </BackgroundLayout>
     );
 }
