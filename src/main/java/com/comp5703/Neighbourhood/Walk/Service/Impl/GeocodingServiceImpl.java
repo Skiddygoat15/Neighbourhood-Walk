@@ -16,45 +16,41 @@ import java.util.Map;
 public class GeocodingServiceImpl implements GeocodingService {
 
     private static final String GOOGLE_GEOCODE_API_URL = "https://maps.googleapis.com/maps/api/geocode/json";
-    private static final String API_KEY = "AIzaSyCckyaBJIn_YdEaWxLpcGtMvbn3D3y_dLQ";  // 替换为你的 Google API Key
+    private static final String API_KEY = "AIzaSyB0LNcULkVV2QRvCq8hhjfg2_AZAX53QCg";
 
     public Map<String, Object> getGeocode(String address) throws Exception {
-        // 创建 RestTemplate 来发送 HTTP 请求
+        // Create a RestTemplate to send HTTP requests.
         RestTemplate restTemplate = new RestTemplate();
 
-        // 确保 address 未被手动编码，检查输出地址格式
         System.out.println("Address before encoding: " + address);
 
-        // 对地址参数进行编码，确保特殊字符（如空格）被正确处理
+        // Encode address parameters to ensure that special characters (such as spaces) are handled correctly
         String encodedAddress = UriUtils.encodeQueryParam(address, StandardCharsets.UTF_8);
 
-        // 构建 URL，使用 .toUri() 来避免 RestTemplate 自动再次编码
+        // Construct the URL, using .toUri() to avoid automatic re-encoding by RestTemplate.
         URI url = UriComponentsBuilder.fromHttpUrl(GOOGLE_GEOCODE_API_URL)
-                .queryParam("address", encodedAddress)  // 使用手动编码后的地址
+                .queryParam("address", encodedAddress)  // Use manually encoded addresses
                 .queryParam("key", API_KEY)
                 .queryParam("language", "en")
-                .build(true)  // 这里 build(true) 确保参数不再编码
+                .build(true)
                 .toUri();
 
-        System.out.println("Final URL: " + url);  // 打印最终生成的URL
+        System.out.println("Final URL: " + url);
 
-        // 尝试直接将响应映射为 Map 类型
+        // Try to map the response directly to a Map type.
         Map<String, Object> response = restTemplate.getForObject(url, Map.class);
 
-        // 打印响应以便调试
         System.out.println(response);
 
         ResponseEntity<String> response1 = restTemplate.getForEntity(url, String.class);
         System.out.println("Status Code: " + response1.getStatusCodeValue());
         System.out.println("Response Body: " + response1.getBody());
 
-        // 检查响应状态
         if (response != null && "OK".equals(response.get("status"))) {
-            // 检查地址是否在澳大利亚
+            // Check if the address is in Australia
             Map<String, Object> result = (Map<String, Object>) ((List<Object>) response.get("results")).get(0);
             List<Map<String, Object>> addressComponents = (List<Map<String, Object>>) result.get("address_components");
 
-            // 遍历 address_components 查找 country 信息
             boolean isAustralia = false;
             for (Map<String, Object> component : addressComponents) {
                 List<String> types = (List<String>) component.get("types");
@@ -67,12 +63,12 @@ public class GeocodingServiceImpl implements GeocodingService {
                 }
             }
 
-            // 如果地址不在澳大利亚，抛出异常
+            // Throw an exception if the address is not in Australia
             if (!isAustralia) {
                 throw new Exception("Input address is not in Australia.");
             }
 
-            return response;  // 返回地理编码结果
+            return response;  // Return geocoding results
         } else if (response != null && !"OK".equals(response.get("status"))) {
             throw new Exception("Input address is not in Australia or is invalid.");
         }
