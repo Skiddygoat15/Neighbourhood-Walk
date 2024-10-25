@@ -11,6 +11,7 @@ const containerStyle = {
 export default function LiveTrackingSharingWalker({params}) {
     const router = useRouter();
     const { requestId } = params;  // obtain dynamic route param
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     const [currentPosition, setCurrentPosition] = useState(null); // Initially null, waiting to get the current location
     const [departurePosition, setDeparturePosition] = useState(null);
     const [destinationPosition, setDestinationPosition] = useState(null);
@@ -37,7 +38,7 @@ export default function LiveTrackingSharingWalker({params}) {
     // fetch departure and destination
     const fetchLocations = async () => {
         try {
-            const getLiveLocationInfoAPI = `http://127.0.0.1:8080/requests/getLiveLocationByRequestId/${requestId}`;
+            const getLiveLocationInfoAPI = `http://${apiUrl}/requests/getLiveLocationByRequestId/${requestId}`;
             const response = await fetch(getLiveLocationInfoAPI, {
                 method: 'GET',
                 credentials: 'include',
@@ -64,7 +65,7 @@ export default function LiveTrackingSharingWalker({params}) {
 
     // Function to send updated location to backend
     const updateLocationToBackend = async (position) => {
-        const updateLocationAPI = `http://127.0.0.1:8080/requests/updateLocation/${requestId}/?walkerLatitude=${position.lat}&walkerLongitude=${position.lng}`;
+        const updateLocationAPI = `http://${apiUrl}/requests/updateLocation/${requestId}/?walkerLatitude=${position.lat}&walkerLongitude=${position.lng}`;
 
         try {
             const response = await fetch(updateLocationAPI, {
@@ -182,7 +183,7 @@ export default function LiveTrackingSharingWalker({params}) {
             return;
         }
 
-        const completeRequestAPI = `http://127.0.0.1:8080/requests/completeRequest/${requestId}/${walkerId}`;
+        const completeRequestAPI = `http://${apiUrl}/requests/completeRequest/${requestId}/${walkerId}`;
 
         try {
             const response = await fetch(completeRequestAPI, {
@@ -237,6 +238,7 @@ export default function LiveTrackingSharingWalker({params}) {
             {(currentPosition && departurePosition && destinationPosition) &&(
                 <div className="w-full max-w-lg mt-2 flex justify-center">
                     <LoadScriptNext
+                        // googleMapsApiKey="AIzaSyB0LNcULkVV2QRvCq8hhjfg2_AZAX53QCg"
                         googleMapsApiKey="AIzaSyB0LNcULkVV2QRvCq8hhjfg2_AZAX53QCg"
                         language="en"
                         loadingElement={<p>Loading...</p>}

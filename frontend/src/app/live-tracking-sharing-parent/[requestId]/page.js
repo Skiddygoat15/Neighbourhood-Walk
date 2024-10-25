@@ -11,6 +11,7 @@ const containerStyle = {
 export default function LiveTrackingSharingParent( {params} ) {
     const router = useRouter();
     const { requestId } = params;  // obtain dynamic route param
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     const [currentPosition, setCurrentPosition] = useState(null); // Initially null, waiting to get the current location
     const [departurePosition, setDeparturePosition] = useState(null);
     const [destinationPosition, setDestinationPosition] = useState(null);
@@ -39,7 +40,7 @@ export default function LiveTrackingSharingParent( {params} ) {
     // fetch departure and destination
     const fetchLocations = useCallback(async () => {
         try {
-            const getLiveLocationInfoAPI = `http://127.0.0.1:8080/requests/getLiveLocationByRequestId/${requestId}`;
+            const getLiveLocationInfoAPI = `http://${apiUrl}/requests/getLiveLocationByRequestId/${requestId}`;
             const response = await fetch(getLiveLocationInfoAPI, {
                 method: 'GET',
                 credentials: 'include',
@@ -93,7 +94,7 @@ export default function LiveTrackingSharingParent( {params} ) {
 
     // Function to send updated location to backend
     const updateLocationToBackend = async (position) => {
-        const updateLocationAPI = `http://127.0.0.1:8080/requests/updateLocation/${requestId}/?walkerLatitude=${position.lat}&walkerLongitude=${position.lng}`;
+        const updateLocationAPI = `http://${apiUrl}/requests/updateLocation/${requestId}/?walkerLatitude=${position.lat}&walkerLongitude=${position.lng}`;
 
         try {
             const response = await fetch(updateLocationAPI, {
