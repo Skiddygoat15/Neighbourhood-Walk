@@ -1,6 +1,7 @@
 package com.comp5703.Neighbourhood.Walk.Service;
 
 import com.comp5703.Neighbourhood.Walk.Entities.ChatBox;
+import com.comp5703.Neighbourhood.Walk.Entities.ChatBoxDTO;
 import com.comp5703.Neighbourhood.Walk.Entities.ChatRoom;
 import com.comp5703.Neighbourhood.Walk.Entities.Role;
 
@@ -11,6 +12,6 @@ public interface ChatRoomService {
 
     ChatRoom saveChatBox(long userIdFrom, long userIdTo, String roleTypeFrom, String roleTypeTo);
 
-    List<ChatBox> getChatBoxes(String chatRoomId);
+    List<ChatBoxDTO> getChatBoxes(String chatRoomId);
     void deleteChatRoom(String chatRoomId);
 }

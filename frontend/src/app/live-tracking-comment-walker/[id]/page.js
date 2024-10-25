@@ -9,7 +9,7 @@ export default function CommentPage() {
     const [comment, setComment] = useState('');
     const [rate, setRate] = useState(0); // 默认评分为 0
     const [ParentId, setParentId] = useState(null); // 保存获取到的 ParentId
-
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     useEffect(() => {
         // 获取 ParentId
         async function fetchParentId() {
@@ -20,7 +20,7 @@ export default function CommentPage() {
                     return;
                 }
 
-                const response = await fetch(`http://127.0.0.1:8080/requests/getParentByRequestId/${requestId}`, {
+                const response = await fetch(`http://${apiUrl}/requests/getParentByRequestId/${requestId}`, {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -59,7 +59,7 @@ export default function CommentPage() {
         }
 
         try {
-            const response = await fetch('http://127.0.0.1:8080/Comment', {
+            const response = await fetch(`http://${apiUrl}/Comment`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`, // 添加token到请求头

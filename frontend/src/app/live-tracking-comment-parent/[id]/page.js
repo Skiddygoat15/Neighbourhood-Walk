@@ -9,6 +9,7 @@ export default function CommentPage() {
     const [comment, setComment] = useState('');
     const [rate, setRate] = useState(0); // 默认评分为 0
     const [walkerId, setWalkerId] = useState(null); // 保存获取到的 walkerId
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
     useEffect(() => {
         // 获取 walkerId
@@ -20,7 +21,7 @@ export default function CommentPage() {
                     return;
                 }
 
-                const response = await fetch(`http://127.0.0.1:8080/requests/getWalkerByRequestId/${requestId}`, {
+                const response = await fetch(`http://${apiUrl}/requests/getWalkerByRequestId/${requestId}`, {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -59,7 +60,7 @@ export default function CommentPage() {
         }
 
         try {
-            const response = await fetch('http://127.0.0.1:8080/Comment', {
+            const response = await fetch(`http://${apiUrl}/Comment`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`, // 添加token到请求头

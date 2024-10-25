@@ -14,6 +14,8 @@ export default function AdminContentManagement() {
     const [loading, setLoading] = useState(false);
     const textColor = useTextColor();
 
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
     // 每次搜索框内容变化时触发
     useEffect(() => {
         if (searchTerm === '') {
@@ -32,7 +34,7 @@ export default function AdminContentManagement() {
         setRequests([]);
         setError(null);
 
-        const searchRequestsAPI = `http://127.0.0.1:8080/requests/searchRequests?searchTerm=${searchTerm}`;
+        const searchRequestsAPI = `http://${apiUrl}/requests/searchRequests?searchTerm=${searchTerm}`;
         try {
             const response = await fetch(searchRequestsAPI, {
                 method: 'get',
@@ -69,7 +71,7 @@ export default function AdminContentManagement() {
     // 获取所有请求
     const fetchAllRequests = () => {
         setLoading(true);
-        const getAllRequestsAPI = 'http://127.0.0.1:8080/requests/getAllRequests';
+        const getAllRequestsAPI = `http://${apiUrl}/requests/getAllRequests`;
         fetch(getAllRequestsAPI, {
             method: 'get',
             credentials: 'include',
@@ -107,7 +109,7 @@ export default function AdminContentManagement() {
 
     function deleteRequest(requestId) {
         console.log('requestId', requestId);
-        fetch(`http://127.0.0.1:8080/requests/${requestId}`, {
+        fetch(`http://${apiUrl}/requests/${requestId}`, {
             method: 'DELETE', // DELETE 方法用于删除请求
             credentials: 'include',
             headers: {
@@ -245,7 +247,6 @@ export default function AdminContentManagement() {
                     )}
                 </div>
             </div>
-        </div>
     </BackgroundLayout>
     );
 }

@@ -20,6 +20,8 @@ const RegistrationSignup = () => {
   const [error, setError] = useState('');
   const router = useRouter();
 
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -58,7 +60,7 @@ const RegistrationSignup = () => {
         activityStatus: 'Active',
       };
 
-      const apiUrl = `http://localhost:8080/Users/register?roleType=${roleType}`;
+      const apiUrl = `${apiUrl}/Users/register?roleType=${roleType}`;
 
       const res = await fetch(apiUrl, {
         method: 'POST',

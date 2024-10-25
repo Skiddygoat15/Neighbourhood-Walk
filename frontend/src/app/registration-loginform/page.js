@@ -9,6 +9,7 @@ export default function LoginForm() {
   const [emailOrPhone, setEmailOrPhone] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const validateEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -42,7 +43,8 @@ export default function LoginForm() {
 
     try {
       // Call login API
-      const res = await fetch('http://localhost:8080/login', {
+      console.log("apiUrl"+apiUrl)
+      const res = await fetch(`${apiUrl}/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -61,7 +63,7 @@ export default function LoginForm() {
       sessionStorage.setItem('userId', userId);
 
       // Fetch user's roles based on userId
-      const roleRes = await fetch(`http://localhost:8080/roles/user/${userId}`, {
+      const roleRes = await fetch(`${apiUrl}/roles/user/${userId}`, {
         headers: {
           'Authorization': `Bearer ${token}`, // If you need to pass the token for authorization
         }
@@ -78,7 +80,7 @@ export default function LoginForm() {
       sessionStorage.setItem('roles', JSON.stringify(roles));
 
       // Fetch user's name and preferredName using userId
-      const userNamesRes = await fetch(`http://localhost:8080/Users/userNamesById/${userId}`, {
+      const userNamesRes = await fetch(`${apiUrl}/Users/userNamesById/${userId}`, {
         headers: {
           'Authorization': `Bearer ${token}`, // Passing token for authorization
         }
@@ -184,7 +186,7 @@ export default function LoginForm() {
             {/* OAuth Buttons */}
             <div className="space-y-4">
               <button
-                  onClick={() => window.location.href = "http://localhost:8080/oauth2/authorization/google"}
+                  onClick={() => window.location.href = `http://${apiUrl}/oauth2/authorization/google`}
                   className="flex items-center justify-center w-full py-3 border border-gray-300 rounded-full font-semibold text-black hover:bg-gray-100">
                 <img src="/google-icon.svg" alt="Google" className="w-6 h-6 mr-2"/>
                 Login with Google

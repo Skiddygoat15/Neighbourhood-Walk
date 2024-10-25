@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from 'react';
 
 const SearchNotifications = ({ fetchWalkerRequests }) => {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     const [searchTerm, setSearchTerm] = useState('');
     const [results, setResults] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -10,7 +11,7 @@ const SearchNotifications = ({ fetchWalkerRequests }) => {
         const handleSearch = async () => {
             if (searchTerm) {
                 setLoading(true);
-                const requestURL = `http://127.0.0.1:8080/WalkerRequest/getWalkerRequestByWalkerId/${searchTerm}`;
+                const requestURL = `http://${apiUrl}/WalkerRequest/getWalkerRequestByWalkerId/${searchTerm}`;
 
                 fetch(requestURL)
                     .then(response => {

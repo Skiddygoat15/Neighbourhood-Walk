@@ -6,6 +6,7 @@ import BackgroundLayout from '../ui-background-components/BackgroundLayout';
 import useTextColor from '../ui-background-components/useTextColor';
 
 export default function SearchParent() {
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
   const router = useRouter();
   let parentId = null;
   let token = null;
@@ -40,7 +41,7 @@ export default function SearchParent() {
     setWalkers([]); // 点击搜索按钮时先清空之前的结果
     setError(null); // 清空之前的错误消息
 
-    const searchWalkersAPI = `http://127.0.0.1:8080/Users/searchWalkers?parentId=${parentId}&searchTerm=${searchTerm}&gender=${gender}&distance=${distance}&rating=${rating}`;
+    const searchWalkersAPI = `http://${apiUrl}/Users/searchWalkers?parentId=${parentId}&searchTerm=${searchTerm}&gender=${gender}&distance=${distance}&rating=${rating}`;
 
     try {
       const response = await fetch(searchWalkersAPI, {

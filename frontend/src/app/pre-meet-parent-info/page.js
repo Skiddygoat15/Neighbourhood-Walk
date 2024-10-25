@@ -17,6 +17,7 @@ export default function PreMeetParent() {
     const [preMeet, setPreMeet] = useState([]);  // store pre meet list
     const [error, setError] = useState(null);    // store error message
     const textColor = useTextColor();
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
     useEffect(() => {
         handleSearch();  // Perform search for ALL pre-meet at first render
@@ -27,7 +28,7 @@ export default function PreMeetParent() {
         setPreMeet([]); // Clear previous results
         setError(null); // Clear previous error messages
 
-        const getPreMeetByParentIdAPI = `http://127.0.0.1:8080/preMeet/parent/${parentId}`;
+        const getPreMeetByParentIdAPI = `http://${apiUrl}/preMeet/parent/${parentId}`;
 
         try {
             const response = await fetch(getPreMeetByParentIdAPI, {

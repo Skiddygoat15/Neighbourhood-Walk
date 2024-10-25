@@ -11,6 +11,7 @@ export default function HomeWalker() {
   const handleNavigation = (path) => {
     router.push(path);
   };
+  const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const handleLogOut = () => {
     // 清除sessionStorage中的用户信息
@@ -87,7 +88,7 @@ export default function HomeWalker() {
     // 调用API获取 avgUserRating
     const fetchAvgUserRating = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/Users/getUserById/${userId}`, {
+        const response = await fetch(`http://${apiUrl}/Users/getUserById/${userId}`, {
           method: 'GET',
           headers: {
             'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
@@ -116,7 +117,7 @@ export default function HomeWalker() {
           console.error('UserId not found in sessionStorage');
           return;
         }
-        const response = await fetch(`http://localhost:8080/UPNotifications/check-any-notification-unchecked/${userId}`, {
+        const response = await fetch(`http://${apiUrl}/UPNotifications/check-any-notification-unchecked/${userId}`, {
           method: 'GET',
           headers: {
             'Authorization': 'Bearer ' + sessionStorage.getItem('token'),

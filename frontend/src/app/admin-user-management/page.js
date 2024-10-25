@@ -14,6 +14,8 @@ export default function AdminUserManagement() {
     const [loading, setLoading] = useState(false);
     const textColor = useTextColor();
 
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
     // 每次输入框内容变化时触发搜索
     useEffect(() => {
         if (searchTerm === '') {
@@ -32,7 +34,7 @@ export default function AdminUserManagement() {
         setUsers([]);
         setError(null);
 
-        const searchUsersAPI = `http://127.0.0.1:8080/Users/searchUsers?searchTerm=${searchTerm}`;
+        const searchUsersAPI = `http://${apiUrl}/Users/searchUsers?searchTerm=${searchTerm}`;
         try {
             const response = await fetch(searchUsersAPI, {
                 method: 'get',
@@ -69,7 +71,7 @@ export default function AdminUserManagement() {
     // 获取所有用户
     const fetchUsers = () => {
         setLoading(true);
-        const getAllUsersAPI = 'http://127.0.0.1:8080/Users/allUsers';
+        const getAllUsersAPI = `http://${apiUrl}/Users/allUsers`;
         fetch(getAllUsersAPI, {
             method: 'get',
             credentials: 'include',
@@ -95,7 +97,7 @@ export default function AdminUserManagement() {
             .then(async data => {
                 // 并行获取每个用户的 roleType
                 const usersWithRoles = await Promise.all(data.map(async (user) => {
-                    const roleResponse = await fetch(`http://localhost:8080/roles/user/${user.id}`, {
+                    const roleResponse = await fetch(`http://${apiUrl}/roles/user/${user.id}`, {
                         method: 'get',
                         credentials: 'include',
                         headers: {
@@ -133,7 +135,7 @@ export default function AdminUserManagement() {
 
     // 激活用户
     const handleActivate = async (userId) => {
-        const activateUserAPI = `http://127.0.0.1:8080/Users/activeUser/${userId}`;
+        const activateUserAPI = `http://${apiUrl}/Users/activeUser/${userId}`;
         try {
             const response = await fetch(activateUserAPI, {
                 method: 'get',
@@ -155,7 +157,7 @@ export default function AdminUserManagement() {
 
     // 封锁用户
     const handleBlock = async (userId) => {
-        const blockUserAPI = `http://127.0.0.1:8080/Users/blockUser/${userId}`;
+        const blockUserAPI = `http://${apiUrl}/Users/blockUser/${userId}`;
         try {
             const response = await fetch(blockUserAPI, {
                 method: 'get',
@@ -177,7 +179,7 @@ export default function AdminUserManagement() {
 
     // 删除用户
     const handleDelete = async (userId) => {
-        const deleteUserAPI = `http://127.0.0.1:8080/Users/${userId}`;
+        const deleteUserAPI = `http://${apiUrl}/Users/${userId}`;
         try {
             const response = await fetch(deleteUserAPI, {
                 method: 'delete',

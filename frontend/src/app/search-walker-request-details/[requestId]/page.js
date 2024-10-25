@@ -7,13 +7,14 @@ import BackgroundLayout from '../../ui-background-components/BackgroundLayout';
 import useTextColor from '../../ui-background-components/useTextColor';
 
 export default function RequestDetails({params}) {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     const router = useRouter();
     const {requestId} = params;  // obtain dynamic route param
     const walkerId = sessionStorage.getItem('userId');
     const [requestDetails, setRequestDetails] = useState(null); // store request details
     const [error, setError] = useState(null);    // store error message
-    const getRequestInfoAPI = `http://127.0.0.1:8080/WalkerRequest/getRequestDetailByRequestIdAndWalkerId/${requestId}/${walkerId}`;
-    const applyRequestAPI = `http://127.0.0.1:8080/requests/${requestId}/apply?walkerId=${walkerId}`;
+    const getRequestInfoAPI = `http://${apiUrl}/WalkerRequest/getRequestDetailByRequestIdAndWalkerId/${requestId}/${walkerId}`;
+    const applyRequestAPI = `http://${apiUrl}/requests/${requestId}/apply?walkerId=${walkerId}`;
     const textColor = useTextColor();
 
     // get request details info by request's id

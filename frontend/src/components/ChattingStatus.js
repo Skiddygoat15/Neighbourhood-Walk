@@ -4,6 +4,7 @@ import {useEffect, useState} from "react";
 import {useRouter} from "next/navigation";
 
 function ChattingStatus({ name, text, time, parentId, path }) {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
 
     const [role, setRole] = useState("");;
@@ -28,7 +29,7 @@ function ChattingStatus({ name, text, time, parentId, path }) {
         cache: 'default'
     };
 
-    const requestURL = new Request(`http://127.0.0.1:8080/WalkerRequest/getWalkerRequestByWalkerId/${parentId}`, myInit);
+    const requestURL = new Request(`http://${apiUrl}/WalkerRequest/getWalkerRequestByWalkerId/${parentId}`, myInit);
 
     fetch(requestURL)
         .then(response => {

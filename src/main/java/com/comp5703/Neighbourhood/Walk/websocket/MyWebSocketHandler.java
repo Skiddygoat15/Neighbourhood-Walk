@@ -1,7 +1,5 @@
 package com.comp5703.Neighbourhood.Walk.websocket;
-import com.comp5703.Neighbourhood.Walk.Entities.ChatBox;
-import com.comp5703.Neighbourhood.Walk.Entities.ChatRoom;
-import com.comp5703.Neighbourhood.Walk.Entities.Role;
+import com.comp5703.Neighbourhood.Walk.Entities.*;
 import com.comp5703.Neighbourhood.Walk.Repository.ChatBoxRepository;
 import com.comp5703.Neighbourhood.Walk.Repository.ChatRoomRepository;
 import com.comp5703.Neighbourhood.Walk.Repository.RoleRepository;
@@ -13,7 +11,10 @@ import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
-
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketSession;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
@@ -23,6 +24,8 @@ import java.util.*;
 
 @Component
 public class MyWebSocketHandler extends TextWebSocketHandler {
+
+    private final ObjectMapper objectMapper = new ObjectMapper();
 
     //用于管理聊天室对应的会话内容
     private Map<String, List<WebSocketSession>> roomSessions = new HashMap<>();
@@ -66,14 +69,26 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
                 session.getAttributes().put("userIdFrom", userIdFrom);
                 session.getAttributes().put("userIdTo", userIdTo);
 
-                ChatRoom chatRoom = chatRoomRepository.findById(roomId)
-                        .orElseGet(() -> {
-                            // 聊天室不存在，创建新的聊天室
-                            ChatRoom newRoom = new ChatRoom();
-                            newRoom.setId(roomId);
-                            chatRoomRepository.save(newRoom);
-                            return newRoom;
-                        });
+//                ChatRoom chatRoom = chatRoomRepository.findById(roomId)
+//                        .orElseGet(() -> {
+//                            // 聊天室不存在，创建新的聊天室
+//                            ChatRoom newRoom = new ChatRoom();
+//                            newRoom.setId(roomId);
+//                            chatRoomRepository.save(newRoom);
+//                            return newRoom;
+//                        });
+                ChatRoom chatRoom = null;
+
+                Optional<ChatRoom> chatRoomCheck = chatRoomRepository.findById(roomId);
+
+                if (chatRoomCheck.isEmpty()){
+                    ChatRoom newRoom = new ChatRoom();
+                    newRoom.setId(roomId);
+                    chatRoomRepository.save(newRoom);
+                    chatRoom = newRoom;
+                }else {
+                    chatRoom = chatRoomCheck.get();
+                }
 
                 // 加入会话到房间的列表
                 roomSessions.putIfAbsent(roomId, new ArrayList<>());
@@ -89,9 +104,19 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
                 Object someAttribute = session.getAttributes().get("someKey");
                 System.out.println("Session attribute: " + someAttribute);
 
+
                 roomId = (String) session.getAttributes().get("roomId");
                 userIdFrom = (String) session.getAttributes().get("userIdFrom");
                 userIdTo = (String) session.getAttributes().get("userIdTo");
+
+//                roomId = (String) session.getAttributes().get("roomId");
+//                userIdFrom = (String) session.getAttributes().get("userIdFrom");
+//                userIdTo = (String) session.getAttributes().get("userIdTo");
+
+                userIdFrom = jsonObject.getString("userIdFrom");
+                userIdTo = jsonObject.getString("userIdTo");
+                roomId = generateRoomId(userIdFrom, userIdTo);
+
 
                 //判断是否存在聊天室
                 chatRoom = chatRoomRepository.findById(roomId).orElse(null);
@@ -108,8 +133,28 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
 
                 chatRoomRepository.save(chatRoom);
 
+                ChatBoxDTO chatBoxDTO = new ChatBoxDTO();
+                if (chatBoxMessage != null) {
+                    // 从Role对象中获取roleType
+                    if (chatBoxMessage.getRoleFrom() != null) {
+                        chatBoxDTO.setRoleFromRoleType(chatBoxMessage.getRoleFrom().getRoleType());
+                    }
+                    if (chatBoxMessage.getRoleTo() != null) {
+                        chatBoxDTO.setRoleToRoleType(chatBoxMessage.getRoleTo().getRoleType());
+                    }
+                    chatBoxDTO.setMessage(chatBoxMessage.getMessage());
+                    chatBoxDTO.setTime(chatBoxMessage.getTime());
+                    // 从ChatRoom对象中获取ID，这里假设ChatRoom类有getId方法
+                    if (chatBoxMessage.getChatRoom() != null) {
+                        chatBoxDTO.setChatRoomId(String.valueOf(chatBoxMessage.getChatRoom().getId()));
+                    }
+                }
+
+                String chatBoxJson = objectMapper.writeValueAsString(chatBoxDTO);
+                // 创建一个 TextMessage
+                TextMessage DtoToMessage = new TextMessage(chatBoxJson);
                 //房间内广播消息
-                broadcastMessage(roomId, new TextMessage("Broadcast: " + chatBoxMessage));
+                broadcastMessage(roomId, DtoToMessage);
 
                 break;
             default:
@@ -154,38 +199,158 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
 
         //聊天消息存储
         //获取发送方用户角色信息
-        Role roleFromFinalChecked = null;
+//        Role roleFromFinalChecked = null;
+//
+//        Optional<Role> roleFromFinalCheck = roleRepository.findById(Long.parseLong(userIdFrom));
+//        if (roleFromFinalCheck.isPresent()){
+//            roleFromFinalChecked = roleFromFinalCheck.get();
+//        }else {
+//            System.out.println("用户不存在");
+//        }
+//        //获取接收方用户角色信息
+//        Role roleToFinalChecked = null;
+//
+//        Optional<Role> roleToFinalCheck = roleRepository.findById(Long.parseLong(userIdTo));
+//        if (roleToFinalCheck.isPresent()){
+//            roleToFinalChecked = roleToFinalCheck.get();
+//        }else {
+//            System.out.println("用户不存在");
+//        }
 
-        Optional<Role> roleFromFinalCheck = roleRepository.findById(Long.parseLong(userIdFrom));
-        if (roleFromFinalCheck.isPresent()){
-            roleFromFinalChecked = roleFromFinalCheck.get();
+        List<Role> roleFromFinalChecked = null;
+
+        Users userFromFinalChecked = null;
+        Optional<Users> userFromFinalCheck = usersRepository.findById(Long.parseLong(userIdFrom));
+        if (userFromFinalCheck.isPresent()){
+            userFromFinalChecked = userFromFinalCheck.get();
         }else {
+            System.out.println("用户不存在");
+        }
+
+        List<Role> roleFromFinalCheck = roleRepository.findByUserId(userFromFinalChecked);
+        if (roleFromFinalCheck != null){
+            roleFromFinalChecked = roleFromFinalCheck;
+        }else {
+
             System.out.println("用户不存在");
         }
         //获取接收方用户角色信息
-        Role roleToFinalChecked = null;
 
-        Optional<Role> roleToFinalCheck = roleRepository.findById(Long.parseLong(userIdTo));
-        if (roleToFinalCheck.isPresent()){
-            roleToFinalChecked = roleToFinalCheck.get();
+        List<Role> roleToFinalChecked = null;
+
+        Users userToFinalChecked = null;
+        Optional<Users> userToFinalCheck = usersRepository.findById(Long.parseLong(userIdTo));
+        if (userToFinalCheck.isPresent()){
+            userToFinalChecked = userToFinalCheck.get();
         }else {
             System.out.println("用户不存在");
         }
+        List<Role> roleToFinalCheck = roleRepository.findByUserId(userToFinalChecked);
+        if (roleToFinalCheck != null){
+            roleToFinalChecked = roleToFinalCheck;
+        }else {
+            System.out.println("角色不存在");
+        }
+
 
         //获取并处理信息发送时间
         Date timeFinal = DateConverter.StringToDate(time);
 
+
         //初始化chatRoom中发送方与接收方信息
         // (roleFrom和roleTo理论上没有区别，但这里规定roleFrom是于此房间中首次发出消息的用户；roleTo是于此房间中首次发出消息的用户)
+//        if (chatRoom.getRoleFrom() == null){
+//            chatRoom.setRoleFrom(roleFromFinalChecked);
+//        }
+//        if (chatRoom.getRoleTo() == null){
+//            chatRoom.setRoleTo(roleToFinalChecked);
+//        }
+//
+//        //生成并保存聊天信息体
+//        ChatBox chatBox = new ChatBox(roleFromFinalChecked,roleToFinalChecked,message,timeFinal,chatRoom);
+
+        System.out.println("roleFromFinalChecked is "+roleFromFinalChecked);
+        System.out.println("roleToFinalChecked is "+roleToFinalChecked);
+        System.out.println("chatRoom is " + chatRoom);
+        //初始化chatRoom中发送方与接收方信息
+        // (roleFrom和roleTo理论上没有区别，但这里规定roleFrom是于此房间中首次发出消息的用户；roleTo是于此房间中首次发出消息的用户)
+        System.out.println("-------对于roleFrom：");
+        System.out.println("roleFrom is"+roleFrom);
+
+        Role roleFromFinal = null;
+        System.out.println("chatRoom.getRoleFrom() is " + chatRoom.getRoleFrom());
+
         if (chatRoom.getRoleFrom() == null){
-            chatRoom.setRoleFrom(roleFromFinalChecked);
+            for (Role role : roleFromFinalChecked) {
+                if (role.getRoleType().equals(roleFrom)){
+                    roleFromFinal = role;
+                    break;
+                }
+            }
+            if (roleFromFinal != null) {
+                chatRoom.setRoleFrom(roleFromFinal); // 仅在找到匹配项后设置
+            } else {
+                System.out.println("对应身份不存在");
+            }
         }
-        if (chatRoom.getRoleTo() == null){
-            chatRoom.setRoleTo(roleToFinalChecked);
+        else {
+            Role tempRoleFrom = null;
+            for (Role role : roleFromFinalChecked) {
+                if (role.getRoleType().equals(roleFrom)){
+                    tempRoleFrom = role;
+                    break;
+                }
+            }
+            if (tempRoleFrom != null){
+                roleFromFinal = tempRoleFrom;
+            }else {
+                System.out.println("对应身份不存在");
+            }
         }
 
+        System.out.println("-------对于roleTo：");
+        System.out.println("roleTo is"+roleTo);
+
+        System.out.println("chatRoom.getRoleTo() is " + chatRoom.getRoleTo());
+        Role roleToFinal = null;
+        if (chatRoom.getRoleTo() == null){
+            for (Role role : roleToFinalChecked) {
+                if (role.getRoleType().equals(roleTo)){
+                    roleToFinal = role;
+                    break;
+                }
+            }
+            if (roleToFinal != null) {
+                chatRoom.setRoleTo(roleToFinal); // 仅在找到匹配项后设置
+            } else {
+                System.out.println("对应身份不存在");
+            }
+        }
+        else {
+            Role tempRoleTo = null;
+            for (Role role : roleToFinalChecked) {
+                if (role.getRoleType().equals(roleTo)){
+                    tempRoleTo = role;
+                    break;
+                }
+            }
+            if (tempRoleTo != null){
+                roleToFinal = tempRoleTo;
+            }else {
+                System.out.println("对应身份不存在");
+            }
+        }
+
+//        if (chatRoom.getRoleTo() == null){
+//            chatRoom.setRoleTo(roleToFinalChecked);
+//        }
+        assert roleFromFinal != null;
+        System.out.println("The roleFrom is: " + roleFromFinal.getRoleType());
+        assert roleToFinal != null;
+        System.out.println("The roleTo is: " + roleToFinal.getRoleType());
         //生成并保存聊天信息体
-        ChatBox chatBox = new ChatBox(roleFromFinalChecked,roleToFinalChecked,message,timeFinal,chatRoom);
+        ChatBox chatBox = new ChatBox(roleFromFinal,roleToFinal,message,timeFinal,chatRoom);
+
 
         return chatBoxRepository.save(chatBox);
     }
