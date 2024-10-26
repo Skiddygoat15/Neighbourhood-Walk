@@ -54,11 +54,13 @@ export default function LiveTrackingSharingParent( {params} ) {
             });
             const data = await response.json();
 
-            const walker = {
-                lat: data.walkerLatitude,
-                lng: data.walkerLongitude,
+            if (data.walkerLatitude && data.walkerLongitude) {
+                const walker = {
+                    lat: data.walkerLatitude,
+                    lng: data.walkerLongitude,
+                }
+                setWalkerPosition(walker);
             }
-            setWalkerPosition(walker);
 
             if (departurePosition === null) {
                 const departure = {
@@ -212,121 +214,127 @@ export default function LiveTrackingSharingParent( {params} ) {
 
     return (
         <BackgroundLayout>
-        <div className="relative flex flex-col items-center justify-start min-h-screen p-8">
-            <div className="fixed top-0 left-0 w-full p-4 bg-white shadow-md z-10">
-                <div className="flex items-center space-x-4">
-                    <button onClick={() => router.back()} className="text-black text-2xl">
-                        <span>&lt;</span>
-                    </button>
-                    <h1 className="text-2xl font-bold">Live-tracking</h1>
+            <div className="relative flex flex-col items-center justify-start min-h-screen p-8">
+                <div className="fixed top-0 left-0 w-full p-4 bg-white shadow-md z-10">
+                    <div className="flex items-center space-x-4">
+                        <button onClick={() => router.back()} className="text-black text-2xl">
+                            <span>&lt;</span>
+                        </button>
+                        <h1 className="text-2xl font-bold">Live-tracking</h1>
+                    </div>
                 </div>
-            </div>
 
-            <div className="mt-10 text-center">
-                <p className={`text-lg ${textColor}`}>
-                    You are tracking the location of{' '}
-                    <span className="text-green-600 font-bold">Walker</span>
-                </p>
-            </div>
+                <div className="mt-10 text-center">
+                    {walkerPosition ? (
+                        <p className={`text-lg ${textColor}`}>
+                            You are tracking the location of{' '}
+                            <span className="text-green-600 font-bold">Walker</span>
+                        </p>
+                    ) : (
+                        <p className={"text-red-600 font-bold"}>
+                            Walkers have not yet started walking request
+                        </p>
+                    )}
+                </div>
 
-            {/* Display loading message until map is fully loaded */}
-            {isMapLoading && <p className="text-center text-gray-500">Map is loading...</p>}
+                {/* Display loading message until map is fully loaded */}
+                {isMapLoading && <p className="text-center text-gray-500">Map is loading...</p>}
 
-            {/* Map Section */}
-            {/* Only render the map if after get the current location */}
-            {(currentPosition && departurePosition && destinationPosition && walkerPosition) &&(
-                <div className="w-full max-w-lg mt-2 flex justify-center">
-                    <LoadScriptNext
-                        googleMapsApiKey="AIzaSyB0LNcULkVV2QRvCq8hhjfg2_AZAX53QCg"
-                        language="en"
-                        loadingElement={<p>Loading...</p>}
-                        defer
-                        async
-                    >
-                        <GoogleMap
-                            mapContainerStyle={containerStyle}
-                            center={walkerPosition}  // Set the map centre to the current position
-                            zoom={14}
-                            onLoad={handleMapLoad}
-                            options={{
-                                zoomControl: true,
-                                streetViewControl: true,
-                                mapTypeControl: true,
-                                fullscreenControl: true,
-                                gestureHandling: "greedy",
-                            }}
+                {/* Map Section */}
+                {/* Only render the map if after get the current location */}
+                {(currentPosition && departurePosition && destinationPosition) && (
+                    <div className="w-full max-w-lg mt-2 flex justify-center">
+                        <LoadScriptNext
+                            googleMapsApiKey="AIzaSyB0LNcULkVV2QRvCq8hhjfg2_AZAX53QCg"
+                            language="en"
+                            loadingElement={<p>Loading...</p>}
+                            defer
+                            async
                         >
-                            {mapLoaded && (
-                                <Marker
-                                    position={currentPosition}
-                                    icon={{
-                                        url: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAtOTYwIDk2MCA5NjAiIHdpZHRoPSIyNHB4IiBmaWxsPSIjRjE5RTM5Ij48cGF0aCBkPSJNNDgwLTM2MHE1NiAwIDEwMS0yNy41dDcxLTcyLjVxLTM1LTI5LTc5LTQ0LjVUNDgwLTUyMHEtNDkgMC05MyAxNS41VDMwOC00NjBxMjYgNDUgNzEgNzIuNVQ0ODAtMzYwWm0wLTIwMHEzMyAwIDU2LjUtMjMuNVQ1NjAtNjQwcTAtMzMtMjMuNS01Ni41VDQ4MC03MjBxLTMzIDAtNTYuNSAyMy41VDQwMC02NDBxMCAzMyAyMy41IDU2LjVUNDgwLTU2MFptMCAzNzRxMTIyLTExMiAxODEtMjAzLjVUNzIwLTU1MnEwLTEwOS02OS41LTE3OC41VDQ4MC04MDBxLTEwMSAwLTE3MC41IDY5LjVUMjQwLTU1MnEwIDcxIDU5IDE2Mi41VDQ4MC0xODZabTAgMTA2UTMxOS0yMTcgMjM5LjUtMzM0LjVUMTYwLTU1MnEwLTE1MCA5Ni41LTIzOVQ0ODAtODgwcTEyNyAwIDIyMy41IDg5VDgwMC01NTJxMCAxMDAtNzkuNSAyMTcuNVQ0ODAtODBabTAtNDgwWiIvPjwvc3ZnPg==',
-                                        scaledSize: new window.google.maps.Size(40, 40),
-                                    }}
-                                />
-                            )}
-                            {mapLoaded && (
-                                <Marker
-                                    position={departurePosition}
-                                    icon={{
-                                        url: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9z' +
-                                            'dmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAtOTYwIDk2MCA5NjAiIHdpZHRoPSIyNHB4IiB' +
-                                            'maWxsPSIjMDAwMEY1Ij48cGF0aCBkPSJNMzYwLTQ0MGg4MHYtMTEwaDgwdjExMGg4MHYtMTkwbC' +
-                                            '0xMjAtODAtMTIwIDgwdjE5MFptMTIwIDI1NHExMjItMTEyIDE4MS0yMDMuNVQ3MjAtNTUycTAtM' +
-                                            'TA5LTY5LjUtMTc4LjVUNDgwLTgwMHEtMTAxIDAtMTcwLjUgNjkuNVQyNDAtNTUycTAgNzEgNTkg' +
-                                            'MTYyLjVUNDgwLTE4NlptMCAxMDZRMzE5LTIxNyAyMzkuNS0zMzQuNVQxNjAtNTUycTAtMTUwIDk' +
-                                            '2LjUtMjM5VDQ4MC04ODBxMTI3IDAgMjIzLjUgODlUODAwLTU1MnEwIDEwMC03OS41IDIxNy41VD' +
-                                            'Q4MC04MFptMC00ODBaIi8+PC9zdmc+',
-                                        scaledSize: new window.google.maps.Size(40, 40),
-                                    }}
-                                />
-                            )}
-                            {mapLoaded && (
-                                <Marker
-                                    position={destinationPosition}
-                                    icon={{
-                                        url: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9z' +
-                                            'dmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAtOTYwIDk2MCA5NjAiIHdpZHRoPSIyNHB4IiB' +
-                                            'maWxsPSIjRUEzMzIzIj48cGF0aCBkPSJtNDM4LTQyNiAxOTgtMTk4LTU3LTU3LTE0MSAxNDEtNT' +
-                                            'YtNTYtNTcgNTcgMTEzIDExM1ptNDIgMjQwcTEyMi0xMTIgMTgxLTIwMy41VDcyMC01NTJxMC0xM' +
-                                            'DktNjkuNS0xNzguNVQ0ODAtODAwcS0xMDEgMC0xNzAuNSA2OS41VDI0MC01NTJxMCA3MSA1OSAx' +
-                                            'NjIuNVQ0ODAtMTg2Wm0wIDEwNlEzMTktMjE3IDIzOS41LTMzNC41VDE2MC01NTJxMC0xNTAgOTY' +
-                                            'uNS0yMzlUNDgwLTg4MHExMjcgMCAyMjMuNSA4OVQ4MDAtNTUycTAgMTAwLTc5LjUgMjE3LjVUND' +
-                                            'gwLTgwWm0wLTQ4MFoiLz48L3N2Zz4=',
-                                        scaledSize: new window.google.maps.Size(40, 40),
-                                    }}
-                                />
-                            )}
-                            {mapLoaded && (
-                                <Marker
-                                    position={walkerPosition}
-                                    icon={{
-                                        url: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9z' +
-                                            'dmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAtOTYwIDk2MCA5NjAiIHdpZHRoPSIyNHB4IiB' +
-                                            'maWxsPSIjNDM0MzQzIj48cGF0aCBkPSJtMjgwLTQwIDExMi01NjQtNzIgMjh2MTM2aC04MHYtMT' +
-                                            'g4bDIwMi04NnExNC02IDI5LjUtN3QyOS41IDRxMTQgNSAyNi41IDE0dDIwLjUgMjNsNDAgNjRxM' +
-                                            'jYgNDIgNzAuNSA2OVQ3NjAtNTIwdjgwcS03MCAwLTEyNS0yOXQtOTQtNzRsLTI1IDEyMyA4NCA4' +
-                                            'MHYzMDBoLTgwdi0yNjBsLTg0LTY0LTcyIDMyNGgtODRabTI2MC03MDBxLTMzIDAtNTYuNS0yMy4' +
-                                            '1VDQ2MC04MjBxMC0zMyAyMy41LTU2LjVUNTQwLTkwMHEzMyAwIDU2LjUgMjMuNVQ2MjAtODIwcT' +
-                                            'AgMzMtMjMuNSA1Ni41VDU0MC03NDBaIi8+PC9zdmc+',
-                                        scaledSize: new window.google.maps.Size(40, 40),
-                                    }}
-                                />
-                            )}
-                        </GoogleMap>
-                    </LoadScriptNext>
-                </div>
-            )}
+                            <GoogleMap
+                                mapContainerStyle={containerStyle}
+                                center={walkerPosition || currentPosition}
+                                zoom={14}
+                                onLoad={handleMapLoad}
+                                options={{
+                                    zoomControl: true,
+                                    streetViewControl: true,
+                                    mapTypeControl: true,
+                                    fullscreenControl: true,
+                                    gestureHandling: "greedy",
+                                }}
+                            >
+                                {mapLoaded && (
+                                    <Marker
+                                        position={currentPosition}
+                                        icon={{
+                                            url: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAtOTYwIDk2MCA5NjAiIHdpZHRoPSIyNHB4IiBmaWxsPSIjRjE5RTM5Ij48cGF0aCBkPSJNNDgwLTM2MHE1NiAwIDEwMS0yNy41dDcxLTcyLjVxLTM1LTI5LTc5LTQ0LjVUNDgwLTUyMHEtNDkgMC05MyAxNS41VDMwOC00NjBxMjYgNDUgNzEgNzIuNVQ0ODAtMzYwWm0wLTIwMHEzMyAwIDU2LjUtMjMuNVQ1NjAtNjQwcTAtMzMtMjMuNS01Ni41VDQ4MC03MjBxLTMzIDAtNTYuNSAyMy41VDQwMC02NDBxMCAzMyAyMy41IDU2LjVUNDgwLTU2MFptMCAzNzRxMTIyLTExMiAxODEtMjAzLjVUNzIwLTU1MnEwLTEwOS02OS41LTE3OC41VDQ4MC04MDBxLTEwMSAwLTE3MC41IDY5LjVUMjQwLTU1MnEwIDcxIDU5IDE2Mi41VDQ4MC0xODZabTAgMTA2UTMxOS0yMTcgMjM5LjUtMzM0LjVUMTYwLTU1MnEwLTE1MCA5Ni41LTIzOVQ0ODAtODgwcTEyNyAwIDIyMy41IDg5VDgwMC01NTJxMCAxMDAtNzkuNSAyMTcuNVQ0ODAtODBabTAtNDgwWiIvPjwvc3ZnPg==',
+                                            scaledSize: new window.google.maps.Size(40, 40),
+                                        }}
+                                    />
+                                )}
+                                {mapLoaded && (
+                                    <Marker
+                                        position={departurePosition}
+                                        icon={{
+                                            url: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9z' +
+                                                'dmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAtOTYwIDk2MCA5NjAiIHdpZHRoPSIyNHB4IiB' +
+                                                'maWxsPSIjMDAwMEY1Ij48cGF0aCBkPSJNMzYwLTQ0MGg4MHYtMTEwaDgwdjExMGg4MHYtMTkwbC' +
+                                                '0xMjAtODAtMTIwIDgwdjE5MFptMTIwIDI1NHExMjItMTEyIDE4MS0yMDMuNVQ3MjAtNTUycTAtM' +
+                                                'TA5LTY5LjUtMTc4LjVUNDgwLTgwMHEtMTAxIDAtMTcwLjUgNjkuNVQyNDAtNTUycTAgNzEgNTkg' +
+                                                'MTYyLjVUNDgwLTE4NlptMCAxMDZRMzE5LTIxNyAyMzkuNS0zMzQuNVQxNjAtNTUycTAtMTUwIDk' +
+                                                '2LjUtMjM5VDQ4MC04ODBxMTI3IDAgMjIzLjUgODlUODAwLTU1MnEwIDEwMC03OS41IDIxNy41VD' +
+                                                'Q4MC04MFptMC00ODBaIi8+PC9zdmc+',
+                                            scaledSize: new window.google.maps.Size(40, 40),
+                                        }}
+                                    />
+                                )}
+                                {mapLoaded && (
+                                    <Marker
+                                        position={destinationPosition}
+                                        icon={{
+                                            url: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9z' +
+                                                'dmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAtOTYwIDk2MCA5NjAiIHdpZHRoPSIyNHB4IiB' +
+                                                'maWxsPSIjRUEzMzIzIj48cGF0aCBkPSJtNDM4LTQyNiAxOTgtMTk4LTU3LTU3LTE0MSAxNDEtNT' +
+                                                'YtNTYtNTcgNTcgMTEzIDExM1ptNDIgMjQwcTEyMi0xMTIgMTgxLTIwMy41VDcyMC01NTJxMC0xM' +
+                                                'DktNjkuNS0xNzguNVQ0ODAtODAwcS0xMDEgMC0xNzAuNSA2OS41VDI0MC01NTJxMCA3MSA1OSAx' +
+                                                'NjIuNVQ0ODAtMTg2Wm0wIDEwNlEzMTktMjE3IDIzOS41LTMzNC41VDE2MC01NTJxMC0xNTAgOTY' +
+                                                'uNS0yMzlUNDgwLTg4MHExMjcgMCAyMjMuNSA4OVQ4MDAtNTUycTAgMTAwLTc5LjUgMjE3LjVUND' +
+                                                'gwLTgwWm0wLTQ4MFoiLz48L3N2Zz4=',
+                                            scaledSize: new window.google.maps.Size(40, 40),
+                                        }}
+                                    />
+                                )}
+                                {(mapLoaded && walkerPosition) && (
+                                    <Marker
+                                        position={walkerPosition}
+                                        icon={{
+                                            url: 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9z' +
+                                                'dmciIGhlaWdodD0iMjRweCIgdmlld0JveD0iMCAtOTYwIDk2MCA5NjAiIHdpZHRoPSIyNHB4IiB' +
+                                                'maWxsPSIjNDM0MzQzIj48cGF0aCBkPSJtMjgwLTQwIDExMi01NjQtNzIgMjh2MTM2aC04MHYtMT' +
+                                                'g4bDIwMi04NnExNC02IDI5LjUtN3QyOS41IDRxMTQgNSAyNi41IDE0dDIwLjUgMjNsNDAgNjRxM' +
+                                                'jYgNDIgNzAuNSA2OVQ3NjAtNTIwdjgwcS03MCAwLTEyNS0yOXQtOTQtNzRsLTI1IDEyMyA4NCA4' +
+                                                'MHYzMDBoLTgwdi0yNjBsLTg0LTY0LTcyIDMyNGgtODRabTI2MC03MDBxLTMzIDAtNTYuNS0yMy4' +
+                                                '1VDQ2MC04MjBxMC0zMyAyMy41LTU2LjVUNTQwLTkwMHEzMyAwIDU2LjUgMjMuNVQ2MjAtODIwcT' +
+                                                'AgMzMtMjMuNSA1Ni41VDU0MC03NDBaIi8+PC9zdmc+',
+                                            scaledSize: new window.google.maps.Size(40, 40),
+                                        }}
+                                    />
+                                )}
+                            </GoogleMap>
+                        </LoadScriptNext>
+                    </div>
+                )}
 
-            <div className="fixed left-0 right-0 bottom-20 w-full max-w-lg px-8 mx-auto mt-30">
-                <button
-                    onClick={fetchLocations}
-                    className="w-full bg-black text-white text-xl py-2 rounded-lg hover:bg-gray-800"
-                >
-                    Refresh Walker Location
-                </button>
+                <div className="fixed left-0 right-0 bottom-20 w-full max-w-lg px-8 mx-auto mt-30">
+                    <button
+                        onClick={fetchLocations}
+                        className="w-full bg-black text-white text-xl py-2 rounded-lg hover:bg-gray-800"
+                    >
+                        Refresh Walker Location
+                    </button>
+                </div>
             </div>
-        </div>
-            </BackgroundLayout>
+        </BackgroundLayout>
     );
 }

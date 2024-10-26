@@ -188,8 +188,8 @@ public class DummyDataLoader implements CommandLineRunner {
                 request4.setParent(user1);
                 request4.setWalker(user2);
                 request4.setPublishDate( (Date) formatter.parse("2024-10-10T09:00:00.111") );
-                request4.setStartTime( (Date) formatter.parse("2024-10-26T012:00:00.111") );
-                request4.setArriveTime( (Date) formatter.parse("2024-10-26T013:30:00.111") );
+                request4.setStartTime( (Date) formatter.parse("2024-10-27T012:00:00.111") );
+                request4.setArriveTime( (Date) formatter.parse("2024-10-27T013:30:00.111") );
                 request4.setDeparture("54 Fitzroy St, Newtown NSW 2042, Australia");
                 request4.setDepartureLatitude(-33.8945024);
                 request4.setDepartureLongitude(151.1866821);
