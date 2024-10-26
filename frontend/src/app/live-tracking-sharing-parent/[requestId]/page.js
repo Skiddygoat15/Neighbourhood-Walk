@@ -60,6 +60,9 @@ export default function LiveTrackingSharingParent( {params} ) {
                     lng: data.walkerLongitude,
                 }
                 setWalkerPosition(walker);
+                if (map) {
+                    map.panTo(walker);
+                }
             }
 
             if (departurePosition === null) {
@@ -79,10 +82,6 @@ export default function LiveTrackingSharingParent( {params} ) {
 
             console.log("walker Lat: " + data.walkerLatitude + " Lng: " + data.walkerLongitude);
 
-            if (map) {
-                map.panTo(walker);
-            }
-
             setRequestStatus(data.status);
         } catch (error) {
             console.error("Error fetching locations:", error);
@@ -90,7 +89,6 @@ export default function LiveTrackingSharingParent( {params} ) {
     }, [map]);
 
     useEffect(() => {
-        console.log("Status: " + requestStatus);
         if (requestStatus === "Completed") {
             alert("The walker has completed the request.");
             handleCommentRoute(requestId);
@@ -155,7 +153,7 @@ export default function LiveTrackingSharingParent( {params} ) {
         const intervalId = setInterval(() => {
             getCurrentLocation();
             fetchLocations();
-        }, 120000); // 2 minutes interval
+        }, 20000); // 2 minutes interval
 
         return () => clearInterval(intervalId); // Clear interval on component unmount
     }, []);
