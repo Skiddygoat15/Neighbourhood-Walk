@@ -168,7 +168,12 @@ export default function Home() {
     function fetchAllWalkers() {
         // console.log("Fetching all data for current Notifications:", Notifications); // 输出当前 Notifications
         const promises = Notifications.map(notification => {
-            // console.log(`Fetching walker data for notificationId: ${notification.notificationId}`); // 输出当前处理的 notificationId
+            //---------debug test---------
+            if (!notification || notification.notificationId === null || notification.notificationId === undefined) {
+                console.error("Notification or notificationId is null/undefined", notification);
+                return Promise.resolve(notification); // Skip this notification if notificationId is null or undefined
+            }
+            //---------debug test---------
             return fetchWalkerByNotification(notification.notificationId)
                 .then(surname => {
                     // console.log(`Walker surname for notificationId ${notification.notificationId}:`, surname); // 输出获取到的 walker 姓氏
@@ -182,11 +187,7 @@ export default function Home() {
         // 等待所有异步操作完成
         Promise.all(promises)
             .then(results => {
-                // console.log("All notifications with walker data:", Notifications); // 输出合并后的通知数据
-                // console.info("refreshPage"+refreshKey);
-                setNotifications(results); // 更新状态
-                // console.log("All notifications with walker data:", Notifications); // 输出合并后的通知数据
-                // console.info("refreshPage"+refreshKey);
+                setNotifications(results);
             })
             .catch(error => {
                 console.error('Error fetching all data:', error); // 错误处理
@@ -196,12 +197,6 @@ export default function Home() {
     useEffect(() => {
         fetchAllWalkers();
     },[Notifications.length,refreshKey]); // 依赖于Notifications数组的变化
-
-    // useEffect(() => {
-    //     console.info(Notifications);
-    //     // console.info("upup");
-    //     // console.info("refreshPage"+ refreshKey);
-    // }, [Notifications, refreshKey]);  // 每次Notifications更新时输出当前状态
 
     // 通过更新 refreshKey 来触发页面刷新
     const refreshPage = () => {
@@ -225,10 +220,6 @@ export default function Home() {
                 if (notification.notificationClose === true) {
                     return null;
                 }
-                // console.info(notification.notificationClose);
-                // console.info("upupup2");
-                // console.info(notification.notificationCheck);
-                // console.info("upupup3");
                 return (
                     <StatusCard
                         key={index}
@@ -245,16 +236,15 @@ export default function Home() {
                 );
             })}
             {Notifications_Profile && Notifications_Profile.length > 0 && Notifications_Profile.map((notification, index) => {
-                console.info(notification);
-                console.info("refreshPage"+refreshKey);
-                // 如果 notification.NotificationClose 为 true，则不渲染该组件
+                //---------debug test---------
+                if (!notification || !notification.notificationId) {
+                    console.error("Notification or notificationId is null/undefined", notification);
+                    return null; // Skip rendering if notification or notificationId is null/undefined
+                }
+                //---------debug test---------
                 if (notification.notificationClose === true) {
                     return null;
                 }
-                // console.info(notification.notificationClose);
-                // console.info("upupup2");
-                // console.info(notification.notificationCheck);
-                // console.info("upupup3");
                 return (
                     <StatusCard_profile
                         key={index}
