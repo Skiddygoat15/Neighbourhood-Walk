@@ -6,15 +6,13 @@ import BackgroundLayout from '../../ui-background-components/BackgroundLayout';
 import {useRouter} from "next/navigation";
 import {format} from "date-fns";
 import { v4 as uuidv4 } from 'uuid';
-//！！！！！！！！接下来要实现的是：通过主user和他的身份，与副user和他的身份，查找他们之间是否有chatroom（聊天历史记录），如果有，则家
 export default function Home({params}) {
 
 
-    // ####################################功能1:角色状态检测####################################
-    // 双方role状态检测
+    // ####################################Function 1: Character status detection####################################
+    // Role status detection on both sides
     const [roleFrom, setRoleFrom] = useState("walker");
     const [userIdFrom, setUserIdFrom] = useState("");
-    // const [userIdTo, setUserIdTo] = useState("101");
     const [isDataReady, setIsDataReady] = useState(false);
     const userIdTo = params.userToId;
     const [chatRoomId, setChatRoomId] = useState("");
@@ -27,7 +25,7 @@ export default function Home({params}) {
             // setRoleFrom(storedRole);
             setRoleFrom("walker");
             setUserIdFrom(storedUser);
-            setIsDataReady(true);  // 设置数据准备完毕的状态
+            setIsDataReady(true);  // Set the status of data preparation completed
         }
     }, []);
     const roleTo = roleFrom === "walker" ? "parent" : "walker";
@@ -45,10 +43,10 @@ export default function Home({params}) {
 
 
 
-    // ####################################功能2:WebSocket服务器连接####################################
+    // ####################################Function 2: WebSocket server connection####################################
     const websocket = useRef(null);
     const [inputMessage, setInputMessage] = useState("");
-    const [messages, setMessages] = useState([]);  // 用于存储消息的状态
+    const [messages, setMessages] = useState([]);  // The state used to store messages
     const [allChatMessages, setAllChatMessages] = useState([]);
     useEffect(() => {
         console.info("messages are:", messages)
@@ -57,8 +55,6 @@ export default function Home({params}) {
     useEffect(() => {
         console.info("allChatMessages are:", allChatMessages)
     }, [allChatMessages]);
-    //websocket连接
-    // useEffect(() => {
     function initializeWebSocket(userIdFrom, userIdTo) {
         websocket.current = new WebSocket(`ws://${apiUrl}/ws`);
 
@@ -67,13 +63,11 @@ export default function Home({params}) {
             console.log("userIdFrom is: " + userIdFrom);
             console.log("userIdTo is: " + userIdTo);
             GetChatHistory();
-            // setMessages((prev) => [...prev, `用户[${username}] 已经加入聊天室`]);
+            // setMessages((prev) => [...prev, `user[${username}] Already joined the chat room`]);
 
-            // 获取并发送chat双方的userId给服务器
+            // Obtain and send the userId of both parties in the chat to the server
             if (typeof window !== 'undefined') {
                 if (userIdFrom && userIdTo) {
-                    // 构建要发送的数据
-
                     const initData = JSON.stringify({
                         type: "init",
                         userIdFrom: userIdFrom,
@@ -84,34 +78,29 @@ export default function Home({params}) {
 
                 }
             }
-            // setMessages((prev) => [...prev, `用户1 已经加入聊天室`]);
+            // setMessages((prev) => [...prev, `user1 Already joined the chat room`]);
         };
-        // 当接收到 WebSocket 消息时
-        websocket.current.onmessage = function (event) {
-            // console.info("server message test:")
-            // console.log(event.data);
 
+        websocket.current.onmessage = function (event) {
             try {
                 const newMessage = JSON.parse(event.data);
-                setAllChatMessages(prevMessages => [...prevMessages, newMessage]); // 使用函数式更新以保证状态正确更新
+                setAllChatMessages(prevMessages => [...prevMessages, newMessage]);
             } catch (error) {
                 console.error("Error parsing message data:", error);
             }
         };
 
-        // WebSocket 错误处理
         websocket.current.onerror = function (event) {
             console.error("WebSocket error observed:", event);
 
         };
 
-        // WebSocket 连接关闭处理
         websocket.current.onclose = function (event) {
             console.log(`WebSocket is closed now.`);
-            // setMessages((prev) => [...prev, `用户1 已经离开聊天室`]);
+            // setMessages((prev) => [...prev, `user1 Have left the chat room`]);
         };
 
-        // 在组件卸载时清理 WebSocket 连接
+        // Clean up WebSocket connections when components are unloaded
         return () => {
             if (websocket.current.readyState === WebSocket.OPEN) {
                 websocket.current.close();
@@ -119,12 +108,12 @@ export default function Home({params}) {
         };
         // }, []);
     }
-    // ####################################功能3:处理发送信息####################################
-    // 使用websocket发送消息
+    // ####################################Function 3: Process sending information####################################
+    // Send messages using websocket
     const sendMessage = (inputMessage) => {
 
         const currentTime = new Date(); // 获取当前时间
-        const formattedTime = format(currentTime, "EEEE, MMMM do, yyyy, hh:mm:ss a"); // 格式化时间
+        const formattedTime = format(currentTime, "EEEE, MMMM do, yyyy, hh:mm:ss a"); // Format time
 
         if(websocket.current && websocket.current.readyState === WebSocket.OPEN) {
                 const messageData = JSON.stringify({
@@ -143,13 +132,10 @@ export default function Home({params}) {
 
                 setMessages([...messages, messageData]);
             } else {
-            alert("WebSocket 连接未建立！");
+            alert("WebSocket Connection not established！");
         }
     };
 
-    // const getMessageStyle = (role) => {
-    //     return role === 'walker' ? "message-left" : "message-right";
-    // };
     const getMessageStyle = (roleFromRoleType) => {
         return roleFromRoleType === 'walker' ? 'message-left' : 'message-right';
     };
@@ -172,30 +158,16 @@ export default function Home({params}) {
                 return response.json();
             })
             .then(data =>{
-                // console.info("Chatting history is:", data);
-                setAllChatMessages(data);  // 直接更新 allChatMessages 状态为从后端获取的数组
+                setAllChatMessages(data);  // Directly update allChatMessages status to the array obtained from the backend
             })
             .catch(error => console.error('Error:', error));
     }
 
-    // return (
-    //     <div className="flex flex-col h-screen bg-gray-100 p-4">
-    //         <div className="messages">
-    //             {messages.map((msg) => (
-    //                 <div key={uuidv4()} className={`message ${getMessageStyle(msg.roleFrom)}`}>
-    //                     {msg.message} <span>{msg.time}</span>
-    //                 </div>
-    //             ))}
-    //         </div>
-    //         <ChatBar onSendMessage={sendMessage}/>
-    //     </div>
-    // );
     return (
         <BackgroundLayout>
         <div className="flex flex-col h-screen p-4">
             <div className="messages">
                 {allChatMessages.map((msg, index) => (
-                    // <div key={uuidv4()} className={`message ${getMessageStyle(msg.roleFromRoleType)}`}>
                     <div
                         key={uuidv4()}
                         style={{
@@ -215,10 +187,9 @@ export default function Home({params}) {
                     </div>
                 ))}
             </div>
-            <div className="fixed bottom-16 w-full max-w-[calc(100%-20px)] px-2 mx-auto"> {/* bottom-16 代表向上移动 16px，可以根据需要调整 */}
+            <div className="fixed bottom-16 w-full max-w-[calc(100%-20px)] px-2 mx-auto">
                 <ChatBar onSendMessage={sendMessage}/>
             </div>
-            {/*<ChatBar onSendMessage={sendMessage}/>*/}
         </div>
             </BackgroundLayout>
     );
