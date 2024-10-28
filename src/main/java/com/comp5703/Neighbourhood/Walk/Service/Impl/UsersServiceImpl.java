@@ -173,6 +173,11 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
+    public int updateUserImgUrl(String url, Long userId){
+        return usersRepository.updateUserImage(url, userId);
+    }
+
+    @Override
     public Users updateUserViaAuth(Users user, String roleType, long userId) {
         // Validate role type
         if (!roleType.equals("parent") && !roleType.equals("walker")) {

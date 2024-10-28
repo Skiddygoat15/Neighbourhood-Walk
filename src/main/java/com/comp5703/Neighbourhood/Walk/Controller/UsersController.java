@@ -130,6 +130,16 @@ public class UsersController {
         }
     }
 
+    @PutMapping("/{userId}/update-image")
+    public ResponseEntity<String> updateUserImage(@PathVariable Long userId, @RequestBody String url) {
+        int updatedRows = usersService.updateUserImgUrl(url, userId);
+        if (updatedRows > 0) {
+            return ResponseEntity.ok("User image updated successfully.");
+        } else {
+            return ResponseEntity.badRequest().body("Failed to update user image.");
+        }
+    }
+
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/registerOA")
     public ResponseEntity<String> updateUserViaAuth(@RequestBody Users user, @RequestParam String roleType, @RequestParam long userId) {

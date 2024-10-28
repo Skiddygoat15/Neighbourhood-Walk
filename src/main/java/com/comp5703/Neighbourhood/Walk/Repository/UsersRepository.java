@@ -36,7 +36,8 @@ public interface UsersRepository extends JpaRepository<Users, Long>, JpaSpecific
                        @Param("birthDate") Date birthDate,
                        @Param("gender") String gender,
                        @Param("profileCompleted") Boolean profileCompleted);
-
+    @Modifying
+    @Transactional
     @Query("UPDATE Users u SET u.profImgUrl = :url WHERE u.userId = :userId")
     int updateUserImage(@Param("url") String url, @Param("userId") Long userId);
 

@@ -27,6 +27,7 @@ public interface UsersService {
     Users registerUser(Users user, String roleType);
     Users updateUserViaAuth(Users user, String roleType, long id);
     Users updateUserProfile(long userId, Users updatedUser);
+    int updateUserImgUrl(String url, Long userId);
     //byron
     double calculateDistance(double lat1, double lon1, double lat2, double lon2);
     List<Users> searchWalkers(Long parentId, String searchTerm, String gender, String distance, String rating);
