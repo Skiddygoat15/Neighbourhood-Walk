@@ -45,11 +45,13 @@ export default function HistoryRequestParent() {
                 return response.json();
             })
             .then(data =>{
-                setRequests(data);
+                const completedRequests = data.filter(data => data.status === 'Completed');
+                setRequests(completedRequests);
             })
             .catch(error => console.error('Error:', error));
     }
 
+    //********************这里需要改成对此request判断parent是否已经评价********************
     function getCommentByReuqestId(requestId){
         if (comments.some(comment => comment.request?.requestId === requestId)) {
             return;
@@ -99,7 +101,6 @@ export default function HistoryRequestParent() {
                 {/* 标题 */}
                 <h1 className="text-2xl font-bold text-center">Request History</h1>
 
-                {/* 仅显示有评论的请求 */}
                 <div className="space-y-4">
                     {Array.isArray(comments) && comments.length > 0 ? (
                         comments.map((comment, index) => (

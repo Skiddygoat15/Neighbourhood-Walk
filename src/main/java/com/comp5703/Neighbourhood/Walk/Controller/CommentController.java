@@ -2,6 +2,7 @@ package com.comp5703.Neighbourhood.Walk.Controller;
 
 
 import com.comp5703.Neighbourhood.Walk.Entities.Comment;
+import com.comp5703.Neighbourhood.Walk.Entities.CommentDTO;
 import com.comp5703.Neighbourhood.Walk.Entities.Request;
 import com.comp5703.Neighbourhood.Walk.Service.CommentService;
 import com.comp5703.Neighbourhood.Walk.Service.RequestService;
@@ -129,8 +130,13 @@ public class CommentController {
         return new ResponseEntity(list,HttpStatus.ALREADY_REPORTED);
     }
 
-    @GetMapping("/getCommentByReuqestId/{requestId}")
-    public ResponseEntity<Comment> getCommentByReuqest(@PathVariable("requestId") Integer requestId) {
-        return new ResponseEntity(commentService.getCommentByReuqest(requestId),HttpStatus.OK);
+//    @GetMapping("/getCommentByReuqestId/{requestId}")
+//    public ResponseEntity<Comment> getCommentByReuqest(@PathVariable("requestId") Integer requestId) {
+//        return new ResponseEntity(commentService.getCommentByReuqest(requestId),HttpStatus.OK);
+//    }
+
+    @GetMapping("/getCommentsByReuqestId/{requestId}")
+    public ResponseEntity<List<CommentDTO>> getCommentsByReuqest(@PathVariable("requestId") Integer requestId) {
+        return new ResponseEntity(commentService.getCommentsByReuqest(requestId),HttpStatus.OK);
     }
 }

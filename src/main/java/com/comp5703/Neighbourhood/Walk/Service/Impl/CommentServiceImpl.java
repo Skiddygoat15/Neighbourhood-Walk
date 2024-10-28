@@ -1,16 +1,15 @@
 package com.comp5703.Neighbourhood.Walk.Service.Impl;
 
 import com.comp5703.Neighbourhood.Walk.Entities.Comment;
+import com.comp5703.Neighbourhood.Walk.Entities.CommentDTO;
 import com.comp5703.Neighbourhood.Walk.Entities.Request;
 import com.comp5703.Neighbourhood.Walk.Entities.Users;
 import com.comp5703.Neighbourhood.Walk.Repository.CommentRepository;
 import com.comp5703.Neighbourhood.Walk.Repository.RequestRepository;
 import com.comp5703.Neighbourhood.Walk.Repository.UsersRepository;
-import com.comp5703.Neighbourhood.Walk.Repository.WalkerRequestRepository;
 import com.comp5703.Neighbourhood.Walk.Service.CommentService;
 import com.comp5703.Neighbourhood.Walk.Utils.TwoTuple;
 import com.comp5703.Neighbourhood.Walk.domain.dto.RateCommentDTO;
-import jakarta.persistence.Tuple;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -142,8 +141,28 @@ public class CommentServiceImpl implements CommentService {
     }
 
 
+//    @Override
+//    public Comment getCommentByReuqest(Integer requestId) {
+//        Optional<Request> requestCheck = requestRepository.findById(requestId);
+//
+//        Request requestChecked = null;
+//        if (requestCheck.isPresent()){
+//            requestChecked = requestCheck.get();
+//        }
+//
+//        Optional<Comment> commentCheck = commentRepository.findByRequest(requestChecked);
+//        Comment commentChecked = null;
+//        if (commentCheck.isPresent()){
+//            commentChecked = commentCheck.get();
+//        }else {
+//            return null;
+//        }
+//
+//        return commentChecked;
+//    }
+
     @Override
-    public Comment getCommentByReuqest(Integer requestId) {
+    public List<CommentDTO> getCommentsByReuqest(Integer requestId) {
         Optional<Request> requestCheck = requestRepository.findById(requestId);
 
         Request requestChecked = null;
@@ -151,14 +170,24 @@ public class CommentServiceImpl implements CommentService {
             requestChecked = requestCheck.get();
         }
 
-        Optional<Comment> commentCheck = commentRepository.findByRequest(requestChecked);
-        Comment commentChecked = null;
-        if (commentCheck.isPresent()){
-            commentChecked = commentCheck.get();
+        List<Comment> commentsCheck = commentRepository.findByRequest(requestChecked);
+        List<CommentDTO> commentsChecked = null;
+        if (commentsCheck != null){
+            List<CommentDTO> commentsCheckedInitial = commentsCheck.stream().map(comment -> {
+                CommentDTO commentDTO = new CommentDTO();
+                commentDTO.setCommentId(comment.getCommentId());
+                commentDTO.setUserId(comment.getUser().getId());
+                commentDTO.setRate(comment.getRate());
+                commentDTO.setCommentDate(comment.getCommentDate());
+                commentDTO.setComment(comment.getComment());
+                commentDTO.setRequest(comment.getRequest());
+                return commentDTO;
+            }).collect(Collectors.toList());
+            commentsChecked = commentsCheckedInitial;
         }else {
             return null;
         }
 
-        return commentChecked;
+        return commentsChecked;
     }
 }

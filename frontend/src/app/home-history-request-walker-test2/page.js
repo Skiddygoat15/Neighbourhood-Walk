@@ -10,8 +10,8 @@ export default function HistoryRequestParent() {
     const userId = sessionStorage.getItem("userId");
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-    const handleRateTrip = () => {
-        router.push('/home-rate-trip');
+    const handleRateTrip = (requestId) => {
+        router.push(`/live-tracking-comment-walker/${requestId}`);
     };
 
     useEffect(() => {
@@ -55,7 +55,7 @@ export default function HistoryRequestParent() {
         if (comments.some(comment => comment.request?.requestId === requestId)) {
             return;
         }
-        fetch(`http://${apiUrl}/Comment/getCommentByReuqestId/${requestId}`, {
+        fetch(`http://${apiUrl}/Comment/getCommentsByReuqestId/${requestId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -69,8 +69,13 @@ export default function HistoryRequestParent() {
                 return response.json();
             })
             .then(data =>{
+                console.info("data is",data)
                 if (data){
-                    setComments([...comments, data])
+                    const userId = parseInt(sessionStorage.getItem("userId"), 10);
+                    const userComments = data.filter(comment => comment.userId === userId);
+                    if (userComments.length > 0) {
+                        setComments(prevComments => [...prevComments, ...userComments]);
+                    }
                 };
             })
             .catch(error => console.error('Error:', error));
@@ -116,10 +121,10 @@ export default function HistoryRequestParent() {
                                 <p className="text-sm">Destination: {request.destination || "N/A"}</p>
 
                                 {/* 评论部分 */}
-                                <div className="mt-2">
+                                <div className="mt-2 flex items-center space-x-2">
                                     <h2 className="text-lg font-semibold">Comments：</h2>
                                     {comment ? (
-                                        <p className="text-sm text-gray-700">{comment.content}</p>
+                                        <p className="text-sm text-gray-700">{comment.comment}</p>
                                     ) : (
                                         <button
                                             onClick={() => handleRateTrip(request.requestId)}
