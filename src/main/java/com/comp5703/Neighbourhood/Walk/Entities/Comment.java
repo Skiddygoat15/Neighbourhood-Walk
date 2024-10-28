@@ -13,7 +13,7 @@ public class Comment{
     @Column(name = "commentId")
     private long commentId;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "requestId")
     private Request request;
 

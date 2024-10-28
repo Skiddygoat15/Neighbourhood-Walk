@@ -49,8 +49,6 @@ public class CommentController {
             return new ResponseEntity<>(saveComment, HttpStatus.CREATED);
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>("There is no user with this userId.", HttpStatus.FAILED_DEPENDENCY);
-        } catch(DataIntegrityViolationException e){
-            return new ResponseEntity<>("The request have already been commented. Please change another request.", HttpStatus.FAILED_DEPENDENCY);
         } catch (Exception e){
             System.out.println(e);
             return new ResponseEntity<>(e.getMessage(), HttpStatus.CREATED);
