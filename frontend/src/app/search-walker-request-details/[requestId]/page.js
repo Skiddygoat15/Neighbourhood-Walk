@@ -174,7 +174,7 @@ export default function RequestDetails({params}) {
                             Apply
                         </button>
                     } else if (walkerRequest.status === 'Applied') {
-                        return <div className="mb-4">
+                        return <div>
                             <p className="text-yellow-600 text-lg">Your application has been sent</p>
                             <p className="text-yellow-600 text-lg">Waiting for response...</p>
                         </div>
@@ -186,65 +186,18 @@ export default function RequestDetails({params}) {
 
                 return (
                     <BackgroundLayout>
-                    <div className="p-4 rounded-lg bg-white shadow-md">
-                        <div className="mb-4">
-                            <p className="text-gray-600">Parent Name:</p>
-                            <p className="text-black text-lg">{request.parent.name}</p>
-                        </div>
-
-                        <div className="mb-4">
-                            <p className="text-gray-600">Departure:</p>
-                            <p className="text-black text-lg">{request.departure}</p>
-                        </div>
-
-                        <div className="mb-4">
-                            <p className="text-gray-600">Destination:</p>
-                            <p className="text-black text-lg">{request.destination}</p>
-                        </div>
-
-                        <div className="mb-4">
-                            <p className="text-gray-600">Start Time:</p>
-                            <p className="text-black text-lg">
-                                {formatDateTime(request.startTime)}
-                            </p>
-                        </div>
-
-                        <div className="mb-4">
-                            <p className="text-gray-600">Arrive Time:</p>
-                            <p className="text-black text-lg">
-                                {formatDateTime(request.arriveTime)}
-                            </p>
-                        </div>
-
-                        <div className="mb-4">
-                            <p className="text-gray-600">Duration:</p>
-                            <p className="text-black text-lg">
-                                {getDuration(request.startTime, request.arriveTime)}
-                            </p>
-                        </div>
-
-                        <div className="mb-4">
-                            <p className="text-gray-600">Details:</p>
-                            <p className="text-black text-lg">{request.details}</p>
-                        </div>
-
-                        <div className="mb-4 text-gray-500">
-                            {timeSince(request.publishDate)}
-                        </div>
-
-                        {statusCheck()}
-                    </div>
-                        </BackgroundLayout>
-                );
-            } else {
-                // this means walker does not apply this request yet
-                // get request object
-                const request = requestDetails;
-
-                return (
-                    <BackgroundLayout>
                         <div className="p-2 rounded-lg px-8">
                             <div className="bg-white p-4 rounded-lg shadow-lg w-full">
+
+                                <div className="flex justify-center mb-2">
+                                    <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0 bg-gray-200">
+                                        {request.parent.profImgUrl && (
+                                            < img src={request.parent.profImgUrl} alt="User Profile Image"
+                                                  className="w-full h-full object-cover"/>
+                                        )}
+                                    </div>
+                                </div>
+
                                 <div className="mb-4">
                                     <p className="text-gray-600">Parent Name:</p>
                                     <p className="text-black text-lg">{request.parent.name}</p>
@@ -290,15 +243,84 @@ export default function RequestDetails({params}) {
                                     {timeSince(request.publishDate)}
                                 </div>
 
-                                <button
-                                    onClick={applyRequest}
-                                    className="bg-black text-white px-4 py-2 rounded-lg w-full">
-                                    Apply
-                                </button>
+                                {statusCheck()}
                             </div>
                         </div>
                     </BackgroundLayout>
             );
+            } else {
+                // this means walker does not apply this request yet
+                // get request object
+                const request = requestDetails;
+
+                return (
+                    <BackgroundLayout>
+                    <div className="p-2 rounded-lg px-8">
+                        <div className="bg-white p-4 rounded-lg shadow-lg w-full">
+
+                            <div className="flex justify-center mb-2">
+                                <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0 bg-gray-200">
+                                    {request.parent.profImgUrl && (
+                                        < img src={request.parent.profImgUrl} alt="User Profile Image"
+                                              className="w-full h-full object-cover"/>
+                                    )}
+                                </div>
+                            </div>
+
+                            <div className="mb-4">
+                                <p className="text-gray-600">Parent Name:</p>
+                                <p className="text-black text-lg">{request.parent.name}</p>
+                            </div>
+
+                            <div className="mb-4">
+                                <p className="text-gray-600">Departure:</p>
+                                <p className="text-black text-lg">{request.departure}</p>
+                            </div>
+
+                            <div className="mb-4">
+                                <p className="text-gray-600">Destination:</p>
+                                <p className="text-black text-lg">{request.destination}</p>
+                            </div>
+
+                            <div className="mb-4">
+                                <p className="text-gray-600">Start Time:</p>
+                                <p className="text-black text-lg">
+                                    {formatDateTime(request.startTime)}
+                                </p>
+                            </div>
+
+                            <div className="mb-4">
+                                <p className="text-gray-600">Arrive Time:</p>
+                                <p className="text-black text-lg">
+                                    {formatDateTime(request.arriveTime)}
+                                </p>
+                            </div>
+
+                            <div className="mb-4">
+                                <p className="text-gray-600">Duration:</p>
+                                <p className="text-black text-lg">
+                                    {getDuration(request.startTime, request.arriveTime)}
+                                </p>
+                            </div>
+
+                            <div className="mb-4">
+                                <p className="text-gray-600">Details:</p>
+                                <p className="text-black text-lg">{request.details}</p>
+                            </div>
+
+                            <div className="mb-4 text-gray-500">
+                                {timeSince(request.publishDate)}
+                            </div>
+
+                            <button
+                                onClick={applyRequest}
+                                className="bg-black text-white px-4 py-2 rounded-lg w-full">
+                                Apply
+                            </button>
+                        </div>
+                    </div>
+                    </BackgroundLayout>
+                );
             }
         }
 
@@ -306,38 +328,38 @@ export default function RequestDetails({params}) {
     };
 
     return (
-    <BackgroundLayout>
-        <main className="h-auto mb-2 shadow-md flex justify-center items-center mx-6">
+        <BackgroundLayout>
+            <main className="h-auto mb-2 shadow-md flex justify-center items-center">
 
-            <div className="shadow-md w-full" style={{paddingTop: '5px'}}>
+                <div className="shadow-md w-full" style={{paddingTop: '5px'}}>
 
-                {/* show back icon and title*/}
-                <div className="flex items-center mt-2">
-                    <button onClick={() => handleBack()} className={`mr-4 ${textColor}`}>
-                        <svg
-                            className={`w-6 h-6 ${textColor}`}
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M15 19l-7-7 7-7"
-                            />
-                        </svg>
-                    </button>
-                    <h1 className={`text-2xl font-semibold ${textColor} text-center`}>Request details</h1>
+                        {/* show back icon and title*/}
+                    <div className="flex items-center mt-2">
+                        <button onClick={() => handleBack()} className={`mr-4 ${textColor}`}>
+                            <svg
+                                className={`w-6 h-6 ${textColor}`}
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg"
+                            >
+                                <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth="2"
+                                    d="M15 19l-7-7 7-7"
+                                />
+                            </svg>
+                        </button>
+                        <h1 className={`text-2xl font-semibold ${textColor} text-center`}>Request details</h1>
+                    </div>
+
+                    {/* display content*/}
+                    {error && <p className="text-red-500">{error}</p>}
+
+                    {renderContent()}
                 </div>
-
-                {/* display content*/}
-                {error && <p className="text-red-500">{error}</p>}
-
-                {renderContent()}
-            </div>
-        </main>
+            </main>
     </BackgroundLayout>
     );
 }

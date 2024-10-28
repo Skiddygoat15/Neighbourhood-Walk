@@ -46,6 +46,10 @@ export default function SearchParentWalkerDetails({ params }) {
     router.push(`/search-parent`);  // back to search walkers page
   };
 
+  const handleContact = (walkerId) => {
+    router.push(`/message-chat-parent-final/${walkerId}`);
+  };
+
   // format the available times
   const formatDateTime = (inputDateTime) => {
     console.log(inputDateTime);
@@ -68,9 +72,9 @@ export default function SearchParentWalkerDetails({ params }) {
 
   return (
       <BackgroundLayout>
-        <main className="h-auto mb-2 shadow-md flex justify-center items-center mx-6">
+        <main className="h-auto mb-2 flex justify-center items-center">
 
-          <div className="shadow-md w-full" style={{paddingTop: '5px'}}>
+          <div className="w-full" style={{paddingTop: '5px'}}>
 
             {/* show back icon and title*/}
             <div className="flex items-center mt-2">
@@ -93,33 +97,50 @@ export default function SearchParentWalkerDetails({ params }) {
               <h1 className={`text-2xl font-semibold ${textColor} text-center`}>Walker details</h1>
             </div>
 
-            {/* Walker Information */}
-            <div className="p-4 rounded-lg bg-white shadow-md">
-              {error && <p className="text-red-500">{error}</p>}
-              {!walker && !error && <p>Loading...</p>}
-              {walker && (
-                  <div className="space-y-4">
-                    <p><strong>Name:</strong> {`${walker.name} ${walker.surname}`}</p>
-                    <p><strong>Preferred Name:</strong> {walker.preferredName}</p>
-                    <p><strong>Gender:</strong> {walker.gender}</p>
-                    <p><strong>Address:</strong> {walker.address}</p>
-                    <p><strong>Email:</strong> {walker.email}</p>
-                    <p><strong>Phone:</strong> {walker.phone}</p>
-                    <p><strong>Communication Preference:</strong> {walker.communicatePref}</p>
-                    <p><strong>Preferred time From:</strong></p>
-                    <p>{walker.availableDate[0] ? formatDateTime(walker.availableDate[0]) : 'N/A'}</p>
-                    <p><strong>Preferred time To:</strong></p>
-                    <p>{walker.availableDate[0] ? formatDateTime(walker.availableDate[1]) : 'N/A'}</p>
-                    <p><strong>Skill:</strong> {walker.skill}</p>
-                    <p><strong>Average Rating:</strong> ⭐ {walker.avgUserRating} / 5</p>
-                  </div>
-              )}
+            {/* Centered Error and Loading Messages */}
+            <div className="flex justify-center items-center my-1">
+              {error && <p className="text-red-500 text-center">{error}</p>}
+              {!walker && !error && <p className="text-center">Loading...</p>}
+            </div>
 
-              {/* Contact Button */}
-              <button
-                  className="bg-black text-white px-4 py-2 rounded-lg w-full hover:bg-gray-700">
-                Contact
-              </button>
+            {/* Walker Information */}
+            <div className="p-2 rounded-lg px-8">
+              <div className="bg-white p-4 rounded-lg shadow-lg w-full">
+                {walker && (
+                    <div className="space-y-4">
+
+                      <div className="flex justify-center mb-2">
+                        <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0 bg-gray-200">
+                          {walker.profImgUrl && (
+                              < img src={walker.profImgUrl} alt="User Profile Image"
+                                    className="w-full h-full object-cover"/>
+                          )}
+                        </div>
+                      </div>
+
+                      <p><strong>Name:</strong> {`${walker.name} ${walker.surname}`}</p>
+                      <p><strong>Preferred Name:</strong> {walker.preferredName}</p>
+                      <p><strong>Gender:</strong> {walker.gender}</p>
+                      <p><strong>Address:</strong> {walker.address}</p>
+                      <p><strong>Email:</strong> {walker.email}</p>
+                      <p><strong>Phone:</strong> {walker.phone}</p>
+                      <p><strong>Communication Preference:</strong> {walker.communicatePref}</p>
+                      <p><strong>Preferred time From:</strong></p>
+                      <p>{walker.availableDate[0] ? formatDateTime(walker.availableDate[0]) : 'N/A'}</p>
+                      <p><strong>Preferred time To:</strong></p>
+                      <p>{walker.availableDate[0] ? formatDateTime(walker.availableDate[1]) : 'N/A'}</p>
+                      <p><strong>Skill:</strong> {walker.skill}</p>
+                      <p><strong>Average Rating:</strong> ⭐ {walker.avgUserRating} / 5</p>
+
+                      {/* Contact Button */}
+                      <button
+                          onClick={() => handleContact(walker.id)}
+                          className="bg-black text-white px-4 py-2 rounded-lg w-full hover:bg-gray-700">
+                        Contact
+                      </button>
+                    </div>
+                )}
+              </div>
             </div>
           </div>
         </main>
