@@ -156,7 +156,7 @@ export default function HomeParent() {
             </div>
             <div
                 className="bg-white border rounded-lg p-4 text-center cursor-pointer"
-                onClick={() => handleNavigation('/home-history-request-parent')}
+                onClick={() => handleNavigation('/home-history-request-parent-test')}
             >
               <p className="font-semibold">History</p>
             </div>

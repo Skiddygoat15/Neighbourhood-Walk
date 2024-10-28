@@ -1,6 +1,7 @@
 package com.comp5703.Neighbourhood.Walk.Service;
 
 import com.comp5703.Neighbourhood.Walk.Entities.Comment;
+import com.comp5703.Neighbourhood.Walk.Entities.Request;
 import com.comp5703.Neighbourhood.Walk.Utils.TwoTuple;
 import com.comp5703.Neighbourhood.Walk.domain.dto.RateCommentDTO;
 
@@ -19,4 +20,5 @@ public interface CommentService extends Serializable {
     Double getAveRateByUserId(long userid);
     List<Double> getAveRateByUserId(List<Long> useridList,boolean ascending);
     Boolean IsUserHaveComment(long userid);
+    Comment getCommentByReuqest(Integer requestId);
 }
