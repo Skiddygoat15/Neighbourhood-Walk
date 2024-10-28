@@ -307,7 +307,7 @@ export default function RequestDetails({params}) {
 
     return (
     <BackgroundLayout>
-        <main className="h-auto mb-2 shadow-md flex justify-center items-center">
+        <main className="h-auto mb-2 shadow-md flex justify-center items-center mx-6">
 
             <div className="shadow-md w-full" style={{paddingTop: '5px'}}>
 

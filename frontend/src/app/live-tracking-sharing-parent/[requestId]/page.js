@@ -213,12 +213,12 @@ export default function LiveTrackingSharingParent( {params} ) {
     return (
         <BackgroundLayout>
             <div className="relative flex flex-col items-center justify-start min-h-screen p-8">
-                <div className="fixed top-0 left-0 w-full p-4 bg-white shadow-md z-10">
+                <div className="fixed top-0 left-0 w-full p-4 z-10">
                     <div className="flex items-center space-x-4">
-                        <button onClick={() => router.back()} className="text-black text-2xl">
+                        <button onClick={() => router.back()} className={`${textColor} text-2xl`}>
                             <span>&lt;</span>
                         </button>
-                        <h1 className="text-2xl font-bold">Live-tracking</h1>
+                        <h1 className={`${textColor} text-2xl font-bold`}>Live-tracking</h1>
                     </div>
                 </div>
 
