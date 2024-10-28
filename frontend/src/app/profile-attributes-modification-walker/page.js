@@ -17,6 +17,7 @@ export default function ProfileManagementSelectTimeWalker() {
   const [emailAddress, setEmailAddress] = useState('');
   const [communicationPreference, setCommunicationPreference] = useState('');
   const [preferredName, setPreferredName] = useState('');
+  const [profileImgUrl, setProfileImgUrl] = useState('');
   const textColor = useTextColor();
   const [date, setDate] = useState('');
 
@@ -102,6 +103,7 @@ export default function ProfileManagementSelectTimeWalker() {
       communicatePref: communicationPreference,
       availableDate,
       skill: skillArray,
+      profImgUrl: profileImgUrl
     };
 
     try {
@@ -259,6 +261,34 @@ export default function ProfileManagementSelectTimeWalker() {
           </div>
         </div>
 
+        {/* Update Profile Images */}
+        <div className="mt-4 rounded-lg border border-gray-200 shadow-lg p-6 bg-white">
+          <label className={`block text-black font-semibold text-left ml-0 mb-4`}>Change Profile
+            Image</label>
+          <div className="grid grid-cols-3 gap-4">
+            {[
+              {value: "/profileImages/profileImg_men_1.png", label: "Option 1"},
+              {value: "/profileImages/profileImg_men_2.png", label: "Option 2"},
+              {value: "/profileImages/profileImg_men_3.png", label: "Option 3"},
+              {value: "/profileImages/profileImg_women_1.png", label: "Option 4"},
+              {value: "/profileImages/profileImg_women_2.png", label: "Option 5"},
+              {value: "/profileImages/profileImg_women_3.png", label: "Option 6"}
+            ].map((option) => (
+                <div
+                    key={option.value}
+                    className={`cursor-pointer p-3 rounded-lg border-2 transition duration-200 ease-in-out transform hover:scale-105 ${
+                        profileImgUrl === option.value ? 'border-blue-500' : 'border-gray-200'
+                    }`}
+                    onClick={() => setProfileImgUrl(option.value)}
+                >
+                  <img src={option.value} alt={option.label} className="w-16 h-16 rounded-full mx-auto"/>
+                  <p className="text-center mt-2 text-gray-600 text-sm">{option.label}</p>
+                </div>
+            ))}
+          </div>
+        </div>
+
+
         {/* Update Button */}
         <button
             onClick={handleUpdate}
@@ -269,6 +299,6 @@ export default function ProfileManagementSelectTimeWalker() {
       </div>
 
     </main>
-  </BackgroundLayout>
+     </BackgroundLayout>
   );
 }

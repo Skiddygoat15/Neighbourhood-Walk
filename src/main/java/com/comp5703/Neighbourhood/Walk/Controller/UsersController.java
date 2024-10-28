@@ -140,6 +140,12 @@ public class UsersController {
         }
     }
 
+    @GetMapping("/getUserProfImgUrl/{userId}")
+    public ResponseEntity<?> getUserProfImgUrl(@PathVariable long userId) {
+        String url = usersService.findUserProfImgById(userId);
+        return new ResponseEntity<>(url, HttpStatus.OK);
+    }
+
     @CrossOrigin(origins = "http://localhost:3000")
     @PostMapping("/registerOA")
     public ResponseEntity<String> updateUserViaAuth(@RequestBody Users user, @RequestParam String roleType, @RequestParam long userId) {

@@ -15,6 +15,7 @@ export default function ProfileManagementAccountInformationWalker() {
   };
 
   const [userProfile, setUserProfile] = useState(null); // 用来存储API返回的数据
+  const [userProfImg,setUserProfImg] = useState(null); // 用来存储API返回的数据
   const textColor = useTextColor();
 
   useEffect(() => {
@@ -46,6 +47,39 @@ export default function ProfileManagementAccountInformationWalker() {
       };
 
       fetchUserProfile();
+    } else {
+      console.error('User ID or token not found in sessionStorage');
+    }
+  }, []);
+  useEffect(() => {
+    // 从sessionStorage获取userId和token
+    const userId = sessionStorage.getItem('userId');
+    const token = sessionStorage.getItem('token'); // 假设token保存在sessionStorage中
+
+
+    // 如果userId和token存在，则调用API获取用户信息
+    if (userId && token) {
+      const fetchUserProfileImgUrl = async () => {
+        try {
+          const response = await fetch(`http://${apiUrl}/Users/getUserProfImgUrl/${userId}`, {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${token}`, // 在请求头中添加Bearer token
+            },
+          });
+
+          if (response.ok) {
+            const data = await response.text();
+            setUserProfImg(data);
+          } else {
+            console.error('Failed to fetch user profile img url:', response.statusText);
+          }
+        } catch (error) {
+          console.error('Error fetching user profile img url:', error);
+        }
+      };
+
+      fetchUserProfileImgUrl();
     } else {
       console.error('User ID or token not found in sessionStorage');
     }
@@ -200,7 +234,9 @@ export default function ProfileManagementAccountInformationWalker() {
 
               </div>
               <div className="w-24 h-24 bg-gray-300 rounded-full flex items-center justify-center mb-3">
-              <span>Image</span>
+                {userProfImg && (
+                    <img src={userProfImg} alt="User Profile Image" className="w-auto h-auto" />
+                )}
               </div>
             </div>
 

@@ -14,6 +14,7 @@ export default function ProfileManagementAccountInformation() {
   };
 
   const [userProfile, setUserProfile] = useState(null); // 用来存储API返回的数据
+  const [userProfImg,setUserProfImg] = useState(null); // 用来存储API返回的数据
   const textColor = useTextColor();
 
   useEffect(() => {
@@ -42,8 +43,39 @@ export default function ProfileManagementAccountInformation() {
           console.error('Error fetching user profile:', error);
         }
       };
-
       fetchUserProfile();
+    } else {
+      console.error('User ID or token not found in sessionStorage');
+    }
+  }, []);
+  useEffect(() => {
+    // 从sessionStorage获取userId和token
+    const userId = sessionStorage.getItem('userId');
+    const token = sessionStorage.getItem('token'); // 假设token保存在sessionStorage中
+
+    // 如果userId和token存在，则调用API获取用户信息
+    if (userId && token) {
+      const fetchUserProfImgUrl = async () => {
+        try {
+          const response = await fetch(`http://${apiUrl}/Users/getUserProfImgUrl/${userId}`, {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${token}`, // 在请求头中添加Bearer token
+            },
+          });
+
+          if (response.ok) {
+            const data = await response.text();
+            setUserProfImg(data);
+          } else {
+            console.error('Failed to fetch user profile img:', response.statusText);
+          }
+        } catch (error) {
+          console.error('Error fetching user profile img:', error);
+        }
+      };
+
+      fetchUserProfImgUrl();
     } else {
       console.error('User ID or token not found in sessionStorage');
     }
@@ -142,14 +174,16 @@ export default function ProfileManagementAccountInformation() {
               </h2>
             </div>
             <div className="w-24 h-24 bg-gray-300 rounded-full flex items-center justify-center mb-4">
-              <span>Image</span>
+              {userProfImg && (
+                  <img src={userProfImg} alt="User Profile Image" className="w-auto h-auto" />
+              )}
             </div>
           </div>
 
           {/* Details List */}
           <div className="bg-white p-4 rounded-lg shadow-lg w-full space-y-4"
                style={{margin: '5px', padding: '5px'}}>
-            <div className="flex justify-between items-center border-b py-2 sm:text-base ml-2">
+            <div className="flex justify-between items-center border-b py-2 sm:text-base ml-2 mt-3">
               <span>Preferred Name</span>
               <div className="flex items-center mr-2">
                 <span>{userProfile.preferredName || 'N/A'}</span>

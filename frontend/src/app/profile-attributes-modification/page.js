@@ -14,6 +14,7 @@ export default function ProfileAttributesModification() {
   const [emailAddress, setEmailAddress] = useState('');
   const [communicationPreference, setCommunicationPreference] = useState('');
   const [preferredName, setPreferredName] = useState('');
+  const [profileImgUrl, setProfileImgUrl] = useState('');
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const countryCodes = [
@@ -81,7 +82,8 @@ export default function ProfileAttributesModification() {
       phone: phoneNumber,
       email: emailAddress,
       communicatePref: communicationPreference,
-      preferredName: preferredName
+      preferredName: preferredName,
+      profImgUrl: profileImgUrl
     };
 
     try {
@@ -113,7 +115,7 @@ export default function ProfileAttributesModification() {
   return (
       <BackgroundLayout>
     <main className="min-h-screen">
-      <div className="w-full px-4 sm:px-6 lg:px-8" style={{height: 'calc(100vh - 55px)', overflowY: 'auto'}}>
+      <div className="w-full px-4 sm:px-6 lg:px-8" style={{height: 'calc(100vh - 65px)', overflowY: 'auto'}}>
         {/* Back Button */}
         <button onClick={() => router.back()} className={`text-2xl p-2 ${textColor} focus:outline-none`}>
           &larr;
@@ -121,86 +123,116 @@ export default function ProfileAttributesModification() {
 
         {/* Title */}
         <h1 className={`block text-2xl ${textColor} font-bold text-center mb-2`}>Profile Attributes Modification</h1>
-          {error && <p className="text-red-500 text-center">{error}</p>}
+        {error && <p className="text-red-500 text-center">{error}</p>}
 
-          {/* Form Fields */}
-          <div className="space-y-6">
-            {/* Phone Number */}
-            <div>
-              <label className= {`block text-sm  ${textColor} font-bold text-left"`}>Phone Number</label>
-              <p className={`block text-xs  ${textColor} font-medium text-left`}>You will use this number to receive notifications and to log in and
-                restore your account</p>
-              <div className="flex items-center mt-2">
-                <select
-                    className="border border-gray-300 p-4 rounded-l-md"
-                    value={countryCode}
-                    onChange={handleCountryChange}
-                >
-                  {countryCodes.map((item, index) => (
-                      <option key={index} value={item.code}>
-                        {item.country} ({item.code})
-                      </option>
-                  ))}
-                </select>
-                <input
-                    type="text"
-                    className="border border-gray-300 p-4 rounded-r-md w-full"
-                    placeholder="Enter your phone number"
-                    value={phoneNumber}
-                    onChange={(e) => setPhoneNumber(e.target.value)}
-                />
-              </div>
-              {/*<p className="text-xs text-gray-500">The system will send you a verification code</p>*/}
-            </div>
-
-            {/* Email Address */}
-            <div>
-              <label className={`block text-sm  ${textColor} font-bold text-left"`}>E-mail Address</label>
-              <p className={`block text-xs  ${textColor} font-medium text-left`}>You will use this mailbox to receive messages</p>
-              <input
-                  type="email"
-                  className="border border-gray-300 p-4 rounded-md w-full mt-2"
-                  value={emailAddress}
-                  onChange={(e) => setEmailAddress(e.target.value)}
-              />
-              {/*<p className="text-xs text-gray-500">The system will send you a verification code</p>*/}
-            </div>
-
-            {/* Communication Preference */}
-            <div>
-              <label className={`block text-sm  ${textColor} font-bold text-left"`}>Communication Preference</label>
+        {/* Form Fields */}
+        <div className="space-y-6">
+          {/* Phone Number */}
+          <div>
+            <label className={`block text-sm  ${textColor} font-bold text-left"`}>Phone Number</label>
+            <p className={`block text-xs  ${textColor} font-medium text-left`}>You will use this number to receive
+              notifications and to log in and
+              restore your account</p>
+            <div className="flex items-center mt-2">
               <select
-                  className="border border-gray-300 p-4 rounded-md w-full mt-2"
-                  value={communicationPreference}
-                  onChange={(e) => setCommunicationPreference(e.target.value)}
+                  className="border border-gray-300 p-4 rounded-l-md"
+                  value={countryCode}
+                  onChange={handleCountryChange}
               >
-                <option value="">Select an option</option>
-                <option value="Email">Email</option>
-                <option value="Phone">Phone</option>
+                {countryCodes.map((item, index) => (
+                    <option key={index} value={item.code}>
+                      {item.country} ({item.code})
+                    </option>
+                ))}
               </select>
-            </div>
-
-            {/* Preferred Name */}
-            <div>
-              <label className={`block text-sm  ${textColor} font-bold text-left"`}>Preferred Name</label>
               <input
                   type="text"
-                  className="border border-gray-300 p-4 rounded-md w-full mt-2"
-                  value={preferredName}
-                  onChange={(e) => setPreferredName(e.target.value)}
+                  className="border border-gray-300 p-4 rounded-r-md w-full"
+                  placeholder="Enter your phone number"
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
               />
             </div>
+            {/*<p className="text-xs text-gray-500">The system will send you a verification code</p>*/}
           </div>
 
-          {/* Update Button */}
-          <button
-              onClick={handleUpdate}
-              className="w-full py-4 text-center bg-black text-white rounded-full font-semibold hover:bg-gray-800 mt-8"
-          >
-            Update
-          </button>
+          {/* Email Address */}
+          <div>
+            <label className={`block text-sm  ${textColor} font-bold text-left"`}>E-mail Address</label>
+            <p className={`block text-xs  ${textColor} font-medium text-left`}>You will use this mailbox to receive
+              messages</p>
+            <input
+                type="email"
+                className="border border-gray-300 p-4 rounded-md w-full mt-2"
+                value={emailAddress}
+                onChange={(e) => setEmailAddress(e.target.value)}
+            />
+            {/*<p className="text-xs text-gray-500">The system will send you a verification code</p>*/}
+          </div>
+
+          {/* Communication Preference */}
+          <div>
+            <label className={`block text-sm  ${textColor} font-bold text-left"`}>Communication Preference</label>
+            <select
+                className="border border-gray-300 p-4 rounded-md w-full mt-2"
+                value={communicationPreference}
+                onChange={(e) => setCommunicationPreference(e.target.value)}
+            >
+              <option value="">Select an option</option>
+              <option value="Email">Email</option>
+              <option value="Phone">Phone</option>
+            </select>
+          </div>
+
+          {/* Preferred Name */}
+          <div>
+            <label className={`block text-sm  ${textColor} font-bold text-left"`}>Preferred Name</label>
+            <input
+                type="text"
+                className="border border-gray-300 p-4 rounded-md w-full mt-2"
+                value={preferredName}
+                onChange={(e) => setPreferredName(e.target.value)}
+            />
+          </div>
         </div>
+
+        {/* Update Profile Images */}
+        <div className="mt-4 rounded-lg border border-gray-200 shadow-lg p-6 bg-white">
+          <label className={`block text-black font-semibold text-left ml-0 mb-4`}>Change Profile
+            Image</label>
+          <div className="grid grid-cols-3 gap-4">
+            {[
+              {value: "/profileImages/profileImg_men_1.png", label: "Option 1"},
+              {value: "/profileImages/profileImg_men_2.png", label: "Option 2"},
+              {value: "/profileImages/profileImg_men_3.png", label: "Option 3"},
+              {value: "/profileImages/profileImg_women_1.png", label: "Option 4"},
+              {value: "/profileImages/profileImg_women_2.png", label: "Option 5"},
+              {value: "/profileImages/profileImg_women_3.png", label: "Option 6"}
+            ].map((option) => (
+                <div
+                    key={option.value}
+                    className={`cursor-pointer p-3 rounded-lg border-2 transition duration-200 ease-in-out transform hover:scale-105 ${
+                        profileImgUrl === option.value ? 'border-blue-500' : 'border-gray-200'
+                    }`}
+                    onClick={() => setProfileImgUrl(option.value)}
+                >
+                  <img src={option.value} alt={option.label} className="w-16 h-16 rounded-full mx-auto"/>
+                  <p className="text-center mt-2 text-gray-600 text-sm">{option.label}</p>
+                </div>
+            ))}
+          </div>
+        </div>
+
+
+        {/* Update Button */}
+        <button
+            onClick={handleUpdate}
+            className="w-full py-4 text-center bg-black text-white rounded-full font-semibold hover:bg-gray-800 mt-8"
+        >
+          Update
+        </button>
+      </div>
     </main>
-        </BackgroundLayout>
-);
+      </BackgroundLayout>
+  );
 }
