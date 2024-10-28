@@ -41,7 +41,7 @@ public class UserProfileNotificationServiceImpl implements UserProfileNotificati
         // 2. 通过 walkerId (即 userId) 获取 WalkerRequest 列表
         List<WalkerRequest> walkerRequests = walkerRequestService.getWalkerRequestByWalkerId(userId);
 
-// 3. 根据这些 WalkerRequest 对象在 Notification 表中查找记录，并检查 NotificationCheck 字段和 statusChanged 字段
+        // 3. 根据这些 WalkerRequest 对象在 Notification 表中查找记录，并检查 NotificationCheck 字段和 statusChanged 字段
         boolean isAnyNotificationUnchecked = walkerRequests.stream()
                 .anyMatch(walkerRequest -> {
                     List<Notification> notifications = n_notificationRepository.findByWalkerRequest(walkerRequest);

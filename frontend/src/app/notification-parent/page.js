@@ -237,10 +237,10 @@ export default function Home() {
             })}
             {Notifications_Profile && Notifications_Profile.length > 0 && Notifications_Profile.map((notification, index) => {
                 //---------debug test---------
-                if (!notification || !notification.notificationId) {
-                    console.error("Notification or notificationId is null/undefined", notification);
-                    return null; // Skip rendering if notification or notificationId is null/undefined
-                }
+                // if (!notification || !notification.notificationId) {
+                //     console.error("Notification or notificationId is null/undefined", notification);
+                //     return null; // Skip rendering if notification or notificationId is null/undefined
+                // }
                 //---------debug test---------
                 if (notification.notificationClose === true) {
                     return null;

@@ -58,7 +58,7 @@ export default function ClientOnlyNav_Parent() {
                 </Link>
                 <Link href="/live-tracking-enter-parent" className="text-center">
                     <button className="text-center">
-                        <img src="/Navigation-icons/request.png" alt="Home" className="w-6 h-6 ml-4"/>
+                        <img src="/Navigation-icons/Live-tracking-1.png" alt="Home" className="w-5 h-5 ml-4 mt-1"/>
                         <span className="text-xs">Upcoming</span>
                     </button>
                 </Link>

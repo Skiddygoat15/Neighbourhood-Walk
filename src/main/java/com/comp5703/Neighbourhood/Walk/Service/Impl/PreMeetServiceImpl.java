@@ -1,13 +1,12 @@
 package com.comp5703.Neighbourhood.Walk.Service.Impl;
 
-import com.comp5703.Neighbourhood.Walk.Entities.PreMeet;
-import com.comp5703.Neighbourhood.Walk.Entities.PreMeetDTO;
-import com.comp5703.Neighbourhood.Walk.Entities.Request;
-import com.comp5703.Neighbourhood.Walk.Entities.Users;
+import com.comp5703.Neighbourhood.Walk.Entities.*;
 import com.comp5703.Neighbourhood.Walk.Repository.PreMeetRepository;
 import com.comp5703.Neighbourhood.Walk.Repository.RequestRepository;
+import com.comp5703.Neighbourhood.Walk.Repository.UserProfileNotificationRepository;
 import com.comp5703.Neighbourhood.Walk.Repository.UsersRepository;
 import com.comp5703.Neighbourhood.Walk.Service.PreMeetService;
+import com.comp5703.Neighbourhood.Walk.Service.UserProfileNotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +23,8 @@ public class PreMeetServiceImpl implements PreMeetService {
     private RequestRepository requestRepository;
     @Autowired
     private UsersRepository usersRepository;
+    @Autowired
+    private UserProfileNotificationService userProfileNotificationService;
 
     // 1. 根据 parentId 获取所有与该 parent 关联的 PreMeet
     @Override
@@ -97,6 +98,20 @@ public class PreMeetServiceImpl implements PreMeetService {
         preMeet.setParent(parent); // 设置父用户
         preMeet.setWalker(walker); // 设置 Walker 用户
         preMeet.setRequest(request); // 设置 Request 实体
+
+        // 添加通知信息
+        UserProfileNotification notification = new UserProfileNotification(
+                parent,
+                "You just created a pre-meet request!",
+                "Please check your pre-meet details in pre-meet history module.",
+                new Date());
+        userProfileNotificationService.saveUserProfileNotification(notification);        // 添加通知信息
+        UserProfileNotification notification1 = new UserProfileNotification(
+                walker,
+                "You just received a pre-meet request!",
+                "Please check your pre-meet details in pre-meet history module.",
+                new Date());
+        userProfileNotificationService.saveUserProfileNotification(notification1);
 
         // 保存并返回 PreMeet 实体
         return preMeetRepository.save(preMeet);
