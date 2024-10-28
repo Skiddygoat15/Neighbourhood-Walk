@@ -204,9 +204,13 @@ export default function SearchWalker() {
                                  className="border rounded-lg p-4 flex items-center space-x-4 cursor-pointer bg-white"
                                  onClick={() => handleRequestClick(request.requestId)}>
 
-                                <div className="w-16 h-16 bg-gray-200 rounded-lg"></div>
+                                <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0 bg-gray-200">
+                                    {request.parent.profImgUrl && (
+                                        < img src={request.parent.profImgUrl} alt="User Profile Image" className="w-full h-full object-cover" />
+                                    )}
+                                </div>
 
-                                <div>
+                                <div className="flex-1">
                                     <p><strong>Parent Name:</strong> {request.parent.name}</p>
                                     <p><strong>From:</strong> {request.departure}</p>
                                     <p><strong>To:</strong> {request.destination}</p>
@@ -215,10 +219,6 @@ export default function SearchWalker() {
                                     <p><strong>Duration:</strong> {getDuration(request.startTime, request.arriveTime)}
                                     </p>
                                 </div>
-
-                                {/*<div className="ml-auto">*/}
-                                {/*  <button className="bg-black text-white px-4 py-2 rounded-lg">Apply</button>*/}
-                                {/*</div>*/}
                             </div>
                         ))
                     ) : (

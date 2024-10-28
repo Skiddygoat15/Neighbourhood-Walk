@@ -170,7 +170,7 @@ export default function RequestDetails({params}) {
                     if (walkerRequest.status === 'Cancelled' || walkerRequest.status === 'Rejected') {
                         return <button
                             onClick={applyRequest}
-                            className="bg-black text-white px-4 py-2 rounded-lg w-full">
+                            className="bg-black text-white px-4 py-2 rounded-lg w-full hover:bg-gray-700">
                             Apply
                         </button>
                     } else if (walkerRequest.status === 'Applied') {
@@ -315,7 +315,7 @@ export default function RequestDetails({params}) {
                 <div className="flex items-center mt-2">
                     <button onClick={() => handleBack()} className={`mr-4 ${textColor}`}>
                         <svg
-                            className="w-6 h-6 text-black"
+                            className={`w-6 h-6 ${textColor}`}
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -329,41 +329,13 @@ export default function RequestDetails({params}) {
                             />
                         </svg>
                     </button>
-                    <h1 className={`text-2xl font-semibold mt-3 ${textColor} text-center`}>Request details</h1>
+                    <h1 className={`text-2xl font-semibold ${textColor} text-center`}>Request details</h1>
                 </div>
 
                 {/* display content*/}
                 {error && <p className="text-red-500">{error}</p>}
+
                 {renderContent()}
-                {/*<div className="p-4 bg-white rounded-lg shadow-md">*/}
-
-                {/*  <div className="mb-4">*/}
-                {/*    <p className="text-gray-600">Departure:</p>*/}
-                {/*    <p className="text-black text-lg">Darling Harbour</p>*/}
-                {/*  </div>*/}
-
-                {/*  <div className="mb-4">*/}
-                {/*    <p className="text-gray-600">Destination:</p>*/}
-                {/*    <p className="text-black text-lg">Sydney Opera House</p>*/}
-                {/*  </div>*/}
-
-                {/*  <div className="mb-4">*/}
-                {/*    <p className="text-gray-600">Estimated time:</p>*/}
-                {/*    <p className="text-black text-lg">*/}
-                {/*      8:00 AM Sun 11 Aug - 8:15 AM Sun 11 Aug*/}
-                {/*    </p>*/}
-                {/*  </div>*/}
-
-                {/*  <div className="mb-4 text-gray-500">*/}
-                {/*    Published by 1 hour ago*/}
-                {/*  </div>*/}
-
-
-                {/*  <button className="bg-black text-white px-4 py-2 rounded-lg w-full">*/}
-                {/*    Apply*/}
-                {/*  </button>*/}
-                {/*</div>*/}
-
             </div>
         </main>
     </BackgroundLayout>

@@ -68,25 +68,37 @@ export default function SearchParentWalkerDetails({ params }) {
 
   return (
       <BackgroundLayout>
-        <main className="min-h-screen mb-10 flex justify-center items-center">
-          <div className="mb-1">
-            <div>
-              {/* Back Button */}
-              <button onClick={() => handleBack()} className={`text-2xl ${textColor} p-2 focus:outline-none absolute top-2 left-2`}>
-                &larr;
-              </button>
+        <main className="h-auto mb-2 shadow-md flex justify-center items-center">
 
-              {/* Title */}
-              <h1 className={`text-2xl font-semibold mt-3 ${textColor} text-center`}>Walker details</h1>
+          <div className="shadow-md w-full" style={{paddingTop: '5px'}}>
+
+            {/* show back icon and title*/}
+            <div className="flex items-center mt-2">
+              <button onClick={() => handleBack()} className={`mr-4 ${textColor}`}>
+                <svg
+                    className={`w-6 h-6 ${textColor}`}
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M15 19l-7-7 7-7"
+                  />
+                </svg>
+              </button>
+              <h1 className={`text-2xl font-semibold ${textColor} text-center`}>Walker details</h1>
             </div>
 
             {/* Walker Information */}
-            <div className="bg-white max-w-md p-3 rounded-lg shadow-lg relative">
+            <div className="p-4 rounded-lg bg-white shadow-md">
               {error && <p className="text-red-500">{error}</p>}
               {!walker && !error && <p>Loading...</p>}
               {walker && (
                   <div className="space-y-4">
-                    <h2 className="text-xl font-semibold">Walker information</h2>
                     <p><strong>Name:</strong> {`${walker.name} ${walker.surname}`}</p>
                     <p><strong>Preferred Name:</strong> {walker.preferredName}</p>
                     <p><strong>Gender:</strong> {walker.gender}</p>
@@ -105,7 +117,7 @@ export default function SearchParentWalkerDetails({ params }) {
 
               {/* Contact Button */}
               <button
-                  className="w-full py-2 text-center bg-black text-white rounded-full font-semibold hover:bg-gray-800">
+                  className="bg-black text-white px-4 py-2 rounded-lg w-full hover:bg-gray-700">
                 Contact
               </button>
             </div>

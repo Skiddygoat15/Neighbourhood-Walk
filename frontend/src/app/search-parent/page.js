@@ -202,14 +202,13 @@ export default function SearchParent() {
                          className="border rounded-lg p-4 flex items-center space-x-4 cursor-pointer bg-white"
                          onClick={() => handleWalkerClick(walker.id)}>
 
-                      <div className="w-16 h-16 bg-gray-200 rounded-lg">
-                        {walker.userProfImg && (
-                            < img src={walker.userProfImg} alt="User Profile Image" className="w-auto h-auto" />
+                      <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0 bg-gray-200">
+                        {walker.profImgUrl && (
+                            < img src={walker.profImgUrl} alt="User Profile Image" className="w-full h-full object-cover" />
                         )}
                       </div>
 
-
-                      <div>
+                      <div className="flex-1">
                         <p className="font-semibold">Walker Name: {`${walker.name} ${walker.surname}`}</p>
                         <p>Gender: {walker.gender}</p>
                         <p>Address: {walker.address}</p>
