@@ -5,6 +5,7 @@ import BackgroundLayout from '../ui-background-components/BackgroundLayout';
 import useTextColor from '../ui-background-components/useTextColor';
 
 export default function LiveTrackingEnterParent() {
+    const moment = require('moment');
     const textColor = useTextColor();
     const router = useRouter();
     const [requests, setRequests] = useState([]);
@@ -76,6 +77,18 @@ export default function LiveTrackingEnterParent() {
         fetchRequests();
     }, []);
 
+    // formatting date and time
+    const formatDateTime = (dateString) => {
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months start at 0, so add 1.
+        const day = String(date.getDate()).padStart(2, '0'); // Completing two-digit numbers with zeros
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+
+        return `${hours}:${minutes} - ${day}/${month}/${year}`;  // return format hh-mm dd/mm/yyyy
+    };
+
     // 跳转函数并将walkerId存入sessionStorage
     const handleEnterLiveTracking = (requestId) => {
         router.push(`/live-tracking-sharing-parent/${requestId}`);
@@ -86,7 +99,7 @@ export default function LiveTrackingEnterParent() {
         <div className="relative flex flex-col items-center justify-start min-h-screen p-8">
             <div className="fixed top-0 left-0 w-full p-4 z-10">
                 <div className="flex items-center space-x-4">
-                    <button onClick={() => router.back()} className="text-black text-2xl">
+                    <button onClick={() => router.back()} className={`${textColor} text-2xl`}>
                         <span>&lt;</span>
                     </button>
                     <h1 className={`${textColor} text-2xl font-bold`}>In progress</h1>
@@ -111,7 +124,7 @@ export default function LiveTrackingEnterParent() {
                                     <span className="font-bold">Destination:</span> {request.destination}
                                 </p>
                                 <p className="text-lg">
-                                    <span className="font-bold">Departure Time:</span> {new Date(request.startTime).toLocaleString('en-AU', { timeZone: 'Australia/Sydney' })}
+                                    <span className="font-bold">Departure Time:</span> {formatDateTime(request.startTime)}
                                 </p>
                             </div>
 

@@ -154,7 +154,7 @@ export default function MyRequest() {
                         <p className="text-sm sm:text-base"><strong>Estimated
                           time:</strong> {moment(request.startTime).format("MM/DD/YYYY HH:mm")}</p>
                         <p className="text-sm sm:text-base"><strong>arrive
-                          time:</strong> {moment(request.arriveTime).format("MM/DD/YYYY HH:mm:ss")}</p>
+                          time:</strong> {moment(request.arriveTime).format("MM/DD/YYYY HH:mm")}</p>
                         <p className="text-xs text-gray-500 sm:text-sm">Published
                           by {moment(request.publishDate).format("MM/DD HH:mm")}</p>
                         <div className="flex justify-between mt-2">

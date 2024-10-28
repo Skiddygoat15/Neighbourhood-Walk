@@ -229,7 +229,7 @@ export default function LiveTrackingSharingWalker({params}) {
 
             <div className="mt-10 text-center">
                 <p className={`text-lg ${textColor}`}>
-                    You are sharing your location with{' '}
+                    You are sharing location with{' '}
                     <span className="text-green-600 font-bold">Parents</span>
                 </p>
             </div>

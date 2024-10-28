@@ -12,6 +12,7 @@ const RegistrationSignup = () => {
     phone: '',
     email: '',
     address: '',
+    zipCode: '',
     password: '',
     confirmPassword: '',
     gender: '',
@@ -34,6 +35,16 @@ const RegistrationSignup = () => {
     // 每次提交前清空错误信息
     setError('');
 
+    if (!formData.address || formData.address.trim() === '') {
+      setError("Address is required");
+      return;
+    }
+
+    if (!/^\d{4}$/.test(formData.zipCode)) {
+      setError("Zip Code must be numeric and 4 digits");
+      return;
+    }
+
     if (formData.password !== formData.confirmPassword) {
       setError('Passwords do not match');
       return;
@@ -41,7 +52,7 @@ const RegistrationSignup = () => {
 
     try {
       // convert the address to latitude and longitude
-      const { lat, lng , formatted_address } = await geocodeAddress(formData.address);
+      const { lat, lng , formatted_address } = await geocodeAddress(`${formData.address}, ${formData.zipCode}`);
 
       const requestData = {
         name: formData.name,
@@ -90,9 +101,9 @@ const RegistrationSignup = () => {
           <button onClick={() => router.back()} className="text-2xl p-2 focus:outline-none">
             &larr;
           </button>
-          <h1 className="text-2xl font-bold text-center mb-6">Sign Up</h1>
+          <h1 className="text-2xl font-bold text-center mb-3">Sign Up</h1>
 
-          {error && <p className="text-red-500 text-center">{error}</p>}
+          {error && <p className="text-red-500 text-center mb-1">{error}</p>}
 
           <div className="flex justify-center mb-6">
             <label className="inline-flex items-center mr-6">
@@ -135,7 +146,8 @@ const RegistrationSignup = () => {
             <div className="mb-4">
               <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Phone number</label>
               <div className="flex">
-              <span className="inline-flex items-center px-3 text-gray-500 bg-gray-100 border border-r-0 border-gray-300 rounded-l-md">
+              <span
+                  className="inline-flex items-center px-3 text-gray-500 bg-gray-100 border border-r-0 border-gray-300 rounded-l-md">
                 +61
               </span>
                 <input
@@ -158,7 +170,13 @@ const RegistrationSignup = () => {
 
             <div className="mb-4">
               <label htmlFor="address" className="block text-sm font-medium text-gray-700">Address</label>
-              <input id="address" type="text" value={formData.address} onChange={handleChange}
+              <input id="address" type="text" placeholder="Enter Street, Suburb and State" value={formData.address} onChange={handleChange}
+                     className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"/>
+            </div>
+
+            <div className="mb-4">
+              <label htmlFor="zipCode" className="block text-sm font-medium text-gray-700">Zip Code</label>
+              <input id="zipCode" type="text" placeholder="Enter Zip Code" value={formData.zipCode} onChange={handleChange}
                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"/>
             </div>
 

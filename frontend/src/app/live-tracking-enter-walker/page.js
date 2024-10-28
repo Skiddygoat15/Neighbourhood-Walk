@@ -56,6 +56,18 @@ export default function LiveTrackingEnterWalker() {
         fetchRequests();
     }, []);
 
+    // formatting date and time
+    const formatDateTime = (dateString) => {
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months start at 0, so add 1.
+        const day = String(date.getDate()).padStart(2, '0'); // Completing two-digit numbers with zeros
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+
+        return `${hours}:${minutes} - ${day}/${month}/${year}`;  // return format hh-mm dd/mm/yyyy
+    };
+
     // 跳转函数
     const handleStartWalk = (requestId) => {
         router.push(`/live-tracking-sharing-walker/${requestId}`);
@@ -91,7 +103,7 @@ export default function LiveTrackingEnterWalker() {
                                     <span className="font-bold">Destination:</span> {request.destination}
                                 </p>
                                 <p className="text-lg">
-                                    <span className="font-bold">Departure Time:</span> {new Date(request.startTime).toLocaleString('en-AU', { timeZone: 'Australia/Sydney' })}
+                                    <span className="font-bold">Departure Time:</span> {formatDateTime(request.startTime)}
                                 </p>
                             </div>
 

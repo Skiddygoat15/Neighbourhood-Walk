@@ -69,6 +69,7 @@ public class DummyDataLoader implements CommandLineRunner {
                 user1.setLongitude(151.1866821);
                 user1.setBirthDate(new Date(90, 0, 0));
                 user1.setGender("male");
+                user1.setProfImgUrl("/profileImages/profileImg_men_1.png");
                 user1.setAvgUserRating(5.0);
                 user1.setActivityStatus("Offline");
 
@@ -83,6 +84,7 @@ public class DummyDataLoader implements CommandLineRunner {
                 user2.setLongitude(151.1869439);
                 user2.setBirthDate(new Date(92, 1, 1));
                 user2.setGender("female");
+                user2.setProfImgUrl("/profileImages/profileImg_women_1.png");
                 user2.setAvgUserRating(5.0);
                 user2.setActivityStatus("Active");
 
@@ -97,6 +99,7 @@ public class DummyDataLoader implements CommandLineRunner {
                 user3.setLongitude(151.1755954);
                 user3.setBirthDate(new Date(88, 2, 2));
                 user3.setGender("female");
+                user3.setProfImgUrl("/profileImages/profileImg_women_2.png");
                 user3.setAvgUserRating(5.0);
                 user3.setActivityStatus("Blocked");
 
@@ -111,6 +114,7 @@ public class DummyDataLoader implements CommandLineRunner {
                 user4.setLongitude(151.1689731);
                 user4.setBirthDate(new Date(85, 3, 3));
                 user4.setGender("other");
+                user4.setProfImgUrl("/profileImages/profileImg_men_2.png");
                 user4.setAvgUserRating(5.0);
                 user4.setActivityStatus("Active");
 
@@ -123,6 +127,7 @@ public class DummyDataLoader implements CommandLineRunner {
                 user5.setAddress("101 Elm Street");
                 user5.setBirthDate(new Date(85, 3, 3));
                 user5.setGender("other");
+                user4.setProfImgUrl("/profileImages/profileImg_men_3.png");
                 user5.setAvgUserRating(5.0);
                 user5.setActivityStatus("Active");
 
