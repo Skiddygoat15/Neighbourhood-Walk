@@ -140,4 +140,25 @@ public class CommentServiceImpl implements CommentService {
     public Boolean IsUserHaveComment(long userid) {
         return !commentRepository.findAllByUserId(userid).isEmpty();
     }
+
+
+    @Override
+    public Comment getCommentByReuqest(Integer requestId) {
+        Optional<Request> requestCheck = requestRepository.findById(requestId);
+
+        Request requestChecked = null;
+        if (requestCheck.isPresent()){
+            requestChecked = requestCheck.get();
+        }
+
+        Optional<Comment> commentCheck = commentRepository.findByRequest(requestChecked);
+        Comment commentChecked = null;
+        if (commentCheck.isPresent()){
+            commentChecked = commentCheck.get();
+        }else {
+            return null;
+        }
+
+        return commentChecked;
+    }
 }

@@ -38,7 +38,8 @@ public class CustomOAuth2LoginSuccessHandler implements AuthenticationSuccessHan
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         // 获取当前登录的用户邮箱（通过 OAuth 登录）
-        String email = authentication.getName();  // OAuth 登录的用户邮箱
+        Map<String, Object> attributes = ((OAuth2AuthenticationToken) authentication).getPrincipal().getAttributes();
+        String email = (String) attributes.get("email");  // OAuth 登录的用户邮箱
         Optional<Users> userOptional = usersService.getUsersByEmail(email);
 
         Users user;
@@ -50,7 +51,6 @@ public class CustomOAuth2LoginSuccessHandler implements AuthenticationSuccessHan
             user.setEmail(email);
 
             // 从 authentication 中获取其他用户信息，比如姓名
-            Map<String, Object> attributes = ((OAuth2AuthenticationToken) authentication).getPrincipal().getAttributes();
             user.setName((String) attributes.get("given_name"));
             user.setSurname((String) attributes.get("family_name"));
             user.setProfileCompleted(false);

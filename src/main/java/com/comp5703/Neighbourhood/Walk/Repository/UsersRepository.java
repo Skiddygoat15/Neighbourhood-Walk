@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.parameters.P;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -36,6 +37,13 @@ public interface UsersRepository extends JpaRepository<Users, Long>, JpaSpecific
                        @Param("birthDate") Date birthDate,
                        @Param("gender") String gender,
                        @Param("profileCompleted") Boolean profileCompleted);
+    @Modifying
+    @Transactional
+    @Query("UPDATE Users u SET u.profImgUrl = :url WHERE u.userId = :userId")
+    int updateUserImage(@Param("url") String url, @Param("userId") Long userId);
+
+    @Query("SELECT u.profImgUrl FROM Users u WHERE u.userId = :userId")
+    String findProfImgUrlByUserId(@Param("userId") Long userId);
 
     long countByActivityStatus(String status);
 }

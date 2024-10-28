@@ -21,7 +21,7 @@ public class Request {
 
     @ManyToOne
     @JoinColumn(name = "walkerId", referencedColumnName = "userId")
-    @JsonBackReference(value = "request-walker")
+//    @JsonBackReference(value = "request-walker")
     private Users walker;
 
     @ManyToOne

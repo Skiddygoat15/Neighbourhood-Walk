@@ -173,6 +173,11 @@ public class UsersServiceImpl implements UsersService {
     }
 
     @Override
+    public int updateUserImgUrl(String url, Long userId){
+        return usersRepository.updateUserImage(url, userId);
+    }
+
+    @Override
     public Users updateUserViaAuth(Users user, String roleType, long userId) {
         // Validate role type
         if (!roleType.equals("parent") && !roleType.equals("walker")) {
@@ -228,6 +233,15 @@ public class UsersServiceImpl implements UsersService {
 
         return user;
     }
+
+    @Override
+    public String findUserProfImgById(Long id){
+        if (usersRepository.findUserByUserId(id) != null)
+            return usersRepository.findProfImgUrlByUserId(id);
+        else
+            throw new IllegalArgumentException("User not found with ID: " + id);
+    }
+
     @Override
     public Users updateUserProfile(long userId, Users updatedUser) {
         // 获取用户信息
