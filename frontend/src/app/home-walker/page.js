@@ -156,7 +156,8 @@ export default function HomeWalker() {
                 ⭐ {avgUserRating ? `${avgUserRating}/5` : '-/5'}
               </p>
             </div>
-            <div className="bg-white border rounded-lg p-4 text-center">
+            <div className="bg-white border rounded-lg p-4 text-center"
+                 onClick={() => handleNavigation('/home-history-request-walker')}>
               <p className="font-semibold">History</p>
             </div>
           </div>

@@ -59,7 +59,7 @@ export default function Home({params}) {
         websocket.current = new WebSocket(`ws://${apiUrl}/ws`);
 
         websocket.current.onopen = function () {
-            console.log("WebSocket连接成功");
+            console.log("WebSocket connection successful");
             console.log("userIdFrom is: " + userIdFrom);
             console.log("userIdTo is: " + userIdTo);
             GetChatHistory();

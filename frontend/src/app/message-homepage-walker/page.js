@@ -53,7 +53,7 @@ export default function Home() {
         const parentRole = allRoles.find(role => role.userId.toString() === tempSearch && role.roleType === 'parent');
         if (parentRole) {
             console.info("Found a match for a parent role with userId:", parentRole);
-            setSearchTerm(tempSearch);  // 如果找到匹配，设置searchTerm
+            setSearchTerm(tempSearch);  // If a match is found, set searchTerm
         } else {
             console.info("No match found for the given tempSearch as a parent userId. Input another userId please.");
             setSearchTerm('');
