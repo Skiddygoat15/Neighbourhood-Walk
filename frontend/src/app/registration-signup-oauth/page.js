@@ -84,7 +84,7 @@ const RegistrationSignup = () => {
                 return;
             }
 
-            router.push('/registration-loginform');
+            router.push('/registration-signup-oauth-redirect');
         } catch (err) {
             setError(err.message || 'Registration failed');
             console.error(err);

@@ -127,7 +127,7 @@ export default function ProfileManagementAccountInformation() {
 
   return (
       <BackgroundLayout>
-      <main className="min-h-screen">
+      <main className="min-h-screen mb-10">
         <div className="w-full px-4 sm:px-6 lg:px-8 space-y-8" style={{ height: 'calc(100vh - 55px)', overflowY: 'auto' }}>
           {/* Title */}
           <h1 className={`text-2xl font-bold text-center mt-6 ${textColor}`}>
@@ -137,11 +137,11 @@ export default function ProfileManagementAccountInformation() {
           {/* User Info Section */}
           <div className="flex items-center justify-between">
             <div>
-              <h2 className={`text-lg font-semibold ${textColor}`}>
+              <h2 className={`text-lg ml-4 mb-4 font-semibold ${textColor}`}>
                 {userProfile.name} {userProfile.surname}
               </h2>
             </div>
-            <div className="w-24 h-24 bg-gray-300 rounded-full flex items-center justify-center">
+            <div className="w-24 h-24 bg-gray-300 rounded-full flex items-center justify-center mb-4">
               <span>Image</span>
             </div>
           </div>
@@ -149,44 +149,44 @@ export default function ProfileManagementAccountInformation() {
           {/* Details List */}
           <div className="bg-white p-4 rounded-lg shadow-lg w-full space-y-4"
                style={{margin: '5px', padding: '5px'}}>
-            <div className="flex justify-between items-center border-b py-2 text-sm sm:text-base">
+            <div className="flex justify-between items-center border-b py-2 sm:text-base ml-2">
               <span>Preferred Name</span>
-              <div className="flex items-center">
+              <div className="flex items-center mr-2">
                 <span>{userProfile.preferredName || 'N/A'}</span>
               </div>
             </div>
 
-            <div className="flex justify-between items-center border-b py-2 text-sm sm:text-base">
+            <div className="flex justify-between items-center border-b py-2 sm:text-base ml-2">
               <span>Date of Birth</span>
-              <div className="flex items-center">
+              <div className="flex items-center mr-2">
                 <span>{new Date(userProfile.birthDate).toLocaleDateString()}</span>
               </div>
             </div>
 
-            <div className="flex justify-between items-center border-b py-2 text-sm sm:text-base">
+            <div className="flex justify-between items-center border-b py-2 sm:text-base ml-2">
               <span>Phone Number</span>
-              <div className="flex items-center">
+              <div className="flex items-center mr-2">
                 <span>+61 {userProfile.phone}</span>
               </div>
             </div>
 
-            <div className="flex justify-between items-center border-b py-2 text-sm sm:text-base">
+            <div className="flex justify-between items-center border-b py-2 sm:text-base ml-2">
               <span>E-mail Address</span>
-              <div className="flex items-center">
+              <div className="flex items-center mr-2">
                 <span>{userProfile.email}</span>
               </div>
             </div>
 
-            <div className="flex justify-between items-center border-b py-2 text-sm sm:text-base">
+            <div className="flex justify-between items-center border-b py-2 sm:text-base ml-2">
               <span>Address</span>
-              <div className="flex items-center">
+              <div className="flex items-center w-40">
                 <span>{userProfile.address}</span>
               </div>
             </div>
 
-            <div className="flex justify-between items-center border-b py-2 text-sm sm:text-base">
+            <div className="flex justify-between items-center border-b py-2 sm:text-base ml-2">
               <span>Communication Preference</span>
-              <div className="flex items-center">
+              <div className="flex items-center mr-2">
                 <span>{userProfile.communicatePref || 'N/A'}</span>
               </div>
             </div>

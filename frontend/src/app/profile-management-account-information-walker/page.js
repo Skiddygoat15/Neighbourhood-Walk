@@ -194,12 +194,12 @@ export default function ProfileManagementAccountInformationWalker() {
             {/* User Info Section */}
             <div className="flex items-center justify-between">
               <div>
-                <h2 className={`text-lg font-semibold ${textColor}`}>
+                <h2 className={`text-lg ml-3 mb-3 font-semibold ${textColor}`}>
                   {userProfile.name} {userProfile.surname}
                 </h2>
 
               </div>
-              <div className="w-24 h-24 bg-gray-300 rounded-full flex items-center justify-center">
+              <div className="w-24 h-24 bg-gray-300 rounded-full flex items-center justify-center mb-3">
               <span>Image</span>
               </div>
             </div>
@@ -207,60 +207,60 @@ export default function ProfileManagementAccountInformationWalker() {
             {/* Details List */}
             <div className="bg-white p-4 rounded-lg shadow-lg w-full space-y-4"
                  style={{margin: '2px', padding: '2px'}}>
-              <div className="flex justify-between items-center border-b py-2">
+              <div className="flex justify-between items-center border-b py-2 ml-2 mt-3">
                 <span>Preferred Name</span>
-                <div className="flex items-center">
+                <div className="flex items-center mr-2">
                   <span>{userProfile.preferredName || 'N/A'}</span>
                 </div>
               </div>
 
               {/* Date of Birth - No Edit */}
-              <div className="flex justify-between items-center border-b py-2">
+              <div className="flex justify-between items-center border-b py-2 ml-2">
                 <span>Date of Birth</span>
-                <div className="flex items-center">
+                <div className="flex items-center mr-2">
                   <span>{new Date(userProfile.birthDate).toLocaleDateString()}</span>
                 </div>
               </div>
 
-              <div className="flex justify-between items-center border-b py-2">
+              <div className="flex justify-between items-center border-b py-2 ml-2">
                 <span>Phone Number</span>
-                <div className="flex items-center">
+                <div className="flex items-center mr-2">
                   <span>+61 {userProfile.phone}</span>
                 </div>
               </div>
 
-              <div className="flex justify-between items-center border-b py-2">
+              <div className="flex justify-between items-center border-b py-2 ml-2">
                 <span>E-mail Address</span>
-                <div className="flex items-center">
+                <div className="flex items-center mr-2">
                   <span>{userProfile.email}</span>
                 </div>
               </div>
 
               {/* Address - No Edit */}
-              <div className="flex justify-between items-center border-b py-2">
+              <div className="flex justify-between items-center border-b py-2 ml-2">
                 <span>Address</span>
-                <div className="flex items-center">
+                <div className="flex items-center w-50 mr-2">
                   <span className="text-right w-full">{userProfile.address}</span>
                 </div>
               </div>
 
-              <div className="flex justify-between items-center border-b py-2">
+              <div className="flex justify-between items-center border-b py-2 ml-2">
                 <span>Communication Preference</span>
-                <div className="flex items-center">
+                <div className="flex items-center mr-2">
                   <span>{userProfile.communicatePref || 'N/A'}</span>
                 </div>
               </div>
 
-              <div className="flex justify-between items-center border-b py-2">
+              <div className="flex justify-between items-center border-b py-2 ml-2">
                 <span>Available Dates</span>
-                <div className="flex items-center">
+                <div className="flex items-center mr-2">
                   <span className="text-sm opacity-70">{startDate} - {endDate}</span>
                 </div>
               </div>
 
-              <div className="flex justify-between items-center border-b py-2">
+              <div className="flex justify-between items-center border-b py-2 ml-2">
                 <span>Skills (Multi)</span>
-                <div className="flex items-center">
+                <div className="flex items-center mr-2">
                   <span>{skill}</span>
                 </div>
               </div>
