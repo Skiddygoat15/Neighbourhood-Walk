@@ -58,7 +58,7 @@ export default function ProfileManagementAccountInformation() {
   useEffect(() => {
     // 从sessionStorage获取userId和token
     const userId = sessionStorage.getItem('userId');
-    const token = sessionStorage.getItem('token'); // 假设token保存在sessionStorage中
+    const token = sessionStorage.getItem('token');
 
     // 如果userId和token存在，则调用API获取用户信息
     if (userId && token) {
@@ -90,20 +90,23 @@ export default function ProfileManagementAccountInformation() {
   const handleRoleRegistration = async () => {
     const userId = sessionStorage.getItem('userId');
     const roleType = currentRole === "parent" ? "walker" : "parent"; // 动态决定要添加的角色
-
+    const token = sessionStorage.getItem('token');
     try {
-      const response = await fetch(`http://${apiUrl}/Users/roles?userId=${userId}`, {
+      const response = await fetch(`http://${apiUrl}/roles?userId=${userId}`, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'text/plain' // 设置为 text/plain 以发送纯文本
         },
-        body: JSON.stringify(roleType), // 将 roleType 作为请求体发送
+        body: roleType, // 将 roleType 作为请求体发送
       });
 
       if (response.ok) {
         alert("Successfully registered new role!"); // 成功弹窗
         // 更新 roles
-        setRoles([...roles, roleType]);
+        const updatedRoles = [...roles, roleType];
+        setRoles(updatedRoles);
+        sessionStorage.setItem('roles', JSON.stringify(updatedRoles));
       } else {
         console.error('Failed to register new role:', response.statusText);
       }

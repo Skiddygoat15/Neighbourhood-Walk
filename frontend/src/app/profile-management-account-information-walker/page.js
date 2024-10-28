@@ -16,12 +16,18 @@ export default function ProfileManagementAccountInformationWalker() {
 
   const [userProfile, setUserProfile] = useState(null); // 用来存储API返回的数据
   const [userProfImg,setUserProfImg] = useState(null); // 用来存储API返回的数据
+  const [roles, setRoles] = useState([]);
+  const [currentRole, setCurrentRole] = useState("");
   const textColor = useTextColor();
 
   useEffect(() => {
     // 从sessionStorage获取userId和token
     const userId = sessionStorage.getItem('userId');
     const token = sessionStorage.getItem('token'); // 假设token保存在sessionStorage中
+    const storedRoles = JSON.parse(sessionStorage.getItem('roles')) || [];
+    const storedCurrentRole = sessionStorage.getItem('currentRole');
+    setRoles(storedRoles);
+    setCurrentRole(storedCurrentRole);
 
 
     // 如果userId和token存在，则调用API获取用户信息
@@ -84,6 +90,34 @@ export default function ProfileManagementAccountInformationWalker() {
       console.error('User ID or token not found in sessionStorage');
     }
   }, []);
+
+  const handleRoleRegistration = async () => {
+    const userId = sessionStorage.getItem('userId');
+    const roleType = currentRole === "parent" ? "walker" : "parent"; // 动态决定要添加的角色
+    const token = sessionStorage.getItem('token');
+    try {
+      const response = await fetch(`http://${apiUrl}/roles?userId=${userId}`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'text/plain' // 设置为 text/plain 以发送纯文本
+        },
+        body: roleType, // 将 roleType 作为请求体发送
+      });
+
+      if (response.ok) {
+        alert("Successfully registered new role!"); // 成功弹窗
+        // 更新 roles
+        const updatedRoles = [...roles, roleType];
+        setRoles(updatedRoles);
+        sessionStorage.setItem('roles', JSON.stringify(updatedRoles));
+      } else {
+        console.error('Failed to register new role:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error registering new role:', error);
+    }
+  };
 
   if (!userProfile) {
     return <main className="min-h-screen bg-white">
@@ -235,7 +269,7 @@ export default function ProfileManagementAccountInformationWalker() {
               </div>
               <div className="w-24 h-24 bg-gray-300 rounded-full flex items-center justify-center mb-3">
                 {userProfImg && (
-                    <img src={userProfImg} alt="User Profile Image" className="w-auto h-auto" />
+                    <img src={userProfImg} alt="User Profile Image" className="w-auto h-auto"/>
                 )}
               </div>
             </div>
@@ -302,13 +336,24 @@ export default function ProfileManagementAccountInformationWalker() {
               </div>
             </div>
 
-            {/* Change Button */}
-            <button
-                onClick={() => handleNavigation('/profile-attributes-modification-walker')}
-                className="w-full py-3 text-center bg-black text-white rounded-full font-semibold hover:bg-gray-800 mt-8"
-            >
-              Change Profile
-            </button>
+            <div className="space-y-2"> {/* 使用 space-y 控制间距 */}
+              <button
+                  onClick={() => handleNavigation('/profile-attributes-modification-walker')}
+                  className="w-full py-3 text-center bg-black text-white rounded-full font-semibold hover:bg-gray-800"
+              >
+                Change Profile
+              </button>
+
+              {roles.length < 2 && (
+                  <button
+                      onClick={handleRoleRegistration}
+                      className="w-full py-3 text-center bg-black text-white rounded-full font-semibold hover:bg-gray-800"
+                  >
+                    {currentRole === "parent" ? "Register as Walker" : "Register as Parent"}
+                  </button>
+              )}
+            </div>
+
           </div>
 
         </main>
