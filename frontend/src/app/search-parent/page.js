@@ -22,11 +22,9 @@ export default function SearchParent() {
   const [error, setError] = useState(null);    // store error message
   const textColor = useTextColor();
 
-  // 第一个参数：() => {} 是一个回调函数，称为副作用函数。当 React 渲染组件时，React 会执行这个函数。
-  // 第二个参数：[依赖项] 是一个依赖数组，当这个数组中的变量发生变化时，useEffect 会重新执行。
   useEffect(() => {
     if (searchTerm === '') {
-      handleSearch();  // 如果搜索框清空，执行搜索所有walkers
+      handleSearch();  // If the search box is empty, perform a search for all walkers
     }
   }, [searchTerm, gender, distance, rating]);
 
@@ -38,22 +36,21 @@ export default function SearchParent() {
   }; // empty searchTerm and all filters
 
   const handleSearch = async () => {
-    setWalkers([]); // 点击搜索按钮时先清空之前的结果
-    setError(null); // 清空之前的错误消息
+    setWalkers([]); // Clear previous results when clicking the search button.
+    setError(null); // Clear the previous error message
 
     const searchWalkersAPI = `http://${apiUrl}/Users/searchWalkers?parentId=${parentId}&searchTerm=${searchTerm}&gender=${gender}&distance=${distance}&rating=${rating}`;
 
     try {
       const response = await fetch(searchWalkersAPI, {
-        method: 'get',  // 使用 GET 方法
-        credentials: 'include',  // 包含用户凭证
+        method: 'get',
+        credentials: 'include',
         headers: {
           'Authorization': 'Bearer ' + token
         }
       });
       console.log(response);
 
-      // 检查响应的Content-Type是否为application/json
       const contentType = response.headers.get('Content-Type');
       if (!response.ok) {
         if (response.status === 403) {
@@ -61,10 +58,7 @@ export default function SearchParent() {
           router.push('/login');
           return;
         }
-        // else if (response.status === 404) {
-        //   setError('');
-        //   return;
-        // } else
+
         if (contentType && contentType.includes('application/json')) {
           const errorData = await response.json();
           throw new Error(errorData.message || 'Error fetching walkers');
@@ -75,31 +69,29 @@ export default function SearchParent() {
 
       if (contentType && contentType.includes('application/json')) {
         const data = await response.json();
-        setWalkers(data);  // 保存返回的 walkers 列表
-        setError(null);    // 清空错误信息
+        setWalkers(data);
+        setError(null);
       } else {
         throw new Error('Invalid response type, expected JSON');
       }
     } catch (error) {
       console.error("Search Walkers failed:", error);
       setError(error.message || 'An unknown error occurred.');
-      setWalkers([]); // 如果出错，清空walker列表
+      setWalkers([]);
     }
 
   };
 
-  // 监听键盘按下事件，执行搜索
+  // Listens for keyboard presses and performs searches
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
-      handleSearch(); // 当按下 Enter 键时执行搜索
+      handleSearch();
     }
   };
 
   const handleWalkerClick = (id) => {
-    router.push(`/search-parent-walker-details/${id}`);  // 跳转到 walker 详情页，并携带 walker 的 id
+    router.push(`/search-parent-walker-details/${id}`);
   };
-
-
 
   return (
       <BackgroundLayout>
@@ -111,7 +103,7 @@ export default function SearchParent() {
             <div className="flex items-center space-x-2 mb-2">
 
               <div className="relative w-full">
-                {/* 输入框，输入搜索 walker 的关键字 */}
+                {/* Input box, enter keywords for walker search */}
                 <input
                     type="text"
                     placeholder="Search walkers.."
@@ -136,7 +128,7 @@ export default function SearchParent() {
                   />
                 </svg>
 
-                {/* 清空按钮 */}
+                {/* Clear button */}
                 <button
                     onClick={handleClear}
                     className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
@@ -145,7 +137,7 @@ export default function SearchParent() {
                 </button>
               </div>
 
-              {/* 按钮触发搜索 */}
+              {/* Button triggered search */}
               <button
                   onClick={handleSearch}
                   className="bg-blue-500 text-white p-2 rounded-lg md:p-3 lg:p-4"
@@ -173,7 +165,6 @@ export default function SearchParent() {
               </select>
             </div>
 
-
             <div className="flex flex-col space-y-2 mb-4 md:flex-row md:flex-wrap md:space-y-0 md:space-x-4 w-full">
               <select
                   value={distance}
@@ -185,7 +176,6 @@ export default function SearchParent() {
                 <option value="2km">Within 2km</option>
               </select>
             </div>
-
 
             <div className="flex flex-col space-y-2 mb-4 md:flex-row md:flex-wrap md:space-y-0 md:space-x-4 w-full">
               <select
@@ -204,7 +194,7 @@ export default function SearchParent() {
 
           </div>
 
-          {/* 显示返回的 walker 列表 */}
+          {/* Display a list of returned walkers */}
           <div className="space-y-4 mt-4">
             {walkers.length > 0 ? (
                 walkers.map((walker) => (
@@ -212,7 +202,12 @@ export default function SearchParent() {
                          className="border rounded-lg p-4 flex items-center space-x-4 cursor-pointer bg-white"
                          onClick={() => handleWalkerClick(walker.id)}>
 
-                      <div className="w-16 h-16 bg-gray-200 rounded-lg"></div>
+                      <div className="w-16 h-16 bg-gray-200 rounded-lg">
+                        {walker.userProfImg && (
+                            < img src={walker.userProfImg} alt="User Profile Image" className="w-auto h-auto" />
+                        )}
+                      </div>
+
 
                       <div>
                         <p className="font-semibold">Walker Name: {`${walker.name} ${walker.surname}`}</p>

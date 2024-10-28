@@ -23,7 +23,9 @@ export default function UpdateRequest() {
     startTime: new Date(),
     arriveTime: new Date(),
     departure: '',
+    departureZip: '',
     destination: '',
+    destinationZip: '',
     details: ''
   });
 
@@ -34,7 +36,7 @@ export default function UpdateRequest() {
       setRequest(JSON.parse(storedRequest));
       console.log("request need to update", request);
     }
-  }, []); // 空数组作为依赖，确保只在组件挂载时执行一次
+  }, []); // Empty arrays are used as dependencies to ensure that they are only executed once when the component is mounted
 
   useEffect(() => {
     if (request) {
@@ -43,7 +45,9 @@ export default function UpdateRequest() {
           (prevSendBody) => ({
             ...prevSendBody,
             departure: request.departure,
+            departureZip: extractPostalCode(request.departure),
             destination: request.destination,
+            destinationZip: extractPostalCode(request.destination),
             details: request.details
           }))
     }
@@ -54,16 +58,46 @@ export default function UpdateRequest() {
 
     try{
       if (!sendBody.departure || sendBody.departure.trim() === '' ||
-          !sendBody.destination || sendBody.destination.trim() === '') {
-        throw new Error("departure and destination is required.");
+          !sendBody.departureZip || sendBody.departureZip.trim() === '') {
+        throw new Error("Departure and Zip code is required.");
       }
 
-      // 获取 departure 的经纬度
-      const departureCoords = await geocodeAddress(sendBody.departure);
-      // 获取 destination 的经纬度
-      const destinationCoords = await geocodeAddress(sendBody.destination);
+      if (!sendBody.destination || sendBody.destination.trim() === '' ||
+          !sendBody.destinationZip || sendBody.destinationZip.trim() === '') {
+        throw new Error("Destination and Zip code is required.");
+      }
 
-      // 创建新的 sendBody 数据
+      if (!date || !departureTime || departureTime.hour === '' || departureTime.minute === '') {
+        throw new Error("Departure Date and Time is required.");
+      }
+
+      if (!arriveTime || arriveTime.hour === '' || arriveTime.minute === '') {
+        throw new Error("Arrive Time is required.");
+      }
+
+      const currentDateTime = new Date();
+      const selectedDateTime = new Date(date);
+      selectedDateTime.setHours(departureTime.hour);
+      selectedDateTime.setMinutes(departureTime.minute);
+
+      if (selectedDateTime < currentDateTime) {
+        throw new Error("Departure Date / Time cannot be in the past.");
+      }
+
+      if (departureTime.hour < 0 || departureTime.hour > 12) {
+        throw new Error("Hour must be between 0 and 12.");
+      }
+
+      if (departureTime.minute < 0 || departureTime.minute > 59) {
+        throw new Error("Minute must be between 0 and 59.");
+      }
+
+      // Get the latitude and longitude of the departure
+      const departureCoords = await geocodeAddress(`${sendBody.departure}, ${sendBody.departureZip}`);
+      // Get the latitude and longitude of the destination
+      const destinationCoords = await geocodeAddress(`${sendBody.destination}, ${sendBody.destinationZip}`);
+
+      // Create new sendBody data
       const updatedSendBody = {
         ...sendBody,  // keep other attributes same
         startTime: combineDateAndTime(date, departureTime),
@@ -75,17 +109,6 @@ export default function UpdateRequest() {
         destinationLatitude: destinationCoords.lat,
         destinationLongitude: destinationCoords.lng
       };
-      // setSendBody((prevSendBody) => ({
-      //   ...prevSendBody,  // keep other attributes same
-      //   startTime: combineDateAndTime(date, departureTime),
-      //   arriveTime: combineDateAndTime(date, arriveTime),
-      //   departure: departureCoords.formatted_address,
-      //   departureLatitude: departureCoords.lat,
-      //   departureLongitude: departureCoords.lng,
-      //   destination: destinationCoords.formatted_address,
-      //   destinationLatitude: destinationCoords.lat,
-      //   destinationLongitude: destinationCoords.lng
-      // }));
 
       fetch(updateRequestAPI, {
         method: 'put', // Method is GET to fetch data
@@ -147,9 +170,20 @@ export default function UpdateRequest() {
     const minuteStr = String(minute).padStart(2, '0');
     return `${hourStr}:${minuteStr}:00`; // 秒数为00
   }
+
   function combineDateAndTime(date, time) {
     const formattedTime = convertTo24HourTime(time);
     return `${date}T${formattedTime}`;
+  }
+
+  // Functions for extracting postal codes from address strings
+  function extractPostalCode(address) {
+    // Regular expression to match the four digits before the second comma
+    console.log("address: " + address);
+    const postalCodeMatch = address.match(/(\d{4})(?=, [^,]*$)/);
+    console.log("postal: " + postalCodeMatch);
+    // Returns the postcode if the match is successful, otherwise returns the empty string
+    return postalCodeMatch ? postalCodeMatch[1] : '';
   }
 
   return (
@@ -183,12 +217,17 @@ export default function UpdateRequest() {
                         }))}
                     className="w-full border-b-2 border-black focus:outline-none"
                 />
-                <button>
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                       className="w-6 h-6 ml-2">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4"/>
-                  </svg>
-                </button>
+              </div>
+
+              <div className="flex justify-between items-center">
+                <label className="text-lg font-medium whitespace-nowrap mr-2">Zip Code:</label>
+                <input
+                    type="text"
+                    placeholder=" Postal Code"
+                    value={sendBody.departureZip}
+                    onChange={(e) => setSendBody((prev) => ({...prev, departureZip: e.target.value}))}
+                    className="w-full border-b-2 border-black focus:outline-none mt-2"
+                />
               </div>
             </div>
 
@@ -206,12 +245,17 @@ export default function UpdateRequest() {
                         }))}
                     className="w-full border-b-2 border-black focus:outline-none"
                 />
-                <button>
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
-                       className="w-6 h-6 ml-2">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4"/>
-                  </svg>
-                </button>
+              </div>
+
+              <div className="flex justify-between items-center">
+                <label className="text-lg font-medium whitespace-nowrap mr-2">Zip Code:</label>
+                <input
+                    type="text"
+                    placeholder=" Postal Code"
+                    value={sendBody.destinationZip}
+                    onChange={(e) => setSendBody((prev) => ({...prev, destinationZip: e.target.value}))}
+                    className="w-full border-b-2 border-black focus:outline-none mt-2"
+                />
               </div>
             </div>
 

@@ -34,15 +34,15 @@ export default function SearchWalker() {
     }; // empty searchTerm and all filters
 
     const handleSearch = async () => {
-        setRequests([]); // 点击搜索按钮时先清空之前的结果
-        setError(null); // 清空之前的错误消息
+        setRequests([]); // Clear previous results when clicking the search button.
+        setError(null); // Clear the previous error message
 
         const searchRequestsAPI = `http://${apiUrl}/requests/searchRequests?walkerId=${walkerId}&searchTerm=${searchTerm}&distance=${distance}`;
 
         try {
             const response = await fetch(searchRequestsAPI, {
-                method: 'get',  // 使用 GET 方法
-                credentials: 'include',  // 包含用户凭证
+                method: 'get',
+                credentials: 'include',
                 headers: {
                     'Authorization': 'Bearer ' + token
                 }
