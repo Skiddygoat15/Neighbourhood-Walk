@@ -40,6 +40,10 @@ export default function HistoryRequestParent() {
     }, [requests,walkerComments,parentComments]);
 
     function getRequestsByParentId(){
+        console.info("check");
+        const userId = parseInt(sessionStorage.getItem("userId"));
+        console.info(userId);
+
         fetch(`${apiUrl}/requests/getRequestsByParentId/${userId}`, {
             method: 'GET',
             headers: {
@@ -54,6 +58,8 @@ export default function HistoryRequestParent() {
                 return response.json();
             })
             .then(data =>{
+                console.info("check");
+                console.info("requests gotten are:",data);
                 const completedRequests = data.filter(data => data.status === 'Completed');
                 setRequests(completedRequests);
             })

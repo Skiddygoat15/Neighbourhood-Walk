@@ -42,6 +42,7 @@ export default function HistoryRequestParent() {
     }, [requests,walkerComments,parentComments]);
 
     function getRequestsByParentId(){
+        const userId = parseInt(sessionStorage.getItem("userId"));
         fetch(`${apiUrl}/requests/getRequestsByWalkerId/${userId}`, {
             method: 'GET',
             headers: {
