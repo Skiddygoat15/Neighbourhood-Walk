@@ -108,7 +108,7 @@ export default function ProfileManagementSelectTimeWalker() {
 
     try {
       // 调用API将数据传入数据库
-      const response = await fetch(`http://${apiUrl}/Users/${userId}/profile`, {
+      const response = await fetch(`${apiUrl}/Users/${userId}/profile`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`, // 传入token进行身份验证

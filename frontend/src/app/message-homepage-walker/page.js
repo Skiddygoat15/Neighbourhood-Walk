@@ -134,7 +134,7 @@ export default function Home() {
 
     function getChatBar() {
         // 先检查是否已经存在该聊天框
-        fetch(`http://${apiUrl}/ChatBar/getChatBars/${userId}`, {
+        fetch(`${apiUrl}/ChatBar/getChatBars/${userId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -160,7 +160,7 @@ export default function Home() {
     }
 
     function closeChatBar(userIdTo) {
-        fetch(`http://${apiUrl}/ChatBar/updateChatBar?userIdFrom=${userId}&userIdTo=${userIdTo}&state=close`, {
+        fetch(`${apiUrl}/ChatBar/updateChatBar?userIdFrom=${userId}&userIdTo=${userIdTo}&state=close`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -179,7 +179,7 @@ export default function Home() {
     }
 
     function openChatBar(userIdTo) {
-        fetch(`http://${apiUrl}/ChatBar/updateChatBar?userIdFrom=${userId}&userIdTo=${userIdTo}&state=open`, {
+        fetch(`${apiUrl}/ChatBar/updateChatBar?userIdFrom=${userId}&userIdTo=${userIdTo}&state=open`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

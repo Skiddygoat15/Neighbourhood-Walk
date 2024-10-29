@@ -24,7 +24,7 @@ export default function CommentPage() {
                     return;
                 }
 
-                const response = await fetch(`http://${apiUrl}/requests/getParentByRequestId/${requestId}`, {
+                const response = await fetch(`${apiUrl}/requests/getParentByRequestId/${requestId}`, {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${token}`,

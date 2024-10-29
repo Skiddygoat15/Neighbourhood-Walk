@@ -77,7 +77,7 @@ export default function MyRequest() {
 
   function deleteRequest(requestId) {
     console.log('requestId', requestId);
-    fetch(`http://${apiUrl}/requests/${requestId}`, {
+    fetch(`${apiUrl}/requests/${requestId}`, {
       method: 'DELETE', // DELETE 方法用于删除请求
       credentials: 'include',
       headers: {
