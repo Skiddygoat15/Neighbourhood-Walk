@@ -49,7 +49,7 @@ export default function WalkRequestManagementParent() {
 
     const handlePublish = async () => {
         console.log('UserId: ', parentId);
-        const addRequestAPI = `http://${apiUrl}/requests`;
+        const addRequestAPI = `${apiUrl}/requests`;
         const updatedStartTime = combineDateAndTime(date, departureTime);
         const updatedArriveTime = combineDateAndTime(date, arriveTime);
 
@@ -140,24 +140,27 @@ export default function WalkRequestManagementParent() {
     };
     function convertTo24HourTime(time) {
         let { hour, minute, period } = time;
-        // 转换hour为数字，确保可以进行加减运算
+        // Converting hour to a number ensures that addition and subtraction can be performed.
         hour = parseInt(hour, 10);
-        // 如果时间是PM且小时数小于12，则需要将小时数加12
+        minute = parseInt(minute, 10);
+        // If the time is PM and the number of hours is less than 12, you need to add 12 to the number of hours
         if (period === 'PM' && hour < 12) {
             hour += 12;
         }
-        // 如果是AM且小时为12（午夜），则将小时设为00
+        // If it is AM and the hour is 12 (midnight), set the hour to 00
         if (period === 'AM' && hour === 12) {
             hour = 0;
         }
-        // 确保小时和分钟是两位数格式
-        const hourStr = String(hour).padStart(2, '0');
-        const minuteStr = String(minute).padStart(2, '0');
-        return `${hourStr}:${minuteStr}:00`; // 秒数为00
+        return { hour, minute };
     }
+
     function combineDateAndTime(date, time) {
-        const formattedTime = convertTo24HourTime(time);
-        return `${date}T${formattedTime}`;
+        const { hour, minute } = convertTo24HourTime(time);
+        // Use the Date object in local time
+        const combinedDate = new Date(date);
+        combinedDate.setHours(hour, minute, 0, 0);
+        // Returns the local time string without the "Z" suffix.
+        return combinedDate.toISOString().slice(0, 19);
     }
 
     return (

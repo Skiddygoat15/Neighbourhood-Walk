@@ -33,7 +33,7 @@ export default function ProfileManagementAccountInformation() {
     if (userId && token) {
       const fetchUserProfile = async () => {
         try {
-          const response = await fetch(`http://${apiUrl}/Users/getUserProfileByUserId/${userId}`, {
+          const response = await fetch(`${apiUrl}/Users/getUserProfileByUserId/${userId}`, {
             method: 'GET',
             headers: {
               'Authorization': `Bearer ${token}`, // 在请求头中添加Bearer token
@@ -64,7 +64,7 @@ export default function ProfileManagementAccountInformation() {
     if (userId && token) {
       const fetchUserProfImgUrl = async () => {
         try {
-          const response = await fetch(`http://${apiUrl}/Users/getUserProfImgUrl/${userId}`, {
+          const response = await fetch(`${apiUrl}/Users/getUserProfImgUrl/${userId}`, {
             method: 'GET',
             headers: {
               'Authorization': `Bearer ${token}`, // 在请求头中添加Bearer token
@@ -92,7 +92,7 @@ export default function ProfileManagementAccountInformation() {
     const roleType = currentRole === "parent" ? "walker" : "parent"; // 动态决定要添加的角色
     const token = sessionStorage.getItem('token');
     try {
-      const response = await fetch(`http://${apiUrl}/roles?userId=${userId}`, {
+      const response = await fetch(`${apiUrl}/roles?userId=${userId}`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

@@ -23,7 +23,7 @@ export default function CommentPage() {
                     console.error('No token found in sessionStorage');
                     return;
                 }
-
+                
                 const response = await fetch(`http://${apiUrl}/requests/getWalkerByRequestId/${requestId}`, {
                     method: 'GET',
                     headers: {
@@ -63,7 +63,7 @@ export default function CommentPage() {
         }
 
         try {
-            const response = await fetch(`http://${apiUrl}/Comment`, {
+            const response = await fetch(`${apiUrl}/Comment`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`, // 添加token到请求头

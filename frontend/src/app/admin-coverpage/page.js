@@ -38,7 +38,7 @@ export default function AdminPage() {
     const fetchUserStats = async () => {
         setLoading(true);
         try {
-            const response = await fetch(`http://${apiUrl}/Users/stats`, {
+            const response = await fetch(`${apiUrl}/Users/stats`, {
                 method: 'get',
                 headers: {
                     'Authorization': 'Bearer ' + sessionStorage.getItem('token')
@@ -56,7 +56,7 @@ export default function AdminPage() {
     const fetchRequestStats = async () => {
         setLoading(true);
         try {
-            const response = await fetch(`http://${apiUrl}/requests/stats`, {
+            const response = await fetch(`${apiUrl}/requests/stats`, {
                 method: 'get',
                 headers: {
                     'Authorization': 'Bearer ' + sessionStorage.getItem('token')

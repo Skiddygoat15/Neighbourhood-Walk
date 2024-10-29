@@ -68,7 +68,7 @@ export default function MyRequestApplication({ params }) {
     //   return;
     // }
 
-    const getRequestDetailsAPI = `http://${apiUrl}/requests/getRequestByRequestId/${id}`;
+    const getRequestDetailsAPI = `${apiUrl}/requests/getRequestByRequestId/${id}`;
     fetch(getRequestDetailsAPI, {
       method: 'get',
       credentials: 'include',
@@ -116,7 +116,7 @@ export default function MyRequestApplication({ params }) {
       return;
     }
 
-    const getWalkersAPI = `http://${apiUrl}/WalkerRequest/getWalkersByRequestId/${id}`;
+    const getWalkersAPI = `${apiUrl}/WalkerRequest/getWalkersByRequestId/${id}`;
     fetch(getWalkersAPI, {
       method: 'get',
       credentials: 'include',
@@ -161,7 +161,7 @@ export default function MyRequestApplication({ params }) {
 
   // 处理接受 walker 的请求
   const acceptWalker = (walkerId) => {
-    const acceptAPI = `http://${apiUrl}/requests/${id}/accept?walkerId=${walkerId}`;
+    const acceptAPI = `${apiUrl}/requests/${id}/accept?walkerId=${walkerId}`;
     console.log("acceptAPI: " + acceptAPI)
     fetch(acceptAPI, {
       method: 'post',
@@ -196,7 +196,7 @@ export default function MyRequestApplication({ params }) {
 
   // 处理拒绝 walker 的请求
   const rejectWalker = (walkerId) => {
-    const rejectAPI = `http://${apiUrl}/requests/${id}/reject?walkerId=${walkerId}`;
+    const rejectAPI = `${apiUrl}/requests/${id}/reject?walkerId=${walkerId}`;
     console.log("rejectAPI: " + rejectAPI)
     fetch(rejectAPI, {
       method: 'post',

@@ -136,7 +136,6 @@ public class UsersServiceImpl implements UsersService {
             throw new IllegalArgumentException("Invalid gender");
         }
 
-
         // 验证手机号格式
         if (!user.getPhone().matches("^\\d{10}$")) {
             throw new IllegalArgumentException("Phone number must be numeric and 10 digits");

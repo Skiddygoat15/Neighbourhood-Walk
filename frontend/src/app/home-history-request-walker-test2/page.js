@@ -41,7 +41,7 @@ export default function HistoryRequestWalker() {
     }, [requests,comments]);
 
     function getRequestsByWalkerId(){
-        fetch(`http://${apiUrl}/requests/getRequestsByWalkerId/${userId}`, {
+        fetch(`${apiUrl}/requests/getRequestsByWalkerId/${userId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -65,7 +65,7 @@ export default function HistoryRequestWalker() {
         if (comments.some(comment => comment.request?.requestId === requestId)) {
             return;
         }
-        fetch(`http://${apiUrl}/Comment/getCommentsByReuqestId/${requestId}`, {
+        fetch(`${apiUrl}/Comment/getCommentsByReuqestId/${requestId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
