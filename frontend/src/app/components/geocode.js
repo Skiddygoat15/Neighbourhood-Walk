@@ -1,9 +1,11 @@
 "use client";
 
 export const geocodeAddress = async (address) => {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    const geoCodeAPI = `${apiUrl}/geocode/?address=${encodeURIComponent(address)}`
     try {
         const response = await fetch(
-            `http://localhost:8080/geocode/?address=${encodeURIComponent(address)}`,
+            geoCodeAPI,
             {
                 method: 'GET',
                 headers: {
