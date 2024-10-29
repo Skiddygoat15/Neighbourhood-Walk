@@ -23,7 +23,7 @@ export default function CommentPage() {
                     console.error('No token found in sessionStorage');
                     return;
                 }
-                
+
                 const response = await fetch(`http://${apiUrl}/requests/getWalkerByRequestId/${requestId}`, {
                     method: 'GET',
                     headers: {
