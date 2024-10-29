@@ -6,31 +6,22 @@ import {useEffect, useState} from "react";
 export default function HistoryRequestParent() {
     const router = useRouter();
     const [requests,setRequests] = useState([]);
-    const [comments,setComments] = useState([]);
+    const [walkerComments,setWalkerComments] = useState([]);
+    const [parentComments,setParentComments] = useState([]);
     const userId = sessionStorage.getItem("userId");
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
     const [commentUpdated, setCommentUpdated] = useState(false);
 
     const handleRateTrip = (requestId) => {
         router.push(`/live-tracking-comment-parent/${requestId}`);
         setCommentUpdated(prev => !prev); // 切换commentUpdated状态，触发useEffect
     };
-    // const handleRateTrip = (requestId) => {
-    //     router.push(`/live-tracking-comment-walker/${requestId}`);
-    // };
     useEffect(() => {
         requests.forEach(request => {
             getCommentByReuqestId(request.requestId, userId);
         });
-    }, [commentUpdated]);  // 监听 commentUpdated 的变化
-    // const handleRateTrip = (requestId) => {
-    //     router.push(`/live-tracking-comment-parent/${requestId}`);
-    // };
-    // const handleRateTrip = (requestId) => {
-    //     router.push(`/live-tracking-comment-parent/${requestId}`).then(() => {
-    //         getCommentByReuqestId(requestId, userId); // 确保跳转完成后调用评论刷新函数
-    //     });
-    // };
+    }, [commentUpdated]);
     useEffect(() => {
         getRequestsByParentId();
     }, []);
@@ -44,8 +35,9 @@ export default function HistoryRequestParent() {
 
     useEffect(() => {
         console.info("requests are:",requests);
-        console.info("comments are:",comments);
-    }, [requests,comments]);
+        console.info("walkerComments are:",walkerComments);
+        console.info("parentComments are:",parentComments);
+    }, [requests,walkerComments,parentComments]);
 
     function getRequestsByParentId(){
         fetch(`http://${apiUrl}/requests/getRequestsByParentId/${userId}`, {
@@ -70,9 +62,13 @@ export default function HistoryRequestParent() {
 
     //********************这里需要改成对此request判断parent是否已经评价********************
     function getCommentByReuqestId(requestId, userId){
-        if (comments.some(comment => comment.request?.requestId === requestId)) {
+        if (walkerComments.some(comment => comment.request?.requestId === requestId)) {
             return;
         }
+        if (parentComments.some(comment => comment.request?.requestId === requestId)) {
+            return;
+        }
+        const localUserId = parseInt(sessionStorage.getItem("userId"), 10);
         fetch(`http://${apiUrl}/Comment/getCommentsByReuqestId/${requestId}`, {
             method: 'GET',
             headers: {
@@ -89,9 +85,15 @@ export default function HistoryRequestParent() {
             .then(data =>{
                 console.info("data is",data)
                 if (data){
-                    const userComments = data.filter(comment => comment.userId === userId);
-                    if (userComments.length > 0) {
-                        setComments(prevComments => [...prevComments, ...userComments]);
+                    const walkerCommentsGet = data.filter(comment => comment.userId !== localUserId);
+                    const parentCommentsGet = data.filter(comment => comment.userId === localUserId);
+                    console.info("walkerCommentsGet is",walkerCommentsGet)
+                    console.info("parentCommentsGet is",parentCommentsGet)
+                    if (walkerCommentsGet.length > 0) {
+                        setWalkerComments(prevComments => [...prevComments, ...walkerCommentsGet]);
+                    }
+                    if (parentCommentsGet.length > 0) {
+                        setParentComments(prevComments => [...prevComments, ...parentCommentsGet]);
                     }
                 };
             })
@@ -124,7 +126,10 @@ export default function HistoryRequestParent() {
 
                 <div className="space-y-4">
                     {requests.map((request, index) => {
-                        const comment = comments.find(c => c.request?.requestId === request.requestId);
+                        const walkerComment = walkerComments.find(c => c.request?.requestId === request.requestId);
+                        const parentComment = parentComments.find(c => c.request?.requestId === request.requestId);
+                        console.info("walkerComment finally is:",walkerComment)
+                        console.info("parentComment finally is:",parentComment)
                         return (
                             <div key={index} className="border p-4 rounded-lg space-y-2">
                                 {/* 显示请求的提供者信息 */}
@@ -132,7 +137,8 @@ export default function HistoryRequestParent() {
                                     <span className="font-bold">{request.walker?.surname} Provided trip</span>
                                 </div>
                                 <p className="text-gray-600 text-sm">
-                                    Start Time: {request.startTime ? new Date(request.startTime).toLocaleString() : "N/A"}
+                                    Start
+                                    Time: {request.startTime ? new Date(request.startTime).toLocaleString() : "N/A"}
                                 </p>
                                 <p className="text-sm">Departure: {request.departure || "N/A"}</p>
                                 <p className="text-sm">Destination: {request.destination || "N/A"}</p>
@@ -140,12 +146,19 @@ export default function HistoryRequestParent() {
                                 {/* 评论部分 */}
                                 <div className="mt-2 flex items-center space-x-2">
                                     <h2 className="text-lg font-semibold">Comments：</h2>
-                                    {comment ? (
-                                        <p className="text-sm text-gray-700">{comment.comment}</p>
+                                    {parentComment ? (
+                                        <p className="text-sm text-gray-700">{parentComment.comment}</p>
+                                    ) : (
+                                        <p className="text-sm text-gray-700"></p>
+                                    )}
+                                </div>
+                                <div className="mt-2 flex items-center space-x-2">
+                                    {walkerComment ? (
+                                        <p className="text-sm text-gray-700"></p>
                                     ) : (
                                         <button
                                             onClick={() => handleRateTrip(request.requestId)}
-                                            className="mt-2 py-1 px-4 text-white bg-black rounded-full text-sm">
+                                            className="mt-2 py-1 px-4 text-white bg-black rounded-full text-sm block"> {/* 使用 block 样式 */}
                                             Comment
                                         </button>
                                     )}

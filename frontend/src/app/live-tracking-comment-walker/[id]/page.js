@@ -11,11 +11,12 @@ export default function CommentPage() {
     const { id: requestId } = useParams(); // 获取 URL 中的 requestId
     const [comment, setComment] = useState('');
     const [rate, setRate] = useState(0); // 默认评分为 0
-    const [walkerId, setWalkerId] = useState(null); // 保存获取到的 walkerId
+    const [parentId, setParentId] = useState(null); // 保存获取到的 parentId
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
     useEffect(() => {
-        // 获取 walkerId
-        async function fetchWalkerId() {
+        // 获取 parentId
+        async function fetchParentId() {
             try {
                 const token = sessionStorage.getItem('token'); // 获取 token
                 if (!token) {
@@ -23,7 +24,7 @@ export default function CommentPage() {
                     return;
                 }
 
-                const response = await fetch(`http://${apiUrl}/requests/getWalkerByRequestId/${requestId}`, {
+                const response = await fetch(`http://${apiUrl}/requests/getParentByRequestId/${requestId}`, {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -32,17 +33,17 @@ export default function CommentPage() {
                 });
 
                 if (!response.ok) {
-                    throw new Error('Failed to fetch WalkerId');
+                    throw new Error('Failed to fetch parentId');
                 }
 
                 const data = await response.json();
-                setWalkerId(data.id); // 假设返回的数据结构中 walker 的 id 为 data.id
+                setParentId(data.id); // 假设返回的数据结构中 parentId 的 id 为 data.id
             } catch (error) {
-                console.error('Error fetching WalkerId:', error);
+                console.error('Error fetching parentId:', error);
             }
         }
 
-        fetchWalkerId();
+        fetchParentId();
     }, [requestId]);
 
     const handleSubmit = async (event) => {
@@ -56,8 +57,8 @@ export default function CommentPage() {
         // 格式化为 YYYY-MM-DD HH:MM:SS 格式
         const commentDate = date.toISOString().replace('T', ' ').slice(0, 19);
 
-        if (!token || !walkerId) {
-            console.error('No token or walkerId found');
+        if (!token || !parentId) {
+            console.error('No token or parentId found');
             return;
         }
 
@@ -73,7 +74,7 @@ export default function CommentPage() {
                         requestId: parseInt(requestId) // 转换为数字格式
                     },
                     user: {
-                        id: parseInt(walkerId) // 使用获取到的 walkerId
+                        id: parseInt(parentId) // 使用获取到的 parentId
                     },
                     rate, // 评分
                     comment, // 评论
