@@ -29,7 +29,7 @@ function ChattingStatus({ name, text, time, parentId, path }) {
         cache: 'default'
     };
 
-    const requestURL = new Request(`${apiUrl}/WalkerRequest/getWalkerRequestByWalkerId/${parentId}`, myInit);
+    const requestURL = new Request(`http://${apiUrl}/WalkerRequest/getWalkerRequestByWalkerId/${parentId}`, myInit);
 
     fetch(requestURL)
         .then(response => {

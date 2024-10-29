@@ -37,7 +37,7 @@ export default function SearchWalker() {
         setRequests([]); // Clear previous results when clicking the search button.
         setError(null); // Clear the previous error message
 
-        const searchRequestsAPI = `${apiUrl}/requests/searchRequests?walkerId=${walkerId}&searchTerm=${searchTerm}&distance=${distance}`;
+        const searchRequestsAPI = `http://${apiUrl}/requests/searchRequests?walkerId=${walkerId}&searchTerm=${searchTerm}&distance=${distance}`;
 
         try {
             const response = await fetch(searchRequestsAPI, {
@@ -96,8 +96,8 @@ export default function SearchWalker() {
     const formatDateTime = (dateString) => {
         const date = new Date(dateString);
         const year = date.getFullYear();
-        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months start at 0, so add 1.
-        const day = String(date.getDate()).padStart(2, '0'); // Completing two-digit numbers with zeros
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // 月份是从0开始的，所以要加1
+        const day = String(date.getDate()).padStart(2, '0'); // 用0补齐两位数
         const hours = String(date.getHours()).padStart(2, '0');
         const minutes = String(date.getMinutes()).padStart(2, '0');
 

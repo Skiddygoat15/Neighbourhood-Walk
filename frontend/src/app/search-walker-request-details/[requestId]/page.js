@@ -13,8 +13,8 @@ export default function RequestDetails({params}) {
     const walkerId = sessionStorage.getItem('userId');
     const [requestDetails, setRequestDetails] = useState(null); // store request details
     const [error, setError] = useState(null);    // store error message
-    const getRequestInfoAPI = `${apiUrl}/WalkerRequest/getRequestDetailByRequestIdAndWalkerId/${requestId}/${walkerId}`;
-    const applyRequestAPI = `${apiUrl}/requests/${requestId}/apply?walkerId=${walkerId}`;
+    const getRequestInfoAPI = `http://${apiUrl}/WalkerRequest/getRequestDetailByRequestIdAndWalkerId/${requestId}/${walkerId}`;
+    const applyRequestAPI = `http://${apiUrl}/requests/${requestId}/apply?walkerId=${walkerId}`;
     const textColor = useTextColor();
 
     // get request details info by request's id

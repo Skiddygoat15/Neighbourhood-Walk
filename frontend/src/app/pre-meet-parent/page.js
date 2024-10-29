@@ -53,7 +53,7 @@ export default function PreMeetParent() {
       urlOrAddress: meetingInfo,
       newOrNot: true
     }
-    const createPreMeetAPI = `${apiUrl}/preMeet/create/${parentId}/${walkerId}/${requestId}`
+    const createPreMeetAPI = `http://${apiUrl}/preMeet/create/${parentId}/${walkerId}/${requestId}`
     fetch(createPreMeetAPI, {
       method: 'post',
       credentials: 'include',

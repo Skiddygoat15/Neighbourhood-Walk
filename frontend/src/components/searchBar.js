@@ -11,7 +11,7 @@ const SearchNotifications = ({ fetchWalkerRequests }) => {
         const handleSearch = async () => {
             if (searchTerm) {
                 setLoading(true);
-                const requestURL = `${apiUrl}/WalkerRequest/getWalkerRequestByWalkerId/${searchTerm}`;
+                const requestURL = `http://${apiUrl}/WalkerRequest/getWalkerRequestByWalkerId/${searchTerm}`;
 
                 fetch(requestURL)
                     .then(response => {

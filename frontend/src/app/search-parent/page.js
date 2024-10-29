@@ -39,7 +39,7 @@ export default function SearchParent() {
     setWalkers([]); // Clear previous results when clicking the search button.
     setError(null); // Clear the previous error message
 
-    const searchWalkersAPI = `${apiUrl}/Users/searchWalkers?parentId=${parentId}&searchTerm=${searchTerm}&gender=${gender}&distance=${distance}&rating=${rating}`;
+    const searchWalkersAPI = `http://${apiUrl}/Users/searchWalkers?parentId=${parentId}&searchTerm=${searchTerm}&gender=${gender}&distance=${distance}&rating=${rating}`;
 
     try {
       const response = await fetch(searchWalkersAPI, {

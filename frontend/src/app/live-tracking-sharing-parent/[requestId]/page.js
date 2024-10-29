@@ -43,7 +43,7 @@ export default function LiveTrackingSharingParent( {params} ) {
     // fetch departure and destination
     const fetchLocations = useCallback(async () => {
         try {
-            const getLiveLocationInfoAPI = `${apiUrl}/requests/getLiveLocationByRequestId/${requestId}`;
+            const getLiveLocationInfoAPI = `http://${apiUrl}/requests/getLiveLocationByRequestId/${requestId}`;
             const response = await fetch(getLiveLocationInfoAPI, {
                 method: 'GET',
                 credentials: 'include',
@@ -97,7 +97,7 @@ export default function LiveTrackingSharingParent( {params} ) {
 
     // Function to send updated location to backend
     const updateLocationToBackend = async (position) => {
-        const updateLocationAPI = `${apiUrl}/requests/updateLocation/${requestId}/?walkerLatitude=${position.lat}&walkerLongitude=${position.lng}`;
+        const updateLocationAPI = `http://${apiUrl}/requests/updateLocation/${requestId}/?walkerLatitude=${position.lat}&walkerLongitude=${position.lng}`;
 
         try {
             const response = await fetch(updateLocationAPI, {

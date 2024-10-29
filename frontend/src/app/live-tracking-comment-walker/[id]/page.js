@@ -63,7 +63,7 @@ export default function CommentPage() {
         }
 
         try {
-            const response = await fetch(`${apiUrl}/Comment`, {
+            const response = await fetch(`http://${apiUrl}/Comment`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`, // 添加token到请求头

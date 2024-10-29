@@ -11,7 +11,7 @@ export default function SearchParentWalkerDetails({ params }) {
   const { id } = params;  // obtain dynamic route param
   const [walker, setWalker] = useState(null);  // store walker details
   const [error, setError] = useState(null);    // store error message
-  const getUserByIdAPI = `${apiUrl}/Users/getUserById/${id}`;
+  const getUserByIdAPI = `http://${apiUrl}/Users/getUserById/${id}`;
   const textColor = useTextColor();
 
   // get walker details info by walker's id

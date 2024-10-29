@@ -18,7 +18,7 @@ export default function Home() {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
     function getAllRoles() {
-        fetch(`${apiUrl}/roles`, {
+        fetch(`http://${apiUrl}/roles`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -88,7 +88,7 @@ export default function Home() {
     }, [chatBars]);
 
     function getOrAddChatBar() {
-        fetch(`${apiUrl}/ChatBar/getChatBars/${userId}`, {
+        fetch(`http://${apiUrl}/ChatBar/getChatBars/${userId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -119,7 +119,7 @@ export default function Home() {
     function saveChatBar() {
         const userIdLong = parseInt(userId, 10);
         const searchTermLong = parseInt(searchTerm, 10);
-        fetch(`${apiUrl}/ChatBar/addChatBar?userIdFrom=${userIdLong}&userIdTo=${searchTermLong}`, {
+        fetch(`http://${apiUrl}/ChatBar/addChatBar?userIdFrom=${userIdLong}&userIdTo=${searchTermLong}`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json',
                 'Authorization': `Bearer ` + sessionStorage.getItem('token') },
@@ -135,7 +135,7 @@ export default function Home() {
 
     function getChatBar() {
         // 先检查是否已经存在该聊天框
-        fetch(`${apiUrl}/ChatBar/getChatBars/${userId}`, {
+        fetch(`http://${apiUrl}/ChatBar/getChatBars/${userId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -161,7 +161,7 @@ export default function Home() {
     }
 
     function closeChatBar(userIdTo) {
-        fetch(`${apiUrl}/ChatBar/updateChatBar?userIdFrom=${userId}&userIdTo=${userIdTo}&state=close`, {
+        fetch(`http://${apiUrl}/ChatBar/updateChatBar?userIdFrom=${userId}&userIdTo=${userIdTo}&state=close`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -180,7 +180,7 @@ export default function Home() {
     }
 
     function openChatBar(userIdTo) {
-        fetch(`${apiUrl}/ChatBar/updateChatBar?userIdFrom=${userId}&userIdTo=${userIdTo}&state=open`, {
+        fetch(`http://${apiUrl}/ChatBar/updateChatBar?userIdFrom=${userId}&userIdTo=${userIdTo}&state=open`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

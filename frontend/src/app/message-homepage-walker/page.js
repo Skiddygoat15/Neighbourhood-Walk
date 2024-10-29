@@ -17,7 +17,7 @@ export default function Home() {
     const [confirmClick, setConfirmClick] = useState(0);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     function getAllRoles() {
-        fetch(`${apiUrl}/roles`, {
+        fetch(`http://${apiUrl}/roles`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -87,7 +87,7 @@ export default function Home() {
     }, [chatBars]);
 
     function getOrAddChatBar() {
-        fetch(`${apiUrl}/ChatBar/getChatBars/${userId}`, {
+        fetch(`http://${apiUrl}/ChatBar/getChatBars/${userId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -118,7 +118,7 @@ export default function Home() {
     function saveChatBar() {
         const userIdLong = parseInt(userId, 10);
         const searchTermLong = parseInt(searchTerm, 10);
-        fetch(`${apiUrl}/ChatBar/addChatBar?userIdFrom=${userIdLong}&userIdTo=${searchTermLong}`, {
+        fetch(`http://${apiUrl}/ChatBar/addChatBar?userIdFrom=${userIdLong}&userIdTo=${searchTermLong}`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json',
                 'Authorization': `Bearer ` + sessionStorage.getItem('token') },
