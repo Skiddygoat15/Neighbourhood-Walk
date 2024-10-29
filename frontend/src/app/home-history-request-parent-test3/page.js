@@ -40,7 +40,7 @@ export default function HistoryRequestParent() {
     }, [requests,walkerComments,parentComments]);
 
     function getRequestsByParentId(){
-        fetch(`http://${apiUrl}/requests/getRequestsByParentId/${userId}`, {
+        fetch(`${apiUrl}/requests/getRequestsByParentId/${userId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -69,7 +69,7 @@ export default function HistoryRequestParent() {
             return;
         }
         const localUserId = parseInt(sessionStorage.getItem("userId"), 10);
-        fetch(`http://${apiUrl}/Comment/getCommentsByReuqestId/${requestId}`, {
+        fetch(`${apiUrl}/Comment/getCommentsByReuqestId/${requestId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
