@@ -9,28 +9,11 @@ export default function HistoryRequestParent() {
     const [comments,setComments] = useState([]);
     const userId = sessionStorage.getItem("userId");
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    const [commentUpdated, setCommentUpdated] = useState(false);
 
     const handleRateTrip = (requestId) => {
         router.push(`/live-tracking-comment-parent/${requestId}`);
-        setCommentUpdated(prev => !prev); // 切换commentUpdated状态，触发useEffect
     };
-    // const handleRateTrip = (requestId) => {
-    //     router.push(`/live-tracking-comment-walker/${requestId}`);
-    // };
-    useEffect(() => {
-        requests.forEach(request => {
-            getCommentByReuqestId(request.requestId, userId);
-        });
-    }, [commentUpdated]);  // 监听 commentUpdated 的变化
-    // const handleRateTrip = (requestId) => {
-    //     router.push(`/live-tracking-comment-parent/${requestId}`);
-    // };
-    // const handleRateTrip = (requestId) => {
-    //     router.push(`/live-tracking-comment-parent/${requestId}`).then(() => {
-    //         getCommentByReuqestId(requestId, userId); // 确保跳转完成后调用评论刷新函数
-    //     });
-    // };
+
     useEffect(() => {
         getRequestsByParentId();
     }, []);

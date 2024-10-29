@@ -3,26 +3,16 @@
 import { useRouter } from 'next/navigation';
 import {useEffect, useState} from "react";
 
-export default function HistoryRequestWalker() {
+export default function HistoryRequestParent() {
     const router = useRouter();
     const [requests,setRequests] = useState([]);
     const [comments,setComments] = useState([]);
     const userId = sessionStorage.getItem("userId");
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
-    const [commentUpdated, setCommentUpdated] = useState(false);
 
     const handleRateTrip = (requestId) => {
         router.push(`/live-tracking-comment-walker/${requestId}`);
-        setCommentUpdated(prev => !prev); // 切换commentUpdated状态，触发useEffect
     };
-    // const handleRateTrip = (requestId) => {
-    //     router.push(`/live-tracking-comment-walker/${requestId}`);
-    // };
-    useEffect(() => {
-        requests.forEach(request => {
-            getCommentByReuqestId(request.requestId, userId);
-        });
-    }, [commentUpdated]);  // 监听 commentUpdated 的变化
 
     useEffect(() => {
         getRequestsByWalkerId();

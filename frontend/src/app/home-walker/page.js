@@ -157,7 +157,7 @@ export default function HomeWalker() {
               </p>
             </div>
             <div className="bg-white border rounded-lg p-4 text-center"
-                 onClick={() => handleNavigation('/home-history-request-walker-test3')}>
+                 onClick={() => handleNavigation('/home-history-request-walker-test2')}>
               <p className="font-semibold">History</p>
             </div>
           </div>
