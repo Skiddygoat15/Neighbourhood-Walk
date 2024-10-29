@@ -62,6 +62,10 @@ export default function Home() {
         setConfirmClick(prev => prev + 1); // 更新点击计数
     }
 
+    useEffect(() => {
+        handleSearch();
+    }, []); // 空依赖数组，确保仅在页面加载时执行一次
+
     //初始化
     useEffect(() => {
         if (searchTerm) {
@@ -380,7 +384,10 @@ export default function Home() {
                                         margin: 0,  // 移除外边距以防止布局偏移
                                         padding: '0 10px',  // 增加内边距确保文本不紧贴边缘
                                         cursor: 'pointer'  // 将鼠标样式设置为指针
-                                    }}>Chat with user {bar.userTo.name}</h3>
+                                    }}>
+                                        {/*Chat with user {bar.userTo.name}*/}
+                                        <span style={{ color: 'blue', fontWeight: 'bold' }}>Id: {bar.userTo.id}</span> Chat with user {bar.userTo.name}
+                                    </h3>
 
                                     <button style={{
                                         position: 'absolute',
