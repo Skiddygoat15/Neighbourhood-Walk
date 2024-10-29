@@ -156,7 +156,7 @@ export default function Home() {
             mode: 'cors',
             cache: 'default'
         };
-        const requestURL_walkerRequestId = new Request(`http://${apiUrl}/WalkerRequest/getWalkerRequestByWalkerId/${walkerId}`, myInit);
+        const requestURL_walkerRequestId = new Request(`${apiUrl}/WalkerRequest/getWalkerRequestByWalkerId/${walkerId}`, myInit);
         fetch(requestURL_walkerRequestId)
             .then(response => {
                 if (!response.ok) {
@@ -176,7 +176,7 @@ export default function Home() {
 
     // 获取UPNotifications
     function fetchData_Profile(userId) {
-        return fetch(`http://${apiUrl}/UPNotifications/getUPNotificationsByUserId/${userId}`, {
+        return fetch(`${apiUrl}/UPNotifications/getUPNotificationsByUserId/${userId}`, {
             method: 'GET',
             headers: {'Authorization': 'Bearer ' + token},
             mode: 'cors',
@@ -219,7 +219,7 @@ export default function Home() {
             mode: 'cors',
             cache: 'default'
         };
-        const requestURL_parentId = `http://${apiUrl}/WalkerRequest/getParentIdByWalkerRequestId/${walkerRequestId}`;
+        const requestURL_parentId = `${apiUrl}/WalkerRequest/getParentIdByWalkerRequestId/${walkerRequestId}`;
         fetch(requestURL_parentId, myInit)
             .then(response => {
                 if (!response.ok) {

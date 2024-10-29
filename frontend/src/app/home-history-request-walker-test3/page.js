@@ -42,7 +42,7 @@ export default function HistoryRequestParent() {
     }, [requests,walkerComments,parentComments]);
 
     function getRequestsByParentId(){
-        fetch(`http://${apiUrl}/requests/getRequestsByWalkerId/${userId}`, {
+        fetch(`${apiUrl}/requests/getRequestsByWalkerId/${userId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -72,7 +72,7 @@ export default function HistoryRequestParent() {
         if (walkerComments.some(comment => comment.request?.requestId === requestId)) {
             return;
         }
-        fetch(`http://${apiUrl}/Comment/getCommentsByReuqestId/${requestId}`, {
+        fetch(`${apiUrl}/Comment/getCommentsByReuqestId/${requestId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

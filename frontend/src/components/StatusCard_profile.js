@@ -118,7 +118,7 @@ export default function StatusCard({ showRedDot, title, statusChanged, time, not
     };
 
     // 初始化通知状态
-    const requestURL = new Request(`http://${apiUrl}/WalkerRequest/getWalkerRequestByWalkerId/${userId}`, myInit);
+    const requestURL = new Request(`${apiUrl}/WalkerRequest/getWalkerRequestByWalkerId/${userId}`, myInit);
 
     console.log("showRedDot value:", showRedDot);
 
@@ -149,7 +149,7 @@ export default function StatusCard({ showRedDot, title, statusChanged, time, not
     const handleClick = () => {
         // setShowDot(false);  // 点击后设置状态为不显示
         // 调用后端接口检查通知
-        fetch(`http://${apiUrl}/UPNotifications/check/${notificationId}`, {
+        fetch(`${apiUrl}/UPNotifications/check/${notificationId}`, {
             method: 'POST',
             headers: {
                 'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
@@ -178,7 +178,7 @@ export default function StatusCard({ showRedDot, title, statusChanged, time, not
     // 关闭通知函数
     const handleCloseNotification = () => {
         // 调用后端接口关闭通知
-        fetch(`http://${apiUrl}/UPNotifications/close/${notificationId}`, {
+        fetch(`${apiUrl}/UPNotifications/close/${notificationId}`, {
             method: 'POST',
             headers: {
                 'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
