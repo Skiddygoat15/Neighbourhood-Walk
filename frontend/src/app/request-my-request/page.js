@@ -35,7 +35,7 @@ export default function MyRequest() {
 
 
   function getRequestsList() {
-    const getRequestsListAPI = `http://${apiUrl}/requests/getRequestsByParentId/${parentId}`
+    const getRequestsListAPI = `${apiUrl}/requests/getRequestsByParentId/${parentId}`
     console.log("current userId: " + parentId)
     fetch(getRequestsListAPI, {
       method: 'get', // Method is GET to fetch data

@@ -28,7 +28,7 @@ export default function PreMeetWalker() {
         setPreMeet([]); // Clear previous results
         setError(null); // Clear previous error messages
 
-        const getPreMeetByWalkerIdAPI = `http://${apiUrl}/preMeet/walker/${walkerId}`;
+        const getPreMeetByWalkerIdAPI = `${apiUrl}/preMeet/walker/${walkerId}`;
 
         try {
             const response = await fetch(getPreMeetByWalkerIdAPI, {

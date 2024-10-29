@@ -37,7 +37,7 @@ export default function SearchWalker() {
         setRequests([]); // Clear previous results when clicking the search button.
         setError(null); // Clear the previous error message
 
-        const searchRequestsAPI = `http://${apiUrl}/requests/searchRequests?walkerId=${walkerId}&searchTerm=${searchTerm}&distance=${distance}`;
+        const searchRequestsAPI = `${apiUrl}/requests/searchRequests?walkerId=${walkerId}&searchTerm=${searchTerm}&distance=${distance}`;
 
         try {
             const response = await fetch(searchRequestsAPI, {

@@ -71,7 +71,7 @@ const RegistrationSignup = () => {
         activityStatus: 'Active',
       };
 
-      const fetchUrl = `http://${apiUrl}/Users/register?roleType=${roleType}`;
+      const fetchUrl = `${apiUrl}/Users/register?roleType=${roleType}`;
 
       const res = await fetch(fetchUrl, {
         method: 'POST',

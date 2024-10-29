@@ -31,7 +31,7 @@ export default function HistoryRequestParent() {
     }, [requests,comments]);
 
     function getRequestsByParentId(){
-        fetch(`http://${apiUrl}/requests/getRequestsByParentId/${userId}`, {
+        fetch(`${apiUrl}/requests/getRequestsByParentId/${userId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -56,7 +56,7 @@ export default function HistoryRequestParent() {
         if (comments.some(comment => comment.request?.requestId === requestId)) {
             return;
         }
-        fetch(`http://${apiUrl}/Comment/getCommentsByReuqestId/${requestId}`, {
+        fetch(`${apiUrl}/Comment/getCommentsByReuqestId/${requestId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

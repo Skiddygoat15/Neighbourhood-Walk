@@ -24,7 +24,7 @@ export default function CommentPage() {
                     return;
                 }
 
-                const response = await fetch(`http://${apiUrl}/requests/getParentByRequestId/${requestId}`, {
+                const response = await fetch(`${apiUrl}/requests/getParentByRequestId/${requestId}`, {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -63,7 +63,7 @@ export default function CommentPage() {
         }
 
         try {
-            const response = await fetch(`http://${apiUrl}/Comment`, {
+            const response = await fetch(`${apiUrl}/Comment`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`, // 添加token到请求头

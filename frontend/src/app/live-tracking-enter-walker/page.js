@@ -20,7 +20,7 @@ export default function LiveTrackingEnterWalker() {
                     return;
                 }
 
-                const response = await fetch(`http://${apiUrl}/requests/getRequestsByWalkerId/${walkerId}`, {
+                const response = await fetch(`${apiUrl}/requests/getRequestsByWalkerId/${walkerId}`, {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${token}`, // 添加token到请求头

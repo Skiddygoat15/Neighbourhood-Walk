@@ -22,7 +22,7 @@ export default function LiveTrackingEnterParent() {
                 }
 
                 // 获取requests
-                const response = await fetch(`http://${apiUrl}/requests/getRequestsByParentId/${parentId}`, {
+                const response = await fetch(`${apiUrl}/requests/getRequestsByParentId/${parentId}`, {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${token}`, // 添加token到请求头
@@ -48,7 +48,7 @@ export default function LiveTrackingEnterParent() {
 
                 // 遍历filteredRequests并获取每个request的walker信息
                 const requestsWithWalkerInfo = await Promise.all(filteredRequests.map(async (request) => {
-                    const walkerResponse = await fetch(`http://${apiUrl}/requests/getWalkerByRequestId/${request.requestId}`, {
+                    const walkerResponse = await fetch(`${apiUrl}/requests/getWalkerByRequestId/${request.requestId}`, {
                         method: 'GET',
                         headers: {
                             'Authorization': `Bearer ${token}`, // 使用token获取walker信息

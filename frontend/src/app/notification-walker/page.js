@@ -37,7 +37,7 @@
 //         cache: 'default'
 //     };
 //     const walkerRequestId = 1;
-//     const requestURL = new Request(`http://${apiUrl}/Notification/findNotificationByWalkerRequestId/${walkerRequestId}`, myInit);
+//     const requestURL = new Request(`${apiUrl}/Notification/findNotificationByWalkerRequestId/${walkerRequestId}`, myInit);
 //
 //     fetch(requestURL)
 //         .then(response => {
@@ -125,7 +125,7 @@ export default function Home() {
             mode: 'cors',
             cache: 'default'
         };
-        const requestURL = `http://${apiUrl}/Notification/findNotificationByWalkerId/${walkerId}`;
+        const requestURL = `${apiUrl}/Notification/findNotificationByWalkerId/${walkerId}`;
         fetch(requestURL, myInit)
             .then(response => {
                 if (!response.ok) {throw new Error('Network response was not ok1');}

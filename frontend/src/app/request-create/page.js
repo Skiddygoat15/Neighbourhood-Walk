@@ -49,7 +49,7 @@ export default function WalkRequestManagementParent() {
 
     const handlePublish = async () => {
         console.log('UserId: ', parentId);
-        const addRequestAPI = `http://${apiUrl}/requests`;
+        const addRequestAPI = `${apiUrl}/requests`;
         const updatedStartTime = combineDateAndTime(date, departureTime);
         const updatedArriveTime = combineDateAndTime(date, arriveTime);
 

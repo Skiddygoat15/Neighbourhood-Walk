@@ -54,7 +54,7 @@ export default function UpdateRequest() {
   }, [request]);
 
   const handleUpdate = async () => {
-    const updateRequestAPI = `http://${apiUrl}/requests/update/${request.requestId}`;
+    const updateRequestAPI = `${apiUrl}/requests/update/${request.requestId}`;
 
     try{
       if (!sendBody.departure || sendBody.departure.trim() === '' ||

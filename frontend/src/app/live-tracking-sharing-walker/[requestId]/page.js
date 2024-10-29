@@ -41,7 +41,7 @@ export default function LiveTrackingSharingWalker({params}) {
     // fetch departure and destination
     const fetchLocations = async () => {
         try {
-            const getLiveLocationInfoAPI = `http://${apiUrl}/requests/getLiveLocationByRequestId/${requestId}`;
+            const getLiveLocationInfoAPI = `${apiUrl}/requests/getLiveLocationByRequestId/${requestId}`;
             const response = await fetch(getLiveLocationInfoAPI, {
                 method: 'GET',
                 credentials: 'include',
@@ -68,7 +68,7 @@ export default function LiveTrackingSharingWalker({params}) {
 
     // Function to send updated location to backend
     const updateLocationToBackend = async (position) => {
-        const updateLocationAPI = `http://${apiUrl}/requests/updateLocation/${requestId}/?walkerLatitude=${position.lat}&walkerLongitude=${position.lng}`;
+        const updateLocationAPI = `${apiUrl}/requests/updateLocation/${requestId}/?walkerLatitude=${position.lat}&walkerLongitude=${position.lng}`;
 
         try {
             const response = await fetch(updateLocationAPI, {
@@ -186,7 +186,7 @@ export default function LiveTrackingSharingWalker({params}) {
             return;
         }
 
-        const completeRequestAPI = `http://${apiUrl}/requests/completeRequest/${requestId}/${walkerId}`;
+        const completeRequestAPI = `${apiUrl}/requests/completeRequest/${requestId}/${walkerId}`;
 
         try {
             const response = await fetch(completeRequestAPI, {
