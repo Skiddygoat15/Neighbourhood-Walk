@@ -28,7 +28,7 @@ export default function PreMeetParent() {
         setPreMeet([]); // Clear previous results
         setError(null); // Clear previous error messages
 
-        const getPreMeetByParentIdAPI = `http://${apiUrl}/preMeet/parent/${parentId}`;
+        const getPreMeetByParentIdAPI = `${apiUrl}/preMeet/parent/${parentId}`;
 
         try {
             const response = await fetch(getPreMeetByParentIdAPI, {

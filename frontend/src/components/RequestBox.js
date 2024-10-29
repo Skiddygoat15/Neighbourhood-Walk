@@ -14,7 +14,7 @@ export default function RequestBox({walkerId}){
     };
     const [requestStatus, setRequestStatus] = useState('Pending...'); // 默认值为 'Pending...'
 
-    const requestURL = new Request(`http://${apiUrl}/WalkerRequest/getWalkerRequest/${walkerId}`, myInit);
+    const requestURL = new Request(`${apiUrl}/WalkerRequest/getWalkerRequest/${walkerId}`, myInit);
 
     fetch(requestURL)
         .then(response => {

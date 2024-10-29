@@ -88,7 +88,7 @@ export default function HomeWalker() {
     // 调用API获取 avgUserRating
     const fetchAvgUserRating = async () => {
       try {
-        const response = await fetch(`http://${apiUrl}/Users/getUserById/${userId}`, {
+        const response = await fetch(`${apiUrl}/Users/getUserById/${userId}`, {
           method: 'GET',
           headers: {
             'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
@@ -117,7 +117,7 @@ export default function HomeWalker() {
           console.error('UserId not found in sessionStorage');
           return;
         }
-        const response = await fetch(`http://${apiUrl}/UPNotifications/check-any-notification-unchecked/${userId}`, {
+        const response = await fetch(`${apiUrl}/UPNotifications/check-any-notification-unchecked/${userId}`, {
           method: 'GET',
           headers: {
             'Authorization': 'Bearer ' + sessionStorage.getItem('token'),

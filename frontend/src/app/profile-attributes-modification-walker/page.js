@@ -37,7 +37,7 @@ export default function ProfileManagementSelectTimeWalker() {
     // 获取用户的现有个人信息
     const fetchUserProfile = async () => {
       try {
-        const response = await fetch(`http://${apiUrl}/Users/getUserProfileByUserId/${userId}`, {
+        const response = await fetch(`${apiUrl}/Users/getUserProfileByUserId/${userId}`, {
           method: 'GET',
           headers: {
             'Authorization': `Bearer ${token}`,
