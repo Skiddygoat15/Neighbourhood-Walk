@@ -218,13 +218,11 @@ export default function ProfileManagementAccountInformationWalker() {
 
   // 确保 availableDate 存在并且有两个日期
   const startDate = userProfile.availableDate && userProfile.availableDate.length >= 2
-      ? `${new Date(userProfile.availableDate[0]).toLocaleDateString('en-US', {
-        timeZone: 'UTC',
+      ? `${new Date(userProfile.availableDate[0]).toLocaleDateString('en-AU', {
         year: 'numeric',
         month: '2-digit',
         day: '2-digit'
-      })} ${new Date(userProfile.availableDate[0]).toLocaleTimeString('en-US', {
-        timeZone: 'UTC',
+      })} ${new Date(userProfile.availableDate[0]).toLocaleTimeString('en-AU', {
         hour: '2-digit',
         minute: '2-digit',
         hour12: false // 24 小时制
@@ -232,13 +230,11 @@ export default function ProfileManagementAccountInformationWalker() {
       : 'N/A';
 
   const endDate = userProfile.availableDate && userProfile.availableDate.length >= 2
-      ? `${new Date(userProfile.availableDate[1]).toLocaleDateString('en-US', {
-        timeZone: 'UTC',
+      ? `${new Date(userProfile.availableDate[1]).toLocaleDateString('en-AU', {
         year: 'numeric',
         month: '2-digit',
         day: '2-digit'
-      })} ${new Date(userProfile.availableDate[1]).toLocaleTimeString('en-US', {
-        timeZone: 'UTC',
+      })} ${new Date(userProfile.availableDate[1]).toLocaleTimeString('en-AU', {
         hour: '2-digit',
         minute: '2-digit',
         hour12: false // 24 小时制
@@ -307,10 +303,17 @@ export default function ProfileManagementAccountInformationWalker() {
               </div>
 
               {/* Address - No Edit */}
-              <div className="flex justify-between items-center border-b py-2 ml-2">
+              {/*<div className="flex justify-between items-center border-b py-2 ml-2">*/}
+              {/*  <span>Address</span>*/}
+              {/*  <div className="flex items-center w-50 mr-2">*/}
+              {/*    <span className="text-right w-full">{userProfile.address}</span>*/}
+              {/*  </div>*/}
+              {/*</div>*/}
+
+              <div className="flex justify-between items-center border-b py-2 sm:text-base ml-2">
                 <span>Address</span>
-                <div className="flex items-center w-50 mr-2">
-                  <span className="text-right w-full">{userProfile.address}</span>
+                <div className="flex items-center w-40">
+                  <span>{userProfile.address}</span>
                 </div>
               </div>
 

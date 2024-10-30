@@ -69,6 +69,7 @@ const RegistrationSignup = () => {
         avgUserRating: 5.0,
         profileCompleted: true,
         activityStatus: 'Active',
+        profImgUrl: '/profileImages/profileImg_men_1.png',
       };
 
       const fetchUrl = `${apiUrl}/Users/register?roleType=${roleType}`;

@@ -121,12 +121,12 @@ export default function PreMeetParent() {
                 {/* display content*/}
                 {error && <p className="text-red-500">{error}</p>}
 
-                {/* 显示返回的 pre-meet 列表 */}
+                {/* Display the list of returned pre-meets */}
                 <div className="space-y-4 mt-4">
                     {preMeet.length > 0 ? (
                         preMeet.map((premeet) => (
                             <div key={premeet.preMeetId}
-                                 className="border rounded-lg p-4 flex items-center space-x-4 cursor-pointer">
+                                 className="bg-white border rounded-lg p-4 flex items-center space-x-4 cursor-pointer">
 
                                 <div>
                                     <p><strong>You sent a pre-meet request to {premeet.walkerName}!</strong></p>
@@ -136,9 +136,6 @@ export default function PreMeetParent() {
                                     <p><strong>Meeting Link/Address:</strong> {premeet.urlOrAddress}</p>
                                 </div>
 
-                                {/*<div className="ml-auto">*/}
-                                {/*  <button className="bg-black text-white px-4 py-2 rounded-lg">Apply</button>*/}
-                                {/*</div>*/}
                             </div>
                         ))
                     ) : (

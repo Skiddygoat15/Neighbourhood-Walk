@@ -4,6 +4,7 @@ import React, {useEffect, useState} from 'react';
 import { useRouter } from 'next/navigation';
 import BackgroundLayout from '../ui-background-components/BackgroundLayout';
 import useTextColor from '../ui-background-components/useTextColor';
+import {geocodeAddress} from "@/components/geocode";
 
 export default function ProfileManagementSelectTimeWalker() {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -11,6 +12,8 @@ export default function ProfileManagementSelectTimeWalker() {
   const [error, setError] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [address, setAddress] = useState('');
+  const [zipCode, setZipCode] = useState('');
   const [skills, setSkills] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [countryCode, setCountryCode] = useState('+61');
@@ -24,6 +27,16 @@ export default function ProfileManagementSelectTimeWalker() {
   const countryCodes = [
     { code: '+61', country: 'Australia' },
   ];
+
+  // Functions for extracting postal codes from address strings
+  function extractPostalCode(address) {
+    // Regular expression to match the four digits before the second comma
+    console.log("address: " + address);
+    const postalCodeMatch = address.match(/(\d{4})(?=, [^,]*$)/);
+    console.log("postal: " + postalCodeMatch);
+    // Returns the postcode if the match is successful, otherwise returns the empty string
+    return postalCodeMatch ? postalCodeMatch[1] : '';
+  }
 
   useEffect(() => {
     const userId = sessionStorage.getItem('userId');
@@ -63,6 +76,8 @@ export default function ProfileManagementSelectTimeWalker() {
           setPreferredName(data.preferredName || 'N/A');
           setStartDate(startDateFormatted);
           setEndDate(endDateFormatted);
+          setAddress(data.address);
+          setZipCode(extractPostalCode(data.address));
           setSkills(skill)
         } else {
           console.error('Failed to fetch user profile:', response.statusText);
@@ -89,24 +104,46 @@ export default function ProfileManagementSelectTimeWalker() {
       return;
     }
 
-    // 将startDate和endDate放入availableDate数组中
-    const availableDate = [startDate, endDate];
-
-    // 将skills放入skill数组中，保证只有一个技能
-    const skillArray = [skills];
-
-    // 准备要传递到数据库的data
-    const updatedProfileData = {
-      preferredName,
-      email: emailAddress,
-      phone: phoneNumber,
-      communicatePref: communicationPreference,
-      availableDate,
-      skill: skillArray,
-      profImgUrl: profileImgUrl
-    };
-
     try {
+      if (!startDate) {
+        throw new Error("StartDate is required.");
+      }
+      if (!endDate) {
+        throw new Error("EndDate is required.");
+      }
+
+      // 将startDate和endDate放入availableDate数组中
+      const availableDate = [startDate, endDate];
+
+      // 将skills放入skill数组中，保证只有一个技能
+      const skillArray = [skills];
+
+
+      if (!address || address.trim() === '' ||
+          !zipCode || zipCode.trim() === '') {
+        throw new Error("Address and Zip code is required.");
+      }
+
+      if (!/^\d{4}$/.test(zipCode)) {
+        throw new Error("Zip Code must be numeric and 4 digits");
+      }
+
+      const updatedAddress = await geocodeAddress(`${address}, ${zipCode}`);
+
+      // 准备要传递到数据库的data
+      const updatedProfileData = {
+        preferredName,
+        email: emailAddress,
+        phone: phoneNumber,
+        communicatePref: communicationPreference,
+        availableDate,
+        skill: skillArray,
+        profImgUrl: profileImgUrl,
+        address: updatedAddress.formatted_address,
+        latitude: updatedAddress.lat,
+        longitude: updatedAddress.lng,
+      };
+
       // 调用API将数据传入数据库
       const response = await fetch(`${apiUrl}/Users/${userId}/profile`, {
         method: 'PUT',
@@ -130,7 +167,7 @@ export default function ProfileManagementSelectTimeWalker() {
       }
     } catch (error) {
       console.error('Error updating profile:', error);
-
+      setError(error.message || 'Registration failed');
     }
   };
 
@@ -246,6 +283,29 @@ export default function ProfileManagementSelectTimeWalker() {
                 className=" border border-gray-300 p-2 rounded-md w-full mt-2"
                 onChange={(e) => setEndDate(e.target.value)}
             />
+          </div>
+
+          {/* Address and Zip code */}
+          <div>
+            <h2 className={`block text-sm font-medium ${textColor} text-left`}>Address:</h2>
+            <input
+                type="text"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                placeholder="Enter Address"
+                className="w-full p-3 border border-black rounded-lg"
+            />
+
+            <div className="flex justify-between items-center">
+              <label className={`text-sm ${textColor} font-medium whitespace-nowrap mr-2`}>Zip Code:</label>
+              <input
+                  type="text"
+                  placeholder="Enter Postal Code"
+                  value={zipCode}
+                  onChange={(e) => setZipCode(e.target.value)}
+                  className="w-full border-b-2 border-black focus:outline-none mt-2"
+              />
+            </div>
           </div>
 
           {/* Skills */}
