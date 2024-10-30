@@ -54,7 +54,7 @@ export default function SearchParentWalkerDetails({ params }) {
   const formatDateTime = (inputDateTime) => {
     console.log(inputDateTime);
     const dateTime = new Date(inputDateTime);
-    console.log(inputDateTime);
+    console.log(dateTime);
     // options is a configuration object, as parameter of Intl.DateTimeFormat
     const options = {
       year: 'numeric',      // Display the full year (e.g., 2024)

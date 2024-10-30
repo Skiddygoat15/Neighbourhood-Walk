@@ -17,39 +17,27 @@ export default function MyRequestApplication({ params }) {
   const [request, setRequest] = useState(null); // 使用 useState 管理 request
   const [acceptedWalker, setAcceptedWalker] = useState(null); // 用于管理被接受的 walker
   const textColor = useTextColor();
-  function formatDateTimeToCustom(dateString) {
-    const date = new Date(dateString);
-    const formattedDate = date.toLocaleDateString('en-US', {
-      timeZone: 'UTC',
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit'
-    });
-    const formattedTime = date.toLocaleTimeString('en-US', {
-      timeZone: 'UTC',
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: false // 24 小时制
-    });
-    return `${formattedDate} ${formattedTime}`;
-  }
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-  // 格式化日期为 Fri, 16 Aug 2024, 7:00 PM 的形式，强制为UTC时区
-  function formatDateTime(dateString) {
-    const date = new Date(dateString);
+  // format the available times
+  const formatDateTime = (inputDateTime) => {
+    console.log(inputDateTime);
+    const dateTime = new Date(inputDateTime);
+    console.log(dateTime);
+    // options is a configuration object, as parameter of Intl.DateTimeFormat
     const options = {
-      weekday: 'short',
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      hour12: true,
-      timeZone: 'UTC'
+      year: 'numeric',      // Display the full year (e.g., 2024)
+      month: 'short',       // Display the abbreviated month name (e.g., Sept)
+      day: 'numeric',       // Display the numeric day of the month (e.g., 16)
+      weekday: 'short',     // Display the abbreviated weekday name (e.g., Mon)
+      hour: 'numeric',      // Display the hour
+      minute: 'numeric',    // Display the minutes
+      hour12: true          // Display 12-hour time format (AM/PM)
     };
-    return date.toLocaleString('en-US', options);
-  }
+    // Using en-AU (Australia) locale
+    const formattedDateTime = new Intl.DateTimeFormat('en-AU', options).format(dateTime);
+    return `${formattedDateTime}`;
+  };
   // 第一次渲染时，获取 sessionStorage 中的 request 数据
   // useEffect(() => {
   //   const storedRequest = sessionStorage.getItem('clickedRequest');
@@ -226,7 +214,6 @@ export default function MyRequestApplication({ params }) {
         });
   };
 
-
   if (loading) {
     return <BackgroundLayout>
     <main className="min-h-screen">
@@ -238,7 +225,6 @@ export default function MyRequestApplication({ params }) {
         <button onClick={() => router.back()} className="text-2xl p-2 focus:outline-none">
           &larr;
         </button>
-
 
         {/* 展示 request 详情 */}
         <div className="border rounded-lg space-y-2 mt-20">
@@ -302,11 +288,10 @@ export default function MyRequestApplication({ params }) {
           &larr;
         </button>
         {/* 标题 */}
+        <h1 className={`text-2xl ${textColor} font-bold text-center mb-10`}>My Request Application</h1>
 
-          <h1 className={`text-2xl ${textColor} font-bold text-center mb-10`}>My Request Application</h1>
-
-          {/* 展示 request 详情 */}
-        {/*<div className="border p-4 rounded-lg space-y-2">*/}
+        {/* 展示 request 详情 */}
+        <div className="mx-4">
           <div className="border p-4 bg-white rounded-lg space-y-2">
             <div className="flex justify-between">
               <span className="font-bold">Trip request</span>
@@ -321,7 +306,7 @@ export default function MyRequestApplication({ params }) {
             <p className="text-gray-600 text-sm">Departure: {request.departure}</p>
             <p className="text-gray-600 text-sm">Destination: {request.destination}</p>
             <p className="text-gray-600 text-sm">
-              Estimated time: {formatDateTimeToCustom(request.startTime)} - {formatDateTimeToCustom(request.arriveTime)}
+              Estimated time: {formatDateTime(request.startTime)} - {formatDateTime(request.arriveTime)}
             </p>
             <p className="text-sm text-gray-500">Published by {formatDateTime(request.publishDate)}</p>
 
@@ -356,6 +341,7 @@ export default function MyRequestApplication({ params }) {
                     <p>No applicants found.</p>
                 )
             )}
+          </div>
         </div>
       </main>
     </BackgroundLayout>
