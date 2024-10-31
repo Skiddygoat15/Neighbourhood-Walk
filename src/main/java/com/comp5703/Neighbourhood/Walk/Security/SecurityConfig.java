@@ -59,7 +59,7 @@ public class SecurityConfig {
                 .and()
                 .oauth2Login() // 启用OAuth2登录
                     .successHandler(customOAuth2LoginSuccessHandler) // 使用自定义成功处理程序
-                    .failureUrl("http://localhost:3000/registration-loginform") // 登录失败重定向
+                    .failureUrl("https://neighbourhood-walk-test.publicvm.com/registration-loginform") // 登录失败重定向
                 .and()
                 .addFilterBefore(new ExceptionHandlerFilter(), AuthenticationFilter.class)
                 .addFilter(authenticationFilter)
