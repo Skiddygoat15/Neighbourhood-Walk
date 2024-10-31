@@ -253,7 +253,7 @@ export default function Home() {
                         .map((bar, index) => {
                             const router = useRouter();
                             const handleChatClick = () => {
-                                router.push(`/message-chat-walker-final/${searchTerm}`);};
+                                router.push(`/message-chat-walker-final/${parseInt(bar.userTo.id, 10)}`);};
                             return (
                                 <div key={index} style={{
                                     border: '1px solid #ccc',
