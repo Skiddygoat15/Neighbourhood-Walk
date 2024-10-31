@@ -57,6 +57,7 @@ public class CustomOAuth2LoginSuccessHandler implements AuthenticationSuccessHan
             user.setPassword("oauthTempPassWord");
             user.setAddress("oauthDefaultAddress");
             user.setPhone("oauthDefaultPhoneNum");
+            user.setProfImgUrl("/profileImages/profileImg_men_1.png");
 
             // 保存新用户到数据库
             user = usersService.saveUsers(user);
