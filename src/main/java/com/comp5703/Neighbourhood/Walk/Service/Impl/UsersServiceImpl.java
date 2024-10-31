@@ -155,6 +155,8 @@ public class UsersServiceImpl implements UsersService {
         // 对密码进行bcrypt加密
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 
+        user.setProfImgUrl("/profileImages/profileImg_men_1.png");
+
         // 保存用户信息到 Users 表
         Users savedUser = usersRepository.save(user);
 
