@@ -16,7 +16,7 @@ export default function Home({params}) {
     const [isDataReady, setIsDataReady] = useState(false);
     const userIdTo = params.userToId;
     const [chatRoomId, setChatRoomId] = useState("");
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    const websocketurl = process.env.WEB_SOCKET_URL;
     useEffect(() => {
         const storedRole = sessionStorage.getItem("roles")?.slice(2, -2);
         const storedUser = sessionStorage.getItem("userId");
@@ -57,7 +57,7 @@ export default function Home({params}) {
     //websocket连接
     // useEffect(() => {
     function initializeWebSocket(userIdFrom, userIdTo) {
-        websocket.current = new WebSocket(`ws://${apiUrl}/ws`);
+        websocket.current = new WebSocket(`${websocketurl}/ws`);
 
         websocket.current.onopen = function () {
             console.log("WebSocket连接成功");
