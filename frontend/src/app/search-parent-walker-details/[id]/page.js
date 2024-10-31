@@ -46,8 +46,8 @@ export default function SearchParentWalkerDetails({ params }) {
     router.push(`/search-parent`);  // back to search walkers page
   };
 
-  const handleContact = (walkerId) => {
-    router.push(`/message-chat-parent-final/${walkerId}`);
+  const handleContact = () => {
+    router.push(`/message-homepage-parent`);
   };
 
   // format the available times
@@ -117,7 +117,7 @@ export default function SearchParentWalkerDetails({ params }) {
                           )}
                         </div>
                       </div>
-
+                      <p><strong>Chat Id :</strong> {walker.id}</p>
                       <p><strong>Name:</strong> {`${walker.name} ${walker.surname}`}</p>
                       <p><strong>Preferred Name:</strong> {walker.preferredName}</p>
                       <p><strong>Gender:</strong> {walker.gender}</p>
@@ -134,7 +134,7 @@ export default function SearchParentWalkerDetails({ params }) {
 
                       {/* Contact Button */}
                       <button
-                          onClick={() => handleContact(walker.id)}
+                          onClick={() => handleContact()}
                           className="bg-black text-white px-4 py-2 rounded-lg w-full hover:bg-gray-700">
                         Contact
                       </button>
