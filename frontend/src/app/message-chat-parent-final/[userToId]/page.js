@@ -17,6 +17,7 @@ export default function Home({params}) {
     const userIdTo = params.userToId;
     const [chatRoomId, setChatRoomId] = useState("");
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    const websocketurl = process.env.NEXT_PUBLIC_WS_URL;
     useEffect(() => {
         const storedRole = sessionStorage.getItem("roles")?.slice(2, -2);
         const storedUser = sessionStorage.getItem("userId");
@@ -57,7 +58,7 @@ export default function Home({params}) {
     // useEffect(() => {
     function initializeWebSocket(userIdFrom, userIdTo) {
         // websocket.current = new WebSocket(`ws://${apiUrl}/ws`);
-        websocket.current = new WebSocket(`ws://localhost:8080/ws`);
+        websocket.current = new WebSocket(`${websocketurl}/ws`);
         websocket.current.onopen = function () {
             console.log("WebSocket connection successful");
             console.log("userIdFrom is: " + userIdFrom);
