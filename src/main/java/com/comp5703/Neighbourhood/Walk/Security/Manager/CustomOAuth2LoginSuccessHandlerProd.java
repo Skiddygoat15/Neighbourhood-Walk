@@ -23,13 +23,13 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
-public class CustomOAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
+public class CustomOAuth2LoginSuccessHandlerProd implements AuthenticationSuccessHandler {
 
     private UsersService usersService;
     private RoleService roleService;
     private final OAuth2AuthorizedClientService authorizedClientService;
 
-    public CustomOAuth2LoginSuccessHandler(UsersService usersService, RoleService roleService, OAuth2AuthorizedClientService authorizedClientService) {
+    public CustomOAuth2LoginSuccessHandlerProd(UsersService usersService, RoleService roleService, OAuth2AuthorizedClientService authorizedClientService) {
         this.usersService = usersService;
         this.roleService = roleService;
         this.authorizedClientService = authorizedClientService;
@@ -77,7 +77,7 @@ public class CustomOAuth2LoginSuccessHandler implements AuthenticationSuccessHan
         if (!user.isProfileCompleted()) {
             // 通过 URL 参数传递 userId, name 和 surname
             String redirectUrl = String.format(
-                    "http://localhost:3000/registration-signup-oauth?userId=%d&name=%s&surname=%s",
+                    "https://neighbourhood-walk-test.publicvm.com/registration-signup-oauth?userId=%d&name=%s&surname=%s",
                     user.getId(),
                     user.getName(),
                     user.getSurname()
@@ -115,7 +115,7 @@ public class CustomOAuth2LoginSuccessHandler implements AuthenticationSuccessHan
 
             // **这里放置重定向到 oauth-redirect 页面**
             String redirectUrl = String.format(
-                    "http://localhost:3000/oauth-redirect?userId=%d&name=%s&preferredName=%s&roles=%s&token=%s",
+                    "https://neighbourhood-walk-test.publicvm.com/oauth-redirect?userId=%d&name=%s&preferredName=%s&roles=%s&token=%s",
                     user.getId(),
                     user.getName(),
                     user.getPreferredName(),
