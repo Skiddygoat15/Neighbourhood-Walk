@@ -72,7 +72,6 @@ public class DummyDataLoader implements CommandLineRunner {
                 user1.setProfImgUrl("/profileImages/profileImg_men_1.png");
                 user1.setAvgUserRating(5.0);
                 user1.setActivityStatus("Offline");
-                user1.setProfImgUrl("/profileImages/profileImg_men_1.png");
 
                 Users user2 = new Users();
                 user2.setName("Jane");
@@ -88,7 +87,6 @@ public class DummyDataLoader implements CommandLineRunner {
                 user2.setProfImgUrl("/profileImages/profileImg_women_1.png");
                 user2.setAvgUserRating(5.0);
                 user2.setActivityStatus("Active");
-                user2.setProfImgUrl("/profileImages/profileImg_men_1.png");
 
                 Users user3 = new Users();
                 user3.setName("Alice");
@@ -104,8 +102,6 @@ public class DummyDataLoader implements CommandLineRunner {
                 user3.setProfImgUrl("/profileImages/profileImg_women_2.png");
                 user3.setAvgUserRating(5.0);
                 user3.setActivityStatus("Blocked");
-                user3.setProfImgUrl("/profileImages/profileImg_men_1.png");
-
                 Users user4 = new Users();
                 user4.setName("Bob");
                 user4.setSurname("Williams");
@@ -120,7 +116,6 @@ public class DummyDataLoader implements CommandLineRunner {
                 user4.setProfImgUrl("/profileImages/profileImg_men_2.png");
                 user4.setAvgUserRating(5.0);
                 user4.setActivityStatus("Active");
-                user4.setProfImgUrl("/profileImages/profileImg_men_1.png");
 
                 Users user5 = new Users();
                 user5.setName("admin");
@@ -134,7 +129,6 @@ public class DummyDataLoader implements CommandLineRunner {
                 user4.setProfImgUrl("/profileImages/profileImg_men_3.png");
                 user5.setAvgUserRating(5.0);
                 user5.setActivityStatus("Active");
-                user5.setProfImgUrl("/profileImages/profileImg_men_1.png");
 
                 // 将用户保存到数据库
                 usersRepository.saveAll(Arrays.asList(user1, user2, user3, user4, user5));
