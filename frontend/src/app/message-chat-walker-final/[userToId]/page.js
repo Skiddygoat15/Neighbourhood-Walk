@@ -16,8 +16,7 @@ export default function Home({params}) {
     const [isDataReady, setIsDataReady] = useState(false);
     const userIdTo = params.userToId;
     const [chatRoomId, setChatRoomId] = useState("");
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL
-    const websocketurl = process.env.WEB_SOCKET_URL;
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
     useEffect(() => {
         const storedRole = sessionStorage.getItem("roles")?.slice(2, -2);
@@ -57,10 +56,10 @@ export default function Home({params}) {
         console.info("allChatMessages are:", allChatMessages)
     }, [allChatMessages]);
     function initializeWebSocket(userIdFrom, userIdTo) {
-        websocket.current = new WebSocket(`${websocketurl}/ws`);
-
+        // websocket.current = new WebSocket(`ws://${apiUrl}/ws`);
+        websocket.current = new WebSocket(`ws://localhost:8080/ws`);
         websocket.current.onopen = function () {
-            console.log("WebSocket connection successful");
+            console.log("WebSocket连接成功");
             console.log("userIdFrom is: " + userIdFrom);
             console.log("userIdTo is: " + userIdTo);
             GetChatHistory();
@@ -117,22 +116,22 @@ export default function Home({params}) {
         const formattedTime = format(currentTime, "EEEE, MMMM do, yyyy, hh:mm:ss a"); // Format time
 
         if(websocket.current && websocket.current.readyState === WebSocket.OPEN) {
-                const messageData = JSON.stringify({
-                    // time={format(notification.time, 'EEEE, MMMM do, yyyy, hh:mm:ss a')}
-                        type: "message",
-                        userIdFrom: userIdFrom,
-                        userIdTo: userIdTo,
-                        roleFrom: roleFrom,
-                        roleTo: roleTo,
-                        message: inputMessage,
-                        time: formattedTime,
-                    });
+            const messageData = JSON.stringify({
+                // time={format(notification.time, 'EEEE, MMMM do, yyyy, hh:mm:ss a')}
+                type: "message",
+                userIdFrom: userIdFrom,
+                userIdTo: userIdTo,
+                roleFrom: roleFrom,
+                roleTo: roleTo,
+                message: inputMessage,
+                time: formattedTime,
+            });
 
-                console.info("inputMessage is: " + inputMessage);
-                websocket.current.send(messageData);
+            console.info("inputMessage is: " + inputMessage);
+            websocket.current.send(messageData);
 
-                setMessages([...messages, messageData]);
-            } else {
+            setMessages([...messages, messageData]);
+        } else {
             alert("WebSocket Connection not established！");
         }
     };
@@ -145,7 +144,7 @@ export default function Home({params}) {
         const userIdToLong = parseInt(userIdTo, 10);
         const chatRoomId = "room_" + Math.min(userIdFromLong, userIdToLong) + "_" + Math.max(userIdFromLong, userIdToLong);
         setChatRoomId(chatRoomId);
-        fetch(`${apiUrl}/ChatRoom/getChatBoxesFromChatRoom/${chatRoomId}`, {
+        fetch(`http://${apiUrl}/ChatRoom/getChatBoxesFromChatRoom/${chatRoomId}`, {
             method: 'GET',
             headers: {'Content-Type': 'application/json',
                 'Authorization': `Bearer ` + sessionStorage.getItem('token') },
@@ -166,32 +165,32 @@ export default function Home({params}) {
 
     return (
         <BackgroundLayout>
-        <div className="flex flex-col h-screen p-4">
-            <div className="messages">
-                {allChatMessages.map((msg, index) => (
-                    <div
-                        key={uuidv4()}
-                        style={{
-                            // backgroundColor: msg.roleFromRoleType === 'walker' ? '#f1f1f1' : '#d1f0f7',
-                            backgroundColor: msg.roleFromRoleType === 'walker' ? '#d1f0f7' : '#f1f1f1',
-                            textAlign: msg.roleFromRoleType === 'walker' ? 'right' : 'left',
-                            float: msg.roleFromRoleType === 'walker' ? 'right' : 'left',
-                            clear: 'both',
-                            margin: '10px',
-                            padding: '10px',
-                            borderRadius: '10px',
-                            maxWidth: '60%',
-                        }}
-                    >
-                        <p>{msg.message}</p>
-                        <span>{new Date(msg.time).toLocaleString()}</span>
-                    </div>
-                ))}
+            <div className="flex flex-col h-screen p-4">
+                <div className="messages">
+                    {allChatMessages.map((msg, index) => (
+                        <div
+                            key={uuidv4()}
+                            style={{
+                                // backgroundColor: msg.roleFromRoleType === 'walker' ? '#f1f1f1' : '#d1f0f7',
+                                backgroundColor: msg.roleFromRoleType === 'walker' ? '#d1f0f7' : '#f1f1f1',
+                                textAlign: msg.roleFromRoleType === 'walker' ? 'right' : 'left',
+                                float: msg.roleFromRoleType === 'walker' ? 'right' : 'left',
+                                clear: 'both',
+                                margin: '10px',
+                                padding: '10px',
+                                borderRadius: '10px',
+                                maxWidth: '60%',
+                            }}
+                        >
+                            <p>{msg.message}</p>
+                            <span>{new Date(msg.time).toLocaleString()}</span>
+                        </div>
+                    ))}
+                </div>
+                <div className="fixed bottom-16 w-full max-w-[calc(100%-20px)] px-2 mx-auto">
+                    <ChatBar onSendMessage={sendMessage}/>
+                </div>
             </div>
-            <div className="fixed bottom-16 w-full max-w-[calc(100%-20px)] px-2 mx-auto">
-                <ChatBar onSendMessage={sendMessage}/>
-            </div>
-        </div>
-            </BackgroundLayout>
+        </BackgroundLayout>
     );
 }

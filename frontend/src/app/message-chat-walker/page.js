@@ -49,8 +49,8 @@ export default function Home() {
     //websocket连接
     // useEffect(() => {
     function initializeWebSocket(userIdFrom) {
+        // websocket.current = new WebSocket(`${websocketurl}/ws`);
         websocket.current = new WebSocket(`${websocketurl}/ws`);
-
         websocket.current.onopen = function () {
             console.log("WebSocket连接成功");
             console.log("userIdFrom is: " + userIdFrom);
