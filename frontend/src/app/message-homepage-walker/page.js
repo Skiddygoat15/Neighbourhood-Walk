@@ -17,7 +17,7 @@ export default function Home() {
     const [confirmClick, setConfirmClick] = useState(0);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     function getAllRoles() {
-        fetch(`http://${apiUrl}/roles`, {
+        fetch(`${apiUrl}/roles`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -61,6 +61,10 @@ export default function Home() {
         setConfirmClick(prev => prev + 1); // 更新点击计数
     }
 
+    useEffect(() => {
+        handleSearch();
+    }, []); // 空依赖数组，确保仅在页面加载时执行一次
+
     //初始化
     useEffect(() => {
         if (searchTerm) {
@@ -83,7 +87,7 @@ export default function Home() {
     }, [chatBars]);
 
     function getOrAddChatBar() {
-        fetch(`http://${apiUrl}/ChatBar/getChatBars/${userId}`, {
+        fetch(`${apiUrl}/ChatBar/getChatBars/${userId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -114,7 +118,7 @@ export default function Home() {
     function saveChatBar() {
         const userIdLong = parseInt(userId, 10);
         const searchTermLong = parseInt(searchTerm, 10);
-        fetch(`http://${apiUrl}/ChatBar/addChatBar?userIdFrom=${userIdLong}&userIdTo=${searchTermLong}`, {
+        fetch(`${apiUrl}/ChatBar/addChatBar?userIdFrom=${userIdLong}&userIdTo=${searchTermLong}`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json',
                 'Authorization': `Bearer ` + sessionStorage.getItem('token') },
@@ -130,7 +134,7 @@ export default function Home() {
 
     function getChatBar() {
         // 先检查是否已经存在该聊天框
-        fetch(`http://${apiUrl}/ChatBar/getChatBars/${userId}`, {
+        fetch(`${apiUrl}/ChatBar/getChatBars/${userId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -156,7 +160,7 @@ export default function Home() {
     }
 
     function closeChatBar(userIdTo) {
-        fetch(`http://${apiUrl}/ChatBar/updateChatBar?userIdFrom=${userId}&userIdTo=${userIdTo}&state=close`, {
+        fetch(`${apiUrl}/ChatBar/updateChatBar?userIdFrom=${userId}&userIdTo=${userIdTo}&state=close`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -175,7 +179,7 @@ export default function Home() {
     }
 
     function openChatBar(userIdTo) {
-        fetch(`http://${apiUrl}/ChatBar/updateChatBar?userIdFrom=${userId}&userIdTo=${userIdTo}&state=open`, {
+        fetch(`${apiUrl}/ChatBar/updateChatBar?userIdFrom=${userId}&userIdTo=${userIdTo}&state=open`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -192,107 +196,6 @@ export default function Home() {
             })
             .catch(error => console.error('Error:', error));
     }
-
-    //未添加跳转的页面
-    // return (
-    //     <div style={{padding: 20, backgroundColor: '#fff', minHeight: '100vh'}}>
-    //         <Head>
-    //             <title>Notifications</title>
-    //             <meta name="description" content="Notification page"/>
-    //             <link rel="icon" href="/favicon.ico"/>
-    //         </Head>
-    //
-    //         <div style={{
-    //             textAlign: 'center',
-    //             padding: '10px 0',
-    //             fontSize: '12px',
-    //             color: '#666',
-    //             position: 'sticky',
-    //             top: 0,
-    //             zIndex: 1000
-    //         }}>9:41
-    //         </div>
-    //         <h1 style={{color: '#333', fontSize: '24px', margin: '20px 0'}}>Messages</h1>
-    //
-    //         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '10px 0' }}>
-    //             <input type="text" placeholder="Search notifications..."
-    //                    style={{
-    //                        width: '70%',
-    //                        padding: 10,
-    //                        border: '1px solid #ccc',
-    //                        borderRadius: '8px',
-    //                        boxSizing: 'border-box'
-    //                    }}
-    //                    value={tempSearch}
-    //                    onChange={e => setTempSearch(e.target.value)}/>
-    //
-    //             <button onClick={() => handleSearch()} style={{
-    //                 padding: '10px 20px',
-    //                 marginLeft: '10px',
-    //                 background: '#0070f3',
-    //                 color: 'white',
-    //                 borderRadius: '8px',
-    //                 cursor: 'pointer',
-    //                 border: 'none'
-    //             }}>Confirm</button>
-    //
-    //         </div>
-    //         <h2 style={{
-    //             color: '#333',
-    //             fontSize: '15px',  // 增加字体大小
-    //             textAlign: 'center',  // 居中标题
-    //             margin: '20px 0'  // 增加上下外边距以提供空间
-    //         }}>Recently Chat</h2>
-    //
-    //         <div style={{display: 'flex', flexWrap: 'wrap', flexDirection: 'column'}}>
-    //             {chatBars && Array.isArray(chatBars) && chatBars
-    //                 .filter(bar => bar.state !== "close")
-    //                 .map((bar, index) => (
-    //                     <div key={index} style={{
-    //                         border: '1px solid #ccc',
-    //                         borderRadius: '8px',
-    //                         padding: '20px',
-    //                         margin: '10px auto',  // 使chatBar在水平方向上居中
-    //                         minWidth: '300px',
-    //                         width: '100%',  // 聊天栏宽度占满可用空间
-    //                         maxWidth: '600px',  // 设置一个最大宽度以保持设计的整洁
-    //                         backgroundColor: '#f9f9f9',
-    //                         boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-    //                         position: 'relative',
-    //                         display: 'flex',  // 使用flex布局使内容居中
-    //                         flexDirection: 'row',  // 内容沿水平方向排列
-    //                         alignItems: 'center',  // 垂直居中对齐
-    //                         justifyContent: 'center'  // 水平居中对齐
-    //                     }}>
-    //                         <h3 style={{
-    //                             fontSize: '16px',  // 调整字体大小以更好地适应移动和桌面视图
-    //                             margin: 0,  // 移除外边距以防止布局偏移
-    //                             padding: '0 10px'  // 增加内边距确保文本不紧贴边缘
-    //                         }}>Chat with user {bar.userTo.name}</h3>
-    //                         <button style={{
-    //                             position: 'absolute',
-    //                             top: '10px',
-    //                             right: '10px',
-    //                             color: 'black',
-    //                             border: 'none',
-    //                             borderRadius: '50%',
-    //                             cursor: 'pointer',
-    //                             width: '30px',
-    //                             height: '30px',
-    //                             display: 'flex',
-    //                             alignItems: 'center',
-    //                             justifyContent: 'center'
-    //                         }}  onClick={() => {
-    //                             closeChatBar(bar.userTo.id);
-    //                             getOrAddChatBar();
-    //                         }}>
-    //                             X
-    //                         </button>
-    //                     </div>
-    //                 ))}
-    //         </div>
-    //     </div>
-    // );
 
     return (
         <BackgroundLayout>
@@ -373,8 +276,10 @@ export default function Home() {
                                     margin: 0,  // 移除外边距以防止布局偏移
                                     padding: '0 10px',  // 增加内边距确保文本不紧贴边缘
                                     cursor: 'pointer'  // 将鼠标样式设置为指针
-                                }}>Chat with user {bar.userTo.name}</h3>
-
+                                }}>
+                                    {/*Id: {bar.userTo.id}, Chat with user {bar.userTo.name}</h3>*/}
+                                    <span style={{ color: 'blue', fontWeight: 'bold' }}>Id: {bar.userTo.id}</span> Chat with user {bar.userTo.name}
+                                </h3>
                                 <button style={{
                                     position: 'absolute',
                                     top: '10px',

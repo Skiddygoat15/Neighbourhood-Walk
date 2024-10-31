@@ -32,7 +32,7 @@ const RequestStatus = () => {
                 return;
             }
 
-        const getRequestsListAPI = `http://${apiUrl}/WalkerRequest/getWalkerRequestByWalkerId/${walkerId}`;
+        const getRequestsListAPI = `${apiUrl}/WalkerRequest/getWalkerRequestByWalkerId/${walkerId}`;
 
         fetch(getRequestsListAPI, {
             method: 'GET',

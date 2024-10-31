@@ -86,7 +86,7 @@ public class PreMeetServiceImpl implements PreMeetService {
         Date currentDate = new Date();
 
         if (!(preMeetDate.compareTo(currentDate) >= 0 && preMeetDate.compareTo(requestStartDate) <= 0)) {
-            throw new IllegalArgumentException("Please make sure that preMeetDate is before current date and not later than requestStartDate!");
+            throw new IllegalArgumentException("Please make sure that preMeetDate is after current date and before requestStartDate!");
         }
         // 验证通过后，获取 parent 和 walker 实体
         Users parent = usersRepository.findById(parentId)

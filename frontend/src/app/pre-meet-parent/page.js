@@ -36,7 +36,12 @@ export default function PreMeetParent() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // 这里可以加入数据提交的逻辑，比如调用API保存数据
+
+    if (!meetingInfo || meetingInfo.trim() === '') {
+      alert('Meeting Link and Address is required. Please try again.');
+      return;
+    }
+
     console.log({
       meetingType,
       contactMethod,
@@ -47,13 +52,13 @@ export default function PreMeetParent() {
       requestId
     });
     const finalSendBody = {
-      time: meetingDate,
+      time: new Date(meetingDate),
       preMeetType: meetingType,
       contactApproach: contactMethod,
       urlOrAddress: meetingInfo,
       newOrNot: true
     }
-    const createPreMeetAPI = `http://${apiUrl}/preMeet/create/${parentId}/${walkerId}/${requestId}`
+    const createPreMeetAPI = `${apiUrl}/preMeet/create/${parentId}/${walkerId}/${requestId}`
     fetch(createPreMeetAPI, {
       method: 'post',
       credentials: 'include',
@@ -72,7 +77,7 @@ export default function PreMeetParent() {
             });
           }
           alert('create preMeet successfully.');
-          router.push('/pre-meet-parent-info'); // 修改成你想跳转的页面
+          router.push('/pre-meet-parent-info');
           //setLoading(false);
         })
         .catch(err => {
@@ -80,7 +85,6 @@ export default function PreMeetParent() {
           alert('Failed to create preMeet. Please try again.');
           //setLoading(false);
         });
-    // 表单提交后跳转到其他页面
   };
 
   return (

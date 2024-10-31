@@ -2,8 +2,10 @@
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import BackgroundLayout from '../ui-background-components/BackgroundLayout';
+import useTextColor from '../ui-background-components/useTextColor';
 
 export default function LiveTrackingEnterWalker() {
+    const textColor = useTextColor();
     const router = useRouter();
     const [requests, setRequests] = useState([]);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
@@ -18,7 +20,7 @@ export default function LiveTrackingEnterWalker() {
                     return;
                 }
 
-                const response = await fetch(`http://${apiUrl}/requests/getRequestsByWalkerId/${walkerId}`, {
+                const response = await fetch(`${apiUrl}/requests/getRequestsByWalkerId/${walkerId}`, {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${token}`, // 添加token到请求头
@@ -54,6 +56,18 @@ export default function LiveTrackingEnterWalker() {
         fetchRequests();
     }, []);
 
+    // formatting date and time
+    const formatDateTime = (dateString) => {
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Months start at 0, so add 1.
+        const day = String(date.getDate()).padStart(2, '0'); // Completing two-digit numbers with zeros
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+
+        return `${hours}:${minutes} - ${day}/${month}/${year}`;  // return format hh-mm dd/mm/yyyy
+    };
+
     // 跳转函数
     const handleStartWalk = (requestId) => {
         router.push(`/live-tracking-sharing-walker/${requestId}`);
@@ -62,12 +76,12 @@ export default function LiveTrackingEnterWalker() {
     return (
         <BackgroundLayout>
         <div className="relative flex flex-col items-center justify-start min-h-screen p-8">
-            <div className="fixed top-0 left-0 w-full p-4 bg-white shadow-md z-10">
+            <div className="fixed top-0 left-0 w-full p-4 z-10">
                 <div className="flex items-center space-x-4">
-                    <button onClick={() => router.back()} className="text-black text-2xl">
+                    <button onClick={() => router.back()} className={`${textColor} text-2xl`}>
                         <span>&lt;</span>
                     </button>
-                    <h1 className="text-2xl font-bold">In progress</h1>
+                    <h1 className={`${textColor} text-2xl font-bold`}>In progress</h1>
                 </div>
             </div>
 
@@ -89,7 +103,7 @@ export default function LiveTrackingEnterWalker() {
                                     <span className="font-bold">Destination:</span> {request.destination}
                                 </p>
                                 <p className="text-lg">
-                                    <span className="font-bold">Departure Time:</span> {new Date(request.startTime).toLocaleString('en-AU', { timeZone: 'Australia/Sydney' })}
+                                    <span className="font-bold">Departure Time:</span> {formatDateTime(request.startTime)}
                                 </p>
                             </div>
 

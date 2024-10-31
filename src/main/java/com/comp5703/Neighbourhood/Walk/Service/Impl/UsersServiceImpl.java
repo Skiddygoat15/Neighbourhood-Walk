@@ -136,7 +136,6 @@ public class UsersServiceImpl implements UsersService {
             throw new IllegalArgumentException("Invalid gender");
         }
 
-
         // 验证手机号格式
         if (!user.getPhone().matches("^\\d{10}$")) {
             throw new IllegalArgumentException("Phone number must be numeric and 10 digits");
@@ -284,6 +283,11 @@ public class UsersServiceImpl implements UsersService {
         }
         if (updatedUser.getProfImgUrl() != null) {
             existingUser.setProfImgUrl(updatedUser.getProfImgUrl());
+        }
+        if (updatedUser.getAddress() != null && updatedUser.getLatitude() != null && updatedUser.getLongitude() != null) {
+            existingUser.setAddress(updatedUser.getAddress());
+            existingUser.setLatitude(updatedUser.getLatitude());
+            existingUser.setLongitude(updatedUser.getLongitude());
         }
 
         // 验证和更新仅允许 Walker 角色修改的字段

@@ -43,7 +43,7 @@ export default function Home() {
             mode: 'cors',
             cache: 'default'
         };
-        const requestURL = `http://${apiUrl}/requests/getRequestsByParentId/${parentId}`;
+        const requestURL = `${apiUrl}/requests/getRequestsByParentId/${parentId}`;
         fetch(requestURL, myInit)
             .then(response => {
                 if (!response.ok) {throw new Error('Network response was not ok0');}
@@ -64,7 +64,7 @@ export default function Home() {
 
 // 获取Notifications
     function fetchData(requestId) {
-        return fetch(`http://${apiUrl}/Notification/findNotificationByRequestId/${requestId}`, {
+        return fetch(`${apiUrl}/Notification/findNotificationByRequestId/${requestId}`, {
             method: 'GET',
             headers: {'Authorization': 'Bearer ' + token},
             mode: 'cors',
@@ -86,7 +86,7 @@ export default function Home() {
 
     // 获取UPNotifications
     function fetchData_Profile(userId) {
-        return fetch(`http://${apiUrl}/UPNotifications/getUPNotificationsByUserId/${userId}`, {
+        return fetch(`${apiUrl}/UPNotifications/getUPNotificationsByUserId/${userId}`, {
             method: 'GET',
             headers: {'Authorization': 'Bearer ' + token},
             mode: 'cors',
@@ -147,7 +147,7 @@ export default function Home() {
 
     //获取notification对应walker的surname
     function fetchWalkerByNotification(notificationId) {
-        return fetch(`http://${apiUrl}/Notification/findWalkerByNotification/${notificationId}`, {
+        return fetch(`${apiUrl}/Notification/findWalkerByNotification/${notificationId}`, {
             method: 'GET',
             headers: {'Authorization': 'Bearer ' + token},
             mode: 'cors',

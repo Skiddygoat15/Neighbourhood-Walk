@@ -1,5 +1,4 @@
 "use client";
-
 import {useEffect, useState} from 'react';
 import { useRouter } from 'next/navigation';
 import { geocodeAddress } from '@/components/geocode';
@@ -54,7 +53,7 @@ export default function UpdateRequest() {
   }, [request]);
 
   const handleUpdate = async () => {
-    const updateRequestAPI = `http://${apiUrl}/requests/update/${request.requestId}`;
+    const updateRequestAPI = `${apiUrl}/requests/update/${request.requestId}`;
 
     try{
       if (!sendBody.departure || sendBody.departure.trim() === '' ||
@@ -67,6 +66,11 @@ export default function UpdateRequest() {
         throw new Error("Destination and Zip code is required.");
       }
 
+      if (!/^\d{4}$/.test(sendBody.destinationZip)) {
+        setError("Zip Code must be numeric and 4 digits");
+        return;
+      }
+
       if (!date || !departureTime || departureTime.hour === '' || departureTime.minute === '') {
         throw new Error("Departure Date and Time is required.");
       }
@@ -75,21 +79,28 @@ export default function UpdateRequest() {
         throw new Error("Arrive Time is required.");
       }
 
-      const currentDateTime = new Date();
-      const selectedDateTime = new Date(date);
-      selectedDateTime.setHours(departureTime.hour);
-      selectedDateTime.setMinutes(departureTime.minute);
-
-      if (selectedDateTime < currentDateTime) {
-        throw new Error("Departure Date / Time cannot be in the past.");
-      }
-
-      if (departureTime.hour < 0 || departureTime.hour > 12) {
+      if (departureTime.hour < 0 || departureTime.hour > 12
+          || arriveTime.hour < 0 || arriveTime.hour > 12) {
         throw new Error("Hour must be between 0 and 12.");
       }
 
-      if (departureTime.minute < 0 || departureTime.minute > 59) {
+      if (departureTime.minute < 0 || departureTime.minute > 59
+          || arriveTime.minute < 0 || arriveTime.minute > 59) {
         throw new Error("Minute must be between 0 and 59.");
+      }
+
+      const currentDateTime = new Date();
+      const departureDateTime = combineDateAndTime(date, departureTime);
+      const arriveDateTime = combineDateAndTime(date, arriveTime);
+      console.log("departureDT: " + departureDateTime);
+      console.log("arriveDT: " + arriveDateTime);
+
+      if (departureDateTime < currentDateTime) {
+        throw new Error("Departure Date / Time cannot be in the past.");
+      }
+
+      if (arriveDateTime <= departureDateTime) {
+        throw new Error("Arrival time must be later than departure time.");
       }
 
       // Get the latitude and longitude of the departure
@@ -100,8 +111,8 @@ export default function UpdateRequest() {
       // Create new sendBody data
       const updatedSendBody = {
         ...sendBody,  // keep other attributes same
-        startTime: combineDateAndTime(date, departureTime),
-        arriveTime: combineDateAndTime(date, arriveTime),
+        startTime: departureDateTime,
+        arriveTime: arriveDateTime,
         departure: departureCoords.formatted_address,
         departureLatitude: departureCoords.lat,
         departureLongitude: departureCoords.lng,
@@ -155,25 +166,27 @@ export default function UpdateRequest() {
 
   function convertTo24HourTime(time) {
     let { hour, minute, period } = time;
-    // 转换hour为数字，确保可以进行加减运算
+    // Converting hour to a number ensures that addition and subtraction can be performed.
     hour = parseInt(hour, 10);
-    // 如果时间是PM且小时数小于12，则需要将小时数加12
+    minute = parseInt(minute, 10);
+    // If the time is PM and the number of hours is less than 12, you need to add 12 to the number of hours
     if (period === 'PM' && hour < 12) {
       hour += 12;
     }
-    // 如果是AM且小时为12（午夜），则将小时设为00
+    // If it is AM and the hour is 12 (midnight), set the hour to 00
     if (period === 'AM' && hour === 12) {
       hour = 0;
     }
-    // 确保小时和分钟是两位数格式
-    const hourStr = String(hour).padStart(2, '0');
-    const minuteStr = String(minute).padStart(2, '0');
-    return `${hourStr}:${minuteStr}:00`; // 秒数为00
+    return { hour, minute };
   }
 
   function combineDateAndTime(date, time) {
-    const formattedTime = convertTo24HourTime(time);
-    return `${date}T${formattedTime}`;
+    const { hour, minute } = convertTo24HourTime(time);
+    // Use the Date object in local time
+    const combinedDate = new Date(date);
+    combinedDate.setHours(hour, minute, 0, 0);
+    // Returns the local time string without the "Z" suffix.
+    return combinedDate.toISOString().slice(0, 19);
   }
 
   // Functions for extracting postal codes from address strings

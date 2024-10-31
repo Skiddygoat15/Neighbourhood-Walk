@@ -18,7 +18,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         // 允许指定的来源进行WebSocket跨域
         registry.addHandler(myWebSocketHandler, "/ws")
-                .setAllowedOrigins("http://localhost:3000", "http://localhost:3001", "http://localhost:3002", "http://localhost:3003", "http://localhost:3004");
+                .setAllowedOrigins("http://localhost:3000", "http://54.253.215.126","https://54.253.215.126","https://neighbourhood-walk-test.publicvm.com", "http://localhost:3001", "http://localhost:3002", "http://localhost:3003", "http://localhost:3004");
     }
 
 }

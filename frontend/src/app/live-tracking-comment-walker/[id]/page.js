@@ -11,10 +11,11 @@ export default function CommentPage() {
     const { id: requestId } = useParams(); // 获取 URL 中的 requestId
     const [comment, setComment] = useState('');
     const [rate, setRate] = useState(0); // 默认评分为 0
-    const [ParentId, setParentId] = useState(null); // 保存获取到的 ParentId
+    const [parentId, setParentId] = useState(null); // 保存获取到的 parentId
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+
     useEffect(() => {
-        // 获取 ParentId
+        // 获取 parentId
         async function fetchParentId() {
             try {
                 const token = sessionStorage.getItem('token'); // 获取 token
@@ -23,7 +24,7 @@ export default function CommentPage() {
                     return;
                 }
 
-                const response = await fetch(`http://${apiUrl}/requests/getParentByRequestId/${requestId}`, {
+                const response = await fetch(`${apiUrl}/requests/getParentByRequestId/${requestId}`, {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -32,13 +33,15 @@ export default function CommentPage() {
                 });
 
                 if (!response.ok) {
-                    throw new Error('Failed to fetch ParentId');
+                    throw new Error('Failed to fetch parentId');
                 }
 
                 const data = await response.json();
-                setParentId(data.id); // 假设返回的数据结构中 Parent 的 id 为 data.id
+                // console.info("parent is: ",data.id);
+                console.info("request is: ",requestId);
+                setParentId(data.id); // 假设返回的数据结构中 parentId 的 id 为 data.id
             } catch (error) {
-                console.error('Error fetching ParentId:', error);
+                console.error('Error fetching parentId:', error);
             }
         }
 
@@ -56,13 +59,12 @@ export default function CommentPage() {
         // 格式化为 YYYY-MM-DD HH:MM:SS 格式
         const commentDate = date.toISOString().replace('T', ' ').slice(0, 19);
 
-        if (!token || !ParentId) {
-            console.error('No token or ParentId found');
+        if (!token || !parentId) {
+            console.error('No token or parentId found');
             return;
         }
-
         try {
-            const response = await fetch(`http://${apiUrl}/Comment`, {
+            const response = await fetch(`${apiUrl}/Comment`, {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${token}`, // 添加token到请求头
@@ -73,7 +75,7 @@ export default function CommentPage() {
                         requestId: parseInt(requestId) // 转换为数字格式
                     },
                     user: {
-                        id: parseInt(ParentId) // 使用获取到的 ParentId
+                        id: parseInt(parentId) // 使用获取到的 parentId
                     },
                     rate, // 评分
                     comment, // 评论
@@ -84,7 +86,7 @@ export default function CommentPage() {
             if (!response.ok) {
                 throw new Error('Failed to submit comment');
             }
-            router.push('/home-parent'); // 评论提交成功后跳转
+            router.push('/home-walker'); // 评论提交成功后跳转
         } catch (error) {
             console.error('Error submitting comment:', error);
         }

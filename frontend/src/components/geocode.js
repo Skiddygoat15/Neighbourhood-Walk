@@ -4,7 +4,7 @@ export const geocodeAddress = async (address) => {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     try {
         const response = await fetch(
-            `http://${apiUrl}/geocode/?address=${encodeURIComponent(address)}`,
+            `${apiUrl}/geocode/?address=${encodeURIComponent(address)}`,
             {
                 method: 'GET',
                 headers: {

@@ -18,7 +18,7 @@ export default function Home() {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
     function getAllRoles() {
-        fetch(`http://${apiUrl}/roles`, {
+        fetch(`${apiUrl}/roles`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -62,6 +62,10 @@ export default function Home() {
         setConfirmClick(prev => prev + 1); // 更新点击计数
     }
 
+    useEffect(() => {
+        handleSearch();
+    }, []); // 空依赖数组，确保仅在页面加载时执行一次
+
     //初始化
     useEffect(() => {
         if (searchTerm) {
@@ -84,7 +88,7 @@ export default function Home() {
     }, [chatBars]);
 
     function getOrAddChatBar() {
-        fetch(`http://${apiUrl}/ChatBar/getChatBars/${userId}`, {
+        fetch(`${apiUrl}/ChatBar/getChatBars/${userId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -115,7 +119,7 @@ export default function Home() {
     function saveChatBar() {
         const userIdLong = parseInt(userId, 10);
         const searchTermLong = parseInt(searchTerm, 10);
-        fetch(`http://${apiUrl}/ChatBar/addChatBar?userIdFrom=${userIdLong}&userIdTo=${searchTermLong}`, {
+        fetch(`${apiUrl}/ChatBar/addChatBar?userIdFrom=${userIdLong}&userIdTo=${searchTermLong}`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json',
                 'Authorization': `Bearer ` + sessionStorage.getItem('token') },
@@ -131,7 +135,7 @@ export default function Home() {
 
     function getChatBar() {
         // 先检查是否已经存在该聊天框
-        fetch(`http://${apiUrl}/ChatBar/getChatBars/${userId}`, {
+        fetch(`${apiUrl}/ChatBar/getChatBars/${userId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -157,7 +161,7 @@ export default function Home() {
     }
 
     function closeChatBar(userIdTo) {
-        fetch(`http://${apiUrl}/ChatBar/updateChatBar?userIdFrom=${userId}&userIdTo=${userIdTo}&state=close`, {
+        fetch(`${apiUrl}/ChatBar/updateChatBar?userIdFrom=${userId}&userIdTo=${userIdTo}&state=close`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -176,7 +180,7 @@ export default function Home() {
     }
 
     function openChatBar(userIdTo) {
-        fetch(`http://${apiUrl}/ChatBar/updateChatBar?userIdFrom=${userId}&userIdTo=${userIdTo}&state=open`, {
+        fetch(`${apiUrl}/ChatBar/updateChatBar?userIdFrom=${userId}&userIdTo=${userIdTo}&state=open`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -380,7 +384,10 @@ export default function Home() {
                                         margin: 0,  // 移除外边距以防止布局偏移
                                         padding: '0 10px',  // 增加内边距确保文本不紧贴边缘
                                         cursor: 'pointer'  // 将鼠标样式设置为指针
-                                    }}>Chat with user {bar.userTo.name}</h3>
+                                    }}>
+                                        {/*Chat with user {bar.userTo.name}*/}
+                                        <span style={{ color: 'blue', fontWeight: 'bold' }}>Id: {bar.userTo.id}</span> Chat with user {bar.userTo.name}
+                                    </h3>
 
                                     <button style={{
                                         position: 'absolute',

@@ -43,7 +43,7 @@ export default function LiveTrackingSharingParent( {params} ) {
     // fetch departure and destination
     const fetchLocations = useCallback(async () => {
         try {
-            const getLiveLocationInfoAPI = `http://${apiUrl}/requests/getLiveLocationByRequestId/${requestId}`;
+            const getLiveLocationInfoAPI = `${apiUrl}/requests/getLiveLocationByRequestId/${requestId}`;
             const response = await fetch(getLiveLocationInfoAPI, {
                 method: 'GET',
                 credentials: 'include',
@@ -97,7 +97,7 @@ export default function LiveTrackingSharingParent( {params} ) {
 
     // Function to send updated location to backend
     const updateLocationToBackend = async (position) => {
-        const updateLocationAPI = `http://${apiUrl}/requests/updateLocation/${requestId}/?walkerLatitude=${position.lat}&walkerLongitude=${position.lng}`;
+        const updateLocationAPI = `${apiUrl}/requests/updateLocation/${requestId}/?walkerLatitude=${position.lat}&walkerLongitude=${position.lng}`;
 
         try {
             const response = await fetch(updateLocationAPI, {
@@ -213,12 +213,12 @@ export default function LiveTrackingSharingParent( {params} ) {
     return (
         <BackgroundLayout>
             <div className="relative flex flex-col items-center justify-start min-h-screen p-8">
-                <div className="fixed top-0 left-0 w-full p-4 bg-white shadow-md z-10">
+                <div className="fixed top-0 left-0 w-full p-4 z-10">
                     <div className="flex items-center space-x-4">
-                        <button onClick={() => router.back()} className="text-black text-2xl">
+                        <button onClick={() => router.back()} className={`${textColor} text-2xl`}>
                             <span>&lt;</span>
                         </button>
-                        <h1 className="text-2xl font-bold">Live-tracking</h1>
+                        <h1 className={`${textColor} text-2xl font-bold`}>Live-tracking</h1>
                     </div>
                 </div>
 

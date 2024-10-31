@@ -34,7 +34,7 @@ export default function AdminContentManagement() {
         setRequests([]);
         setError(null);
 
-        const searchRequestsAPI = `http://${apiUrl}/requests/searchRequests?searchTerm=${searchTerm}`;
+        const searchRequestsAPI = `${apiUrl}/requests/searchRequests?searchTerm=${searchTerm}`;
         try {
             const response = await fetch(searchRequestsAPI, {
                 method: 'get',
@@ -71,7 +71,7 @@ export default function AdminContentManagement() {
     // 获取所有请求
     const fetchAllRequests = () => {
         setLoading(true);
-        const getAllRequestsAPI = `http://${apiUrl}/requests/getAllRequests`;
+        const getAllRequestsAPI = `${apiUrl}/requests/getAllRequests`;
         fetch(getAllRequestsAPI, {
             method: 'get',
             credentials: 'include',
@@ -109,7 +109,7 @@ export default function AdminContentManagement() {
 
     function deleteRequest(requestId) {
         console.log('requestId', requestId);
-        fetch(`http://${apiUrl}/requests/${requestId}`, {
+        fetch(`${apiUrl}/requests/${requestId}`, {
             method: 'DELETE', // DELETE 方法用于删除请求
             credentials: 'include',
             headers: {

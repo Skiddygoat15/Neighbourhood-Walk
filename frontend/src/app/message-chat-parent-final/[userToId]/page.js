@@ -154,7 +154,7 @@ export default function Home({params}) {
         const userIdToLong = parseInt(userIdTo, 10);
         const chatRoomId = "room_" + Math.min(userIdFromLong, userIdToLong) + "_" + Math.max(userIdFromLong, userIdToLong);
         setChatRoomId(chatRoomId);
-        fetch(`http://${apiUrl}/ChatRoom/getChatBoxesFromChatRoom/${chatRoomId}`, {
+        fetch(`${apiUrl}/ChatRoom/getChatBoxesFromChatRoom/${chatRoomId}`, {
             method: 'GET',
             headers: {'Content-Type': 'application/json',
                 'Authorization': `Bearer ` + sessionStorage.getItem('token') },

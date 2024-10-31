@@ -91,7 +91,7 @@ export default function HomeParent() {
     // 调用API获取 avgUserRating
     const fetchAvgUserRating = async () => {
       try {
-        const response = await fetch(`http://${apiUrl}/Users/getUserById/${userId}`, {
+        const response = await fetch(`${apiUrl}/Users/getUserById/${userId}`, {
           method: 'GET',
           headers: {
             'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
@@ -114,7 +114,7 @@ export default function HomeParent() {
     // 检查未读通知
     const checkNotifications = async () => {
       try {
-        const response = await fetch(`http://${apiUrl}/UPNotifications/check-any-notification-unchecked-parent/${userId}`, {
+        const response = await fetch(`${apiUrl}/UPNotifications/check-any-notification-unchecked-parent/${userId}`, {
           method: 'GET',
           headers: {
             'Authorization': 'Bearer ' + sessionStorage.getItem('token'),
@@ -156,7 +156,7 @@ export default function HomeParent() {
             </div>
             <div
                 className="bg-white border rounded-lg p-4 text-center cursor-pointer"
-                onClick={() => handleNavigation('/home-history-request-parent-test')}
+                onClick={() => handleNavigation('/home-history-request-parent-test3')}
             >
               <p className="font-semibold">History</p>
             </div>
