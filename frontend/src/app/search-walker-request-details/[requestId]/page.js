@@ -155,6 +155,10 @@ export default function RequestDetails({params}) {
         }
     };
 
+    const handleContact = () => {
+        router.push(`/message-homepage-walker`);
+    };
+
     // render the content according to the type of the returned object(request/walkerRequest)
     const renderContent = () => {
         if (requestDetails) { // check if any object exist
@@ -196,6 +200,11 @@ export default function RequestDetails({params}) {
                                                   className="w-full h-full object-cover"/>
                                         )}
                                     </div>
+                                </div>
+
+                                <div className="mb-4">
+                                    <p className="text-gray-600">Chat Id:</p>
+                                    <p className="text-black text-lg">{request.parent.id}</p>
                                 </div>
 
                                 <div className="mb-4">
@@ -243,11 +252,20 @@ export default function RequestDetails({params}) {
                                     {timeSince(request.publishDate)}
                                 </div>
 
+                                {/* Contact Button */}
+                                <button
+                                    onClick={() => handleContact()}
+                                    className="mb-2 bg-black text-white px-4 py-2 rounded-lg w-full hover:bg-gray-700">
+                                    Contact
+                                </button>
+
+                                <br></br>
+
                                 {statusCheck()}
                             </div>
                         </div>
                     </BackgroundLayout>
-            );
+                );
             } else {
                 // this means walker does not apply this request yet
                 // get request object
@@ -265,6 +283,11 @@ export default function RequestDetails({params}) {
                                               className="w-full h-full object-cover"/>
                                     )}
                                 </div>
+                            </div>
+
+                            <div className="mb-4">
+                                <p className="text-gray-600">Chat Id:</p>
+                                <p className="text-black text-lg">{request.parent.id}</p>
                             </div>
 
                             <div className="mb-4">
@@ -311,6 +334,15 @@ export default function RequestDetails({params}) {
                             <div className="mb-4 text-gray-500">
                                 {timeSince(request.publishDate)}
                             </div>
+
+                            {/* Contact Button */}
+                            <button
+                                onClick={() => handleContact()}
+                                className="mb-2 bg-black text-white px-4 py-2 rounded-lg w-full hover:bg-gray-700">
+                                Contact
+                            </button>
+
+                            <br></br>
 
                             <button
                                 onClick={applyRequest}
