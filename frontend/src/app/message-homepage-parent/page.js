@@ -359,7 +359,7 @@ export default function Home() {
                         .map((bar, index) => {
                             const router = useRouter();
                             const handleChatClick = () => {
-                                router.push(`/message-chat-parent-final/${searchTerm}`);
+                                router.push(`/message-chat-parent-final/${parseInt(bar.userTo.id, 10)}`);
                             };
                             return (
                                 <div key={index} style={{

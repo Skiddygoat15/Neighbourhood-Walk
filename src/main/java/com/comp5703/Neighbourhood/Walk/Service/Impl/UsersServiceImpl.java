@@ -154,6 +154,8 @@ public class UsersServiceImpl implements UsersService {
         // 对密码进行bcrypt加密
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 
+        user.setProfImgUrl("/profileImages/profileImg_men_1.png");
+
         // 保存用户信息到 Users 表
         Users savedUser = usersRepository.save(user);
 
@@ -281,6 +283,11 @@ public class UsersServiceImpl implements UsersService {
         }
         if (updatedUser.getProfImgUrl() != null) {
             existingUser.setProfImgUrl(updatedUser.getProfImgUrl());
+        }
+        if (updatedUser.getAddress() != null && updatedUser.getLatitude() != null && updatedUser.getLongitude() != null) {
+            existingUser.setAddress(updatedUser.getAddress());
+            existingUser.setLatitude(updatedUser.getLatitude());
+            existingUser.setLongitude(updatedUser.getLongitude());
         }
 
         // 验证和更新仅允许 Walker 角色修改的字段

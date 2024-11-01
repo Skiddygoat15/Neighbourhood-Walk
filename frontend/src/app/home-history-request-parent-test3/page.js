@@ -2,8 +2,11 @@
 
 import { useRouter } from 'next/navigation';
 import {useEffect, useState} from "react";
+import BackgroundLayout from '../ui-background-components/BackgroundLayout';
+import useTextColor from '../ui-background-components/useTextColor';
 
 export default function HistoryRequestParent() {
+    const textColor = useTextColor();
     const router = useRouter();
     const [requests,setRequests] = useState([]);
     const [walkerComments,setWalkerComments] = useState([]);
@@ -40,7 +43,11 @@ export default function HistoryRequestParent() {
     }, [requests,walkerComments,parentComments]);
 
     function getRequestsByParentId(){
-        fetch(`http://${apiUrl}/requests/getRequestsByParentId/${userId}`, {
+        console.info("check");
+        const userId = parseInt(sessionStorage.getItem("userId"));
+        console.info(userId);
+
+        fetch(`${apiUrl}/requests/getRequestsByParentId/${userId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -54,6 +61,8 @@ export default function HistoryRequestParent() {
                 return response.json();
             })
             .then(data =>{
+                console.info("check");
+                console.info("requests gotten are:",data);
                 const completedRequests = data.filter(data => data.status === 'Completed');
                 setRequests(completedRequests);
             })
@@ -69,7 +78,7 @@ export default function HistoryRequestParent() {
             return;
         }
         const localUserId = parseInt(sessionStorage.getItem("userId"), 10);
-        fetch(`http://${apiUrl}/Comment/getCommentsByReuqestId/${requestId}`, {
+        fetch(`${apiUrl}/Comment/getCommentsByReuqestId/${requestId}`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -114,17 +123,17 @@ export default function HistoryRequestParent() {
     }
 
     return (
-        <main className="min-h-screen bg-white flex justify-center items-start pt-4">
+        <BackgroundLayout>
+        <main className="min-h-screen flex justify-center items-start pt-4">
             <div className="w-full max-w-md mx-auto p-4 space-y-8 overflow-auto" style={{ maxHeight: '90vh' }}>
                 {/* 返回按钮 */}
-                <button onClick={() => router.back()} className="text-2xl p-2 focus:outline-none">
+                <button onClick={() => router.back()} className={`text-2xl ${textColor} p-2 focus:outline-none`}>
                     &larr;
                 </button>
 
                 {/* 标题 */}
-                <h1 className="text-2xl font-bold text-center">Request History</h1>
-
-                <div className="space-y-4">
+                <h1 className={`text-2xl ${textColor} font-bold text-center`}>Request History</h1>
+                <div className="space-y-4 bg-white rounded-lg">
                     {requests.map((request, index) => {
                         const walkerComment = walkerComments.find(c => c.request?.requestId === request.requestId);
                         const parentComment = parentComments.find(c => c.request?.requestId === request.requestId);
@@ -175,5 +184,6 @@ export default function HistoryRequestParent() {
                 </div>
             </div>
         </main>
+        </BackgroundLayout>
     );
 }

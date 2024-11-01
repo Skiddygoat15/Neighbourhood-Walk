@@ -23,13 +23,13 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
-public class CustomOAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
+public class CustomOAuth2LoginSuccessHandlerDev implements AuthenticationSuccessHandler {
 
     private UsersService usersService;
     private RoleService roleService;
     private final OAuth2AuthorizedClientService authorizedClientService;
 
-    public CustomOAuth2LoginSuccessHandler(UsersService usersService, RoleService roleService, OAuth2AuthorizedClientService authorizedClientService) {
+    public CustomOAuth2LoginSuccessHandlerDev(UsersService usersService, RoleService roleService, OAuth2AuthorizedClientService authorizedClientService) {
         this.usersService = usersService;
         this.roleService = roleService;
         this.authorizedClientService = authorizedClientService;

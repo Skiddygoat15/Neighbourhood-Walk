@@ -102,7 +102,6 @@ public class DummyDataLoader implements CommandLineRunner {
                 user3.setProfImgUrl("/profileImages/profileImg_women_2.png");
                 user3.setAvgUserRating(5.0);
                 user3.setActivityStatus("Blocked");
-
                 Users user4 = new Users();
                 user4.setName("Bob");
                 user4.setSurname("Williams");
@@ -150,8 +149,8 @@ public class DummyDataLoader implements CommandLineRunner {
                 Request request1 = new Request();
                 request1.setParent(user1);
                 request1.setPublishDate( new Date() );
-                request1.setStartTime( (Date) formatter.parse("2024-10-20T09:00:00.111") );
-                request1.setArriveTime( (Date) formatter.parse("2024-10-20T09:20:00.111") );
+                request1.setStartTime( (Date) formatter.parse("2024-11-02T09:00:00.111") );
+                request1.setArriveTime( (Date) formatter.parse("2024-11-02T09:20:00.111") );
                 request1.setDeparture("54 Fitzroy St, Newtown NSW 2042, Australia");
                 request1.setDepartureLatitude(-33.8960373);
                 request1.setDepartureLongitude(151.1869439);
@@ -164,8 +163,8 @@ public class DummyDataLoader implements CommandLineRunner {
                 Request request2 = new Request();
                 request2.setParent(user3);
                 request2.setPublishDate( (Date) formatter.parse("2024-09-15T09:00:00.111") );
-                request2.setStartTime( (Date) formatter.parse("2024-10-24T07:00:00.111") );
-                request2.setArriveTime( (Date) formatter.parse("2024-10-24T08:00:00.111") );
+                request2.setStartTime( (Date) formatter.parse("2024-11-03T07:15:00.111") );
+                request2.setArriveTime( (Date) formatter.parse("2024-11-03T08:00:00.111") );
                 request2.setDeparture("77 Pyrmont Bridge Rd, Annandale NSW 2038, Australia");
                 request2.setDepartureLatitude(-33.8859592);
                 request2.setDepartureLongitude(151.1755954);
@@ -178,8 +177,8 @@ public class DummyDataLoader implements CommandLineRunner {
                 Request request3 = new Request();
                 request3.setParent(user4);
                 request3.setPublishDate( (Date) formatter.parse("2024-08-10T09:00:00.111") );
-                request3.setStartTime( (Date) formatter.parse("2024-10-24T07:00:00.111") );
-                request3.setArriveTime( (Date) formatter.parse("2024-10-24T08:30:00.111") );
+                request3.setStartTime( (Date) formatter.parse("2024-11-02T014:55:00.111") );
+                request3.setArriveTime( (Date) formatter.parse("2024-11-02T15:30:00.111") );
                 request3.setDeparture("107 Annandale St, Annandale NSW 2038, Australia");
                 request3.setDepartureLatitude(-33.8824012);
                 request3.setDepartureLongitude(151.1689731);
@@ -193,8 +192,8 @@ public class DummyDataLoader implements CommandLineRunner {
                 request4.setParent(user1);
                 request4.setWalker(user2);
                 request4.setPublishDate( (Date) formatter.parse("2024-10-10T09:00:00.111") );
-                request4.setStartTime( (Date) formatter.parse("2024-10-29T012:00:00.111") );
-                request4.setArriveTime( (Date) formatter.parse("2024-10-29T013:30:00.111") );
+                request4.setStartTime( (Date) formatter.parse("2024-11-01T012:00:00.111") );
+                request4.setArriveTime( (Date) formatter.parse("2024-11-01T013:30:00.111") );
                 request4.setDeparture("54 Fitzroy St, Newtown NSW 2042, Australia");
                 request4.setDepartureLatitude(-33.8945024);
                 request4.setDepartureLongitude(151.1866821);

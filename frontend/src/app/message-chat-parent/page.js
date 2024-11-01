@@ -24,7 +24,7 @@ export default function Home() {
     const [userIdFrom, setUserIdFrom] = useState("");
     const [userIdTo, setUserIdTo] = useState("5");
     const [isDataReady, setIsDataReady] = useState(false);
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    const websocketurl = process.env.WEB_SOCKET_URL;
     useEffect(() => {
         let storedRole = null;
         let storedUser = null;
@@ -53,7 +53,7 @@ export default function Home() {
     //websocket连接
     // useEffect(() => {
     function initializeWebSocket(userIdFrom) {
-        websocket.current = new WebSocket(`ws://${apiUrl}/ws`);
+        websocket.current = new WebSocket(`${websocketurl}/ws`);
 
         websocket.current.onopen = function () {
             console.log("WebSocket连接成功");

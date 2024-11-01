@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import BackgroundLayout from '../ui-background-components/BackgroundLayout';
 import useTextColor from '../ui-background-components/useTextColor';
+import {geocodeAddress} from "@/components/geocode";
 
 export default function ProfileAttributesModification() {
   const textColor = useTextColor();
@@ -15,6 +16,8 @@ export default function ProfileAttributesModification() {
   const [communicationPreference, setCommunicationPreference] = useState('');
   const [preferredName, setPreferredName] = useState('');
   const [profileImgUrl, setProfileImgUrl] = useState('');
+  const [address, setAddress] = useState('');
+  const [zipCode, setZipCode] = useState('');
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const countryCodes = [
@@ -22,6 +25,15 @@ export default function ProfileAttributesModification() {
     
   ];
 
+  // Functions for extracting postal codes from address strings
+  function extractPostalCode(address) {
+    // Regular expression to match the four digits before the second comma
+    console.log("address: " + address);
+    const postalCodeMatch = address.match(/(\d{4})(?=, [^,]*$)/);
+    console.log("postal: " + postalCodeMatch);
+    // Returns the postcode if the match is successful, otherwise returns the empty string
+    return postalCodeMatch ? postalCodeMatch[1] : '';
+  }
 
   useEffect(() => {
     const userId = sessionStorage.getItem('userId');
@@ -50,6 +62,8 @@ export default function ProfileAttributesModification() {
           setEmailAddress(data.email || 'N/A');
           setCommunicationPreference(data.communicatePref || 'N/A');
           setPreferredName(data.preferredName || 'N/A');
+          setAddress(data.address);
+          setZipCode(extractPostalCode(data.address));
         } else {
           console.error('Failed to fetch user profile:', response.statusText);
         }
@@ -76,17 +90,30 @@ export default function ProfileAttributesModification() {
       console.error('User ID or token not found in sessionStorage');
       return;
     }
-
-    // 准备要传递到数据库的data
-    const updatedProfileData = {
-      phone: phoneNumber,
-      email: emailAddress,
-      communicatePref: communicationPreference,
-      preferredName: preferredName,
-      profImgUrl: profileImgUrl
-    };
-
     try {
+      if (!address || address.trim() === '' ||
+          !zipCode || zipCode.trim() === '') {
+        throw new Error("Address and Zip code is required.");
+      }
+
+      if (!/^\d{4}$/.test(zipCode)) {
+        throw new Error("Zip Code must be numeric and 4 digits");
+      }
+
+      const updatedAddress = await geocodeAddress(`${address}, ${zipCode}`);
+
+      // 准备要传递到数据库的data
+      const updatedProfileData = {
+        phone: phoneNumber,
+        email: emailAddress,
+        communicatePref: communicationPreference,
+        preferredName: preferredName,
+        profImgUrl: profileImgUrl,
+        address: updatedAddress.formatted_address,
+        latitude: updatedAddress.lat,
+        longitude: updatedAddress.lng,
+      };
+
       // 调用API将数据传入数据库
       const response = await fetch(`${apiUrl}/Users/${userId}/profile`, {
         method: 'PUT', // 使用PUT方法更新用户数据
@@ -109,6 +136,7 @@ export default function ProfileAttributesModification() {
       }
     } catch (error) {
       console.error('Error updating profile:', error);
+      setError(error.message || 'Registration failed');
     }
   };
 
@@ -193,6 +221,29 @@ export default function ProfileAttributesModification() {
                 value={preferredName}
                 onChange={(e) => setPreferredName(e.target.value)}
             />
+          </div>
+
+          {/* Address and Zip code */}
+          <div>
+            <h2 className={`block text-sm font-medium ${textColor} text-left`}>Address:</h2>
+            <input
+                type="text"
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                placeholder="Enter Address"
+                className="w-full p-3 border border-black rounded-lg"
+            />
+
+            <div className="flex justify-between items-center">
+              <label className={`text-sm ${textColor} font-medium whitespace-nowrap mr-2`}>Zip Code:</label>
+              <input
+                  type="text"
+                  placeholder="Enter Postal Code"
+                  value={zipCode}
+                  onChange={(e) => setZipCode(e.target.value)}
+                  className="w-full border-b-2 border-black focus:outline-none mt-2"
+              />
+            </div>
           </div>
         </div>
 

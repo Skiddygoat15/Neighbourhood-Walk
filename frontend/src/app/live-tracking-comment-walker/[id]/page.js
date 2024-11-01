@@ -24,7 +24,7 @@ export default function CommentPage() {
                     return;
                 }
 
-                const response = await fetch(`http://${apiUrl}/requests/getParentByRequestId/${requestId}`, {
+                const response = await fetch(`${apiUrl}/requests/getParentByRequestId/${requestId}`, {
                     method: 'GET',
                     headers: {
                         'Authorization': `Bearer ${token}`,
@@ -37,6 +37,8 @@ export default function CommentPage() {
                 }
 
                 const data = await response.json();
+                // console.info("parent is: ",data.id);
+                console.info("request is: ",requestId);
                 setParentId(data.id); // 假设返回的数据结构中 parentId 的 id 为 data.id
             } catch (error) {
                 console.error('Error fetching parentId:', error);
@@ -61,7 +63,6 @@ export default function CommentPage() {
             console.error('No token or parentId found');
             return;
         }
-
         try {
             const response = await fetch(`${apiUrl}/Comment`, {
                 method: 'POST',

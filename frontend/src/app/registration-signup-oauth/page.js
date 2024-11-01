@@ -67,7 +67,7 @@ const RegistrationSignup = () => {
                 birthDate: new Date(formData.birthDate).toISOString(),
             };
 
-            const postUrl = `http://${apiUrl}/Users/registerOA?roleType=${roleType}&userId=${formData.userId}`;
+            const postUrl = `${apiUrl}/Users/registerOA?roleType=${roleType}&userId=${formData.userId}`;
 
             const res = await fetch(postUrl, {
                 method: 'POST',

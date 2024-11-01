@@ -17,6 +17,7 @@ export default function Home({params}) {
     const userIdTo = params.userToId;
     const [chatRoomId, setChatRoomId] = useState("");
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    const websocketurl = process.env.NEXT_PUBLIC_WS_URL;
     useEffect(() => {
         const storedRole = sessionStorage.getItem("roles")?.slice(2, -2);
         const storedUser = sessionStorage.getItem("userId");
@@ -54,23 +55,20 @@ export default function Home({params}) {
     useEffect(() => {
         console.info("allChatMessages are:", allChatMessages)
     }, [allChatMessages]);
-    //websocket连接
     // useEffect(() => {
     function initializeWebSocket(userIdFrom, userIdTo) {
-        websocket.current = new WebSocket(`ws://${apiUrl}/ws`);
-
+        // websocket.current = new WebSocket(`ws://${apiUrl}/ws`);
+        websocket.current = new WebSocket(`${websocketurl}/ws`);
         websocket.current.onopen = function () {
-            console.log("WebSocket连接成功");
+            console.log("WebSocket connection successful");
             console.log("userIdFrom is: " + userIdFrom);
             console.log("userIdTo is: " + userIdTo);
             GetChatHistory();
-            // setMessages((prev) => [...prev, `用户[${username}] 已经加入聊天室`]);
+            // setMessages((prev) => [...prev, `user[${username}] Already joined the chat room`]);
 
-            // 获取并发送chat双方的userId给服务器
+            // Obtain and send the userId of both parties in the chat to the server
             if (typeof window !== 'undefined') {
                 if (userIdFrom && userIdTo) {
-                    // 构建要发送的数据
-
                     const initData = JSON.stringify({
                         type: "init",
                         userIdFrom: userIdFrom,
@@ -81,34 +79,33 @@ export default function Home({params}) {
 
                 }
             }
-            // setMessages((prev) => [...prev, `用户1 已经加入聊天室`]);
+            // setMessages((prev) => [...prev, `user1 Already joined the chat room`]);
         };
-        // 当接收到 WebSocket 消息时
         websocket.current.onmessage = function (event) {
             // console.info("server message test:")
             // console.log(event.data);
 
             try {
                 const newMessage = JSON.parse(event.data);
-                setAllChatMessages(prevMessages => [...prevMessages, newMessage]); // 使用函数式更新以保证状态正确更新
+                setAllChatMessages(prevMessages => [...prevMessages, newMessage]); // Use functional updates to ensure state is updated correctly
             } catch (error) {
                 console.error("Error parsing message data:", error);
             }
         };
 
-        // WebSocket 错误处理
+        // WebSocket Error handling
         websocket.current.onerror = function (event) {
             console.error("WebSocket error observed:", event);
 
         };
 
-        // WebSocket 连接关闭处理
+        // WebSocket Connection close processing
         websocket.current.onclose = function (event) {
             console.log(`WebSocket is closed now.`);
-            // setMessages((prev) => [...prev, `用户1 已经离开聊天室`]);
+            // setMessages((prev) => [...prev, `user1 Have left the chat room`]);
         };
 
-        // 在组件卸载时清理 WebSocket 连接
+        // Clean up WebSocket connections when components are unloaded
         return () => {
             if (websocket.current.readyState === WebSocket.OPEN) {
                 websocket.current.close();
@@ -116,12 +113,11 @@ export default function Home({params}) {
         };
         // }, []);
     }
-    // ####################################功能3:处理发送信息####################################
-    // 使用websocket发送消息
+    // ####################################Function 3: Process sending information####################################
     const sendMessage = (inputMessage) => {
 
-        const currentTime = new Date(); // 获取当前时间
-        const formattedTime = format(currentTime, "EEEE, MMMM do, yyyy, hh:mm:ss a"); // 格式化时间
+        const currentTime = new Date();
+        const formattedTime = format(currentTime, "EEEE, MMMM do, yyyy, hh:mm:ss a");
 
         if(websocket.current && websocket.current.readyState === WebSocket.OPEN) {
             const messageData = JSON.stringify({
@@ -140,14 +136,9 @@ export default function Home({params}) {
 
             setMessages([...messages, messageData]);
         } else {
-            alert("WebSocket 连接未建立！");
+            alert("WebSocket Connection not established！");
         }
     };
-
-
-    // const getMessageStyle = (roleFromRoleType) => {
-    //     return roleFromRoleType === 'parent' ? 'message-left' : 'message-right';
-    // };
 
     function GetChatHistory() {
         const userIdFromLong = parseInt(userIdFrom, 10);
@@ -168,8 +159,7 @@ export default function Home({params}) {
                 return response.json();
             })
             .then(data =>{
-                // console.info("Chatting history is:", data);
-                setAllChatMessages(data);  // 直接更新 allChatMessages 状态为从后端获取的数组
+                setAllChatMessages(data);  // Directly update allChatMessages status to the array obtained from the backend
             })
             .catch(error => console.error('Error:', error));
     }
@@ -177,33 +167,32 @@ export default function Home({params}) {
 
     return (
         <BackgroundLayout>
-        <div className="flex flex-col h-screen p-4">
-            <div className="messages">
-                {allChatMessages.map((msg, index) => (
-                    <div
-                        key={uuidv4()}
-                        style={{
-                            // backgroundColor: msg.roleFromRoleType === 'parent' ? '#f1f1f1' : '#d1f0f7',
-                            backgroundColor: msg.roleFromRoleType === 'parent' ? '#d1f0f7' : '#f1f1f1',
-                            textAlign: msg.roleFromRoleType === 'parent' ? 'right' : 'left',
-                            float: msg.roleFromRoleType === 'parent' ? 'right' : 'left',
-                            clear: 'both',
-                            margin: '10px',
-                            padding: '10px',
-                            borderRadius: '10px',
-                            maxWidth: '60%',
-                        }}
-                    >
-                        <p>{msg.message}</p>
-                        <span>{new Date(msg.time).toLocaleString()}</span>
-                    </div>
-                ))}
+            <div className="flex flex-col h-screen p-4">
+                <div className="messages">
+                    {allChatMessages.map((msg, index) => (
+                        <div
+                            key={uuidv4()}
+                            style={{
+                                // backgroundColor: msg.roleFromRoleType === 'parent' ? '#f1f1f1' : '#d1f0f7',
+                                backgroundColor: msg.roleFromRoleType === 'parent' ? '#d1f0f7' : '#f1f1f1',
+                                textAlign: msg.roleFromRoleType === 'parent' ? 'right' : 'left',
+                                float: msg.roleFromRoleType === 'parent' ? 'right' : 'left',
+                                clear: 'both',
+                                margin: '10px',
+                                padding: '10px',
+                                borderRadius: '10px',
+                                maxWidth: '60%',
+                            }}
+                        >
+                            <p>{msg.message}</p>
+                            <span>{new Date(msg.time).toLocaleString()}</span>
+                        </div>
+                    ))}
+                </div>
+                <div className="fixed bottom-16 w-full max-w-[calc(100%-20px)] px-2 mx-auto">
+                    <ChatBar onSendMessage={sendMessage}/>
+                </div>
             </div>
-            <div className="fixed bottom-16 w-full max-w-[calc(100%-20px)] px-2 mx-auto"> {/* bottom-16 代表向上移动 16px，可以根据需要调整 */}
-                <ChatBar onSendMessage={sendMessage}/>
-            </div>
-            {/*<ChatBar onSendMessage={sendMessage}/>*/}
-        </div>
-            </BackgroundLayout>
+        </BackgroundLayout>
     );
 }

@@ -1,5 +1,4 @@
 "use client";
-
 import {useEffect, useState} from 'react';
 import { useRouter } from 'next/navigation';
 import { geocodeAddress } from '@/components/geocode';
@@ -90,11 +89,6 @@ export default function UpdateRequest() {
         throw new Error("Minute must be between 0 and 59.");
       }
 
-      const departure24Hour = convertTo24HourTime(departureTime);
-      const arrive24Hour = convertTo24HourTime(arriveTime);
-      console.log("departure24: " + departure24Hour);
-      console.log("arrive24: " + arrive24Hour);
-
       const currentDateTime = new Date();
       const departureDateTime = combineDateAndTime(date, departureTime);
       const arriveDateTime = combineDateAndTime(date, arriveTime);
@@ -117,8 +111,8 @@ export default function UpdateRequest() {
       // Create new sendBody data
       const updatedSendBody = {
         ...sendBody,  // keep other attributes same
-        startTime: combineDateAndTime(date, departureTime),
-        arriveTime: combineDateAndTime(date, arriveTime),
+        startTime: departureDateTime,
+        arriveTime: arriveDateTime,
         departure: departureCoords.formatted_address,
         departureLatitude: departureCoords.lat,
         departureLongitude: departureCoords.lng,
