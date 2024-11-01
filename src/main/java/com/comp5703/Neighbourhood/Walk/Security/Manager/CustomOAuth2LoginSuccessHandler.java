@@ -54,6 +54,7 @@ public class CustomOAuth2LoginSuccessHandler implements AuthenticationSuccessHan
             user.setName((String) attributes.get("given_name"));
             user.setSurname((String) attributes.get("family_name"));
             user.setProfileCompleted(false);
+            user.setActivityStatus("Active");
             user.setPassword("oauthTempPassWord");
             user.setAddress("oauthDefaultAddress");
             user.setPhone("oauthDefaultPhoneNum");

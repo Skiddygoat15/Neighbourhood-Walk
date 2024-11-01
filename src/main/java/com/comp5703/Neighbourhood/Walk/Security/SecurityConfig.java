@@ -48,6 +48,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, SecurityConstants.REGISTER_PATH).permitAll()
                 .requestMatchers("/geocode/**").permitAll()
                 .requestMatchers("/ws/**").permitAll()
+                .requestMatchers("/api/identity/**").permitAll()
                 .requestMatchers("/Users/registerOA/**").permitAll()
                 // 允许访问Google OAuth登录页面
                 .requestMatchers("/oauth2/**").permitAll()
