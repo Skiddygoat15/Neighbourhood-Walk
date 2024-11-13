@@ -13,7 +13,6 @@ public interface WalkerRequestService {
     Request getRequest(long walkerRequestId);
     List<Users> getWalkersByRequestId(int requestId);
     List<Request> getRequestsByWalkerId(long walkerId);
-
     Optional<?> getRequestDetailByRequestIdAndWalkerId(int requestId, long walkerId);
     Users getParentIdByWalkerRequestId(long walkerRequestId);
 }

@@ -18,7 +18,7 @@ export default function HistoryRequestParent() {
 
     const handleRateTrip = (requestId) => {
         router.push(`/live-tracking-comment-walker/${requestId}`);
-        setCommentUpdated(prev => !prev); // 切换commentUpdated状态，触发useEffect
+        setCommentUpdated(prev => !prev); // Switch commentUpdated state and trigger useEffect
     };
     useEffect(() => {
 
@@ -66,7 +66,6 @@ export default function HistoryRequestParent() {
             .catch(error => console.error('Error:', error));
     }
 
-    //********************这里需要改成对此request判断parent是否已经评价********************
     function getCommentByReuqestId(requestId, userId){
         console.info("userId is2:",userId)
         const localUserId = parseInt(sessionStorage.getItem("userId"), 10);
@@ -95,10 +94,6 @@ export default function HistoryRequestParent() {
 
                     const parentCommentsGet = data.filter(comment => comment.userId !== localUserId);
                     const walkerCommentsGet = data.filter(comment => {
-                        console.info("walkerCommentsGet：comment.userId:", comment.userId); // 检查每个 comment 对象的 userId
-                        console.info("localUserId:", localUserId); // 确保 localUserId 是定义且正确的
-                        console.info(typeof comment.userId); // 检查每个 comment 对象的 userId
-                        console.info(typeof localUserId); // 确保 localUserId 是定义且正确的
                         return comment.userId === localUserId;
                     });
                     console.info("walkerCommentsGet is",walkerCommentsGet)
@@ -114,7 +109,7 @@ export default function HistoryRequestParent() {
             .catch(error => console.error('Error:', error));
     }
 
-    // 计算 duration 的函数
+    // Function to calculate duration
     function calculateDuration(startTime, arriveTime) {
         if (!startTime || !arriveTime) return "N/A";
         const start = new Date(startTime);
@@ -131,12 +126,11 @@ export default function HistoryRequestParent() {
         <BackgroundLayout>
         <main className="min-h-screen flex justify-center items-start pt-4">
             <div className="w-full max-w-md mx-auto p-4 space-y-8 overflow-auto" style={{ maxHeight: '90vh' }}>
-                {/* 返回按钮 */}
+
                 <button onClick={() => router.back()} className={`text-2xl ${textColor} p-2 focus:outline-none`}>
                     &larr;
                 </button>
 
-                {/* 标题 */}
                 <h1 className={`text-2xl ${textColor} font-bold text-center`}>Request History</h1>
                 <div className="space-y-4 bg-white rounded-lg">
                     {requests.map((request, index) => {
@@ -173,7 +167,7 @@ export default function HistoryRequestParent() {
                                     ) : (
                                         <button
                                             onClick={() => handleRateTrip(request.requestId)}
-                                            className="mt-2 py-1 px-4 text-white bg-black rounded-full text-sm block"> {/* 使用 block 样式 */}
+                                            className="mt-2 py-1 px-4 text-white bg-black rounded-full text-sm block">
                                             Comment
                                         </button>
                                     )}

@@ -1,7 +1,6 @@
 package com.comp5703.Neighbourhood.Walk.Service;
 
 import com.comp5703.Neighbourhood.Walk.Entities.ChatBar;
-import com.comp5703.Neighbourhood.Walk.Entities.ChatBox;
 
 import java.io.Serializable;
 import java.util.List;

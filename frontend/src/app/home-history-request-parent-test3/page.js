@@ -18,7 +18,7 @@ export default function HistoryRequestParent() {
 
     const handleRateTrip = (requestId) => {
         router.push(`/live-tracking-comment-parent/${requestId}`);
-        setCommentUpdated(prev => !prev); // 切换commentUpdated状态，触发useEffect
+        setCommentUpdated(prev => !prev); // Switch commentUpdated state and trigger useEffect
     };
     useEffect(() => {
         requests.forEach(request => {
@@ -69,7 +69,7 @@ export default function HistoryRequestParent() {
             .catch(error => console.error('Error:', error));
     }
 
-    //********************这里需要改成对此request判断parent是否已经评价********************
+    //********************This needs to be changed to determine whether the parent has evaluated this request.********************
     function getCommentByReuqestId(requestId, userId){
         if (walkerComments.some(comment => comment.request?.requestId === requestId)) {
             return;
@@ -109,7 +109,7 @@ export default function HistoryRequestParent() {
             .catch(error => console.error('Error:', error));
     }
 
-    // 计算 duration 的函数
+    // Function to calculate duration
     function calculateDuration(startTime, arriveTime) {
         if (!startTime || !arriveTime) return "N/A";
         const start = new Date(startTime);
@@ -167,7 +167,7 @@ export default function HistoryRequestParent() {
                                     ) : (
                                         <button
                                             onClick={() => handleRateTrip(request.requestId)}
-                                            className="mt-2 py-1 px-4 text-white bg-black rounded-full text-sm block"> {/* 使用 block 样式 */}
+                                            className="mt-2 py-1 px-4 text-white bg-black rounded-full text-sm block">
                                             Comment
                                         </button>
                                     )}

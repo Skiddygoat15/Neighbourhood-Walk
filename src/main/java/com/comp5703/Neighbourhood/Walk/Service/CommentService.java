@@ -16,7 +16,6 @@ public interface CommentService extends Serializable {
     Double getAveRateByUserId(long userid);
     List<Double> getAveRateByUserId(List<Long> useridList,boolean ascending);
     Boolean IsUserHaveComment(long userid);
-//    Comment getCommentByReuqest(Integer requestId);
     List<CommentDTO> getCommentsByReuqest(Integer requestId);
 
 }

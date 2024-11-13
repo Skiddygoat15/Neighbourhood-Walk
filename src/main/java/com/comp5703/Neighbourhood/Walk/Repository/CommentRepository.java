@@ -12,6 +12,5 @@ public interface CommentRepository extends CrudRepository<Comment, Long> {
     <S extends Comment> S save(S entity);
     List<Comment> findAllByUserId(long userId);
     Optional<Comment> findById(Long commentId);
-//    Optional<Comment> findByRequest(Request request);
     List<Comment> findByRequest(Request request);
 }

@@ -1,4 +1,3 @@
-// components/TimeBar.js
 "use client"
 const TimeBar = ({time}) =>{
     return (

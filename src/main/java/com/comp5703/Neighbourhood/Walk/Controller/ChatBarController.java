@@ -1,6 +1,5 @@
 package com.comp5703.Neighbourhood.Walk.Controller;
 
-import com.comp5703.Neighbourhood.Walk.Entities.ChatBar;
 import com.comp5703.Neighbourhood.Walk.Service.ChatBarService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

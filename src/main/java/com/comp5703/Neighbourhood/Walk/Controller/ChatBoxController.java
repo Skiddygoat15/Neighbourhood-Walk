@@ -1,15 +1,12 @@
 package com.comp5703.Neighbourhood.Walk.Controller;
 
 import com.comp5703.Neighbourhood.Walk.Entities.ChatBox;
-import com.comp5703.Neighbourhood.Walk.Entities.Role;
 import com.comp5703.Neighbourhood.Walk.Service.ChatBoxService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/ChatBox")

@@ -12,7 +12,6 @@ public interface NotificationRepository extends CrudRepository<Notification, Lon
     <S extends Notification> S save(S entity);
 
     Notification findAllByWalkerRequest_WalkerRequestId(long walkerRequestId);
-    // 查询是否有 NotificationCheck 为 false 的记录
     List<Notification> findByWalkerRequest(WalkerRequest walkerRequest);
 
 }

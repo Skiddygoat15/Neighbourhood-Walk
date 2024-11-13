@@ -1,5 +1,5 @@
 "use client"
-// components/ChatMFigure.js
+
 function ChatMessage({ initials, message, time, backgroundColor = 'bg-black' }) {
     return (
         <div className="p-4 flex items-center">

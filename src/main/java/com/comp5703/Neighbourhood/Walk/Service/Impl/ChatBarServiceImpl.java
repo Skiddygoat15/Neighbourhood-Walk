@@ -5,7 +5,6 @@ import com.comp5703.Neighbourhood.Walk.Entities.Users;
 import com.comp5703.Neighbourhood.Walk.Repository.ChatBarRepository;
 import com.comp5703.Neighbourhood.Walk.Repository.UsersRepository;
 import com.comp5703.Neighbourhood.Walk.Service.ChatBarService;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,7 +45,6 @@ public class ChatBarServiceImpl implements ChatBarService {
         if (chatBars != null){
             List<ChatBar> chatBarList = new ArrayList<>();
             for (ChatBar chatBar:chatBars){chatBarList.add(chatBar);}
-//            chatBars.forEach(chatBarList::add);
             return chatBarList;
         }else {
             throw new IllegalArgumentException("ChatBar not found.");

@@ -8,17 +8,12 @@ import BackgroundLayout from '../ui-background-components/BackgroundLayout';
 import useTextColor from '../ui-background-components/useTextColor';
 
 export default function Home() {
-    //const [textColor, setTextColor] = useState('text-black');
-    const [requestIds, setrequestIds] = useState([]); // 初始化为空数组
+    const [requestIds, setrequestIds] = useState([]);
     const [Notifications,setNotifications] = useState([]);
     const [Notifications_Profile, setNotifications_Profile] = useState([]);
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+    const [refreshKey, setRefreshKey] = useState(0); // The state used to trigger re-rendering
 
-    const [refreshKey, setRefreshKey] = useState(0); // 用于触发重新渲染的状态
-    // if (!role.includes("parent")) {
-    //     console.error('Not a parent, no fetch executed');
-    //     return; // 如果不是 walker 角色，直接返回
-    // }
     let parentId = null;
     let userId = null;
     let role = null;
@@ -29,12 +24,7 @@ export default function Home() {
         role = sessionStorage.getItem('currentRole');
         token = sessionStorage.getItem('token');
     }
-    //const parentId = parseInt(userId, 10); // 直接将 userId 设置为 parentId
     const textColor = useTextColor();
-    // console.info("parentId ID set to: " + parentId);
-    // console.info("parentId role set to: " + role);
-
-    //根据parentId获取他所有的requestId
     useEffect(() => {
 
         const myInit = {
@@ -49,20 +39,14 @@ export default function Home() {
                 if (!response.ok) {throw new Error('Network response was not ok0');}
                 return response.json();})
             .then(data => {
-                // console.info(data);
-                // console.info(data.map(item => item.requestId));
                 setrequestIds(data.map(item => item.requestId));
-            })// 设置整个返回数据为状态卡片
+            })
             .catch(error => {
                 console.error('Error fetching data:', error);});
     },[parentId, refreshKey]);
 
 
-        // useEffect(() => {
-    //     console.log("Current requestIds:", requestIds); // 每次 Notifications 更新时输出当前值
-    // }, [requestIds, refreshKey]); // 监控 Notifications 变化
-
-// 获取Notifications
+    // GetNotifications
     function fetchData(requestId) {
         return fetch(`${apiUrl}/Notification/findNotificationByRequestId/${requestId}`, {
             method: 'GET',
@@ -84,7 +68,7 @@ export default function Home() {
             });
     }
 
-    // 获取UPNotifications
+    // GetUPNotifications
     function fetchData_Profile(userId) {
         return fetch(`${apiUrl}/UPNotifications/getUPNotificationsByUserId/${userId}`, {
             method: 'GET',
@@ -98,7 +82,6 @@ export default function Home() {
                 }
                 return response_profile.json();
             }).then(data_profile => {
-                // console.log(`Data received for requestId ${requestId}:`, data);
                 return data_profile;
             })
             .catch(error => {
@@ -107,12 +90,10 @@ export default function Home() {
     }
 
     function fetchAllData(requestIds) {
-        // console.log("Request IDs to fetch data for:", requestIds);
-        const promises = requestIds.map(fetchData); // 创建一个promise数组
+        const promises = requestIds.map(fetchData); // Create an array of promises
         Promise.all(promises)
             .then(results => {
                 setNotifications(results.flat());
-                console.info("Notifications updated:", results.flat()); // 检查 Notifications 是否正确更新
             })
             .catch(error => {
                 console.error('Error fetching all data:', error);
@@ -130,19 +111,16 @@ export default function Home() {
     }
 
     useEffect(() => {
-        if (requestIds.length > 0) { // 确保 requestIds 不是空数组
+        if (requestIds.length > 0) { // Make sure requestIds is not an empty array
             fetchAllData(requestIds);
         }
-    }, [requestIds, refreshKey]); // 当 requestIds 更新时，再次调用 fetchAllData
+    }, [requestIds, refreshKey]); // When requestIds is updated, call fetchAllData again
 
     // 保留fetchAllData_Profile单独执行
     useEffect(() => {
         fetchAllData_Profile(userId);
-    }, [userId]); // 确保profile的通知可以独立执行
+    }, [userId]); // Ensure that profile notifications can be executed independently
 
-    useEffect(() => {
-        // console.log("Current Notifications:", Notifications); // 每次 Notifications 更新时输出当前值
-    }, [Notifications]); // 监控 Notifications 变化
 
 
     //获取notification对应walker的surname
@@ -166,17 +144,13 @@ export default function Home() {
     }
 
     function fetchAllWalkers() {
-        // console.log("Fetching all data for current Notifications:", Notifications); // 输出当前 Notifications
         const promises = Notifications.map(notification => {
-            //---------debug test---------
             if (!notification || notification.notificationId === null || notification.notificationId === undefined) {
                 console.error("Notification or notificationId is null/undefined", notification);
                 return Promise.resolve(notification); // Skip this notification if notificationId is null or undefined
             }
-            //---------debug test---------
             return fetchWalkerByNotification(notification.notificationId)
                 .then(surname => {
-                    // console.log(`Walker surname for notificationId ${notification.notificationId}:`, surname); // 输出获取到的 walker 姓氏
                     return {
                         ...notification,
                         walkerSurname: surname
@@ -190,15 +164,15 @@ export default function Home() {
                 setNotifications(results);
             })
             .catch(error => {
-                console.error('Error fetching all data:', error); // 错误处理
+                console.error('Error fetching all data:', error);
             });
     }
 
     useEffect(() => {
         fetchAllWalkers();
-    },[Notifications.length,refreshKey]); // 依赖于Notifications数组的变化
+    },[Notifications.length,refreshKey]); // Depends on changes in Notifications array
 
-    // 通过更新 refreshKey 来触发页面刷新
+    // Trigger page refresh by updating refreshKey
     const refreshPage = () => {
         setRefreshKey(prevKey => prevKey + 1);
     };
@@ -208,15 +182,13 @@ export default function Home() {
         <div className="flex flex-col h-screen p-4" style={{ overflowY: 'auto' }}>
             <Header title="Notification-parent" navigateTo={"/home-parent"} textColor={textColor} />
 
-            {/* 保护性检查，只有当 Notifications 是非空数组时，才渲染 */}
             {Notifications && Notifications.length > 0 && Notifications.map((notification, index) => {
                 console.info(notification);
                 console.info("refreshPage"+refreshKey);
                 if (!notification || notification.notificationClose === null || notification.notificationClose === undefined) {
                     console.error("Notification or notificationClose is null/undefined", notification);
-                    return null; // 如果为 null 或 undefined，则跳过渲染
+                    return null;
                 }
-                // 如果 notification.NotificationClose 为 true，则不渲染该组件
                 if (notification.notificationClose === true) {
                     return null;
                 }
@@ -228,20 +200,13 @@ export default function Home() {
                         statusChanged={`${notification.walkerSurname} has applied your application!`}
                         time={format(notification.time, 'EEEE, MMMM do, yyyy, hh:mm:ss a')}
                         notificationId={notification.notificationId}
-                        showRedDot={!notification.notificationCheck} // 如果 NotificationCheck 为 false 则显示红点
+                        showRedDot={!notification.notificationCheck} // Display red dot if NotificationCheck is false
                         role={role}
-                        // 你可以定义 handleDelete 函数来处理删除逻辑
-
                     />
                 );
             })}
             {Notifications_Profile && Notifications_Profile.length > 0 && Notifications_Profile.map((notification, index) => {
-                //---------debug test---------
-                // if (!notification || !notification.notificationId) {
-                //     console.error("Notification or notificationId is null/undefined", notification);
-                //     return null; // Skip rendering if notification or notificationId is null/undefined
-                // }
-                //---------debug test---------
+
                 if (notification.notificationClose === true) {
                     return null;
                 }
@@ -253,10 +218,8 @@ export default function Home() {
                         statusChanged={notification.message}
                         time={format(notification.time, 'EEEE, MMMM do, yyyy, hh:mm:ss a')}
                         notificationId={notification.notifyId}
-                        showRedDot={!notification.notificationCheck} // 如果 NotificationCheck 为 false 则显示红点
+                        showRedDot={!notification.notificationCheck} // Display red dot if NotificationCheck is false
                         role={role}
-                        // 你可以定义 handleDelete 函数来处理删除逻辑
-
                     />
                 );
             })}
@@ -264,61 +227,5 @@ export default function Home() {
             </BackgroundLayout>
     );
 
-
-
-    //原来的
-    // return (
-    //     <div className="flex flex-col h-screen bg-gray-100 p-4" style={{ overflowY: 'auto' }}>
-    //         <Header title="Notification-parent" navigateTo={"/message"}/>
-    //         {/* 保护性检查，只有当statusCards是非空数组时，才渲染 */}
-    //
-    //         {Notifications && Notifications.length > 0 && Notifications.map((notification, index) => (
-    //             <StatusCard
-    //                 key={index}
-    //                 title = {"Application Status Change"}
-    //                 statusChanged={`${notification.walkerSurname} has applied your application!`}
-    //                 time={format(notification.time, 'EEEE, MMMM do, yyyy, hh:mm:ss a')}
-    //                 notificationId={notification.notificationId}
-    //                 // onDelete={() => handleDelete(index)}  // 将删除函数传递给 StatusCard
-    //             />
-    //         ))}
-    //     </div>
-    // );
-
-    // 测试页面
-    // {Notifications && Notifications.length > 0 && Notifications.map((notification, index) => {
-    //     // 直接在 map 回调中执行 console.log
-    //     console.log(notification);
-    //     return (
-    //         <div className="flex flex-col h-screen bg-gray-100 p-4" style={{ overflowY: 'auto' }}>
-    //             <Header title="Notification-parent" navigateTo={"/message"} />
-    //
-    //             {/* 保护性检查，只有当 Notifications 是非空数组时，才渲染 */}
-    //             {Notifications && Notifications.length > 0 && Notifications.map((notification, index) => {
-    //
-    //                 // 如果 notification.NotificationClose 为 true，则不渲染该组件
-    //                 if (notification.notificationClose === true) {
-    //                     return null;
-    //                 }
-    //                 // console.info(notification.notificationClose);
-    //                 // console.info("upupup2");
-    //                 // console.info(notification.notificationCheck);
-    //                 // console.info("upupup3");
-    //                 return (
-    //                     <StatusCard
-    //                         key={index}
-    //                         title="Application Status Change"
-    //                         statusChanged={`${notification.walkerSurname} has applied your application!`}
-    //                         time={format(notification.time, 'EEEE, MMMM do, yyyy, hh:mm:ss a')}
-    //                         notificationId={notification.notificationId}
-    //                         showRedDot={!notification.notificationCheck} // 如果 NotificationCheck 为 false 则显示红点
-    //                         onRefresh={refreshPage}
-    //                         // 你可以定义 handleDelete 函数来处理删除逻辑
-    //                     />
-    //                 );
-    //             })}
-    //         </div>
-    //     );
-    // })}
 }
 

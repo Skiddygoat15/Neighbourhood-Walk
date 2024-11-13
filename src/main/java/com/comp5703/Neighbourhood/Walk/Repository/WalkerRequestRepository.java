@@ -18,7 +18,7 @@ public interface WalkerRequestRepository extends JpaRepository<WalkerRequest, Lo
 
     List<WalkerRequest> findByWalkerUserId(Long walkerId);
 
-    // 查询已经被接受的 Walker
+    // Query has been accepted Walker
     @Query("SELECT w.walker FROM WalkerRequest w WHERE w.request.requestId = :requestId AND w.status = 'Accepted' ")
     Users findAcceptedWalkerByRequestId(@Param("requestId") int requestId);
 

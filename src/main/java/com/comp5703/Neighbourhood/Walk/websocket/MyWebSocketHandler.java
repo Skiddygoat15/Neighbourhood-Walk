@@ -11,10 +11,7 @@ import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.web.socket.TextMessage;
-import org.springframework.web.socket.WebSocketSession;
 import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonReader;
@@ -27,7 +24,7 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
 
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    //用于管理聊天室对应的会话内容
+    // Used to manage the conversation content corresponding to the chat room
     private Map<String, List<WebSocketSession>> roomSessions = new HashMap<>();
 
     @Autowired
@@ -82,9 +79,9 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
                     chatRoom = chatRoomCheck.get();
                 }
 
-                // 加入会话到房间的列表
+                // Add a session to the list of rooms
                 roomSessions.putIfAbsent(roomId, new ArrayList<>());
-                roomSessions.get(roomId).add(session); // 确保会话被添加到列表中
+                roomSessions.get(roomId).add(session); // Make sure the session is added to the list
 
                 System.out.println("WebSocket has been built, join in the room with id：" + roomId);
                 session.sendMessage(new TextMessage("You have joined the room: " + roomId));
@@ -147,9 +144,9 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
         }
     }
 
-    //房间消息广播
+    //Room message broadcast
     private void broadcastMessage(String roomId, TextMessage message) {
-        //寻找到room对应的websocket连接（这里默认一个房间会出现多个websocket连接，为未来实现群聊功能提供可能）
+        //Find the websocket connection corresponding to the room
         List<WebSocketSession> sessions = roomSessions.get(roomId);
         if (sessions != null) {
             for (WebSocketSession s : sessions) {
@@ -166,9 +163,9 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
         }
     }
 
-    //处理聊天消息
+    //Handle chat messages
     private ChatBox handleChatMessage(JsonObject jsonObject, String roomId, String userIdFrom, String userIdTo, ChatRoom chatRoom) {
-        //聊天消息处理
+        //Chat message processing
         String roleFrom = jsonObject.getString("roleFrom");
         String roleTo = jsonObject.getString("roleTo");
         String message = jsonObject.getString("message");
@@ -187,7 +184,7 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
         if (userFromFinalCheck.isPresent()){
             userFromFinalChecked = userFromFinalCheck.get();
         }else {
-            System.out.println("用户不存在");
+            System.out.println("User does not exist");
         }
 
         List<Role> roleFromFinalCheck = roleRepository.findByUserId(userFromFinalChecked);
@@ -195,9 +192,8 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
             roleFromFinalChecked = roleFromFinalCheck;
         }else {
 
-            System.out.println("用户不存在");
+            System.out.println("role does not exist");
         }
-        //获取接收方用户角色信息
 
         List<Role> roleToFinalChecked = null;
 
@@ -206,24 +202,23 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
         if (userToFinalCheck.isPresent()){
             userToFinalChecked = userToFinalCheck.get();
         }else {
-            System.out.println("用户不存在");
+            System.out.println("User does not exist");
         }
         List<Role> roleToFinalCheck = roleRepository.findByUserId(userToFinalChecked);
         if (roleToFinalCheck != null){
             roleToFinalChecked = roleToFinalCheck;
         }else {
-            System.out.println("角色不存在");
+            System.out.println("role does not exist");
         }
 
-        //获取并处理信息发送时间
+        //Get and process message sending time
         Date timeFinal = DateConverter.StringToDate(time);
 
         System.out.println("roleFromFinalChecked is "+roleFromFinalChecked);
         System.out.println("roleToFinalChecked is "+roleToFinalChecked);
         System.out.println("chatRoom is " + chatRoom);
-        //初始化chatRoom中发送方与接收方信息
-        // (roleFrom和roleTo理论上没有区别，但这里规定roleFrom是于此房间中首次发出消息的用户；roleTo是于此房间中首次发出消息的用户)
-        System.out.println("-------对于roleFrom：");
+        //Initialize the sender and receiver information in chatRoom
+        System.out.println("-------For roleFrom：");
         System.out.println("roleFrom is"+roleFrom);
 
         Role roleFromFinal = null;
@@ -257,7 +252,7 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
             }
         }
 
-        System.out.println("-------对于roleTo：");
+        System.out.println("-------For roleTo：");
         System.out.println("roleTo is"+roleTo);
 
         System.out.println("chatRoom.getRoleTo() is " + chatRoom.getRoleTo());
@@ -270,9 +265,9 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
                 }
             }
             if (roleToFinal != null) {
-                chatRoom.setRoleTo(roleToFinal); // 仅在找到匹配项后设置
+                chatRoom.setRoleTo(roleToFinal); // Set only after a match is found
             } else {
-                System.out.println("对应身份不存在");
+                System.out.println("The corresponding identity does not exist");
             }
         }
         else {
@@ -286,7 +281,7 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
             if (tempRoleTo != null){
                 roleToFinal = tempRoleTo;
             }else {
-                System.out.println("对应身份不存在");
+                System.out.println("The corresponding identity does not exist");
             }
         }
 
@@ -300,28 +295,24 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
         return chatBoxRepository.save(chatBox);
     }
 
-    //生成聊天室
+    // Generate chat room
     private String generateRoomId(String userIdFrom, String userIdTo) {
-        // 根据用户 ID 生成房间 ID 的逻辑
+        // Logic to generate room ID based on user ID
         return "room_" + Math.min(Long.parseLong(userIdFrom), Long.parseLong(userIdTo)) + "_" + Math.max(Long.parseLong(userIdFrom), Long.parseLong(userIdTo));
     }
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        // 连接建立时
-        // 假设从客户端接收到userIdFrom和userIdTo并生成房间ID
-        System.out.println("WebSocket连接已建立");
-//        session.sendMessage(new TextMessage("欢迎连接WebSocket"));
+        System.out.println("WebSocket connection established");
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        // 连接关闭时
         String roomId = (String) session.getAttributes().get("roomId");
         if (roomId != null && roomSessions.containsKey(roomId)) {
             roomSessions.get(roomId).remove(session);
         }
-        System.out.println("WebSocket连接已关闭");
+        System.out.println("WebSocket connection closed");
     }
 
 }

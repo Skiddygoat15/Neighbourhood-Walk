@@ -1,4 +1,4 @@
-"use client"// components/ChattingStatus.js
+"use client"
 
 import {useEffect, useState} from "react";
 import {useRouter} from "next/navigation";

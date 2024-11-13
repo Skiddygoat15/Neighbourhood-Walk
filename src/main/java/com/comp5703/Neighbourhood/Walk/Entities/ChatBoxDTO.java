@@ -2,7 +2,6 @@ package com.comp5703.Neighbourhood.Walk.Entities;
 
 
 import lombok.Data;
-
 import java.util.Date;
 
 @Data

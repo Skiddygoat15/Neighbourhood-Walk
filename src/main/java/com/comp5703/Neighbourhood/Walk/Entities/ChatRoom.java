@@ -1,9 +1,7 @@
 package com.comp5703.Neighbourhood.Walk.Entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +10,6 @@ import java.util.List;
 public class ChatRoom {
 
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JoinColumn(name = "ChatRoomId")
     private String id;
 

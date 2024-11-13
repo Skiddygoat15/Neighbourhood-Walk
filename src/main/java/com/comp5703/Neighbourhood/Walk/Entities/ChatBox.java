@@ -3,13 +3,9 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
-
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "ChatBox")
@@ -36,7 +32,7 @@ public class ChatBox {
     @Column(name = "time")
     @CreationTimestamp
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", timezone = "UTC")
-    @TableField(fill = FieldFill.INSERT) //标明该字段，在什么时候需要被填充
+    @TableField(fill = FieldFill.INSERT) // Indicate when this field needs to be filled in
     private Date time;
 
     @ManyToOne

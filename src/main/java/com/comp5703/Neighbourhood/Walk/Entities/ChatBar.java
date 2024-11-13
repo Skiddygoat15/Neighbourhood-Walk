@@ -1,19 +1,8 @@
 package com.comp5703.Neighbourhood.Walk.Entities;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
-import com.baomidou.mybatisplus.annotation.TableField;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
-import org.hibernate.annotations.CreationTimestamp;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 @Entity
-//@Table(name = "ChatBar")
 @Table(name = "ChatBar", uniqueConstraints = @UniqueConstraint(columnNames = {"userFrom", "userTo"}))
 
 public class ChatBar {
@@ -22,17 +11,13 @@ public class ChatBar {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JoinColumn(name = "ChatBarId")
     private long id;
-//    private Long id;
-
 
     @ManyToOne
     @JoinColumn(name = "userFrom")
-//    @JsonIgnore
     private Users userFrom;
 
     @ManyToOne
     @JoinColumn(name = "userTo")
-//    @JsonIgnore
     private Users userTo;
 
     @JoinColumn(name = "state")
@@ -56,8 +41,6 @@ public class ChatBar {
         this.userTo = userTo;
     }
 
-
-//    public long getId() {
     public Long getId() {
         return id;
     }

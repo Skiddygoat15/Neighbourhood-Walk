@@ -1,16 +1,16 @@
 "use client"
-// components/ChatBar.js
+
 import React, { useState } from 'react';
 
 export default function ChatBar({ onSendMessage }) {
     const [message, setMessage] = useState('');
 
-    // 修改输入框中消息内容
+    // Modify the message content in the input box
     const handleChange = (event) => {
         setMessage(event.target.value);
     };
 
-    // 消息内容提交
+    // Message content submission
     const handleSubmit = (event) => {
         event.preventDefault();
         if (message.trim()) {

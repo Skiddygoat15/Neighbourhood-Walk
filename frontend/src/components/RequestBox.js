@@ -12,7 +12,7 @@ export default function RequestBox({walkerId}){
             'Authorization': 'Bearer ' + sessionStorage.getItem('token')
         },
     };
-    const [requestStatus, setRequestStatus] = useState('Pending...'); // 默认值为 'Pending...'
+    const [requestStatus, setRequestStatus] = useState('Pending...'); // The default value is 'Pending...'
 
     const requestURL = new Request(`${apiUrl}/WalkerRequest/getWalkerRequest/${walkerId}`, myInit);
 

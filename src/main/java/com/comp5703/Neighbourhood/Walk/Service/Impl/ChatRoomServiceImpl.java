@@ -26,11 +26,6 @@ public class ChatRoomServiceImpl implements ChatRoomService {
     @Autowired
     private UsersRepository usersRepository;
 
-//    @Override
-//    public ChatRoom saveChatBox(ChatRoom chatRoom) {
-//        return chatRoomRepository.save(chatRoom);
-//    }
-
     @Override
     public ChatRoom saveChatBox(long userIdFrom, long userIdTo, String roleTypeFrom, String roleTypeTo) {
 

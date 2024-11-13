@@ -2,17 +2,13 @@ package com.comp5703.Neighbourhood.Walk.Controller;
 
 import com.comp5703.Neighbourhood.Walk.Entities.Notification;
 import com.comp5703.Neighbourhood.Walk.Entities.Users;
-import com.comp5703.Neighbourhood.Walk.Entities.WalkerRequest;
 import com.comp5703.Neighbourhood.Walk.Service.NotificationService;
-import com.comp5703.Neighbourhood.Walk.Service.UsersService;
 import com.comp5703.Neighbourhood.Walk.Service.WalkerRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/Notification")

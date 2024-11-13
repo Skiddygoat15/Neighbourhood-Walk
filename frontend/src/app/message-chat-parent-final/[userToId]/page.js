@@ -5,14 +5,13 @@ import {useEffect, useRef, useState} from "react";
 import {format} from "date-fns";
 import BackgroundLayout from '../../ui-background-components/BackgroundLayout';
 import { v4 as uuidv4 } from 'uuid';
+
 export default function Home({params}) {
 
-
-    // ####################################功能1:角色状态检测####################################
-    // 双方role状态检测
+    // ####################################Function 1: Character status detection####################################
+    // Role status detection on both sides
     const [roleFrom, setRoleFrom] = useState("parent");
     const [userIdFrom, setUserIdFrom] = useState("");
-    // const [userIdTo, setUserIdTo] = useState("101");
     const [isDataReady, setIsDataReady] = useState(false);
     const userIdTo = params.userToId;
     const [chatRoomId, setChatRoomId] = useState("");
@@ -22,10 +21,9 @@ export default function Home({params}) {
         const storedRole = sessionStorage.getItem("roles")?.slice(2, -2);
         const storedUser = sessionStorage.getItem("userId");
         if (storedUser && storedRole) {
-            // setRoleFrom(storedRole);
             setRoleFrom("parent");
             setUserIdFrom(storedUser);
-            setIsDataReady(true);  // 设置数据准备完毕的状态
+            setIsDataReady(true);  // Set the status of data preparation completed
         }
     }, []);
     const roleTo = roleFrom === "parent" ? "walker" : "parent";
@@ -42,8 +40,7 @@ export default function Home({params}) {
     }, [isDataReady, userIdFrom, userIdTo]);
 
 
-
-    // ####################################功能2:WebSocket服务器连接####################################
+    // ####################################Function 2: WebSocket server connection####################################
     const websocket = useRef(null);
     const [inputMessage, setInputMessage] = useState("");
     const [messages, setMessages] = useState([]);  // 用于存储消息的状态
@@ -55,16 +52,14 @@ export default function Home({params}) {
     useEffect(() => {
         console.info("allChatMessages are:", allChatMessages)
     }, [allChatMessages]);
-    // useEffect(() => {
+
     function initializeWebSocket(userIdFrom, userIdTo) {
-        // websocket.current = new WebSocket(`ws://${apiUrl}/ws`);
         websocket.current = new WebSocket(`${websocketurl}/ws`);
         websocket.current.onopen = function () {
             console.log("WebSocket connection successful");
             console.log("userIdFrom is: " + userIdFrom);
             console.log("userIdTo is: " + userIdTo);
             GetChatHistory();
-            // setMessages((prev) => [...prev, `user[${username}] Already joined the chat room`]);
 
             // Obtain and send the userId of both parties in the chat to the server
             if (typeof window !== 'undefined') {
@@ -79,11 +74,8 @@ export default function Home({params}) {
 
                 }
             }
-            // setMessages((prev) => [...prev, `user1 Already joined the chat room`]);
         };
         websocket.current.onmessage = function (event) {
-            // console.info("server message test:")
-            // console.log(event.data);
 
             try {
                 const newMessage = JSON.parse(event.data);
@@ -173,7 +165,6 @@ export default function Home({params}) {
                         <div
                             key={uuidv4()}
                             style={{
-                                // backgroundColor: msg.roleFromRoleType === 'parent' ? '#f1f1f1' : '#d1f0f7',
                                 backgroundColor: msg.roleFromRoleType === 'parent' ? '#d1f0f7' : '#f1f1f1',
                                 textAlign: msg.roleFromRoleType === 'parent' ? 'right' : 'left',
                                 float: msg.roleFromRoleType === 'parent' ? 'right' : 'left',

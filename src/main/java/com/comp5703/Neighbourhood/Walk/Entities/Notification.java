@@ -21,7 +21,6 @@ public class Notification {
 
     @OneToOne
     @JoinColumn(name = "walkerRequestId")
-//    @JsonBackReference
     private WalkerRequest walkerRequest;
 
     @Column(name = "statusPrevious")
@@ -32,7 +31,7 @@ public class Notification {
 
     @CreationTimestamp
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX", timezone = "UTC")
-    @TableField(fill = FieldFill.INSERT) //标明该字段，在什么时候需要被填充
+    @TableField(fill = FieldFill.INSERT)
     private Date Time;
 
     @Column(name = "NotificationCheck")

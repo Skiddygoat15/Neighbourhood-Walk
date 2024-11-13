@@ -42,10 +42,6 @@ public class CommentServiceImpl implements CommentService {
         return commentRepository.save(comment);
     }
 
-    /**
-     * 统计曾受到Comment的userIds
-     * @return
-     */
     @Override
     public List<Long> getCommentedUserIds() {
         Iterable<Comment> iterable = commentRepository.findAll();
@@ -58,7 +54,6 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<Comment> getCommentByUserId(long userId) {
-
         return commentRepository.findAllByUserId(userId);
     }
 
@@ -102,11 +97,6 @@ public class CommentServiceImpl implements CommentService {
         return result;
     }
 
-    /**
-     * 返回usrId对应的rate的均值
-     * @param userid
-     * @return
-     */
     @Override
     public Double getAveRateByUserId(long userid) {
 
@@ -120,12 +110,6 @@ public class CommentServiceImpl implements CommentService {
         return listRate.stream().mapToDouble(Double::doubleValue).average().orElse(0.0);
     }
 
-    /**
-     * 返回多个userId对应rate均值的排名
-     * @param useridList
-     * @param ascending
-     * @return
-     */
     public List<Double> getAveRateByUserId(List<Long> useridList,boolean ascending) {
         return useridList.stream().map(userId -> getAveRateByUserId(userId)).toList();
     }
@@ -139,27 +123,6 @@ public class CommentServiceImpl implements CommentService {
     public Boolean IsUserHaveComment(long userid) {
         return !commentRepository.findAllByUserId(userid).isEmpty();
     }
-
-
-//    @Override
-//    public Comment getCommentByReuqest(Integer requestId) {
-//        Optional<Request> requestCheck = requestRepository.findById(requestId);
-//
-//        Request requestChecked = null;
-//        if (requestCheck.isPresent()){
-//            requestChecked = requestCheck.get();
-//        }
-//
-//        Optional<Comment> commentCheck = commentRepository.findByRequest(requestChecked);
-//        Comment commentChecked = null;
-//        if (commentCheck.isPresent()){
-//            commentChecked = commentCheck.get();
-//        }else {
-//            return null;
-//        }
-//
-//        return commentChecked;
-//    }
 
     @Override
     public List<CommentDTO> getCommentsByReuqest(Integer requestId) {

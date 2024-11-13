@@ -2,7 +2,6 @@ package com.comp5703.Neighbourhood.Walk.Service;
 
 import com.comp5703.Neighbourhood.Walk.Entities.Notification;
 import com.comp5703.Neighbourhood.Walk.Entities.Users;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 

@@ -8,7 +8,6 @@ import com.comp5703.Neighbourhood.Walk.Repository.ChatRoomRepository;
 import com.comp5703.Neighbourhood.Walk.Repository.RoleRepository;
 import com.comp5703.Neighbourhood.Walk.Repository.UsersRepository;
 import com.comp5703.Neighbourhood.Walk.Service.ChatBoxService;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

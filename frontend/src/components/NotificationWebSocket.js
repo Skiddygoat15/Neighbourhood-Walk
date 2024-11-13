@@ -1,17 +1,17 @@
 "use client"
 import React, { useEffect, useState } from 'react';
 
-// NotificationWebSocket 组件：接收通知并通过回调函数将数据传递给父组件
+// NotificationWebSocket component: receives notifications and passes data to the parent component through the callback function
 const NotificationWebSocket = ({ onNewNotification }) => {
     const websocketurl = process.env.WEB_SOCKET_URL;
     useEffect(() => {
-        // 创建 WebSocket 连接
+        // Create a WebSocket connection
         const ws = new WebSocket(`${websocketurl}/ws/notifications`);
 
         ws.onmessage = (event) => {
             const notification = JSON.parse(event.data);
             console.log('Notification received:', notification);
-            // 使用父组件传递的回调函数来处理新通知
+            // Use the callback function passed by the parent component to handle new notifications
             onNewNotification(notification);
         };
 
@@ -27,13 +27,9 @@ const NotificationWebSocket = ({ onNewNotification }) => {
             console.log('WebSocket connection closed');
         };
 
-        // 在组件卸载时关闭 WebSocket 连接
-        // return () => {
-        //     ws.close();
-        // };
-    }, [onNewNotification]);  // 仅在 onNewNotification 回调函数变更时重新运行
+    }, [onNewNotification]);  // Only rerun when onNewNotification callback function changes
 
-    return null;  // 此组件本身不需要渲染任何内容
+    return null;
 };
 
 export default NotificationWebSocket;

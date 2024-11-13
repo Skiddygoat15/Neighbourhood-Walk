@@ -3,16 +3,13 @@ package com.comp5703.Neighbourhood.Walk.Controller;
 
 import com.comp5703.Neighbourhood.Walk.Entities.Comment;
 import com.comp5703.Neighbourhood.Walk.Entities.CommentDTO;
-import com.comp5703.Neighbourhood.Walk.Entities.Request;
 import com.comp5703.Neighbourhood.Walk.Service.CommentService;
 import com.comp5703.Neighbourhood.Walk.Service.RequestService;
 import com.comp5703.Neighbourhood.Walk.Service.UsersService;
 import com.comp5703.Neighbourhood.Walk.domain.dto.RateCommentDTO;
 import com.comp5703.Neighbourhood.Walk.domain.dto.UserIdNameAverateDTO;
 import jakarta.persistence.EntityNotFoundException;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,10 +29,6 @@ public class CommentController {
 
     @Autowired
     RequestService requestService;
-
-    /*
-        添加评论
-     */
 
     @PostMapping
     @ExceptionHandler(EntityNotFoundException.class)
@@ -57,9 +50,6 @@ public class CommentController {
         }
     }
 
-    /*
-        根据userid获取评论，也可以根据rate筛选
-    */
     @GetMapping("/getCommentByUserid/{userId}")
     public ResponseEntity<List<String>> getCommentByUserid(@PathVariable("userId") long userId,
                                                  @RequestParam(value = "max",required = false, defaultValue = "5.0") double max,
@@ -69,16 +59,11 @@ public class CommentController {
         try {
             list = commentService.getCommentByUserId(userId,max,min);
         } catch (Exception e) {
-//            log.warn("获取评论失败! !",e);
-            System.out.println("获取评论失败");
+            System.out.println("Failed to get comments");
         }
-//        list.forEach(System.out::println);
         return new ResponseEntity<>(list,HttpStatus.ALREADY_REPORTED);
     }
 
-    /*
-    根据userid获取评论，也可以根据rate筛选
-*/
     @GetMapping("/getCommentSortedByRate/{userId}")
     public ResponseEntity<List<RateCommentDTO>> getCommentSortedByRate(@PathVariable("userId") long userId,
                                                                                 @RequestParam(value = "ascending", required = false, defaultValue = "true") boolean ascending){
@@ -87,10 +72,8 @@ public class CommentController {
         try {
             sortedComments = commentService.getCommentSortedByRate(userId,ascending);
         } catch (Exception e) {
-//            log.warn("获取排序评论失败! !",e);
-            System.out.println("获取排序评论失败");
+            System.out.println("Failed to get sorted comments");
         }
-//        list.forEach(System.out::println);
         return new ResponseEntity(sortedComments,HttpStatus.ALREADY_REPORTED);
     }
 
@@ -100,7 +83,7 @@ public class CommentController {
         if (commentService.IsUserHaveComment(userId)){
             return commentService.getAveRateByUserId(userId);
         }else {
-            throw new Exception("该用户目前无评论。");
+            throw new Exception("This user currently has no comments");
         }
     }
 
@@ -121,7 +104,7 @@ public class CommentController {
             }
             return new UserIdNameAverateDTO(userId, userName, AveRate);
         }).collect(Collectors.toList());
-        if (list.isEmpty()){throw new Exception("目前无被评论的用户。");}
+        if (list.isEmpty()){throw new Exception("There are currently no commented users");}
         if (ascending == true){
             list.sort(Comparator.comparing(UserIdNameAverateDTO::getRate));
         }else {
@@ -130,10 +113,6 @@ public class CommentController {
         return new ResponseEntity(list,HttpStatus.ALREADY_REPORTED);
     }
 
-//    @GetMapping("/getCommentByReuqestId/{requestId}")
-//    public ResponseEntity<Comment> getCommentByReuqest(@PathVariable("requestId") Integer requestId) {
-//        return new ResponseEntity(commentService.getCommentByReuqest(requestId),HttpStatus.OK);
-//    }
 
     @GetMapping("/getCommentsByReuqestId/{requestId}")
     public ResponseEntity<List<CommentDTO>> getCommentsByReuqest(@PathVariable("requestId") Integer requestId) {
