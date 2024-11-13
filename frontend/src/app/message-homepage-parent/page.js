@@ -8,10 +8,9 @@ import useTextColor from '../ui-background-components/useTextColor';
 
 export default function Home() {
     const textColor = useTextColor();
-    const [tempSearch, setTempSearch] = useState(''); // 用来临时存储搜索栏输入的值
-    const [searchTerm, setSearchTerm] = useState(''); // 用来存储确认后的搜索值
-    // const [user, setUser] = useState(null);  // 用于存储从后端返回的用户信息
-    const [chatBars, setChatBars] = useState(null);  //用于储存该用户名下所有的chatBars
+    const [tempSearch, setTempSearch] = useState('');
+    const [searchTerm, setSearchTerm] = useState('');
+    const [chatBars, setChatBars] = useState(null);
     const [userId,setUserId] = useState('');
     const [allRoles, setAllRoles] = useState([])
     const [confirmClick, setConfirmClick] = useState(0);
@@ -39,39 +38,39 @@ export default function Home() {
             .catch(error => console.error('Error:', error));
     }
 
-    //1.初始化，获取并设置主用户的userId
+    // 1. Initialize, obtain and set the userId of the main user
     useEffect(() => {
-        const storedUserId = sessionStorage.getItem("userId"); // 从localStorage获取userId
-        const userIdLong = parseInt(storedUserId, 10); // 将userId字符串转换为长整型
-        if (!isNaN(userIdLong)) { // 检查转换结果是否为有效数字
-            setUserId(userIdLong); // 如果是有效数字，则设置到状态变量中
+        const storedUserId = sessionStorage.getItem("userId");
+        const userIdLong = parseInt(storedUserId, 10);
+        if (!isNaN(userIdLong)) {
+            setUserId(userIdLong);
         }
         getAllRoles();
-    }, []); // 空依赖数组，确保只在组件加载时执行一次
+    }, []);
 
-    //2.点击Confim后触发，检查当输入userId存在且角色为walker的时候才会修改searchTerm，从这以后保证每个searchTerm都是正确的walkerId
+    //2. Triggered after clicking Confim, check that the searchTerm will be modified only when the input userId exists and the role is walker. From now on, ensure that each searchTerm has the correct walkerId.
     function handleSearch() {
         const walkerRole = allRoles.find(role => role.userId.toString() === tempSearch && role.roleType === 'walker');
         if (walkerRole) {
             console.info("Found a match for a walker role with userId:", walkerRole);
-            setSearchTerm(tempSearch);  // 如果找到匹配，设置searchTerm
+            setSearchTerm(tempSearch);
         } else {
             console.info("No match found for the given tempSearch as a walker userId. Input another userId please.");
             setSearchTerm('');
         }
-        setConfirmClick(prev => prev + 1); // 更新点击计数
+        setConfirmClick(prev => prev + 1);
     }
 
     useEffect(() => {
         handleSearch();
-    }, []); // 空依赖数组，确保仅在页面加载时执行一次
+    }, []);
 
-    //初始化
+    //initialization
     useEffect(() => {
         if (searchTerm) {
             getOrAddChatBar();
         }
-    }, [searchTerm]);  // 确保 searchTerm 改变时，触发数据更新
+    }, [searchTerm]);
 
     useEffect(() => {
         getChatBar();
@@ -81,11 +80,6 @@ export default function Home() {
             console.info("searchTerm is ",searchTerm)
         }
     }, [searchTerm, confirmClick]);
-
-    //chatBars更新提示
-    useEffect(() => {
-        console.log('Chat bars updated:', chatBars);
-    }, [chatBars]);
 
     function getOrAddChatBar() {
         fetch(`${apiUrl}/ChatBar/getChatBars/${userId}`, {
@@ -134,7 +128,7 @@ export default function Home() {
     }
 
     function getChatBar() {
-        // 先检查是否已经存在该聊天框
+        // First check whether the chat box already exists
         fetch(`${apiUrl}/ChatBar/getChatBars/${userId}`, {
             method: 'GET',
             headers: {
@@ -167,7 +161,7 @@ export default function Home() {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ` + sessionStorage.getItem('token')
             },
-            body: JSON.stringify({ state: 'close' }) // 确认API需要的具体格式
+            body: JSON.stringify({ state: 'close' }) // Confirm the specific format required by the API
         })
             .then(response => {
                 if (!response.ok) {
@@ -186,7 +180,7 @@ export default function Home() {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ` + sessionStorage.getItem('token')
             },
-            body: JSON.stringify({ state: 'open' }) // 确认API需要的具体格式
+            body: JSON.stringify({ state: 'open' }) // Confirm the specific format required by the API
         })
             .then(response => {
                 if (!response.ok) {
@@ -197,107 +191,6 @@ export default function Home() {
             })
             .catch(error => console.error('Error:', error));
     }
-
-    //未添加跳转的页面
-    // return (
-    //     <div style={{padding: 20, backgroundColor: '#fff', minHeight: '100vh'}}>
-    //         <Head>
-    //             <title>Notifications</title>
-    //             <meta name="description" content="Notification page"/>
-    //             <link rel="icon" href="/favicon.ico"/>
-    //         </Head>
-    //
-    //         <div style={{
-    //             textAlign: 'center',
-    //             padding: '10px 0',
-    //             fontSize: '12px',
-    //             color: '#666',
-    //             position: 'sticky',
-    //             top: 0,
-    //             zIndex: 1000
-    //         }}>9:41
-    //         </div>
-    //         <h1 style={{color: '#333', fontSize: '24px', margin: '20px 0'}}>Messages</h1>
-    //
-    //         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '10px 0' }}>
-    //             <input type="text" placeholder="Search notifications..."
-    //                    style={{
-    //                        width: '70%',
-    //                        padding: 10,
-    //                        border: '1px solid #ccc',
-    //                        borderRadius: '8px',
-    //                        boxSizing: 'border-box'
-    //                    }}
-    //                    value={tempSearch}
-    //                    onChange={e => setTempSearch(e.target.value)}/>
-    //
-    //             <button onClick={() => handleSearch()} style={{
-    //                 padding: '10px 20px',
-    //                 marginLeft: '10px',
-    //                 background: '#0070f3',
-    //                 color: 'white',
-    //                 borderRadius: '8px',
-    //                 cursor: 'pointer',
-    //                 border: 'none'
-    //             }}>Confirm</button>
-    //
-    //         </div>
-    //         <h2 style={{
-    //             color: '#333',
-    //             fontSize: '15px',  // 增加字体大小
-    //             textAlign: 'center',  // 居中标题
-    //             margin: '20px 0'  // 增加上下外边距以提供空间
-    //         }}>Recently Chat</h2>
-    //
-    //         <div style={{display: 'flex', flexWrap: 'wrap', flexDirection: 'column'}}>
-    //             {chatBars && Array.isArray(chatBars) && chatBars
-    //                 .filter(bar => bar.state !== "close")
-    //                 .map((bar, index) => (
-    //                     <div key={index} style={{
-    //                         border: '1px solid #ccc',
-    //                         borderRadius: '8px',
-    //                         padding: '20px',
-    //                         margin: '10px auto',  // 使chatBar在水平方向上居中
-    //                         minWidth: '300px',
-    //                         width: '100%',  // 聊天栏宽度占满可用空间
-    //                         maxWidth: '600px',  // 设置一个最大宽度以保持设计的整洁
-    //                         backgroundColor: '#f9f9f9',
-    //                         boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
-    //                         position: 'relative',
-    //                         display: 'flex',  // 使用flex布局使内容居中
-    //                         flexDirection: 'row',  // 内容沿水平方向排列
-    //                         alignItems: 'center',  // 垂直居中对齐
-    //                         justifyContent: 'center'  // 水平居中对齐
-    //                     }}>
-    //                         <h3 style={{
-    //                             fontSize: '16px',  // 调整字体大小以更好地适应移动和桌面视图
-    //                             margin: 0,  // 移除外边距以防止布局偏移
-    //                             padding: '0 10px'  // 增加内边距确保文本不紧贴边缘
-    //                         }}>Chat with user {bar.userTo.name}</h3>
-    //                         <button style={{
-    //                             position: 'absolute',
-    //                             top: '10px',
-    //                             right: '10px',
-    //                             color: 'black',
-    //                             border: 'none',
-    //                             borderRadius: '50%',
-    //                             cursor: 'pointer',
-    //                             width: '30px',
-    //                             height: '30px',
-    //                             display: 'flex',
-    //                             alignItems: 'center',
-    //                             justifyContent: 'center'
-    //                         }}  onClick={() => {
-    //                             closeChatBar(bar.userTo.id);
-    //                             getOrAddChatBar();
-    //                         }}>
-    //                             X
-    //                         </button>
-    //                     </div>
-    //                 ))}
-    //         </div>
-    //     </div>
-    // );
 
     return (
         <BackgroundLayout>
@@ -348,9 +241,9 @@ export default function Home() {
 
                 </div>
                 <h2 className={textColor} style={{
-                    fontSize: '15px',  // 增加字体大小
-                    textAlign: 'center',  // 居中标题
-                    margin: '20px 0'  // 增加上下外边距以提供空间
+                    fontSize: '15px',
+                    textAlign: 'center',
+                    margin: '20px 0'
                 }}>Recently Chat</h2>
 
                 <div style={{display: 'flex', flexWrap: 'wrap', flexDirection: 'column'}}>
@@ -366,26 +259,25 @@ export default function Home() {
                                     border: '1px solid #ccc',
                                     borderRadius: '8px',
                                     padding: '20px',
-                                    margin: '10px auto',  // 使chatBar在水平方向上居中
+                                    margin: '10px auto',
                                     minWidth: '300px',
-                                    width: '100%',  // 聊天栏宽度占满可用空间
-                                    maxWidth: '600px',  // 设置一个最大宽度以保持设计的整洁
+                                    width: '100%',
+                                    maxWidth: '600px',
                                     backgroundColor: '#f9f9f9',
                                     boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
                                     position: 'relative',
-                                    display: 'flex',  // 使用flex布局使内容居中
-                                    flexDirection: 'row',  // 内容沿水平方向排列
-                                    alignItems: 'center',  // 垂直居中对齐
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
                                     justifyContent: 'center'
                                 }}>
 
                                     <h3 onClick={handleChatClick} style={{
-                                        fontSize: '16px',  // 调整字体大小以更好地适应移动和桌面视图
-                                        margin: 0,  // 移除外边距以防止布局偏移
-                                        padding: '0 10px',  // 增加内边距确保文本不紧贴边缘
-                                        cursor: 'pointer'  // 将鼠标样式设置为指针
+                                        fontSize: '16px',
+                                        margin: 0,
+                                        padding: '0 10px',
+                                        cursor: 'pointer'
                                     }}>
-                                        {/*Chat with user {bar.userTo.name}*/}
                                         <span style={{ color: 'blue', fontWeight: 'bold' }}>Id: {bar.userTo.id}</span> Chat with user {bar.userTo.name}
                                     </h3>
 

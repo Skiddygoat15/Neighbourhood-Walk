@@ -8,10 +8,9 @@ import useTextColor from '../ui-background-components/useTextColor';
 
 export default function Home() {
     const textColor = useTextColor();
-    const [tempSearch, setTempSearch] = useState(''); // 用来临时存储搜索栏输入的值
-    const [searchTerm, setSearchTerm] = useState(''); // 用来存储确认后的搜索值
-    // const [user, setUser] = useState(null);  // 用于存储从后端返回的用户信息
-    const [chatBars, setChatBars] = useState(null);  //用于储存该用户名下所有的chatBars
+    const [tempSearch, setTempSearch] = useState('');
+    const [searchTerm, setSearchTerm] = useState('');
+    const [chatBars, setChatBars] = useState(null);
     const [userId,setUserId] = useState('');
     const [allRoles, setAllRoles] = useState([])
     const [confirmClick, setConfirmClick] = useState(0);
@@ -32,23 +31,22 @@ export default function Home() {
                 return response.json();
             })
             .then(data => {
-                // console.info("all roles are: ",data);
                 setAllRoles(data);
             })
             .catch(error => console.error('Error:', error));
     }
 
-    //1.初始化，获取并设置主用户的userId
+    // 1. Initialize, obtain and set the userId of the main user
     useEffect(() => {
-        const storedUserId = sessionStorage.getItem("userId"); // 从localStorage获取userId
-        const userIdLong = parseInt(storedUserId, 10); // 将userId字符串转换为长整型
-        if (!isNaN(userIdLong)) { // 检查转换结果是否为有效数字
-            setUserId(userIdLong); // 如果是有效数字，则设置到状态变量中
+        const storedUserId = sessionStorage.getItem("userId");
+        const userIdLong = parseInt(storedUserId, 10);
+        if (!isNaN(userIdLong)) {
+            setUserId(userIdLong);
         }
         getAllRoles();
-    }, []); // 空依赖数组，确保只在组件加载时执行一次
+    }, []);
 
-    //2.点击Confim后触发，检查当输入userId存在且角色为parent的时候才会修改searchTerm，从这以后保证每个searchTerm都是正确的parentId
+    //2.Triggered after clicking Confim, check that the searchTerm will be modified only when the input userId exists and the role is parent. From now on, it is guaranteed that each searchTerm has the correct parentId.
     function handleSearch() {
         const parentRole = allRoles.find(role => role.userId.toString() === tempSearch && role.roleType === 'parent');
         if (parentRole) {
@@ -58,19 +56,19 @@ export default function Home() {
             console.info("No match found for the given tempSearch as a parent userId. Input another userId please.");
             setSearchTerm('');
         }
-        setConfirmClick(prev => prev + 1); // 更新点击计数
+        setConfirmClick(prev => prev + 1);
     }
 
     useEffect(() => {
         handleSearch();
-    }, []); // 空依赖数组，确保仅在页面加载时执行一次
+    }, []);
 
-    //初始化
+    // initialization
     useEffect(() => {
         if (searchTerm) {
             getOrAddChatBar();
         }
-    }, [searchTerm]);  // 确保 searchTerm 改变时，触发数据更新
+    }, [searchTerm]);
 
     useEffect(() => {
         getChatBar();
@@ -80,11 +78,6 @@ export default function Home() {
             console.info("searchTerm is ",searchTerm)
         }
     }, [searchTerm, confirmClick]);
-
-    //chatBars更新提示
-    useEffect(() => {
-        console.log('Chat bars updated:', chatBars);
-    }, [chatBars]);
 
     function getOrAddChatBar() {
         fetch(`${apiUrl}/ChatBar/getChatBars/${userId}`, {
@@ -133,7 +126,7 @@ export default function Home() {
     }
 
     function getChatBar() {
-        // 先检查是否已经存在该聊天框
+        // First check whether the chat box already exists
         fetch(`${apiUrl}/ChatBar/getChatBars/${userId}`, {
             method: 'GET',
             headers: {
@@ -166,7 +159,7 @@ export default function Home() {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ` + sessionStorage.getItem('token')
             },
-            body: JSON.stringify({ state: 'close' }) // 确认API需要的具体格式
+            body: JSON.stringify({ state: 'close' }) // Confirm the specific format required by the API
         })
             .then(response => {
                 if (!response.ok) {
@@ -185,7 +178,7 @@ export default function Home() {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ` + sessionStorage.getItem('token')
             },
-            body: JSON.stringify({ state: 'open' }) // 确认API需要的具体格式
+            body: JSON.stringify({ state: 'open' }) // Confirm the specific format required by the API
         })
             .then(response => {
                 if (!response.ok) {
@@ -242,9 +235,9 @@ export default function Home() {
 
                 </div>
                 <h2 className={textColor}  style={{
-                    fontSize: '15px',  // 增加字体大小
-                    textAlign: 'center',  // 居中标题
-                    margin: '20px 0'  // 增加上下外边距以提供空间
+                    fontSize: '15px',
+                    textAlign: 'center',
+                    margin: '20px 0'
                 }}>Recently Chat</h2>
 
                 <div style={{display: 'flex', flexWrap: 'wrap', flexDirection: 'column'}}>
@@ -259,25 +252,24 @@ export default function Home() {
                                     border: '1px solid #ccc',
                                     borderRadius: '8px',
                                     padding: '20px',
-                                    margin: '10px auto',  // 使chatBar在水平方向上居中
+                                    margin: '10px auto',
                                     minWidth: '300px',
-                                    width: '100%',  // 聊天栏宽度占满可用空间
-                                    maxWidth: '600px',  // 设置一个最大宽度以保持设计的整洁
+                                    width: '100%',
+                                    maxWidth: '600px',
                                     backgroundColor: '#f9f9f9',
                                     boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
                                     position: 'relative',
-                                    display: 'flex',  // 使用flex布局使内容居中
-                                    flexDirection: 'row',  // 内容沿水平方向排列
-                                    alignItems: 'center',  // 垂直居中对齐
+                                    display: 'flex',
+                                    flexDirection: 'row',
+                                    alignItems: 'center',
                                     justifyContent: 'center'}}>
 
                                     <h3 onClick={handleChatClick} style={{
-                                        fontSize: '16px',  // 调整字体大小以更好地适应移动和桌面视图
-                                        margin: 0,  // 移除外边距以防止布局偏移
-                                        padding: '0 10px',  // 增加内边距确保文本不紧贴边缘
-                                        cursor: 'pointer'  // 将鼠标样式设置为指针
+                                        fontSize: '16px',
+                                        margin: 0,
+                                        padding: '0 10px',
+                                        cursor: 'pointer'
                                     }}>
-                                        {/*Id: {bar.userTo.id}, Chat with user {bar.userTo.name}</h3>*/}
                                         <span style={{ color: 'blue', fontWeight: 'bold' }}>Id: {bar.userTo.id}</span> Chat with user {bar.userTo.name}
                                     </h3>
                                     <button style={{
