@@ -235,11 +235,8 @@ export default function LiveTrackingSharingParent( {params} ) {
                     )}
                 </div>
 
-                {/* Display loading message until map is fully loaded */}
                 {isMapLoading && <p className="text-center text-gray-500">Map is loading...</p>}
 
-                {/* Map Section */}
-                {/* Only render the map if after get the current location */}
                 {(currentPosition && departurePosition && destinationPosition) && (
                     <div className="w-full max-w-lg mt-2 flex justify-center">
                         <LoadScriptNext

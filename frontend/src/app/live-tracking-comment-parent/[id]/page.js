@@ -105,12 +105,11 @@ export default function CommentPage() {
                     <label htmlFor="rate" className="block text-lg font-medium">
                         Rating:
                     </label>
-                    {/* 星级选择器 */}
                     <ReactStars
                         count={5}
                         onChange={ratingChanged}
                         size={40}
-                        isHalf={true} // 启用半颗星
+                        isHalf={true}
                         activeColor="#ffd700"
                         value={rate}
                     />

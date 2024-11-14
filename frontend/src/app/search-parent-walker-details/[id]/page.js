@@ -76,7 +76,6 @@ export default function SearchParentWalkerDetails({ params }) {
 
           <div className="w-full" style={{paddingTop: '5px'}}>
 
-            {/* show back icon and title*/}
             <div className="flex items-center mt-2">
               <button onClick={() => handleBack()} className={`mr-4 ${textColor}`}>
                 <svg
@@ -97,13 +96,11 @@ export default function SearchParentWalkerDetails({ params }) {
               <h1 className={`text-2xl font-semibold ${textColor} text-center`}>Walker details</h1>
             </div>
 
-            {/* Centered Error and Loading Messages */}
             <div className="flex justify-center items-center my-1">
               {error && <p className="text-red-500 text-center">{error}</p>}
               {!walker && !error && <p className="text-center">Loading...</p>}
             </div>
 
-            {/* Walker Information */}
             <div className="p-2 rounded-lg px-8">
               <div className="bg-white p-4 rounded-lg shadow-lg w-full">
                 {walker && (
@@ -132,7 +129,7 @@ export default function SearchParentWalkerDetails({ params }) {
                       <p><strong>Skill:</strong> {walker.skill}</p>
                       <p><strong>Average Rating:</strong> ⭐ {walker.avgUserRating} / 5</p>
 
-                      {/* Contact Button */}
+
                       <button
                           onClick={() => handleContact()}
                           className="bg-black text-white px-4 py-2 rounded-lg w-full hover:bg-gray-700">

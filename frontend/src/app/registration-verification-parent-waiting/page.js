@@ -11,16 +11,13 @@ export default function SearchParent() {
     <div className="min-h-screen bg-gray-100 p-4">
       <div className="bg-white p-4 rounded-lg shadow-md max-w-md mx-auto">
         <h1 className="text-2xl font-semibold mb-4">Search</h1>
-        {/* Search Bar */}
         <input
           type="text"
           placeholder="Search walkers.."
           className="w-full p-2 mb-4 border rounded-lg"
         />
 
-        {/* Dropdown Filters */}
         <div className="flex justify-between mb-4">
-          {/* Gender Dropdown */}
           <div className="relative">
             <select
               value={gender}
@@ -33,7 +30,6 @@ export default function SearchParent() {
             </select>
           </div>
 
-          {/* Distance Dropdown */}
           <div className="relative">
             <select
               value={distance}
@@ -46,7 +42,6 @@ export default function SearchParent() {
             </select>
           </div>
 
-          {/* Ratings Dropdown */}
           <div className="relative">
             <select
               value={rating}
@@ -63,16 +58,13 @@ export default function SearchParent() {
           </div>
         </div>
 
-        {/* Walkers List */}
         <div className="space-y-4">
           {[1, 2, 3].map((walker) => (
             <div
               key={walker}
               className="border rounded-lg p-4 flex items-center space-x-4"
             >
-              {/* Placeholder for Walker Image */}
               <div className="w-16 h-16 bg-gray-200 rounded-lg"></div>
-              {/* Walker Details */}
               <div>
                 <p className="font-semibold">Walker Name: Example {walker}</p>
                 <p>Gender: Female/Male</p>

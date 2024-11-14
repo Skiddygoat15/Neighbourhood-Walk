@@ -144,18 +144,14 @@ export default function ProfileAttributesModification() {
       <BackgroundLayout>
     <main className="min-h-screen">
       <div className="w-full px-4 sm:px-6 lg:px-8" style={{height: 'calc(100vh - 65px)', overflowY: 'auto'}}>
-        {/* Back Button */}
         <button onClick={() => router.back()} className={`text-2xl p-2 ${textColor} focus:outline-none`}>
           &larr;
         </button>
 
-        {/* Title */}
         <h1 className={`block text-2xl ${textColor} font-bold text-center mb-2`}>Profile Attributes Modification</h1>
         {error && <p className="text-red-500 text-center">{error}</p>}
 
-        {/* Form Fields */}
         <div className="space-y-6">
-          {/* Phone Number */}
           <div>
             <label className={`block text-sm  ${textColor} font-bold text-left"`}>Phone Number</label>
             <p className={`block text-xs  ${textColor} font-medium text-left`}>You will use this number to receive
@@ -181,10 +177,8 @@ export default function ProfileAttributesModification() {
                   onChange={(e) => setPhoneNumber(e.target.value)}
               />
             </div>
-            {/*<p className="text-xs text-gray-500">The system will send you a verification code</p>*/}
           </div>
 
-          {/* Email Address */}
           <div>
             <label className={`block text-sm  ${textColor} font-bold text-left"`}>E-mail Address</label>
             <p className={`block text-xs  ${textColor} font-medium text-left`}>You will use this mailbox to receive
@@ -195,10 +189,8 @@ export default function ProfileAttributesModification() {
                 value={emailAddress}
                 onChange={(e) => setEmailAddress(e.target.value)}
             />
-            {/*<p className="text-xs text-gray-500">The system will send you a verification code</p>*/}
           </div>
 
-          {/* Communication Preference */}
           <div>
             <label className={`block text-sm  ${textColor} font-bold text-left"`}>Communication Preference</label>
             <select
@@ -212,7 +204,6 @@ export default function ProfileAttributesModification() {
             </select>
           </div>
 
-          {/* Preferred Name */}
           <div>
             <label className={`block text-sm  ${textColor} font-bold text-left"`}>Preferred Name</label>
             <input
@@ -223,7 +214,6 @@ export default function ProfileAttributesModification() {
             />
           </div>
 
-          {/* Address and Zip code */}
           <div>
             <h2 className={`block text-sm font-medium ${textColor} text-left`}>Address:</h2>
             <input
@@ -247,7 +237,6 @@ export default function ProfileAttributesModification() {
           </div>
         </div>
 
-        {/* Update Profile Images */}
         <div className="mt-4 rounded-lg border border-gray-200 shadow-lg p-6 bg-white">
           <label className={`block text-black font-semibold text-left ml-0 mb-4`}>Change Profile
             Image</label>
@@ -275,7 +264,6 @@ export default function ProfileAttributesModification() {
         </div>
 
 
-        {/* Update Button */}
         <button
             onClick={handleUpdate}
             className="w-full py-4 text-center bg-black text-white rounded-full font-semibold hover:bg-gray-800 mt-8"

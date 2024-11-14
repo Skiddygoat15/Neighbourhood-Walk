@@ -90,24 +90,23 @@ export default function PreMeetParent() {
   return (
       <BackgroundLayout>
         <main className="min-h-screen">
-          {/*<div className="max-w-md mx-auto p-4 space-y-8">*/}
-          {/* Back Button */}
+
           <button onClick={() => router.back()} className={`text-2xl p-2 focus:outline-none ${textColor}`}>
             &larr;
           </button>
 
-          {/* Title */}
+
           <h1 className={`text-3xl font-bold text-center ${textColor}`}>Pre-meet Form</h1>
 
-          {/* Subtitle */}
+
           <p className={`text-center text-sm ${textColor}`}>
             Please fill in the details to invite the walker for a pre-meet
           </p>
 
-          {/* Form */}
+
           <div className="max-w-md mx-auto p-4 bg-white">
             <form onSubmit={handleSubmit} className="space-y-4">
-              {/* Meeting Type */}
+
               <div>
                 <label htmlFor="meetingType" className="block text-lg font-medium">
                   Meeting Type
@@ -123,7 +122,7 @@ export default function PreMeetParent() {
                 </select>
               </div>
 
-              {/* Contact Method */}
+
               <div>
                 <label htmlFor="contactMethod" className="block text-lg font-medium">
                   Contact Method
@@ -142,7 +141,7 @@ export default function PreMeetParent() {
                 </select>
               </div>
 
-              {/* Meeting Date and Time */}
+
               <div>
                 <label htmlFor="meetingDate" className="block text-lg font-medium">
                   Meeting Date and Time
@@ -156,7 +155,7 @@ export default function PreMeetParent() {
                 />
               </div>
 
-              {/* Meeting Info */}
+
               <div>
                 <label htmlFor="meetingInfo" className="block text-lg font-medium">
                   Meeting Link or Address
@@ -171,7 +170,7 @@ export default function PreMeetParent() {
                 />
               </div>
 
-              {/* Submit Button */}
+
               <button
                   type="submit"
                   className="w-full py-4 text-center bg-black text-white rounded-lg text-xl"

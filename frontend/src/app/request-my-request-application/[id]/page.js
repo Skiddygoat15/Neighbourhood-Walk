@@ -1,8 +1,6 @@
 "use client";
 
 import {useRouter} from 'next/navigation';
-
-// import { useRouter } from 'next/router';
 import {useEffect, useState} from 'react';
 import useTextColor from '../../ui-background-components/useTextColor';
 import BackgroundLayout from '../../ui-background-components/BackgroundLayout';
@@ -217,16 +215,13 @@ export default function MyRequestApplication({ params }) {
   if (loading) {
     return <BackgroundLayout>
     <main className="min-h-screen">
-      {/* 标题 */}
       <h1 className="text-2xl font-bold text-center mt-10">My Request Application</h1>
 
       <div className="mx-auto p-16 space-y-8">
-        {/* 返回按钮 */}
         <button onClick={() => router.back()} className="text-2xl p-2 focus:outline-none">
           &larr;
         </button>
 
-        {/* 展示 request 详情 */}
         <div className="border rounded-lg space-y-2 mt-20">
           <div className="flex justify-between">
             <span className="font-bold">Trip request</span>
@@ -243,7 +238,6 @@ export default function MyRequestApplication({ params }) {
           <p className="text-gray-600 text-sm">Estimated time: Loading... - Loading...</p>
           <p className="text-sm text-gray-500">Published by Loading...</p>
 
-          {/* 展示申请人 */}
           <h2 className="font-bold">Applicants:</h2>
           {acceptedWalker ? (
               <div className="border p-4 rounded-lg space-y-2">
@@ -283,14 +277,11 @@ export default function MyRequestApplication({ params }) {
   return (
     <BackgroundLayout>
       <main className="min-h-screen">
-        {/* 返回按钮 */}
         <button onClick={() => router.back()} className={`text-2xl ${textColor} p-2 focus:outline-none`}>
           &larr;
         </button>
-        {/* 标题 */}
         <h1 className={`text-2xl ${textColor} font-bold text-center mb-10`}>My Request Application</h1>
 
-        {/* 展示 request 详情 */}
         <div className="mx-4">
           <div className="border p-4 bg-white rounded-lg space-y-2">
             <div className="flex justify-between">
@@ -310,7 +301,6 @@ export default function MyRequestApplication({ params }) {
             </p>
             <p className="text-sm text-gray-500">Published by {formatDateTime(request.publishDate)}</p>
 
-            {/* 展示申请人 */}
             <h2 className="font-bold">Applicants:</h2>
             {acceptedWalker ? (
                 <div className="border p-4 rounded-lg space-y-2">

@@ -25,7 +25,6 @@ const LoginIdentitySelect = () => {
 
     return (
         <div className="min-h-screen bg-white flex flex-col justify-start items-center px-4 py-10">
-            {/* Back button */}
             <div className="absolute top-4 left-4">
                 <button
                     onClick={() => router.back()}
@@ -49,7 +48,6 @@ const LoginIdentitySelect = () => {
                 </button>
             </div>
 
-            {/* Main container */}
             <div className="w-full max-w-lg mx-auto p-8 shadow-md rounded-md bg-gray-50 mt-10">
                 <h1 className="text-3xl font-semibold mb-6 text-center">Login - Identity Select</h1>
                 <p className="text-gray-700 text-xl mb-8 text-center">

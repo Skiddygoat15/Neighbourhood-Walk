@@ -122,13 +122,11 @@ const RequestStatus = () => {
                     ←
                 </button>
 
-                {/* Header */}
                 <div className="max-w-lg w-11/12 rounded-lg py-4 flex items-center mt-4 mx-auto">
                     <h1 className={`text-center w-full text-xl font-semibold ${textColor}`}>My Request</h1>
                 </div>
 
 
-                {/* Content */}
                 {loading ? (
                     <p>Loading...</p>
                 ) : error ? (
@@ -147,7 +145,6 @@ const RequestStatus = () => {
                                     by {formatDateTime(request.request.publishDate)}</p>
                             </div>
                             <div className="mt-4 border-t pt-4">
-                                {/* Status Display */}
                                 {renderStatusMessage(request.status)}
                             </div>
                         </div>

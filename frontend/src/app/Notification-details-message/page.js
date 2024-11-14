@@ -13,7 +13,6 @@ const NotificationDetailsMessage = () => {
 
   return (
     <div className="flex flex-col h-screen bg-white">
-      {/* Header */}
       <div className="flex items-center justify-between p-4 border-b">
         <button onClick={handleBackClick}>
           <svg
@@ -32,10 +31,10 @@ const NotificationDetailsMessage = () => {
           </svg>
         </button>
         <h1 className="text-xl font-semibold">Notifications</h1>
-        <div></div> {/* Spacer to center the title */}
+        <div></div>
       </div>
 
-      {/* Notification List */}
+
       <div className="p-4 space-y-4">
         <div className="p-4 bg-black text-white rounded-lg flex items-center">
           <svg
@@ -64,7 +63,7 @@ const NotificationDetailsMessage = () => {
         </div>
       </div>
 
-      {/* Bottom Navigation */}
+
       <nav className="fixed bottom-0 left-0 w-full border-t bg-white">
         <div className="flex justify-around p-2">
           <Link href="/home" className="flex flex-col items-center text-gray-700">

@@ -216,7 +216,6 @@ export default function AdminUserManagement() {
     return (
         <BackgroundLayout>
         <div className="min-h-screen px-2 mb-8">
-                {/* Back Button */}
                 <button onClick={() => router.back()} className={`text-2xl p-2 focus:outline-none ${textColor}`}>
                     &larr;
                 </button>
@@ -225,7 +224,6 @@ export default function AdminUserManagement() {
                 <div className="relative mb-4">
                     <div className="flex items-center space-x-2 mb-2">
 
-                        {/* input bar */}
                         <div className="relative w-full">
                             <input
                                 type="text"
@@ -251,7 +249,6 @@ export default function AdminUserManagement() {
                                 />
                             </svg>
 
-                            {/* clear button */}
                             <button
                                 onClick={handleClear}
                                 className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
@@ -260,7 +257,6 @@ export default function AdminUserManagement() {
                             </button>
                         </div>
 
-                        {/* search button */}
                         <button
                             onClick={handleSearch}
                             className="bg-blue-500 text-white p-2 rounded-lg"
@@ -272,7 +268,6 @@ export default function AdminUserManagement() {
                     {error && <p className="text-red-500">{error}</p>}
                 </div>
 
-                {/* return user list */}
                 <div className="space-y-4 mt-4">
                     {loading ? (
                         <p className="text-center">Loading...</p>
@@ -280,7 +275,7 @@ export default function AdminUserManagement() {
                         users.map((user) => (
                             <div key={user.id}
                                  className="border rounded-lg p-4 flex items-center justify-between bg-white shadow-sm">
-                                {/* User Details */}
+
                                 <div className="flex-grow ml-4">
                                     <p className="text-lg font-semibold text-gray-700">
                                         <strong>Name:</strong> {user.name}</p>
@@ -291,9 +286,9 @@ export default function AdminUserManagement() {
                                     </p>
                                 </div>
 
-                                {/* Buttons */}
+
                                 <div className="flex flex-col space-y-2">
-                                    {/* Activate Button */}
+
                                     <button
                                         onClick={() => handleActivate(user.id)}
                                         className="py-2 px-4 bg-green-500 hover:bg-green-600 text-white rounded-lg font-semibold text-sm transition-all duration-150 w-24 text-center"
@@ -301,7 +296,6 @@ export default function AdminUserManagement() {
                                         Activate
                                     </button>
 
-                                    {/* Block Button */}
                                     <button
                                         onClick={() => handleBlock(user.id)}
                                         className="py-2 px-4 bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg font-semibold text-sm transition-all duration-150 w-24 text-center"
@@ -309,7 +303,6 @@ export default function AdminUserManagement() {
                                         Block
                                     </button>
 
-                                    {/* Delete Button */}
                                     <button
                                         onClick={() => handleDelete(user.id)}
                                         className="py-2 px-4 bg-red-500 hover:bg-red-600 text-white rounded-lg font-semibold text-sm transition-all duration-150 w-24 text-center"

@@ -19,15 +19,12 @@ export default function RegistrationVerificationParentSuccessful() {
           </button>
         </div>
 
-        {/* Title */}
-        <h1 className="text-3xl font-bold">Verification - Parent</h1>
 
-        {/* Success Message */}
+        <h1 className="text-3xl font-bold">Verification - Parent</h1>
         <p className="text-lg text-gray-600 mt-8">
           Verification is <span className="text-green-600">successful</span>, you can proceed to the next page
         </p>
 
-        {/* Start Button */}
         <button
           onClick={handleStart}
           className="mt-8 w-full py-3 text-center bg-black text-white rounded-full font-semibold hover:bg-gray-800"

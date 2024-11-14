@@ -176,19 +176,15 @@ export default function ProfileManagementSelectTimeWalker() {
      <BackgroundLayout>
     <main className="min-h-screen mb-10">
       <div className="w-full px-4 sm:px-6 lg:px-8" style={{height: 'calc(100vh - 55px)', overflowY: 'auto'}}>
-        {/* Back Button */}
         <button onClick={() => router.back()} className={`${textColor} text-2xl p-2 focus:outline-none}`}>
           &larr;
         </button>
 
-        {/* Title */}
         <h1 className={`text-2xl font-semibold mt-3 ${textColor} text-center`}>Profile Attributes Modification</h1>
         {error && <p className=" text-red-500 text-center">{error}</p>}
 
-        {/* Form Fields */}
         <div className=" space-y-3">
 
-          {/* Phone Number */}
           <div>
             <h2 className={`block text-sm font-medium ${textColor} text-left`}>Phone Number</h2>
             <p className={`text-xs ${textColor}`}>You will use this number to receive notifications and to log in and
@@ -213,10 +209,8 @@ export default function ProfileManagementSelectTimeWalker() {
                   onChange={(e) => setPhoneNumber(e.target.value)}
               />
             </div>
-            {/*<p className=" text-xs text-gray-500">The system will send you a verification code</p>*/}
           </div>
 
-          {/* Email Address */}
           <div>
             <h2 className={`block text-sm font-medium ${textColor} text-left`}>E-mail Address</h2>
             <p className={`text-xs ${textColor}`}>You will use this mailbox to receive messages</p>
@@ -226,10 +220,8 @@ export default function ProfileManagementSelectTimeWalker() {
                 value={emailAddress}
                 onChange={(e) => setEmailAddress(e.target.value)}
             />
-            {/*<p className=" text-xs text-gray-500">The system will send you a verification code</p>*/}
           </div>
 
-          {/* Communication Preference */}
           <div>
             <h2 className={`block text-sm font-medium ${textColor} text-left`}>Communication Preference</h2>
             <select
@@ -243,7 +235,6 @@ export default function ProfileManagementSelectTimeWalker() {
             </select>
           </div>
 
-          {/* Preferred Name */}
           <div>
             <h2 className={`block text-sm font-medium ${textColor} text-left`}>Preferred Name</h2>
             <input
@@ -253,15 +244,11 @@ export default function ProfileManagementSelectTimeWalker() {
                 onChange={(e) => setPreferredName(e.target.value)}
             />
           </div>
-          {/* StartDate */}
+
           <div>
             <h2 className={`block text-sm font-medium ${textColor} text-left`}>Start Date</h2>
             <p className={`text-xs ${textColor}`}>Here you will select the start date of your available dates</p>
             <input
-                // type=" datetime-local"  // 使用HTML5的日期时间选择器
-                // className=" border border-gray-300 p-2 rounded-md w-full mt-2"
-                // value={startDate}
-                // onChange={(e) => setStartDate(e.target.value)}
                 type="date"
                 value={startDate}
                 className=" border border-gray-300 p-2 rounded-md w-full mt-2"
@@ -269,15 +256,10 @@ export default function ProfileManagementSelectTimeWalker() {
             />
           </div>
 
-          {/* EndDate */}
           <div>
             <h2 className={`block text-sm font-medium ${textColor} text-left`}>End Date</h2>
             <p className={`text-xs ${textColor}`}>Here you will select the end date of your available dates</p>
             <input
-                // type=" datetime-local"  // 使用HTML5的日期时间选择器
-                // className=" border border-gray-300 p-2 rounded-md w-full mt-2"
-                // value={endDate}
-                // onChange={(e) => setEndDate(e.target.value)}
                 type="date"
                 value={endDate}
                 className=" border border-gray-300 p-2 rounded-md w-full mt-2"
@@ -285,7 +267,6 @@ export default function ProfileManagementSelectTimeWalker() {
             />
           </div>
 
-          {/* Address and Zip code */}
           <div>
             <h2 className={`block text-sm font-medium ${textColor} text-left`}>Address:</h2>
             <input
@@ -308,7 +289,6 @@ export default function ProfileManagementSelectTimeWalker() {
             </div>
           </div>
 
-          {/* Skills */}
           <div>
             <h2 className={`block text-sm font-medium ${textColor} text-left`}>Skills (Multi)</h2>
             <input
@@ -321,7 +301,6 @@ export default function ProfileManagementSelectTimeWalker() {
           </div>
         </div>
 
-        {/* Update Profile Images */}
         <div className="mt-4 rounded-lg border border-gray-200 shadow-lg p-6 bg-white">
           <label className={`block text-black font-semibold text-left ml-0 mb-4`}>Change Profile
             Image</label>
@@ -349,7 +328,6 @@ export default function ProfileManagementSelectTimeWalker() {
         </div>
 
 
-        {/* Update Button */}
         <button
             onClick={handleUpdate}
             className=" w-full py-3 text-center bg-black text-white rounded-full font-semibold hover:bg-gray-800 mt-5"

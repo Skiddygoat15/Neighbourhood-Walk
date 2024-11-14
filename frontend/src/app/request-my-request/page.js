@@ -106,14 +106,12 @@ export default function MyRequest() {
   return (
       <BackgroundLayout>
       <main className="min-h-screen pb-20">
-        {/* Back Button */}
           <button onClick={() => router.back()} className={`text-2xl ${textColor} p-4 text-left`}>
             &larr;
           </button>
 
         <div className="max-w-md mx-auto p-4 space-y-8 sm:max-w-lg md:max-w-xl lg:max-w-2xl">
 
-            {/* Title and Create Button */}
             <div className="flex justify-between items-center">
               <h1 className={`text-2xl font-bold sm:text-3xl lg:text-4xl ${textColor}`}>My request</h1>
               <button
@@ -124,7 +122,7 @@ export default function MyRequest() {
               </button>
             </div>
 
-            {/* Request Items */}
+
             {loading ? (
                 <p>Loading...</p>
             ) : requestList.length === 0 ? (
@@ -137,7 +135,6 @@ export default function MyRequest() {
                           <h2 className="text-lg font-bold sm:text-xl lg:text-2xl">Trip request</h2>
                           <button
                               onClick={() => {
-                                // sessionStorage.setItem('clickedRequest', JSON.stringify(request));
                                 router.push(`/request-my-request-application/${request.requestId}`);
                               }}
                           >

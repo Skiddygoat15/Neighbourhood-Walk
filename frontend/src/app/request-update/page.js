@@ -202,7 +202,6 @@ export default function UpdateRequest() {
   return (
       <BackgroundLayout>
     <main className="min-h-screen">
-      {/* Back Button */}
       <button onClick={() => router.push("/request-my-request")} className={`text-2xl ${textColor} p-4 text-left`}>
         &larr;
       </button>
@@ -211,12 +210,9 @@ export default function UpdateRequest() {
       <div className="max-w-md mx-auto p-4 space-y-8 sm:max-w-lg md:max-w-xl lg:max-w-2xl">
         <div className="border p-4 bg-white rounded-lg space-y-2">
 
-          {/* Title */}
           <h1 className="text-2xl font-bold text-center">Update request</h1>
 
-          {/* Update Fields */}
           <div className="space-y-4">
-            {/* Departure Field */}
             <div>
               <label className="block text-lg font-medium mb-2">Departure:</label>
               <div className="flex justify-between items-center">
@@ -244,7 +240,6 @@ export default function UpdateRequest() {
               </div>
             </div>
 
-            {/* Destination Field */}
             <div>
               <label className="block text-lg font-medium mb-2">Destination:</label>
               <div className="flex justify-between items-center">
@@ -287,7 +282,6 @@ export default function UpdateRequest() {
               />
             </div>
 
-            {/* Estimated Departure */}
             <div>
               <label className="block text-lg font-semibold">Estimated departure:</label>
               <div className="flex text-sm space-x-2">
@@ -324,7 +318,6 @@ export default function UpdateRequest() {
                 </div>
               </div>
             </div>
-            {/* Estimated Arrival */}
             <div>
               <label className="block text-lg font-semibold">Estimated Arrival:</label>
               <div className="flex space-x-2">
@@ -354,7 +347,6 @@ export default function UpdateRequest() {
               </div>
             </div>
 
-            {/* Update Button */}
             <button
                 onClick={handleUpdate}
                 className="w-full py-3 bg-black text-white rounded-full font-semibold hover:bg-gray-800"

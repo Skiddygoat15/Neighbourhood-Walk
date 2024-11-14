@@ -138,7 +138,6 @@ export default function SearchWalker() {
                     <div className="flex items-center space-x-2 mb-2">
 
                         <div className="relative w-full">
-                            {/* 输入框，输入搜索 request 的关键字 */}
                             <input
                                 type="text"
                                 placeholder="Search Requests.."
@@ -163,7 +162,6 @@ export default function SearchWalker() {
                                 />
                             </svg>
 
-                            {/* 清空按钮 */}
                             <button
                                 onClick={handleClear}
                                 className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
@@ -172,7 +170,6 @@ export default function SearchWalker() {
                             </button>
                         </div>
 
-                        {/* 按钮触发搜索 */}
                         <button
                             onClick={handleSearch}
                             className="bg-blue-500 text-white p-2 rounded-lg"
@@ -196,7 +193,6 @@ export default function SearchWalker() {
                     </select>
                 </div>
 
-                {/* 显示返回的 walker 列表 */}
                 <div className="space-y-4 mt-4">
                     {requests.length > 0 ? (
                         requests.map((request) => (
@@ -215,7 +211,6 @@ export default function SearchWalker() {
                                     <p><strong>From:</strong> {request.departure}</p>
                                     <p><strong>To:</strong> {request.destination}</p>
                                     <p><strong>Start Time:</strong> {formatDateTime(request.startTime)}</p>
-                                    {/*<p><strong>Arrive Time:</strong> {formatDateTime(request.arriveTime)}</p>*/}
                                     <p><strong>Duration:</strong> {getDuration(request.startTime, request.arriveTime)}
                                     </p>
                                 </div>

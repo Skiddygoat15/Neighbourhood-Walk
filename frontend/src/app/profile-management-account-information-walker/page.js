@@ -250,12 +250,10 @@ export default function ProfileManagementAccountInformationWalker() {
         <main className="min-h-screen mb-10">
           <div className="w-full px-4 sm:px-6 lg:px-8 space-y-8"
                style={{height: 'calc(100vh - 55px)', overflowY: 'auto'}}>
-            {/* Title */}
             <h1 className={`text-2xl font-bold text-center mt-6 ${textColor}`}>
               Account Information
             </h1>
 
-            {/* User Info Section */}
             <div className="flex items-center justify-between">
               <div>
                 <h2 className={`text-lg ml-3 mb-3 font-semibold ${textColor}`}>
@@ -270,7 +268,6 @@ export default function ProfileManagementAccountInformationWalker() {
               </div>
             </div>
 
-            {/* Details List */}
             <div className="bg-white p-4 rounded-lg shadow-lg w-full space-y-4"
                  style={{margin: '2px', padding: '2px'}}>
               <div className="flex justify-between items-center border-b py-2 ml-2 mt-3">
@@ -280,7 +277,6 @@ export default function ProfileManagementAccountInformationWalker() {
                 </div>
               </div>
 
-              {/* Date of Birth - No Edit */}
               <div className="flex justify-between items-center border-b py-2 ml-2">
                 <span>Date of Birth</span>
                 <div className="flex items-center mr-2">
@@ -301,14 +297,6 @@ export default function ProfileManagementAccountInformationWalker() {
                   <span>{userProfile.email}</span>
                 </div>
               </div>
-
-              {/* Address - No Edit */}
-              {/*<div className="flex justify-between items-center border-b py-2 ml-2">*/}
-              {/*  <span>Address</span>*/}
-              {/*  <div className="flex items-center w-50 mr-2">*/}
-              {/*    <span className="text-right w-full">{userProfile.address}</span>*/}
-              {/*  </div>*/}
-              {/*</div>*/}
 
               <div className="flex justify-between items-center border-b py-2 sm:text-base ml-2">
                 <span>Address</span>
@@ -339,7 +327,7 @@ export default function ProfileManagementAccountInformationWalker() {
               </div>
             </div>
 
-            <div className="space-y-2"> {/* 使用 space-y 控制间距 */}
+            <div className="space-y-2">
               <button
                   onClick={() => handleNavigation('/profile-attributes-modification-walker')}
                   className="w-full py-3 text-center bg-black text-white rounded-full font-semibold hover:bg-gray-800"

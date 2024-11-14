@@ -126,12 +126,11 @@ export default function HistoryRequestParent() {
         <BackgroundLayout>
         <main className="min-h-screen flex justify-center items-start pt-4">
             <div className="w-full max-w-md mx-auto p-4 space-y-8 overflow-auto" style={{ maxHeight: '90vh' }}>
-                {/* 返回按钮 */}
+
                 <button onClick={() => router.back()} className={`text-2xl ${textColor} p-2 focus:outline-none`}>
                     &larr;
                 </button>
 
-                {/* 标题 */}
                 <h1 className={`text-2xl ${textColor} font-bold text-center`}>Request History</h1>
                 <div className="space-y-4 bg-white rounded-lg">
                     {requests.map((request, index) => {
@@ -141,7 +140,6 @@ export default function HistoryRequestParent() {
                         console.info("parentComment finally is:",parentComment)
                         return (
                             <div key={index} className="border p-4 rounded-lg space-y-2">
-                                {/* 显示请求的提供者信息 */}
                                 <div className="flex justify-between">
                                     <span className="font-bold">{request.walker?.surname} Provided trip</span>
                                 </div>
@@ -152,7 +150,6 @@ export default function HistoryRequestParent() {
                                 <p className="text-sm">Departure: {request.departure || "N/A"}</p>
                                 <p className="text-sm">Destination: {request.destination || "N/A"}</p>
 
-                                {/* 评论部分 */}
                                 <div className="mt-2 flex items-center space-x-2">
                                     <h2 className="text-lg font-semibold">Comments：</h2>
                                     {parentComment ? (

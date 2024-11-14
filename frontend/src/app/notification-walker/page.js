@@ -138,7 +138,7 @@ export default function Home() {
     return (
         <BackgroundLayout>
             <div className="flex flex-col h-screen p-4" style={{overflowY: 'auto'}}>
-                <Header title="Notification-parent" navigateTo={"/home-walker"} textColor={textColor}/>
+                <Header title="Notification-walker" navigateTo={"/home-walker"} textColor={textColor}/>
 
                 {statusCards && statusCards.length > 0 && statusCards
                     .filter(card => card && card.statusChanged !== "Applied") // Filter out notifications with statusChanged as "Applied"

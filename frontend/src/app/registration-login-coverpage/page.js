@@ -14,13 +14,13 @@ export default function Home() {
 
       <main className="flex items-center justify-center min-h-screen bg-white">
         <div className="flex flex-col items-center space-y-8">
-          {/* Logo Section */}
+
           <div className="border border-black p-16 flex flex-col justify-center items-center" style={{ border: '2px solid black', borderRadius: '50%' }}>
             <img src="/Logo-5_1.png" alt="Logo" className="h-auto w-auto"/>
             <h1 className="text-4xl font-bold text-xl">Neighbourhood-Walk</h1>
           </div>
 
-          {/* Buttons Section */}
+
           <div className="space-y-4">
             <Link href="/registration-loginform" className="block w-64 py-3 text-center bg-black text-white rounded-full font-semibold hover:bg-gray-800">
               Login

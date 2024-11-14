@@ -12,9 +12,9 @@ export default function BackgroundLayout({ children }) {
         if (currentHour >= 6 && currentHour < 12) {
             setBackgroundTheme('morning');
         } else if (currentHour >= 12 && currentHour < 17) {
-            setBackgroundTheme('afternoon');
-        } else if (currentHour >= 17 && currentHour < 24) {
             setBackgroundTheme('evening');
+        } else if (currentHour >= 17 && currentHour < 24) {
+            setBackgroundTheme('afternoon');
         } else {
             setBackgroundTheme('midnight');
         }
@@ -22,7 +22,6 @@ export default function BackgroundLayout({ children }) {
 
     return (
         <div className="w-full min-h-screen h-screen flex flex-col items-center overflow-hidden">
-            {/* Background Layer */}
             <div className={`absolute top-0 left-0 w-full h-full -z-10 ${
                 backgroundTheme === 'morning' ? 'bg-morning' :
                     backgroundTheme === 'afternoon' ? 'bg-afternoon' :

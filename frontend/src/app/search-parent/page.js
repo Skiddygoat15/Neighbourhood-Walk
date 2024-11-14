@@ -103,7 +103,6 @@ export default function SearchParent() {
             <div className="flex items-center space-x-2 mb-2">
 
               <div className="relative w-full">
-                {/* Input box, enter keywords for walker search */}
                 <input
                     type="text"
                     placeholder="Search walkers.."
@@ -128,7 +127,6 @@ export default function SearchParent() {
                   />
                 </svg>
 
-                {/* Clear button */}
                 <button
                     onClick={handleClear}
                     className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
@@ -137,7 +135,6 @@ export default function SearchParent() {
                 </button>
               </div>
 
-              {/* Button triggered search */}
               <button
                   onClick={handleSearch}
                   className="bg-blue-500 text-white p-2 rounded-lg md:p-3 lg:p-4"
@@ -194,7 +191,6 @@ export default function SearchParent() {
 
           </div>
 
-          {/* Display a list of returned walkers */}
           <div className="space-y-4 mt-4">
             {walkers.length > 0 ? (
                 walkers.map((walker) => (

@@ -98,7 +98,6 @@ const RegistrationSignup = () => {
   return (
       <div className="min-h-screen flex items-center justify-center bg-gray-100">
         <div className="bg-white shadow-lg rounded-lg w-96 p-8">
-          {/* Back Button */}
           <button onClick={() => router.back()} className="text-2xl p-2 focus:outline-none">
             &larr;
           </button>
@@ -130,7 +129,6 @@ const RegistrationSignup = () => {
             </label>
           </div>
 
-          {/* Form fields */}
           <form onSubmit={handleSubmit}>
             <div className="mb-4">
               <label htmlFor="name" className="block text-sm font-medium text-gray-700">First name</label>
@@ -181,7 +179,6 @@ const RegistrationSignup = () => {
                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"/>
             </div>
 
-            {/* Gender selection */}
             <div className="mb-4">
               <label htmlFor="gender" className="block text-sm font-medium text-gray-700">Gender</label>
               <select id="gender" value={formData.gender} onChange={handleChange}
@@ -212,7 +209,6 @@ const RegistrationSignup = () => {
                      className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"/>
             </div>
 
-            {/* Sign Up button */}
             <div className="text-center">
               <button type="submit"
                       className="w-full bg-black text-white py-2 rounded-md font-semibold hover:bg-gray-800">Sign Up

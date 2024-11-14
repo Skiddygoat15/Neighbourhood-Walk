@@ -252,7 +252,6 @@ export default function RequestDetails({params}) {
                                     {timeSince(request.publishDate)}
                                 </div>
 
-                                {/* Contact Button */}
                                 <button
                                     onClick={() => handleContact()}
                                     className="mb-2 bg-black text-white px-4 py-2 rounded-lg w-full hover:bg-gray-700">
@@ -365,7 +364,6 @@ export default function RequestDetails({params}) {
 
                 <div className="shadow-md w-full" style={{paddingTop: '5px'}}>
 
-                        {/* show back icon and title*/}
                     <div className="flex items-center mt-2">
                         <button onClick={() => handleBack()} className={`mr-4 ${textColor}`}>
                             <svg
@@ -385,8 +383,7 @@ export default function RequestDetails({params}) {
                         </button>
                         <h1 className={`text-2xl font-semibold ${textColor} text-center`}>Request details</h1>
                     </div>
-
-                    {/* display content*/}
+                    
                     {error && <p className="text-red-500">{error}</p>}
 
                     {renderContent()}

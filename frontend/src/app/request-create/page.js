@@ -211,16 +211,13 @@ export default function WalkRequestManagementParent() {
         <BackgroundLayout>
         <main className="h-screen flex flex-col justify-center pb-10">
             <div className="w-full px-4 space-y-6 pb-14">
-                {/* Back Button */}
                 <button onClick={() => router.back()} className={`text-2xl ${textColor} text-left`}>
                     &larr;
                 </button>
 
-                {/* Title */}
                 <h1 className={`text-2xl font-semibold mt-3 ${textColor} text-center`}>Create your request</h1>
                 {error && <p className="text-red-500 text-center">{error}</p>}
 
-                {/* Departure Input */}
                 <div>
                     <label className={`block text-lg ${textColor} font-semibold"`}>Departure:</label>
                     <input
@@ -246,7 +243,6 @@ export default function WalkRequestManagementParent() {
                         />
                     </div>
                 </div>
-                {/* Destination Input */}
                 <div>
                     <label className={`block text-lg ${textColor} font-semibold"`}>Destination:</label>
                     <input
@@ -272,7 +268,6 @@ export default function WalkRequestManagementParent() {
                         />
                     </div>
                 </div>
-                {/* details Input */}
                 <div>
                     <label className={`block text-lg ${textColor} font-semibold"`}>Details:</label>
                     <input
@@ -287,7 +282,6 @@ export default function WalkRequestManagementParent() {
                         className="w-full p-3 border border-black rounded-lg"
                     />
                 </div>
-                {/* Estimated Departure */}
                 <div>
                     <label className={`block text-lg ${textColor} font-semibold"`}>Estimated departure:</label>
                     <div className="flex space-x-3">
@@ -324,7 +318,6 @@ export default function WalkRequestManagementParent() {
                         </div>
                     </div>
                 </div>
-                {/* Estimated Arrival */}
                 <div>
                     <label className={`block text-lg ${textColor} font-semibold"`}>Estimated Arrival:</label>
                     <div className="flex text-sm space-x-2">
@@ -353,14 +346,12 @@ export default function WalkRequestManagementParent() {
                         </select>
                     </div>
                 </div>
-                {/* Publish Button */}
                 <button
                     onClick={handlePublish}
                     className="w-full py-3 bg-black text-white rounded-full font-semibold hover:bg-gray-800"
                 >
                     Publish
                 </button>
-                {/* Go to History Button */}
                 <button
                     onClick={() => router.push('/request-my-request')}
                     className="w-full py-3 bg-black text-white rounded-full font-semibold hover:bg-gray-800"

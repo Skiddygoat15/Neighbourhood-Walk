@@ -13,7 +13,6 @@ export default function VerificationWalker() {
   return (
     <main className="flex items-center justify-center min-h-screen bg-white">
       <div className="w-full max-w-md space-y-8">
-        {/* Back Button */}
         <button 
           onClick={() => router.back()} 
           className="text-2xl p-2 focus:outline-none"
@@ -21,13 +20,9 @@ export default function VerificationWalker() {
           &larr;
         </button>
 
-        {/* Title */}
+
         <h1 className="text-3xl font-bold text-center">Verification - Walker</h1>
-
-        {/* Subtitle */}
         <p className="text-center text-lg text-gray-600">Choose one to verify your account</p>
-
-        {/* Verification Options */}
         <div className="space-y-4">
           <button
             onClick={() => handleVerificationOption('drivers-license')}

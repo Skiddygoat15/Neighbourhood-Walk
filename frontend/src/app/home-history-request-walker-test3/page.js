@@ -140,7 +140,7 @@ export default function HistoryRequestParent() {
                         console.info("parentComment finally is:",parentComment)
                         return (
                             <div key={index} className="border p-4 rounded-lg space-y-2">
-                                {/* 显示请求的提供者信息 */}
+
                                 <div className="flex justify-between">
                                     <span className="font-bold">{request.walker?.surname} Provided trip</span>
                                 </div>
@@ -151,7 +151,7 @@ export default function HistoryRequestParent() {
                                 <p className="text-sm">Departure: {request.departure || "N/A"}</p>
                                 <p className="text-sm">Destination: {request.destination || "N/A"}</p>
 
-                                {/* 评论部分 */}
+
                                 <div className="mt-2 flex items-center space-x-2">
                                     <h2 className="text-lg font-semibold">Comments：</h2>
                                     {walkerComment ? (

@@ -97,7 +97,6 @@ export default function PreMeetWalker() {
         <BackgroundLayout>
         <div className="min-h-screen">
             <div className="p-4 rounded-lg mx-auto mt-4">
-                {/* show back icon and title*/}
                 <div className="flex items-center mb-4">
                     <button onClick={() => handleBack()} className={`mr-4 ${textColor}`}>
                         <svg
@@ -118,10 +117,10 @@ export default function PreMeetWalker() {
                     <h1 className={`text-2xl ${textColor} font-semibold`}>Pre-Meet Details</h1>
                 </div>
 
-                {/* display content*/}
+
                 {error && <p className="text-red-500">{error}</p>}
 
-                {/* Display the list of returned pre-meets */}
+
                 <div className="space-y-4 mt-4">
                     {preMeet.length > 0 ? (
                         preMeet.map((premeet) => (

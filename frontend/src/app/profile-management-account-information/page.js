@@ -196,12 +196,10 @@ export default function ProfileManagementAccountInformation() {
       <BackgroundLayout>
       <main className="min-h-screen mb-10">
         <div className="w-full px-4 sm:px-6 lg:px-8 space-y-8" style={{ height: 'calc(100vh - 55px)', overflowY: 'auto' }}>
-          {/* Title */}
           <h1 className={`text-2xl font-bold text-center mt-6 ${textColor}`}>
             Account Information
           </h1>
 
-          {/* User Info Section */}
           <div className="flex items-center justify-between">
             <div>
               <h2 className={`text-lg ml-4 mb-4 font-semibold ${textColor}`}>
@@ -215,7 +213,6 @@ export default function ProfileManagementAccountInformation() {
             </div>
           </div>
 
-          {/* Details List */}
           <div className="bg-white p-4 rounded-lg shadow-lg w-full space-y-4"
                style={{margin: '5px', padding: '5px'}}>
             <div className="flex justify-between items-center border-b py-2 sm:text-base ml-2 mt-3">
@@ -260,7 +257,6 @@ export default function ProfileManagementAccountInformation() {
               </div>
             </div>
           </div>
-          {/* Change Button */}
           <button
               onClick={() => handleNavigation('/profile-attributes-modification')}
               className="w-full py-3 text-center bg-black text-white rounded-full font-semibold hover:bg-gray-800 mt-8"
@@ -268,7 +264,6 @@ export default function ProfileManagementAccountInformation() {
             Change Profile
           </button>
 
-          {/* 注册新身份按钮 */}
           {roles.length < 2 && (
               <button
                   onClick={handleRoleRegistration}

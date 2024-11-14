@@ -17,7 +17,6 @@ export default function RootLayout({ children }) {
         <NoSSRWrapper>
         {children}
         </NoSSRWrapper>
-        {/* 导入客户端的底部导航栏组件 */}
         <ClientOnlyNav />
         </body>
         </html>
