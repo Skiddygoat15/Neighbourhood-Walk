@@ -116,7 +116,7 @@ export default function Home() {
         }
     }, [requestIds, refreshKey]); // When requestIds is updated, call fetchAllData again
 
-    // 保留fetchAllData_Profile单独执行
+    // Reserve fetchAllData_Profile for separate execution
     useEffect(() => {
         fetchAllData_Profile(userId);
     }, [userId]); // Ensure that profile notifications can be executed independently
@@ -158,7 +158,7 @@ export default function Home() {
                 });
         });
 
-        // 等待所有异步操作完成
+        // Wait for all asynchronous operations to complete
         Promise.all(promises)
             .then(results => {
                 setNotifications(results);

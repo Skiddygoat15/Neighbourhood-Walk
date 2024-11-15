@@ -47,7 +47,7 @@ export default function ProfileManagementSelectTimeWalker() {
       return;
     }
 
-    // 获取用户的现有个人信息
+    // Access to existing personal information of users
     const fetchUserProfile = async () => {
       try {
         const response = await fetch(`${apiUrl}/Users/getUserProfileByUserId/${userId}`, {
@@ -60,16 +60,16 @@ export default function ProfileManagementSelectTimeWalker() {
         if (response.ok) {
           const data = await response.json();
 
-          // 将 availableDate 转换为符合 datetime-local 格式的值
-          // 检查 availableDate 是否存在且有两个日期
+          // Converts an availableDate to a datetime-local formatted value.
+          // Check if the availableDate exists and has two dates.
           const startDateFormatted = data.availableDate && data.availableDate.length >= 2
               ? new Date(data.availableDate[0]).toISOString().slice(0, 16)
-              : ''; // 如果没有日期，设置为空字符串
+              : ''; // If there is no date, set to empty string
           const endDateFormatted = data.availableDate && data.availableDate.length >= 2
               ? new Date(data.availableDate[1]).toISOString().slice(0, 16)
-              : ''; // 如果没有日期，设置为空字符串
+              : ''; // If there is no date, set to empty string
           const skill = data.skill && data.skill.length > 0 ? data.skill[0] : 'N/A';
-          // 填充输入框的初始值
+          // Initial value to fill the input box
           setPhoneNumber(data.phone || 'N/A');
           setEmailAddress(data.email || 'N/A');
           setCommunicationPreference(data.communicatePref || 'N/A');
@@ -112,10 +112,10 @@ export default function ProfileManagementSelectTimeWalker() {
         throw new Error("EndDate is required.");
       }
 
-      // 将startDate和endDate放入availableDate数组中
+      // Put startDate and endDate into the availableDate array.
       const availableDate = [startDate, endDate];
 
-      // 将skills放入skill数组中，保证只有一个技能
+      // Putting skills into the skill array ensures that there is only one skill
       const skillArray = [skills];
 
 
@@ -130,7 +130,7 @@ export default function ProfileManagementSelectTimeWalker() {
 
       const updatedAddress = await geocodeAddress(`${address}, ${zipCode}`);
 
-      // 准备要传递到数据库的data
+      // Prepare the data to be passed to the database
       const updatedProfileData = {
         preferredName,
         email: emailAddress,
@@ -144,25 +144,24 @@ export default function ProfileManagementSelectTimeWalker() {
         longitude: updatedAddress.lng,
       };
 
-      // 调用API将数据传入数据库
+      // Call the API to pass data into the database
       const response = await fetch(`${apiUrl}/Users/${userId}/profile`, {
         method: 'PUT',
         headers: {
-          'Authorization': `Bearer ${token}`, // 传入token进行身份验证
-          'Content-Type': 'application/json', // 发送JSON数据
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(updatedProfileData),
       });
 
       if (response.ok) {
         console.log('Profile updated successfully');
-        // 将 preferredName 写入 sessionStorage
+        // write preferredName into sessionStorage
         sessionStorage.setItem('preferredName', preferredName);
-        // 更新成功后跳转到profile-management-account-information页面
         router.push('/profile-management-account-information-walker');
       } else {
-        const errorMessage = await response.text(); // 捕获后端返回的错误消息
-        setError(errorMessage || 'Registration failed'); // 直接设置错误信息
+        const errorMessage = await response.text(); // Catch error messages returned by the backend
+        setError(errorMessage || 'Registration failed'); // Setting error messages directly
         console.error('Failed to update profile:', errorMessage);
       }
     } catch (error) {

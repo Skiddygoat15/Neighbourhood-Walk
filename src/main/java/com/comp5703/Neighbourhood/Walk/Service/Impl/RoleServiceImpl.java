@@ -35,7 +35,7 @@ public class RoleServiceImpl implements RoleService {
 
         Users user = userOptional.get();
 
-        // 检查用户是否已经拥有相同的角色类型
+        // Check if users already have the same role type
         List<Role> existingRoles = roleRepository.findByUserId(user);
         for (Role role : existingRoles) {
             if (role.getRoleType().equals(roleType)) {
@@ -46,7 +46,7 @@ public class RoleServiceImpl implements RoleService {
         Role role = new Role(user, roleType);
         Role savedRole = roleRepository.save(role);
 
-        // 创建并返回 RoleDTO
+        // Creates and returns a RoleDTO
         return new RoleDTO(
                 savedRole.getRoleId(),
                 savedRole.getRoleType(),
@@ -63,15 +63,15 @@ public class RoleServiceImpl implements RoleService {
         List<Role> roles = new ArrayList<>();
         roleRepository.findAll().forEach(roles::add);
 
-        // 转换为 RoleDTO 列表
+        // Convert to RoleDTO list
         List<RoleDTO> roleDTOs = new ArrayList<>();
         for (Role role : roles) {
             roleDTOs.add(new RoleDTO(
                     role.getRoleId(),
                     role.getRoleType(),
-                    role.getUser().getId(),  // 获取 userId
-                    role.getUser().getPhone(),   // 获取 phone
-                    role.getUser().getEmail(),    // 获取 email
+                    role.getUser().getId(),
+                    role.getUser().getPhone(),
+                    role.getUser().getEmail(),
                     role.getUser().getName(),
                     role.getUser().getSurname()
             ));
@@ -110,19 +110,19 @@ public class RoleServiceImpl implements RoleService {
 
         Users user = userOptional.get();
 
-        // 查找用户是否拥有该角色类型
+        // Find out if the user has this role type
         Optional<Role> roleOptional = roleRepository.findByUserIdAndRoleType(user, roleType);
         if (roleOptional.isEmpty()) {
             throw new IllegalArgumentException("Role not found for user with id: " + userId + " and role type: " + roleType);
         }
 
-        // 获取用户的所有角色
+        // Get all roles for a user
         List<Role> roles = roleRepository.findByUserId(user);
         if (roles.size() == 1) {
             throw new IllegalArgumentException("Cannot delete the only role of the user");
         }
 
-        // 删除角色
+        // Delete Role
         roleRepository.delete(roleOptional.get());
     }
 

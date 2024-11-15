@@ -24,23 +24,23 @@ public class CustomAuthenticationManager implements AuthenticationManager {
         String loginInput = authentication.getName();
         Optional<Users> userOptional;
 
-        // 判断输入是否为 email 格式
+        // Determine if the input is in email format
         if (loginInput.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
-            // 如果是 email 格式
+            // If in email format
             userOptional = usersService.getUsersByEmail(loginInput);
         } else {
-            // 否则按照 phone 查询
+            // Otherwise, search by phone
             userOptional = usersService.getUsersByPhone(loginInput);
         }
 
-        // 检查用户是否存在
+        // Check if the user exists
         if (userOptional.isEmpty()) {
             throw new BadCredentialsException("User not found with input: " + loginInput);
         }
 
         Users user = userOptional.get();
 
-        // 验证密码
+        // Verify Password
         if (!bCryptPasswordEncoder.matches(authentication.getCredentials().toString(), user.getPassword())) {
             throw new BadCredentialsException("You Provided a Wrong Password!");
         }

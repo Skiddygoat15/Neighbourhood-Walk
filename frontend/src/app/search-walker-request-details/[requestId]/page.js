@@ -58,28 +58,28 @@ export default function RequestDetails({params}) {
             console.log(response);
 
             if (response.status === 201) {
-                // 成功响应，表示已经成功申请了 request
+                // Successful response, indicating that the request has been successfully made
                 const data = await response.json();
                 alert('Request successfully applied!');
                 // refresh page content
                 fetchRequestDetails();
             } else if (response.status === 409) {
-                // 409 冲突，表示已经申请过这个 request
+                // 409 conflict, indicating that this request has already been made.
                 const errorData = await response.text();
                 setError('You have already applied for this request.');
                 alert('You have already applied for this request.');
             } else if (response.status === 404) {
-                // 404 请求未找到
+                // 404 Request not found
                 const errorData = await response.text();
-                setError(errorData);  // 显示请求未找到的错误信息
+                setError(errorData);  // Display an error message that the request was not found
                 alert('Request not found: ' + errorData);
             } else if (response.status === 400) {
-                // 其他异常情况
+                // Other anomalies
                 const errorData = await response.text();
                 setError(errorData);  // 显示请求处理错误信息
                 alert('An error occurred: ' + errorData);
             } else {
-                // 处理未知的错误情况
+                // Handling of unknown error conditions
                 // throw new Error('Unexpected error occurred');
                 const errorData = await response.text();
                 setError(errorData);

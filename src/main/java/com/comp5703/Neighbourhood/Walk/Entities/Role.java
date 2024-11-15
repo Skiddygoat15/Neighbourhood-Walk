@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "Role")  // 对应数据库中的表名
+@Table(name = "Role")  // Corresponds to the table name in the database
 public class Role {
 
     @Id
@@ -15,7 +15,7 @@ public class Role {
 
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "userId", referencedColumnName = "userId", nullable = false)
-    @JsonIgnore  // 这个字段在 JSON 输出时会被忽略
+    @JsonIgnore  // This field is ignored in the JSON output
     private Users userId;
 
     @Column(name = "roleType", nullable = false)

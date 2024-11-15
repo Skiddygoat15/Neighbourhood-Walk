@@ -1,9 +1,9 @@
 package com.comp5703.Neighbourhood.Walk.domain;
 
-//响应状态码枚举类
+//Response Status Code Enumeration Class
 public enum ResultCode {
-    SUCCESS("200","操作成功"),
-    ERROR("500","操作失败");
+    SUCCESS("200","The operation was successful."),
+    ERROR("500","failure of an operation");
 
     private String code;
     private String message;

@@ -38,14 +38,14 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
                 .verify(token)
                 .getSubject();
 
-        // 从JWT中解析角色
+        // Resolving Roles from JWT
         List<String> roles = JWT.require(Algorithm.HMAC512(SecurityConstants.SECRET_KEY))
                 .build()
                 .verify(token)
                 .getClaim("roles").asList(String.class);
 
 
-        // 将角色转换为GrantedAuthority列表
+        // Convert Roles to GrantedAuthority Lists
         List<SimpleGrantedAuthority> authorities = roles.stream()
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());

@@ -8,9 +8,9 @@ const Header = ({title, onBack,textColor}) => {
 
     const goBack = () => {
         if (onBack) {
-            onBack();  // 如果提供了 onBack 函数，使用它
+            onBack();  // If the onBack function is provided, use it!
         } else {
-            router.back();  // 否则使用 useRouter 的 back 方法返回上一页
+            router.back();  // Otherwise, use the back method of useRouter to return to the previous page.
         }
     };
     return (

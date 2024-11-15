@@ -12,8 +12,8 @@ export default function LiveTrackingEnterWalker() {
     useEffect(() => {
         async function fetchRequests() {
             try {
-                const walkerId = sessionStorage.getItem('userId'); // 从sessionStorage获取walkerId
-                const token = sessionStorage.getItem('token'); // 从sessionStorage获取token
+                const walkerId = sessionStorage.getItem('userId');
+                const token = sessionStorage.getItem('token');
 
                 if (!token || !walkerId) {
                     console.error('No token or walkerId found in sessionStorage');
@@ -23,7 +23,7 @@ export default function LiveTrackingEnterWalker() {
                 const response = await fetch(`${apiUrl}/requests/getRequestsByWalkerId/${walkerId}`, {
                     method: 'GET',
                     headers: {
-                        'Authorization': `Bearer ${token}`, // 添加token到请求头
+                        'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json',
                     }
                 });
@@ -39,7 +39,7 @@ export default function LiveTrackingEnterWalker() {
 
                 console.log('Sydney Current Time:', sydneyNow);
 
-                // 过滤出Accepted状态并且startTime距离当前时间24小时以内的请求
+                // Filter out requests with an Accepted status and a startTime within 24 hours of the current time.
                 const filteredRequests = data.filter(request => {
                     const startTime = new Date(request.startTime);
                     const timeDiff = startTime.getTime() - sydneyNow.getTime();
@@ -68,7 +68,6 @@ export default function LiveTrackingEnterWalker() {
         return `${hours}:${minutes} - ${day}/${month}/${year}`;  // return format hh-mm dd/mm/yyyy
     };
 
-    // 跳转函数
     const handleStartWalk = (requestId) => {
         router.push(`/live-tracking-sharing-walker/${requestId}`);
     }
@@ -85,13 +84,13 @@ export default function LiveTrackingEnterWalker() {
                 </div>
             </div>
 
-            <div className="flex flex-col justify-start w-full max-w-lg bg-white shadow-lg rounded-xl p-8 mt-20 min-h-[60vh] pb-5 mb-10"> {/* 调整后的margin-top */}
+            <div className="flex flex-col justify-start w-full max-w-lg bg-white shadow-lg rounded-xl p-8 mt-20 min-h-[60vh] pb-5 mb-10">
                 <h2 className="text-2xl font-bold">Upcoming Walk Requests</h2>
                 {requests.length === 0 ? (
                     <p className="text-lg mt-10">No requests available within the next 24 hours.</p>
                 ) : (
                     requests.map((request, index) => (
-                        <div key={index} className="bg-white shadow-md rounded-lg p-4 mt-6 w-full" style={{ boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}> {/* 单独的盒子 */}
+                        <div key={index} className="bg-white shadow-md rounded-lg p-4 mt-6 w-full" style={{ boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
                             <div className="space-y-4">
                                 <p className="text-lg">
                                     <span className="font-bold">Parent:</span> {request.parent.preferredName || request.parent.name}
@@ -109,7 +108,7 @@ export default function LiveTrackingEnterWalker() {
 
                             <div className="mt-4">
                                 <button
-                                    onClick={() => handleStartWalk(request.requestId)} // 跳转到指定的页面
+                                    onClick={() => handleStartWalk(request.requestId)} // Jump to the specified page
                                     className="w-full bg-black text-white text-xl py-4 rounded-xl hover:bg-gray-800"
                                 >
                                     Start Walk Request

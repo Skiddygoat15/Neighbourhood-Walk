@@ -26,7 +26,7 @@ public class UserProfileDTO {
     private String gender;
     private String profImgUrl;
     private String communicatePref;
-    private List<Date> availableDate;  // 使用List接口
+    private List<Date> availableDate;
     private List<String> skill;
     private boolean verified;
 }

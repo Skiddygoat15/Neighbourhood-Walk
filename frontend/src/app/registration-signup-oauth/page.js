@@ -9,7 +9,7 @@ const RegistrationSignup = () => {
     console.log('Component RegistrationSignup is rendering');
     const router = useRouter();
 
-    // 直接获取 URL 参数
+    // Get URL parameters directly
     let userId = '';
     let name = '';
     let surname = '';
@@ -22,7 +22,7 @@ const RegistrationSignup = () => {
         console.log('URL Params:', { userId, name, surname });
     }
 
-    const [roleType, setRoleType] = useState('walker'); // 默认角色为 walker
+    const [roleType, setRoleType] = useState('walker'); // The default role is walker
     const [formData, setFormData] = useState({
         userId: userId,
         name: name,
@@ -54,7 +54,7 @@ const RegistrationSignup = () => {
         }
 
         try {
-            const { lat, lng, formatted_address } = await geocodeAddress(formData.address); // 地址转换为经纬度
+            const { lat, lng, formatted_address } = await geocodeAddress(formData.address); // Addresses converted to latitude and longitude
 
             const requestData = {
                 userId: formData.userId,

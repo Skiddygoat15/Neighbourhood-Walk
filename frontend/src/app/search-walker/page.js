@@ -49,7 +49,7 @@ export default function SearchWalker() {
             });
             console.log(response);
 
-            // 检查响应的Content-Type是否为application/json
+            // Check if the Content-Type of the response is application/json
             const contentType = response.headers.get('Content-Type');
             if (!response.ok) {
                 if (response.status === 403) {
@@ -68,15 +68,15 @@ export default function SearchWalker() {
 
             if (contentType && contentType.includes('application/json')) {
                 const data = await response.json();
-                setRequests(data);  // 保存返回的 requests 列表
-                setError(null);    // 清空错误信息
+                setRequests(data); // Save the list of requests returned
+                setError(null); // Clear the error message
             } else {
                 throw new Error('Invalid response type, expected JSON');
             }
         } catch (error) {
             console.error("Search requests failed:", error);
             setError(error.message || 'An unknown error occurred.');
-            setRequests([]); // 如果出错，清空request列表
+            setRequests([]); // If something goes wrong, clear the request list.
         }
 
     };
@@ -124,8 +124,6 @@ export default function SearchWalker() {
 
             return minutes > 0 ? `${hourText} ${minuteText}` : hourText;
         }
-
-
     };
 
     return (

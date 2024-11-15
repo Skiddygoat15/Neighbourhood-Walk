@@ -44,7 +44,7 @@ export default function ProfileAttributesModification() {
       return;
     }
 
-    // 获取用户的现有个人信息
+    // Access to existing personal information of users
     const fetchUserProfile = async () => {
       try {
         const response = await fetch(`${apiUrl}/Users/getUserProfileByUserId/${userId}`, {
@@ -57,7 +57,7 @@ export default function ProfileAttributesModification() {
         if (response.ok) {
           const data = await response.json();
 
-          // 填充输入框的初始值
+          // Initial value to fill the input box
           setPhoneNumber(data.phone || 'N/A');
           setEmailAddress(data.email || 'N/A');
           setCommunicationPreference(data.communicatePref || 'N/A');
@@ -81,7 +81,6 @@ export default function ProfileAttributesModification() {
   };
 
   const handleUpdate = async () => {
-    // 从sessionStorage获取userId和token
     const userId = sessionStorage.getItem('userId');
     const token = sessionStorage.getItem('token');
 
@@ -102,7 +101,7 @@ export default function ProfileAttributesModification() {
 
       const updatedAddress = await geocodeAddress(`${address}, ${zipCode}`);
 
-      // 准备要传递到数据库的data
+      // Prepare the data to be passed to the database
       const updatedProfileData = {
         phone: phoneNumber,
         email: emailAddress,
@@ -114,12 +113,12 @@ export default function ProfileAttributesModification() {
         longitude: updatedAddress.lng,
       };
 
-      // 调用API将数据传入数据库
+      // Calling the API to pass data into the database
       const response = await fetch(`${apiUrl}/Users/${userId}/profile`, {
-        method: 'PUT', // 使用PUT方法更新用户数据
+        method: 'PUT',
         headers: {
-          'Authorization': `Bearer ${token}`, // 传入token进行身份验证
-          'Content-Type': 'application/json', // 发送JSON数据
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify(updatedProfileData),
       });
@@ -127,11 +126,11 @@ export default function ProfileAttributesModification() {
       if (response.ok) {
         console.log('Profile updated successfully');
         sessionStorage.setItem('preferredName', preferredName);
-        // 更新成功后跳转到 profile-management-account-information 页面
+        // Jump to profile-management-account-information page when update successful
         router.push('/profile-management-account-information');
       } else {
-        const errorMessage = await response.text(); // 捕获后端返回的错误消息
-        setError(errorMessage || 'Registration failed'); // 直接设置错误信息
+        const errorMessage = await response.text(); // Catch error messages returned by the backend
+        setError(errorMessage || 'Registration failed'); // Setting error messages directly
         console.error('Failed to update profile:', response.statusText);
       }
     } catch (error) {

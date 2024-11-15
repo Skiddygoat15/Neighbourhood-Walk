@@ -14,7 +14,7 @@ export default function StatusCard({ showRedDot, title, statusChanged, time, not
         cache: 'default'
     };
 
-    // 初始化通知状态
+    // Initialise notification status
     const requestURL = new Request(`${apiUrl}/WalkerRequest/getWalkerRequestByWalkerId/${userId}`, myInit);
 
     console.log("showRedDot value:", showRedDot);
@@ -36,16 +36,16 @@ export default function StatusCard({ showRedDot, title, statusChanged, time, not
             console.error('Error fetching data:', error);
         });
 
-    // const [showDot, setShowDot] = useState(true);  // 初始状态为显示小红点
+    // const [showDot, setShowDot] = useState(true);  // Initial state is to display a small red dot
 
     // useEffect(() => {
-    //     setShowDot(showRedDot); // 同步父组件传入的 showRedDot
+    //     setShowDot(showRedDot); // Synchronises the showRedDot passed in by the parent component.
     // }, [showRedDot]);
 
-    // 点击事件处理函数，用于隐藏小红点并调用检查通知接口
+    // Click event handler for hiding the little red dot and calling the check notification interface
     const handleClick = () => {
-        // setShowDot(false);  // 点击后设置状态为不显示
-        // 调用后端接口检查通知
+        // setShowDot(false);  // Click to set the status to not show
+        // Calling the back-end interface to check for notifications
         fetch(`${apiUrl}/UPNotifications/check/${notificationId}`, {
             method: 'POST',
             headers: {
@@ -72,9 +72,9 @@ export default function StatusCard({ showRedDot, title, statusChanged, time, not
         });
     };
 
-    // 关闭通知函数
+    // Close the notification function
     const handleCloseNotification = () => {
-        // 调用后端接口关闭通知
+        // Calling back-end interface shutdown notifications
         fetch(`${apiUrl}/UPNotifications/close/${notificationId}`, {
             method: 'POST',
             headers: {
@@ -118,7 +118,7 @@ export default function StatusCard({ showRedDot, title, statusChanged, time, not
             border: '1px solid #ccc',
             borderRadius: '8px',
             padding: '10px',
-            position: 'relative', // 设置容器为相对定位
+            position: 'relative', // Setting the container to relative positioning
             margin: '10px 0',
             display: 'flex',
             flexDirection: 'column',
@@ -132,13 +132,13 @@ export default function StatusCard({ showRedDot, title, statusChanged, time, not
             {/*</div>*/}
             {showRedDot && (
                 <span style={{
-                    position: 'absolute', // 小红点的定位为绝对
-                    bottom: '10px',          // 从底部10px的位置
-                    right: '10px',        // 从右侧10px的位置
+                    position: 'absolute', // The little red dot is positioned as an absolute
+                    bottom: '10px',          // 10px from the bottom
+                    right: '10px',        // 10px from the right
                     height: '10px',
                     width: '10px',
                     borderRadius: '50%',
-                    backgroundColor: 'red',  // 小红点为红色
+                    backgroundColor: 'red',  // The small red dot is red
                 }}></span>
             )}
 
@@ -154,7 +154,7 @@ export default function StatusCard({ showRedDot, title, statusChanged, time, not
                 <span onClick={handleClick}>{time}</span>
             </div>
 
-            {/* 右上角的关闭按钮 */}
+            {/* Close button in the upper right corner */}
             <button onClick={handleCloseNotification} style={{
                 position: 'absolute',
                 right: '10px',

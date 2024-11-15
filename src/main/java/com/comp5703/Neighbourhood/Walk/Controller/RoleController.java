@@ -18,7 +18,7 @@ public class RoleController {
     @Autowired
     private RoleService roleService;
 
-    // 创建角色
+    // Create a character
     @PostMapping
     public ResponseEntity<?> createRole(@RequestParam long userId, @RequestBody String roleType) {
         try {
@@ -40,20 +40,20 @@ public class RoleController {
         return new ResponseEntity<>(roleDTOs, HttpStatus.OK);
     }
 
-    // 根据用户ID获取该用户的所有角色
+    // Get all roles for a user based on the user ID
     @GetMapping("/user/{userId}")
     public ResponseEntity<?> getRolesByUserId(@PathVariable long userId) {
         try {
-            // 调用服务层获取角色
+            // Calling the service layer to get the role
             List<RoleDTO> roles = roleService.getRolesByUserId(userId);
 
-            // 返回角色列表
+            // Back to Role List
             return new ResponseEntity<>(roles, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
-            // 处理用户未找到的情况，返回错误消息
+            // Handles user not found cases, returning an error message
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
-            // 处理其他异常，返回错误消息
+            // Handle other exceptions and return error messages
             return new ResponseEntity<>("An error occurred while fetching roles", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

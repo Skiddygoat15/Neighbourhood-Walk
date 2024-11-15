@@ -12,7 +12,7 @@ services:
       - SPRING_DATASOURCE_PASSWORD=123456
       - H2_CONSOLE_ENABLED=true
     depends_on:
-          - mysql  # 指定依赖 MySQL 服务
+          - mysql  # Specifying Dependencies on MySQL Services
 
   frontend:
     build:
@@ -20,21 +20,21 @@ services:
       dockerfile: Dockerfile
       args:
         - ESLINT_NO_DEV_ERRORS=true
-    command: ["npm", "run", "build"]  # 确保只运行 next build
+    command: ["npm", "run", "build"]  # Make sure you only run the next build
     ports:
       - "3000:3000"
     environment:
       - ESLINT_NO_DEV_ERRORS=true
 
   mysql:
-    image: mysql:latest  # 使用最新的 MySQL 镜像
+    image: mysql:latest  # Using the Latest MySQL Mirror
     ports:
-      - "3306:3306"  # 将 MySQL 端口映射到主机
+      - "3306:3306"  # Mapping MySQL ports to hosts
     environment:
-      MYSQL_ROOT_PASSWORD: 123456  # 设置 MySQL root 用户密码
-      MYSQL_DATABASE: nwdb  # 创建一个名为 nwdb 的数据库
+      MYSQL_ROOT_PASSWORD: 123456  # Setting the MySQL root user password
+      MYSQL_DATABASE: nwdb  # Create a database called nwdb
     volumes:
-      - mysql_data:/var/lib/mysql  # 持久化 MySQL 数据
+      - mysql_data:/var/lib/mysql  # Persistent MySQL Data
 
 volumes:
-  mysql_data:  # 定义持久化卷
+  mysql_data:  # Defining Persistent Volumes

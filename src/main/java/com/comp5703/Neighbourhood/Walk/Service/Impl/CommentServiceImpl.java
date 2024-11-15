@@ -46,7 +46,7 @@ public class CommentServiceImpl implements CommentService {
     public List<Long> getCommentedUserIds() {
         Iterable<Comment> iterable = commentRepository.findAll();
         Set<Long> set = new HashSet<>();
-        //userId去重
+
         for (Comment comment : iterable) {set.add(comment.getUser().getId());}
         ArrayList<Long> list = new ArrayList<>(set);
         return list;
@@ -115,7 +115,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     /**
-     * 判断用户是否有comment
+     * Determine if the user has a comment
      * @param userid
      * @return
      */

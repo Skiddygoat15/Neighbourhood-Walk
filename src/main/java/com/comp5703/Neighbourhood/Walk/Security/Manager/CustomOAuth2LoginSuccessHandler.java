@@ -37,20 +37,20 @@ public class CustomOAuth2LoginSuccessHandler implements AuthenticationSuccessHan
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
-        // 获取当前登录的用户邮箱（通过 OAuth 登录）
+        // Get the currently logged in user's email (via OAuth login)
         Map<String, Object> attributes = ((OAuth2AuthenticationToken) authentication).getPrincipal().getAttributes();
-        String email = (String) attributes.get("email");  // OAuth 登录的用户邮箱
+        String email = (String) attributes.get("email");  // User Email for OAuth Login
         Optional<Users> userOptional = usersService.getUsersByEmail(email);
 
         Users user;
         if (userOptional.isPresent()) {
-            user = userOptional.get();  // 用户已存在
+            user = userOptional.get();  // User already exists
         } else {
-            // 如果用户不存在，则创建新用户
+            // If the user does not exist, create a new user
             user = new Users();
             user.setEmail(email);
 
-            // 从 authentication 中获取其他用户信息，比如姓名
+            // Get other user information, such as name, from authentication
             user.setName((String) attributes.get("given_name"));
             user.setSurname((String) attributes.get("family_name"));
             user.setProfileCompleted(false);
@@ -59,11 +59,11 @@ public class CustomOAuth2LoginSuccessHandler implements AuthenticationSuccessHan
             user.setPhone("oauthDefaultPhoneNum");
             user.setProfImgUrl("/profileImages/profileImg_men_1.png");
 
-            // 保存新用户到数据库
+            // Saving new users to the database
             user = usersService.saveUsers(user);
         }
 
-        // 获取 OAuth2 token
+        // Get OAuth2 token
         OAuth2AuthenticationToken authToken = (OAuth2AuthenticationToken) authentication;
         OAuth2AuthorizedClient client = authorizedClientService.loadAuthorizedClient(
                 authToken.getAuthorizedClientRegistrationId(),
@@ -71,11 +71,11 @@ public class CustomOAuth2LoginSuccessHandler implements AuthenticationSuccessHan
         );
 
         OAuth2AccessToken accessToken = client.getAccessToken();
-        String token = accessToken.getTokenValue();  // 这里获取到 OAuth2 token
+        String token = accessToken.getTokenValue();  // Get the OAuth2 token here
 
-        // 检查用户的 profile 是否完成
+        // Check if the user's profile is complete
         if (!user.isProfileCompleted()) {
-            // 通过 URL 参数传递 userId, name 和 surname
+            // Pass the userId, name and surname as URL parameters.
             String redirectUrl = String.format(
                     "http://localhost:3000/registration-signup-oauth?userId=%d&name=%s&surname=%s",
                     user.getId(),
@@ -84,15 +84,15 @@ public class CustomOAuth2LoginSuccessHandler implements AuthenticationSuccessHan
             );
             response.sendRedirect(redirectUrl);
         } else {
-            // 提取所有角色
+            // Extract all roles
             List<RoleDTO> roles = roleService.getRolesByUserId(user.getId());
             List<String> roleTypes = roles.stream().map(RoleDTO::getRoleType).collect(Collectors.toList());
 
             String status = user.getActivityStatus();
 
-            // 检查用户状态是否为 "Blocked"
+            // Check if the user status is "Blocked"
             if ("Blocked".equals(status)) {
-                // 如果用户状态为 Blocked，返回 403 禁止访问
+                // If the user status is Blocked, return 403 Disable Access
                 response.setStatus(HttpServletResponse.SC_FORBIDDEN);
                 String errorResponse = String.format(
                         "{\"error\": \"User account is blocked\", \"userId\":\"%d\", \"name\":\"%s\", \"status\":\"%s\"}",
@@ -103,17 +103,17 @@ public class CustomOAuth2LoginSuccessHandler implements AuthenticationSuccessHan
                 response.setContentType("application/json");
                 response.setCharacterEncoding("UTF-8");
                 response.getWriter().write(errorResponse);
-                return;  // 阻止进一步的处理
+                return;  // Preventing further processing
             }
 
-            // 生成 JWT token
+            // Generate JWT token
             String jwtToken = JWT.create()
                     .withSubject(user.getName())
                     .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.TOKEN_EXPIRATION))
-                    .withClaim("roles", roleTypes)  // 将角色添加到 JWT token 中
+                    .withClaim("roles", roleTypes)  // Adding roles to a JWT token
                     .sign(Algorithm.HMAC512(SecurityConstants.SECRET_KEY));
 
-            // **这里放置重定向到 oauth-redirect 页面**
+            // **This places a redirect to the oauth-redirect page**
             String redirectUrl = String.format(
                     "http://localhost:3000/oauth-redirect?userId=%d&name=%s&preferredName=%s&roles=%s&token=%s",
                     user.getId(),

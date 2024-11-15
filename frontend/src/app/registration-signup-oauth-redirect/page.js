@@ -22,11 +22,11 @@ const ThankYouPage = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // 可以添加表单验证逻辑
+        // Form validation logic can be added
         if (formData.password !== formData.confirmPassword) {
             setError('Passwords do not match');
         } else {
-            // 提交表单后的操作
+            // Actions after submitting the form
             router.push('/registration-loginform');
         }
     };

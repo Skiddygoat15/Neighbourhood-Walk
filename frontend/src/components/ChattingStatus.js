@@ -8,7 +8,7 @@ function ChattingStatus({ name, text, time, parentId, path }) {
 
 
     const [role, setRole] = useState("");;
-    const router = useRouter();  // 使用 useRouter
+    const router = useRouter();  // Using useRouter
 
     useEffect(()=>{
         setRole(sessionStorage.getItem("role"));

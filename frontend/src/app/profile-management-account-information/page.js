@@ -13,30 +13,30 @@ export default function ProfileManagementAccountInformation() {
     router.push(path);
   };
 
-  const [userProfile, setUserProfile] = useState(null); // 用来存储API返回的数据
-  const [userProfImg,setUserProfImg] = useState(null); // 用来存储API返回的数据
+  const [userProfile, setUserProfile] = useState(null); // Used to store data returned by the API
+  const [userProfImg,setUserProfImg] = useState(null); // Used to store data returned by the API
   const [roles, setRoles] = useState([]);
   const [currentRole, setCurrentRole] = useState("");
   const textColor = useTextColor();
 
   useEffect(() => {
-    // 从sessionStorage获取userId和token
+
     const userId = sessionStorage.getItem('userId');
-    const token = sessionStorage.getItem('token'); // 假设token保存在sessionStorage中
+    const token = sessionStorage.getItem('token');
     const storedRoles = JSON.parse(sessionStorage.getItem('roles')) || [];
     const storedCurrentRole = sessionStorage.getItem('currentRole');
 
     setRoles(storedRoles);
     setCurrentRole(storedCurrentRole);
 
-    // 如果userId和token存在，则调用API获取用户信息
+    // If userId and token exist, call the API to get the user information
     if (userId && token) {
       const fetchUserProfile = async () => {
         try {
           const response = await fetch(`${apiUrl}/Users/getUserProfileByUserId/${userId}`, {
             method: 'GET',
             headers: {
-              'Authorization': `Bearer ${token}`, // 在请求头中添加Bearer token
+              'Authorization': `Bearer ${token}`,
             },
           });
 
@@ -56,18 +56,17 @@ export default function ProfileManagementAccountInformation() {
     }
   }, []);
   useEffect(() => {
-    // 从sessionStorage获取userId和token
     const userId = sessionStorage.getItem('userId');
     const token = sessionStorage.getItem('token');
 
-    // 如果userId和token存在，则调用API获取用户信息
+    // If userId and token exist, call the API to get the user information
     if (userId && token) {
       const fetchUserProfImgUrl = async () => {
         try {
           const response = await fetch(`${apiUrl}/Users/getUserProfImgUrl/${userId}`, {
             method: 'GET',
             headers: {
-              'Authorization': `Bearer ${token}`, // 在请求头中添加Bearer token
+              'Authorization': `Bearer ${token}`,
             },
           });
 
@@ -89,21 +88,21 @@ export default function ProfileManagementAccountInformation() {
   }, []);
   const handleRoleRegistration = async () => {
     const userId = sessionStorage.getItem('userId');
-    const roleType = currentRole === "parent" ? "walker" : "parent"; // 动态决定要添加的角色
+    const roleType = currentRole === "parent" ? "walker" : "parent"; // Dynamically determine which roles to add
     const token = sessionStorage.getItem('token');
     try {
       const response = await fetch(`${apiUrl}/roles?userId=${userId}`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
-          'Content-Type': 'text/plain' // 设置为 text/plain 以发送纯文本
+          'Content-Type': 'text/plain' // Set to text/plain to send plain text
         },
-        body: roleType, // 将 roleType 作为请求体发送
+        body: roleType, // Send the roleType as a request body
       });
 
       if (response.ok) {
-        alert("Successfully registered new role!"); // 成功弹窗
-        // 更新 roles
+        alert("Successfully registered new role!"); // Successful pop-ups
+        // Update roles
         const updatedRoles = [...roles, roleType];
         setRoles(updatedRoles);
         sessionStorage.setItem('roles', JSON.stringify(updatedRoles));
@@ -117,7 +116,7 @@ export default function ProfileManagementAccountInformation() {
 
 
 
-  // 如果 userProfile 还没有加载，显示 loading 占位符
+  // If the userProfile is not yet loaded, show the loading placeholder
   if (!userProfile) {
     return <main className="min-h-screen bg-white">
       <div className="max-w-md mx-auto p-4 space-y-8">

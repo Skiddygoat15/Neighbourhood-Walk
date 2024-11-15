@@ -21,19 +21,19 @@ public class UserProfileNotificationController {
 
     @GetMapping("/check-any-notification-unchecked/{userId}")
     public ResponseEntity<Boolean> checkForUncheckedNotifications(@PathVariable long userId) {
-        // 调用服务方法检查是否存在 NotificationCheck 为 false 的通知
+        // Call the service method to check if a notification exists with NotificationCheck false.
         boolean hasUnchecked = notificationService.checkAnyNotificationUnchecked(userId);
 
-        // 返回布尔值作为响应，表示是否存在未检查的通知
+        // Returns a boolean value as a response indicating whether there is an unchecked notification
         return new ResponseEntity<>(hasUnchecked, HttpStatus.OK);
     }
 
     @GetMapping("/check-any-notification-unchecked-parent/{userId}")
     public ResponseEntity<Boolean> checkForUncheckedNotifications_Parent(@PathVariable long userId) {
-        // 调用服务方法检查是否存在 NotificationCheck 为 false 的通知
+        // Call the service method to check if a notification exists with NotificationCheck false.
         boolean hasUnchecked = notificationService.checkAnyNotificationUnchecked_Parent(userId);
 
-        // 返回布尔值作为响应，表示是否存在未检查的通知
+        // Returns a boolean value as a response indicating whether there is an unchecked notification
         return new ResponseEntity<>(hasUnchecked, HttpStatus.OK);
     }
 
@@ -45,16 +45,16 @@ public class UserProfileNotificationController {
     @GetMapping("/getUPNotificationsByUserId/{userId}")
     public ResponseEntity<?> getUPNByUserId(@PathVariable long userId) {
         try {
-            // 调用服务层获取角色
+            // Calling the service layer to get the role
             List<UserProfileNotificationDTO> UPNs = notificationService.getUPNotificationsByUserId(userId);
 
-            // 返回角色列表
+            // Back to Role List
             return new ResponseEntity<>(UPNs, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
-            // 处理用户未找到的情况，返回错误消息
+            // Handles user not found cases, returning an error message
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
-            // 处理其他异常，返回错误消息
+            // Handle other exceptions and return error messages
             return new ResponseEntity<>("An error occurred while fetching user profile notifications", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

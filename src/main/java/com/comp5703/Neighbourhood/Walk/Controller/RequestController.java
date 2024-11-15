@@ -96,10 +96,10 @@ public class RequestController {
             return new ResponseEntity<>(requestService.createRequest(request), HttpStatus
                     .CREATED);
         } catch (IllegalArgumentException e) {
-            // 返回错误信息，状态码为400 (Bad Request)
+            // Returns an error message with status code 400 (Bad Request)
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
-            // 处理其他可能的异常
+            // Handling other possible exceptions
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
@@ -110,10 +110,10 @@ public class RequestController {
         try {
             return new ResponseEntity<>(requestService.updateRequest(requestId, request), HttpStatus.OK);
         } catch (IllegalArgumentException e) {
-            // 返回错误信息，状态码为400 (Bad Request)
+            // Returns an error message with status code 400 (Bad Request)
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
-            // 处理其他可能的异常
+            // Handling other possible exceptions
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

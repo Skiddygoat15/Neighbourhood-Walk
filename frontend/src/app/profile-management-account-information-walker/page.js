@@ -14,30 +14,30 @@ export default function ProfileManagementAccountInformationWalker() {
     router.push(path);
   };
 
-  const [userProfile, setUserProfile] = useState(null); // 用来存储API返回的数据
-  const [userProfImg,setUserProfImg] = useState(null); // 用来存储API返回的数据
+  const [userProfile, setUserProfile] = useState(null); // Used to store data returned by the API
+  const [userProfImg,setUserProfImg] = useState(null); // Used to store data returned by the API
   const [roles, setRoles] = useState([]);
   const [currentRole, setCurrentRole] = useState("");
   const textColor = useTextColor();
 
   useEffect(() => {
-    // 从sessionStorage获取userId和token
+
     const userId = sessionStorage.getItem('userId');
-    const token = sessionStorage.getItem('token'); // 假设token保存在sessionStorage中
+    const token = sessionStorage.getItem('token');
     const storedRoles = JSON.parse(sessionStorage.getItem('roles')) || [];
     const storedCurrentRole = sessionStorage.getItem('currentRole');
     setRoles(storedRoles);
     setCurrentRole(storedCurrentRole);
 
 
-    // 如果userId和token存在，则调用API获取用户信息
+    // If userId and token exist, call the API to get the user information
     if (userId && token) {
       const fetchUserProfile = async () => {
         try {
           const response = await fetch(`${apiUrl}/Users/getUserProfileByUserId/${userId}`, {
             method: 'GET',
             headers: {
-              'Authorization': `Bearer ${token}`, // 在请求头中添加Bearer token
+              'Authorization': `Bearer ${token}`,
             },
           });
 
@@ -58,19 +58,18 @@ export default function ProfileManagementAccountInformationWalker() {
     }
   }, []);
   useEffect(() => {
-    // 从sessionStorage获取userId和token
     const userId = sessionStorage.getItem('userId');
-    const token = sessionStorage.getItem('token'); // 假设token保存在sessionStorage中
+    const token = sessionStorage.getItem('token');
 
 
-    // 如果userId和token存在，则调用API获取用户信息
+    // If userId and token exist, call the API to get the user information
     if (userId && token) {
       const fetchUserProfileImgUrl = async () => {
         try {
           const response = await fetch(`${apiUrl}/Users/getUserProfImgUrl/${userId}`, {
             method: 'GET',
             headers: {
-              'Authorization': `Bearer ${token}`, // 在请求头中添加Bearer token
+              'Authorization': `Bearer ${token}`, // Add the Bearer token to the request header
             },
           });
 
@@ -93,21 +92,21 @@ export default function ProfileManagementAccountInformationWalker() {
 
   const handleRoleRegistration = async () => {
     const userId = sessionStorage.getItem('userId');
-    const roleType = currentRole === "parent" ? "walker" : "parent"; // 动态决定要添加的角色
+    const roleType = currentRole === "parent" ? "walker" : "parent"; // Dynamically determine which roles to add
     const token = sessionStorage.getItem('token');
     try {
       const response = await fetch(`${apiUrl}/roles?userId=${userId}`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
-          'Content-Type': 'text/plain' // 设置为 text/plain 以发送纯文本
+          'Content-Type': 'text/plain' // Set to text/plain to send plain text
         },
-        body: roleType, // 将 roleType 作为请求体发送
+        body: roleType, // Send the roleType as a request body
       });
 
       if (response.ok) {
-        alert("Successfully registered new role!"); // 成功弹窗
-        // 更新 roles
+        alert("Successfully registered new role!"); // Successful pop-ups
+        // Update roles
         const updatedRoles = [...roles, roleType];
         setRoles(updatedRoles);
         sessionStorage.setItem('roles', JSON.stringify(updatedRoles));
@@ -207,16 +206,16 @@ export default function ProfileManagementAccountInformationWalker() {
         </button>
       </div>
 
-    </main>; // 如果数据还没加载完，显示Loading
+    </main>; // If the data hasn't finished loading, display Loading
   }
 
-  // 格式化日期为 YYYY/MM/DD HH:mm
+  // Format the date as YYYY/MM/DD HH:mm
   const formatDate = (dateString) => {
     const options = {year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit'};
     return new Date(dateString).toLocaleDateString('en-GB', options).replace(',', '');
   };
 
-  // 确保 availableDate 存在并且有两个日期
+  // Ensure that the availableDate exists and has two dates
   const startDate = userProfile.availableDate && userProfile.availableDate.length >= 2
       ? `${new Date(userProfile.availableDate[0]).toLocaleDateString('en-AU', {
         year: 'numeric',
@@ -225,7 +224,7 @@ export default function ProfileManagementAccountInformationWalker() {
       })} ${new Date(userProfile.availableDate[0]).toLocaleTimeString('en-AU', {
         hour: '2-digit',
         minute: '2-digit',
-        hour12: false // 24 小时制
+        hour12: false 
       })}`
       : 'N/A';
 
@@ -237,11 +236,11 @@ export default function ProfileManagementAccountInformationWalker() {
       })} ${new Date(userProfile.availableDate[1]).toLocaleTimeString('en-AU', {
         hour: '2-digit',
         minute: '2-digit',
-        hour12: false // 24 小时制
+        hour12: false
       })}`
       : 'N/A';
 
-  // skill 只有一个元素
+  // skill has only one element
   const skill = userProfile.skill && userProfile.skill.length > 0 ? userProfile.skill[0] : 'N/A';
 
 

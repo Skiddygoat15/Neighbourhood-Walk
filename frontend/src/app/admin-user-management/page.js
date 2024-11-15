@@ -154,7 +154,7 @@ export default function AdminUserManagement() {
         }
     };
 
-    // 封锁用户
+    // user blocking
     const handleBlock = async (userId) => {
         const blockUserAPI = `${apiUrl}/Users/blockUser/${userId}`;
         try {

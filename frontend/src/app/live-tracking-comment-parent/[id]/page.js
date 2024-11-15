@@ -1,24 +1,24 @@
 "use client";
 import { useRouter, useParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
-import ReactStars from "react-rating-stars-component"; // 需要安装 react-rating-stars-component 库
+import ReactStars from "react-rating-stars-component"; // need to install react-rating-stars-component repository
 import BackgroundLayout from '../../ui-background-components/BackgroundLayout';
 import useTextColor from '../../ui-background-components/useTextColor';
 
 export default function CommentPage() {
     const textColor = useTextColor();
     const router = useRouter();
-    const { id: requestId } = useParams(); // 获取 URL 中的 requestId
+    const { id: requestId } = useParams(); // Get the requestId in the URL
     const [comment, setComment] = useState('');
-    const [rate, setRate] = useState(0); // 默认评分为 0
-    const [walkerId, setWalkerId] = useState(null); // 保存获取到的 walkerId
+    const [rate, setRate] = useState(0); // Default rating is 0
+    const [walkerId, setWalkerId] = useState(null); // Save the obtained walkerId
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
     useEffect(() => {
-        // 获取 walkerId
+        // Get walkerId
         async function fetchWalkerId() {
             try {
-                const token = sessionStorage.getItem('token'); // 获取 token
+                const token = sessionStorage.getItem('token'); // Get token
                 if (!token) {
                     console.error('No token found in sessionStorage');
                     return;
@@ -37,7 +37,7 @@ export default function CommentPage() {
                 }
 
                 const data = await response.json();
-                setWalkerId(data.id); // 假设返回的数据结构中 walker 的 id 为 data.id
+                setWalkerId(data.id); // Assume that the id of the walker in the returned data structure is data.id.
             } catch (error) {
                 console.error('Error fetching walkerId:', error);
             }
@@ -49,12 +49,12 @@ export default function CommentPage() {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
-        const token = sessionStorage.getItem('token'); // 获取 token
-        // 创建当前时间
+        const token = sessionStorage.getItem('token'); // Getting a token
+        // Create current time
         const date = new Date();
-        // 将时间向后移动 11 小时（11 * 60 * 60 * 1000 毫秒）
+        // Move time back 11 hours (11 * 60 * 60 * 1000 milliseconds)
         date.setTime(date.getTime() + 11 * 60 * 60 * 1000);
-        // 格式化为 YYYY-MM-DD HH:MM:SS 格式
+        // Formatted as YYYY-MM-DD HH:MM:SS format
         const commentDate = date.toISOString().replace('T', ' ').slice(0, 19);
 
         if (!token || !walkerId) {
@@ -66,32 +66,32 @@ export default function CommentPage() {
             const response = await fetch(`${apiUrl}/Comment`, {
                 method: 'POST',
                 headers: {
-                    'Authorization': `Bearer ${token}`, // 添加token到请求头
+                    'Authorization': `Bearer ${token}`, // Add token to request header
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
                     request: {
-                        requestId: parseInt(requestId) // 转换为数字格式
+                        requestId: parseInt(requestId) // convert to digital format
                     },
                     user: {
-                        id: parseInt(walkerId) // 使用获取到的 walkerId
+                        id: parseInt(walkerId) // Use the obtained walkerId
                     },
-                    rate, // 评分
-                    comment, // 评论
-                    commentDate, // 评论时间
+                    rate,
+                    comment,
+                    commentDate,
                 }),
             });
 
             if (!response.ok) {
                 throw new Error('Failed to submit comment');
             }
-            router.push('/home-parent'); // 评论提交成功后跳转
+            router.push('/home-parent'); // Jump after successful comment submission
         } catch (error) {
             console.error('Error submitting comment:', error);
         }
     };
 
-    // 配置 ReactStars 星级选择器的选项
+    // Configuring options for the ReactStars star selector
     const ratingChanged = (newRating) => {
         setRate(newRating);
     };

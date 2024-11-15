@@ -1,17 +1,20 @@
-# 忽略所有文件
+# Ignore all files
 *
 
-# 允许 dist 目录（如果有的话）
+# Allow dist directories (if any)
 !dist/
-# 允许需要的其他文件或目录
+# Allow other files or directories as needed
 !target/
 !src/
-!pom.xml  # 允许 Maven 配置文件
+!pom.xml
+# Allow Maven Configuration Files
 
-!src/pom.xml  # 如果你使用 Maven
-!src/target/  # 允许复制 target 目录及其中的文件
+!src/pom.xml
+# If you use Maven
+!src/target/
+# Allow copying of the target directory and its files
 
-# 允许前端的必要文件
+# Necessary files to allow front-end
 !frontend/
 !frontend/package.json
 !frontend/package-lock.json

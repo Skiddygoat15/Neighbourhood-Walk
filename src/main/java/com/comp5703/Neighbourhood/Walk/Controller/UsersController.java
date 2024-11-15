@@ -41,8 +41,8 @@ public class UsersController {
         Optional<Map<String, String>> userMap = usersService.getUserNamesById(userId);
 
         return userMap
-                .map(map -> new ResponseEntity<>(map, HttpStatus.OK))  // 返回 name 和 preferredName
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));  // 如果用户不存在，返回 404
+                .map(map -> new ResponseEntity<>(map, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));  // Returns 404 if the user does not exist
     }
 
     @GetMapping("/email/{email}")
@@ -99,13 +99,13 @@ public class UsersController {
             List<Users> walkers = usersService.searchWalkers(parentId, searchTerm, gender, distance, rating);
             return new ResponseEntity<>(walkers, HttpStatus.OK);
         } catch (ResourceNotFoundException e) {
-            // 处理找不到资源的自定义异常
+            // Handling custom exceptions for not found resources
             return new ResponseEntity<>(
                     Map.of("message", e.getMessage()),
                     HttpStatus.NOT_FOUND
             );
         } catch (Exception e) {
-            // 捕获所有其他异常，并返回500服务器错误
+            // Catch all other exceptions and return 500 server errors
             return new ResponseEntity<>(
                     Map.of("message", "An unexpected error occurred: " + e.getMessage()),
                     HttpStatus.INTERNAL_SERVER_ERROR
@@ -116,16 +116,16 @@ public class UsersController {
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@RequestBody Users user, @RequestParam String roleType) {
         try {
-            // 调用服务层的 registerUser 方法
+            // Call the registerUser method of the service tier
             Users registeredUser = usersService.registerUser(user, roleType);
 
-            // 返回成功响应
+            // Return success response
             return new ResponseEntity<>("User registered successfully with ID: " + registeredUser.getId(), HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
-            // 返回错误信息，状态码为400 (Bad Request)
+            // Returns an error message with status code 400 (Bad Request)
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
-            // 处理其他可能的异常
+            // Handling other possible exceptions
             return new ResponseEntity<>("An error occurred during user registration", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }

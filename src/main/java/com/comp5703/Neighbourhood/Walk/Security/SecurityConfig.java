@@ -32,7 +32,7 @@ public class SecurityConfig {
     CustomAuthenticationManager customAuthenticationManager;
     UsersService usersService;
     RoleService roleService;
-    private final CustomOAuth2LoginSuccessHandler customOAuth2LoginSuccessHandler; // 注入 CustomOAuth2LoginSuccessHandler
+    private final CustomOAuth2LoginSuccessHandler customOAuth2LoginSuccessHandler; // pour into CustomOAuth2LoginSuccessHandler
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -49,7 +49,7 @@ public class SecurityConfig {
                 .requestMatchers("/geocode/**").permitAll()
                 .requestMatchers("/ws/**").permitAll()
                 .requestMatchers("/Users/registerOA/**").permitAll()
-                // 允许访问Google OAuth登录页面
+                // Allow access to Google OAuth login page
                 .requestMatchers("/oauth2/**").permitAll()
                 .requestMatchers("/Users/blockUser/**").hasAuthority("admin")
                 .requestMatchers("/Users/activeUser/**").hasAuthority("admin")
@@ -57,9 +57,9 @@ public class SecurityConfig {
                 .requestMatchers("/Users/stats").hasAuthority("admin")
                 .anyRequest().authenticated()
                 .and()
-                .oauth2Login() // 启用OAuth2登录
-                    .successHandler(customOAuth2LoginSuccessHandler) // 使用自定义成功处理程序
-                    .failureUrl("http://localhost:3000/registration-loginform") // 登录失败重定向
+                .oauth2Login() // Enable OAuth2 login
+                    .successHandler(customOAuth2LoginSuccessHandler) // Using custom success handlers
+                    .failureUrl("http://localhost:3000/registration-loginform") // Login Failure Redirection
                 .and()
                 .addFilterBefore(new ExceptionHandlerFilter(), AuthenticationFilter.class)
                 .addFilter(authenticationFilter)

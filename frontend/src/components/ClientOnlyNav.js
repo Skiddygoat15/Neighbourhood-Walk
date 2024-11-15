@@ -1,26 +1,27 @@
-"use client"; // 确保这是一个客户端组件
+"use client";
 
 import { useEffect, useState } from "react";
 import ClientOnlyNav_Parents from "../components/ClientOnlyNav_Parent";
 import ClientOnlyNav_Walker from "../components/ClientOnlyNav_Walker";
-import Link from "next/link"; // 假设你有一个针对 Walker 的导航栏组件
+import Link from "next/link";
 
 const ClientOnlyNav = () => {
     const [currentRole, setCurrentRole] = useState(null);
 
     useEffect(() => {
-        // 从 sessionStorage 获取 currentRole
+
         const role = sessionStorage.getItem("currentRole");
         setCurrentRole(role);
     }, []);
 
-    // 根据 currentRole 渲染不同的导航栏
+    // Render different navigation bars based on currentRole
     if (currentRole === "parent") {
         return <ClientOnlyNav_Parents />;
     } else if (currentRole === "walker") {
         return <ClientOnlyNav_Walker />;
     } else {
-        return null; // 如果没有角色，或者角色还未加载完成，可以不显示任何东西，或者显示一个默认的内容
+        return null;
+        // If there is no character, or if the character has not finished loading, you can either not show anything, or show a default content
     }
 };
 export default ClientOnlyNav;

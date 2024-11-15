@@ -41,10 +41,10 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
             Authentication authentication;
             if (user.getEmail() != null && user.getEmail().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
-                // 如果 email 非空且符合 email 格式，使用 email 进行认证
+                // If email is not empty and matches the email format, use email for authentication.
                 authentication = new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword());
             } else if (user.getPhone() != null && user.getPhone().matches("^\\d{1,11}$")) {
-                // 如果不是 email，使用 phone 进行认证，假设电话号码是1-11位数字
+                // If not email, use phone for authentication, assuming that the phone number is 1-11 digits.
                 authentication = new UsernamePasswordAuthenticationToken(user.getPhone(), user.getPassword());
             } else {
                 throw new RuntimeException("Invalid login credentials");
@@ -66,32 +66,32 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        String loginInput = authResult.getName(); // email 或 phone
+        String loginInput = authResult.getName(); // email or phone
 
-        // 调用 UsersService 的 getUserByEmailOrPhone 方法
+        // Call the getUserByEmailOrPhone method of UsersService.
         Optional<Users> userOptional = usersService.getUserByEmailOrPhone(loginInput);
 
-        // 确保用户存在
+        // Ensure user presence
         if (userOptional.isEmpty()) {
             throw new RuntimeException("User not found.");
         }
 
         Users user = userOptional.get();
 
-        // 检查用户的 ActivityStatus
+        // Check the user's ActivityStatus
         String activityStatus = usersService.getUserStatusById(user.getId());
 
-        // 如果用户被 block，则拒绝登录
+        // Deny login if user is blocked
         if ("Blocked".equals(activityStatus)) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("{\"error\": \"User account is blocked.\"}");
             response.getWriter().flush();
-            return; // 阻止继续执行
+            return; // Blocking continuation
         }
         long userId = user.getId();
         List<String> roleTypes = new ArrayList<>();
-        // 获取用户角色
-        List<RoleDTO> roles = roleService.getRolesByUserId(userId); // 例如返回 ["user", "admin"]
+        // Get user roles
+        List<RoleDTO> roles = roleService.getRolesByUserId(userId); // For example, return ["user", "admin"].
         for (RoleDTO role : roles) {
             String roleType = role.getRoleType();
             roleTypes.add(roleType);
@@ -105,15 +105,15 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         String token = JWT.create()
                 .withSubject(authResult.getName())
                 .withExpiresAt(new Date(System.currentTimeMillis() + SecurityConstants.TOKEN_EXPIRATION))
-                .withClaim("roles", roleTypes) // 将角色添加到token中
+                .withClaim("roles", roleTypes) // Add roles to token
                 .sign(Algorithm.HMAC512(SecurityConstants.SECRET_KEY));
 
-        // 将 token 放入响应体
+        // Put the token in the response body
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write("{\"token\": \"" + token + "\", \"userId\": " + userId + "}");
 
-        // 如果仍希望在 header 中返回 token
+        // If you still want to return the token in the header
         response.addHeader(SecurityConstants.AUTHORIZATION, SecurityConstants.BEARER + token);
     }
 }

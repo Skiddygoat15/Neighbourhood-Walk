@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 
 const OAuthRedirect = () => {
-    // 从 URL 查询参数中获取用户信息
+    // Get user information from URL query parameters
     const urlParams = new URLSearchParams(window.location.search);
     const userId = urlParams.get('userId');
     const name = urlParams.get('name');
@@ -11,9 +11,8 @@ const OAuthRedirect = () => {
     const roles = urlParams.get('roles') ? urlParams.get('roles').split(',') : [];
     const token = urlParams.get('token');
 
-    // 检查用户信息是否完整
+    // Check that user information is complete
     if (userId && name && token) {
-        // 将用户信息存储到 sessionStorage
         sessionStorage.setItem('userId', userId);
         sessionStorage.setItem('name', name);
         sessionStorage.setItem('roles', JSON.stringify(roles));
@@ -21,7 +20,7 @@ const OAuthRedirect = () => {
         sessionStorage.setItem('isLogin', 'true');
         sessionStorage.setItem('preferredName', preferredName);
 
-        // 根据用户角色重定向到相应的页面
+        // Redirect to the appropriate page based on user role
         if (roles.length === 1) {
             if (roles[0] === 'parent') {
                 sessionStorage.setItem('currentRole', 'parent');
@@ -34,7 +33,7 @@ const OAuthRedirect = () => {
             window.location.href = '/registration-login-identity-select';
         }
     } else {
-        console.error("URL 参数缺失，无法正确处理重定向。");
+        console.error("The URL parameter was missing and the redirection could not be handled correctly.");
     }
 
     return (

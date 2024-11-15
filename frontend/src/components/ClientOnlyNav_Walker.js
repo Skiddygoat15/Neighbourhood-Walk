@@ -1,12 +1,12 @@
-"use client"; // 这个组件是客户端组件
+"use client"; // This component is a client-side component
 
 import Link from "next/link";
-import { usePathname } from "next/navigation"; // 只能在客户端组件中使用
+import { usePathname } from "next/navigation"; // Can only be used in client-side components
 
 export default function ClientOnlyNav_Parent() {
-    const pathname = usePathname(); // 获取当前页面路径
+    const pathname = usePathname(); // Get current page path
 
-    // 不显示底部导航栏的页面列表
+    // List of pages without bottom navigation bar
     const noNavPaths = [
         "/registration-login-coverpage",
         "/registration-loginform",
@@ -20,12 +20,12 @@ export default function ClientOnlyNav_Parent() {
         "/registration-verification-walker-upload",
         "/registration-verification-walker-waiting",
         "/registration-login-identity-select"
-    ]; // 在这些页面不显示导航栏
+    ]; // Do not show the navigation bar on these pages
 
-    const shouldShowNav = !noNavPaths.includes(pathname); // 判断当前路径是否应显示导航栏
+    const shouldShowNav = !noNavPaths.includes(pathname); // Determine whether the current path should display a navigation bar
 
     if (!shouldShowNav) {
-        return null; // 不显示导航栏
+        return null; // No navigation bar
     }
 
     return (

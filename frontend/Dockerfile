@@ -1,28 +1,28 @@
-# 使用 Node.js 作为基础镜像
+# Using Node.js as a base image
 FROM node:18-alpine
 
-# 设置工作目录
+# Setting up the working directory
 WORKDIR /app
 
-# 复制 package.json 和 package-lock.json 安装依赖
+# Copy package.json and package-lock.json to install the dependencies.
 COPY package.json package-lock.json /app/
 
-# 安装依赖
+# Installation of dependencies
 RUN npm install
 
 
-# 5. 接受构建参数
+# 5. Accepting build parameters
 # ARG ESLINT_NO_DEV_ERRORS
 
-# 6. 定义环境变量（确保从构建参数中接收）
+# 6. Define environment variables (make sure to receive them from the build parameters)
 # ENV ESLINT_NO_DEV_ERRORS=${ESLINT_NO_DEV_ERRORS}
 
-# 复制前端项目所有文件
+# Copy all the files of the front-end project
 COPY . /app
 
-# 构建 Next.js 应用
+# Building Next.js Applications
 RUN npm run build
 
-# 启动 Next.js 应用
+# Launching the Next.js application
 EXPOSE 3000
 CMD ["npm", "start"]

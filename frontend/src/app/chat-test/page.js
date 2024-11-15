@@ -9,10 +9,10 @@ export default function UserDetail() {
         websocket.onopen = function() {
             console.log("WebSocket连接成功");
 
-            const token = sessionStorage.getItem('token'); // 获取存储的令牌
+            const token = sessionStorage.getItem('token'); // Getting a Stored Token
             console.info(token);
             if (token) {
-                // 发送身份验证消息
+                // Send authentication message
                 websocket.send(JSON.stringify({
                     type: 'authenticate',
                     token: token
@@ -22,28 +22,28 @@ export default function UserDetail() {
             }
         };
 
-        // 当接收到 WebSocket 消息时
+        // When a WebSocket message is received
         websocket.onmessage = function(event) {
             console.log("收到消息: " + event.data);
         };
 
-        // WebSocket 错误处理
+        // WebSocket Error Handling
         websocket.onerror = function(event) {
             console.error("WebSocket error observed:", event);
         };
 
-        // WebSocket 连接关闭处理
+        // WebSocket Connection Closure Handling
         websocket.onclose = function(event) {
             console.log(`WebSocket is closed now. Clean close: ${event.wasClean}, code=${event.code}, reason=${event.reason}`);
         };
 
-        // 在组件卸载时清理 WebSocket 连接
+        // Cleaning up WebSocket connections when components are uninstalled
         return () => {
             if (websocket.readyState === WebSocket.OPEN) {
                 websocket.close();
             }
         };
-    }, []); // 仅在组件挂载时执行
+    }, []); // Executed only when the component is mounted
 
     return (
         <div className="min-h-screen bg-white p-4">

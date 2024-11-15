@@ -31,7 +31,7 @@ public class UsersServiceImpl implements UsersService {
     private RequestRepository requestRepository;
 
     @Autowired
-    private RoleService roleService;  // 注入 RoleService
+    private RoleService roleService;
 
     @Autowired
     private UserProfileNotificationService notificationService;
@@ -90,14 +90,12 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public Users registerUser(Users user, String roleType) {
-        // 验证角色是否有效
+        // Verify that the role is valid
         if (!roleType.equals("parent") && !roleType.equals("walker")) {
             throw new IllegalArgumentException("Invalid role type: " + roleType);
         }
 
-        // 验证必填字段是否为空
-        // 写给自己：注意这里的user.getName等方法并不是在数据库中调用的方法，而是在Users实例中定义的getter方法！
-        // 因为此时用户传入了一个user实例，直接通过getter来获取对应信息即可
+        // Verify that required fields are not empty
         if (user.getName() == null || user.getName().isEmpty() ||
                 user.getSurname() == null || user.getSurname().isEmpty() ||
                 user.getPhone() == null || user.getPhone().isEmpty() ||
@@ -111,23 +109,23 @@ public class UsersServiceImpl implements UsersService {
             throw new IllegalArgumentException("All required fields must be filled.");
         }
 
-        // 验证生日不能早于当前系统时间
-        Date currentDate = new Date(); // 获取当前系统时间
+        // Verify that the birthday cannot be earlier than the current system time
+        Date currentDate = new Date(); // Get current system time
         if (user.getBirthDate().after(currentDate)) {
             throw new IllegalArgumentException("Birthdate cannot be in the future.");
         }
 
-        // 验证邮箱是否已存在
+        // Verify that the mailbox already exists
         if (usersRepository.findByEmail(user.getEmail()).isPresent()) {
             throw new IllegalArgumentException("Email already in use");
         }
 
-        // 验证手机号是否已存在
+        // Verify that the mobile phone number already exists
         if (usersRepository.findByPhone(user.getPhone()).isPresent()) {
             throw new IllegalArgumentException("Phone number already in use");
         }
 
-        // 验证邮箱格式
+        // Verification Email Format
         if (!user.getEmail().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
             throw new IllegalArgumentException("Invalid email format");
         }
@@ -136,33 +134,33 @@ public class UsersServiceImpl implements UsersService {
             throw new IllegalArgumentException("Invalid gender");
         }
 
-        // 验证手机号格式
+        // Verify mobile phone number format
         if (!user.getPhone().matches("^\\d{10}$")) {
             throw new IllegalArgumentException("Phone number must be numeric and 10 digits");
         }
 
-        // 验证名字和姓氏格式（不包含空格和特殊字符）
+        // Validate first and last name format (without spaces and special characters)
         if (!user.getName().matches("^[A-Za-z]+$") || !user.getSurname().matches("^[A-Za-z]+$")) {
             throw new IllegalArgumentException("Name and surname must not contain spaces or special characters");
         }
 
-        // 验证密码长度必须大于6
+        // Authentication password length must be greater than 6
         if (user.getPassword().length() < 6) {
             throw new IllegalArgumentException("The password length must be at least 6 characters.");
         }
 
-        // 对密码进行bcrypt加密
+        // Encrypt passwords with bcrypt
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 
         user.setProfImgUrl("/profileImages/profileImg_men_1.png");
 
-        // 保存用户信息到 Users 表
+        // Save user information to the Users table
         Users savedUser = usersRepository.save(user);
 
-        // 保存角色信息到 Role 表，并关联到用户
+        // Save the role information to the Role table and associate it with the user
         roleService.saveRole(savedUser.getId(), roleType);
 
-        // 添加通知信息
+        // Adding a notification message
         UserProfileNotification notification = new UserProfileNotification(
                 savedUser,
                 "You have successfully registered",
@@ -184,7 +182,6 @@ public class UsersServiceImpl implements UsersService {
         if (!roleType.equals("parent") && !roleType.equals("walker")) {
             throw new IllegalArgumentException("Invalid role type: " + roleType);
         }
-        // 打印日志，帮助调试
         System.out.println("Registering user: " + user.getId() + " with role: " + roleType);
         // Validate required fields
         if (user.getPhone() == null || user.getPhone().isEmpty() ||
@@ -245,7 +242,7 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public Users updateUserProfile(long userId, Users updatedUser) {
-        // 获取用户信息
+        // Get user information
         Optional<Users> userOptional = usersRepository.findById(userId);
         if (!userOptional.isPresent()) {
             throw new IllegalArgumentException("User not found with id: " + userId);
@@ -253,16 +250,16 @@ public class UsersServiceImpl implements UsersService {
 
         Users existingUser = userOptional.get();
 
-        // 获取用户角色
+        // Get user roles
         List<RoleDTO> roles = roleService.getRolesByUserId(userId);
         boolean isWalker = roles.stream().anyMatch(role -> role.getRoleType().equalsIgnoreCase("walker"));
 
-        // 验证和更新允许修改的字段
-        // 正则表达式定义
+        // Validating and updating fields that are allowed to be modified
+        // Regular Expression Definition
         Pattern phonePattern = Pattern.compile("^[0-9]{10}$");
-        Pattern emailPattern = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$"); // 邮箱格式验证
+        Pattern emailPattern = Pattern.compile("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$"); // Email format validation
 
-        // 验证和更新允许修改的字段
+        // Validating and updating fields that are allowed to be modified
         if (updatedUser.getPreferredName() != null) {
             existingUser.setPreferredName(updatedUser.getPreferredName());
         }
@@ -290,24 +287,24 @@ public class UsersServiceImpl implements UsersService {
             existingUser.setLongitude(updatedUser.getLongitude());
         }
 
-        // 验证和更新仅允许 Walker 角色修改的字段
+        // Validating and updating fields that are only allowed to be modified by the Walker role
         if (updatedUser.getAvailableDate() != null || updatedUser.getSkill() != null) {
             if (isWalker) {
                 if (updatedUser.getAvailableDate() != null) {
                     List<Date> availableDates = updatedUser.getAvailableDate();
                     Date currentDate = new Date();
 
-                    // 验证 availableDates 长度必须为 2 才进行日期比较
+                    // Verify that the availableDates length must be 2 for the date comparison to work.
                     if (availableDates.size() >= 2) {
                         Date startDate = availableDates.get(0);
                         Date endDate = availableDates.get(1);
 
-                        // 确保 startDate 和 endDate 都在当前时间之后
+                        // Ensure that startDate and endDate are both after the current time.
                         if (startDate.before(currentDate) || endDate.before(currentDate)) {
                             throw new IllegalArgumentException("Start date and end date must be later than the current date.");
                         }
 
-                        // 确保 endDate 在 startDate 之后
+                        // Make sure the endDate is after the startDate
                         if (endDate.before(startDate)) {
                             throw new IllegalArgumentException("End date must be after the start date.");
                         }
@@ -315,7 +312,7 @@ public class UsersServiceImpl implements UsersService {
                         throw new IllegalArgumentException("Available dates must include both start date and end date.");
                     }
 
-                    // 如果验证通过，更新 availableDate 列表
+                    // If validation passes, update the availableDate list
                     existingUser.setAvailableDate(availableDates);
                 }
 
@@ -327,10 +324,10 @@ public class UsersServiceImpl implements UsersService {
             }
         }
 
-        // 保存更新后的用户信息
+        // Save updated user information
         Users savedUser = usersRepository.save(existingUser);
 
-        // 添加通知信息
+        // Adding a notification message
         UserProfileNotification notification = new UserProfileNotification(
                 savedUser,
                 "Profile Updated",
@@ -356,7 +353,7 @@ public class UsersServiceImpl implements UsersService {
         if (usersRepository.findById(id).isPresent()) {
             user = usersRepository.findById(id).get();
 
-            // 将 Users 实体的数据映射到 UserProfileDTO
+            // Mapping data from Users entity to UserProfileDTO
             UserProfileDTO userProfileDTO = new UserProfileDTO();
             userProfileDTO.setName(user.getName());
             userProfileDTO.setSurname(user.getSurname());
@@ -368,8 +365,8 @@ public class UsersServiceImpl implements UsersService {
             userProfileDTO.setGender(user.getGender());
             userProfileDTO.setProfImgUrl(user.getProfImgUrl());
             userProfileDTO.setCommunicatePref(user.getCommunicatePref());
-            userProfileDTO.setAvailableDate(user.getAvailableDate());  // 假设你在 Users 实体中也有 List<Date> availableDate
-            userProfileDTO.setSkill(user.getSkill());  // 假设你有一个 List<String> skill 的字段
+            userProfileDTO.setAvailableDate(user.getAvailableDate());
+            userProfileDTO.setSkill(user.getSkill());
             userProfileDTO.setVerified(user.isVerified());
 
             return userProfileDTO;
@@ -440,22 +437,22 @@ public class UsersServiceImpl implements UsersService {
         if (distance != null && !distance.isEmpty()) {
             double maxDistanceKm = distance.equals("1km") ? 1 : 2;
 
-            // 使用 Haversine 公式计算距离并过滤
+            // Calculate distances and filter using the Haversine formula
             users = users.stream()
                     .filter(user -> {
-                        // 检查是否有出发点的经纬度
+                        // Check for latitude and longitude of departure point
                         Double walkerLatitude = user.getLatitude();
                         Double walkerLongitude = user.getLongitude();
 
-                        // 如果出发点的经纬度为空，跳过此请求
+                        // If the latitude and longitude of the departure point is empty, skip this request
                         if (walkerLatitude == null || walkerLongitude == null) {
-                            return false; // 过滤掉这个请求
+                            return false; // Filter out this request
                         }
 
-                        // 计算两个经纬度之间的距离
+                        // Calculate the distance between two latitudes and longitudes
                         double calculatedDistance = calculateDistance(parentLatitude, parentLongitude, walkerLatitude, walkerLongitude);
 
-                        // 只保留在距离范围内的请求
+                        // Keep only requests that are within distance
                         return calculatedDistance <= maxDistanceKm;
                     })
                     .collect(Collectors.toList());
@@ -471,15 +468,15 @@ public class UsersServiceImpl implements UsersService {
 
     @Override
     public Optional<Users> getUserByEmailOrPhone(String emailOrPhone) {
-        // 首先根据 Email 查找用户
+        // First find the user by Email
         Optional<Users> userOptional = usersRepository.findByEmail(emailOrPhone);
 
-        // 如果找不到用户，尝试用 Phone 查找
+        // If you can't find the user, try using Phone
         if (userOptional.isEmpty()) {
             userOptional = usersRepository.findByPhone(emailOrPhone);
         }
 
-        // 最终返回 Optional<Users>，不论是通过 Email 还是 Phone 查找到的
+        // This returns Optional<Users>, whether it was found by Email or Phone.
         return userOptional;
     }
 

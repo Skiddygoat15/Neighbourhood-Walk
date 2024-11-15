@@ -113,7 +113,7 @@ export default function Home({params}) {
     // Send messages using websocket
     const sendMessage = (inputMessage) => {
 
-        const currentTime = new Date(); // 获取当前时间
+        const currentTime = new Date(); // Get current time
         const formattedTime = format(currentTime, "EEEE, MMMM do, yyyy, hh:mm:ss a"); // Format time
 
         if(websocket.current && websocket.current.readyState === WebSocket.OPEN) {

@@ -14,7 +14,6 @@ export default function HomeWalker() {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const handleLogOut = () => {
-    // 清除sessionStorage中的用户信息
     sessionStorage.removeItem('userId');
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('roles');
@@ -24,30 +23,29 @@ export default function HomeWalker() {
     sessionStorage.removeItem('clickedRequest');
     sessionStorage.removeItem('updateRequest');
 
-    // 将isLogin和isAdmin设置为false
+    // Set isLogin and isAdmin to false!
     sessionStorage.setItem('isLogin', 'false');
     sessionStorage.setItem('isAdmin', 'false');
 
-    // 重定向到登录页面
+    // Redirect to login page
     window.location.href = `/registration-login-coverpage`;
   };
 
   const [name, setName] = useState('');
   const [preferredName, setPreferredName] = useState('');
   const [greeting, setGreeting] = useState('');
-  const [avgUserRating, setAvgUserRating] = useState(null); // 用于存储API返回的avgUserRating值
+  const [avgUserRating, setAvgUserRating] = useState(null); // Used to store the avgUserRating value returned by the API
   const [backgroundTheme, setBackgroundTheme] = useState('morning');
   const [textColor, setTextColor] = useState('text-black');
 
 
   useEffect(() => {
-    // 从sessionStorage获取name和preferredName
-    const storedName = sessionStorage.getItem('name') || 'Guest'; // 默认值为 'Guest'
+    const storedName = sessionStorage.getItem('name') || 'Guest'; // The default value is 'Guest'
     const storedPreferredName = sessionStorage.getItem('preferredName') || null;
     setName(storedName);
     setPreferredName(storedPreferredName);
 
-    // 获取系统当前时间并设置问候语
+    // Get the current system time and set the greeting
     const currentTime = new Date();
     const currentHour = currentTime.getHours();
 
@@ -85,7 +83,7 @@ export default function HomeWalker() {
       console.error('UserId not found in sessionStorage');
       return;
     }
-    // 调用API获取 avgUserRating
+    // Call the API to get the avgUserRating
     const fetchAvgUserRating = async () => {
       try {
         const response = await fetch(`${apiUrl}/Users/getUserById/${userId}`, {
@@ -97,7 +95,7 @@ export default function HomeWalker() {
 
         if (response.ok) {
           const data = await response.json();
-          setAvgUserRating(data.avgUserRating); // 将API返回的avgUserRating存储到state
+          setAvgUserRating(data.avgUserRating); // Store the avgUserRating returned by the API to state
         } else {
           console.error('Failed to fetch user rating:', response.statusText);
         }
@@ -107,10 +105,9 @@ export default function HomeWalker() {
     };
 
     fetchAvgUserRating();
-    // 检查未读通知
+    // Check for unread notifications
     const checkNotifications = async () => {
       try {
-        // 从 sessionStorage 获取 userId
         const userId = sessionStorage.getItem('userId');
 
         if (!userId) {

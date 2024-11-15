@@ -65,10 +65,10 @@ public class Users {
     @Column(name = "profileCompleted")
     private Boolean profileCompleted = false; // 默认为 false
     /*
-    @OneToMany(mappedBy = "userId")：表示 Users 和 Role 之间是一对多的关系。
-    mappedBy 指定了在 Role 实体中定义了关系的字段，即 userId。
-    cascade = CascadeType.ALL：表示当对 Users 实体进行持久化操作时，关联的 Role 实体也会同步进行相应的操作（例如保存、更新、删除）。
-    orphanRemoval = true：当从 roles 集合中删除一个 Role 实体时，数据库中对应的记录也会被删除。
+    @OneToMany(mappedBy = "userId")：Indicates a one-to-many relationship between Users and Role.
+    mappedBy Specifies the field that defines the relationship in the Role entity, userId.
+    cascade = CascadeType.ALL：Indicates that when a persistence operation is performed on a Users entity, the associated Role entity also performs the corresponding operation (e.g., save, update, delete) synchronously.
+    orphanRemoval = true：When a Role entity is deleted from the roles collection, the corresponding record in the database is also deleted.
      */
     @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Role> roles = new ArrayList<>();

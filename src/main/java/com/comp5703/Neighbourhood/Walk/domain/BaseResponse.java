@@ -2,21 +2,21 @@ package com.comp5703.Neighbourhood.Walk.domain;
 
 import java.io.Serializable;
 
-//响应结果封装对象
+//Response Result Wrapper Object
 public class BaseResponse<T> implements Serializable {
 
     private static final long serialVersionUID = 1901152752394073986L;
 
-//    响应状态码
+//    response status code
     private String code;
 
-    //    响应结果描述
+    //    Response Result Description
     private String message;
 
-//    返回的数据
+//    Data returned
     private T data;
 
-//    成功返回，返回一个范型
+//    Successful return, returns a paradigm
     public static <T> BaseResponse<T> success(T data){
         BaseResponse<T> response = new BaseResponse<>();
         response.setCode(ResultCode.SUCCESS.getCode());
@@ -24,14 +24,14 @@ public class BaseResponse<T> implements Serializable {
         response.setData(data);
         return response;
     }
-//    失败返回
+//    Failure to return
     public static <T> BaseResponse<T> fail(String message){
         BaseResponse<T> response = new BaseResponse<>();
         response.setCode(ResultCode.ERROR.getCode());
         response.setMessage(message);
         return response;
     }
-//    失败返回重载
+//    Failure to return to overloading
     public static <T> BaseResponse<T> fail(String code, String message){
         BaseResponse<T> response = new BaseResponse<>();
         response.setCode(code);

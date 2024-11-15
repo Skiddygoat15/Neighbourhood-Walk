@@ -43,7 +43,7 @@ export default function Home({params}) {
     // ####################################Function 2: WebSocket server connection####################################
     const websocket = useRef(null);
     const [inputMessage, setInputMessage] = useState("");
-    const [messages, setMessages] = useState([]);  // 用于存储消息的状态
+    const [messages, setMessages] = useState([]);  // Used to store the state of the message
     const [allChatMessages, setAllChatMessages] = useState([]);
     useEffect(() => {
         console.info("messages are:", messages)

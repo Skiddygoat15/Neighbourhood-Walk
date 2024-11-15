@@ -43,7 +43,7 @@ export async function sendRequest(url, method = 'GET', parameters = null, body =
     try {
         const response = await fetch(url, options);
     
-        // 检查 HTTP 状态码
+        // Checking HTTP Status Codes
         console.log(response);
         if (!response.ok) {
             return {

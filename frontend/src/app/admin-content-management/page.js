@@ -30,7 +30,7 @@ export default function AdminContentManagement() {
 
 
     const handleSearch = async () => {
-        setLoading(true);  // 开始加载时设置 loading 状态
+        setLoading(true);  // Setting the loading state at the start of loading
         setRequests([]);
         setError(null);
 
@@ -68,7 +68,7 @@ export default function AdminContentManagement() {
         }
     };
 
-    // 获取所有请求
+    // Get all requests
     const fetchAllRequests = () => {
         setLoading(true);
         const getAllRequestsAPI = `${apiUrl}/requests/getAllRequests`;
@@ -113,7 +113,7 @@ export default function AdminContentManagement() {
             method: 'DELETE',
             credentials: 'include',
             headers: {
-                'Content-Type': 'application/json', // 设置请求头为 JSON 类型
+                'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + sessionStorage.getItem('token')
             },
         })
@@ -139,7 +139,7 @@ export default function AdminContentManagement() {
         }
     };
 
-    // 设置状态的样式
+    // Setting the style of the state
     const getStatusStyle = (status) => {
         switch (status) {
             case 'Published':

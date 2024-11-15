@@ -15,7 +15,7 @@ export default function HomeParent() {
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
   const handleLogOut = () => {
-    // 清除sessionStorage中的用户信息
+    // Clearing user information from sessionStorage
     sessionStorage.removeItem('userId');
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('roles');
@@ -25,11 +25,11 @@ export default function HomeParent() {
     sessionStorage.removeItem('clickedRequest');
     sessionStorage.removeItem('updateRequest');
 
-    // 将isLogin和isAdmin设置为false
+    // Set isLogin and isAdmin to false!
     sessionStorage.setItem('isLogin', 'false');
     sessionStorage.setItem('isAdmin', 'false');
 
-    // 重定向到登录页面
+    // Redirect to login page
     window.location.href = `/registration-login-coverpage`;
   };
 
@@ -37,7 +37,7 @@ export default function HomeParent() {
   const [preferredName, setPreferredName] = useState('');
   const [greeting, setGreeting] = useState('');
   const [showRedDot, setShowRedDot] = useState(false);
-  const [avgUserRating, setAvgUserRating] = useState(null); // 用于存储API返回的avgUserRating值
+  const [avgUserRating, setAvgUserRating] = useState(null); // Used to store the avgUserRating value returned by the API
   const [backgroundTheme, setBackgroundTheme] = useState('morning');
   const [textColor, setTextColor] = useState('text-black');
 
@@ -79,16 +79,15 @@ export default function HomeParent() {
   }, []);
 
   useEffect(() => {
-    // 从 sessionStorage 获取 userId
     const userId = sessionStorage.getItem('userId');
-    console.log("Fetching avgUserRating for userId:", userId); // 输出userId以便检查
+    console.log("Fetching avgUserRating for userId:", userId); // Output userId for checking
 
     if (!userId) {
       console.error('UserId not found in sessionStorage');
       return;
     }
 
-    // 调用API获取 avgUserRating
+    // Call the API to get the avgUserRating
     const fetchAvgUserRating = async () => {
       try {
         const response = await fetch(`${apiUrl}/Users/getUserById/${userId}`, {
@@ -100,7 +99,7 @@ export default function HomeParent() {
 
         if (response.ok) {
           const data = await response.json();
-          setAvgUserRating(data.avgUserRating); // 将API返回的avgUserRating存储到state
+          setAvgUserRating(data.avgUserRating); // Store the avgUserRating returned by the API to state
           console.log(data.avgUserRating);
         } else {
           console.error('Failed to fetch user rating:', response.statusText);
@@ -111,7 +110,7 @@ export default function HomeParent() {
     };
 
     fetchAvgUserRating();
-    // 检查未读通知
+    // Check for unread notifications
     const checkNotifications = async () => {
       try {
         const response = await fetch(`${apiUrl}/UPNotifications/check-any-notification-unchecked-parent/${userId}`, {

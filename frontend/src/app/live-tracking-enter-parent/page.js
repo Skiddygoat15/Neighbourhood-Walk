@@ -13,19 +13,19 @@ export default function LiveTrackingEnterParent() {
     useEffect(() => {
         async function fetchRequests() {
             try {
-                const parentId = sessionStorage.getItem('userId'); // 从sessionStorage获取parentId
-                const token = sessionStorage.getItem('token'); // 从sessionStorage获取token
+                const parentId = sessionStorage.getItem('userId');
+                const token = sessionStorage.getItem('token');
 
                 if (!token || !parentId) {
                     console.error('No token or parentId found in sessionStorage');
                     return;
                 }
 
-                // 获取requests
+                // get requests
                 const response = await fetch(`${apiUrl}/requests/getRequestsByParentId/${parentId}`, {
                     method: 'GET',
                     headers: {
-                        'Authorization': `Bearer ${token}`, // 添加token到请求头
+                        'Authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json',
                     }
                 });
@@ -38,7 +38,7 @@ export default function LiveTrackingEnterParent() {
                 const data = await response.json();
                 const sydneyNow = new Date();
 
-                // 过滤出Accepted状态并且startTime距离当前时间35小时以内的请求
+                // Filter out requests with an Accepted status and a startTime within 35 hours of the current time.
                 const filteredRequests = data.filter(request => {
                     const startTime = new Date(request.startTime);
                     const timeDiff = startTime.getTime() - sydneyNow.getTime();
@@ -46,25 +46,25 @@ export default function LiveTrackingEnterParent() {
                     return request.status === 'Accepted' && timeDiff <= 50 * 60 * 60 * 1000 && timeDiff >= 0;
                 });
 
-                // 遍历filteredRequests并获取每个request的walker信息
+                // Iterate over filteredRequests and get the walker information for each request
                 const requestsWithWalkerInfo = await Promise.all(filteredRequests.map(async (request) => {
                     const walkerResponse = await fetch(`${apiUrl}/requests/getWalkerByRequestId/${request.requestId}`, {
                         method: 'GET',
                         headers: {
-                            'Authorization': `Bearer ${token}`, // 使用token获取walker信息
+                            'Authorization': `Bearer ${token}`, // Get walker information using token
                             'Content-Type': 'application/json',
                         }
                     });
 
                     if (!walkerResponse.ok) {
                         console.error(`Failed to fetch walker for request ${request.requestId}:`, walkerResponse.statusText);
-                        return request; // 如果获取walker失败，返回原始request
+                        return request; // If getting the walker fails, the original request is returned.
                     }
 
                     const walkerData = await walkerResponse.json();
                     return {
                         ...request,
-                        walker: walkerData, // 将walker信息加入request
+                        walker: walkerData, // Add walker information to request
                     };
                 }));
 
@@ -89,7 +89,7 @@ export default function LiveTrackingEnterParent() {
         return `${hours}:${minutes} - ${day}/${month}/${year}`;  // return format hh-mm dd/mm/yyyy
     };
 
-    // 跳转函数并将walkerId存入sessionStorage
+    // Jump function and store walkerId into sessionStorage
     const handleEnterLiveTracking = (requestId) => {
         router.push(`/live-tracking-sharing-parent/${requestId}`);
     }
@@ -130,7 +130,7 @@ export default function LiveTrackingEnterParent() {
 
                             <div className="mt-4">
                                 <button
-                                    onClick={() => handleEnterLiveTracking(request.requestId, request.walker.userId)} // 将requestId和walkerId传递
+                                    onClick={() => handleEnterLiveTracking(request.requestId, request.walker.userId)} //pass requestId and walkerId
                                     className="w-full bg-black text-white text-xl py-4 rounded-xl hover:bg-gray-800"
                                 >
                                     Enter Live Tracking

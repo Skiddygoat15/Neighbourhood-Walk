@@ -12,21 +12,21 @@ import java.util.Optional;
 
 public interface PreMeetService {
 
-    // 1. 根据 parentId 获取所有与该 parent 关联的 PreMeet
+    // 1. Get all the PreMeets associated with the parent by parentId.
     List<PreMeetDTO> getPreMeetsByParentId(long parentId);
 
-    // 2. 根据 walkerId 获取所有与该 walker 关联的 PreMeet
+    // 2. Get all the PreMeets associated with the walker based on the walkerId.
     List<PreMeetDTO> getPreMeetsByWalkerId(long walkerId);
 
-    // 3. 创建 PreMeet
+    // 3. Create PreMeet
     PreMeet createPreMeet(PreMeet preMeet, long parentId, long walkerId, int requestId);
 
-    // 4. 根据 requestId 获取该 request 相关的 PreMeet
+    // 4. Get the PreMeet associated with the request based on the requestId.
     Optional<PreMeetDTO> getPreMeetByRequestId(int requestId);
 
-    // 5. 设置 PreMeet 中的 newOrNot 字段为 false
+    // 5. Setting the newOrNot field in PreMeet to false
     void updateNewOrNotStatus(long preMeetId);
 
-    // 6. 如果该 walkerId 关联的 PreMeet 中，某条 newOrNot 字段为 true，则返回 true
+    // 6. Returns true if a newOrNot field is true in the PreMeet associated with the walkerId.
     boolean checkNewPreMeetByWalkerId(long walkerId);
 }
