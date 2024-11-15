@@ -165,53 +165,10 @@ export default function AdminContentManagement() {
     return (
         <BackgroundLayout>
         <div className="min-h-screen px-2 mb-8">
-             {/*<div className="bg-white p-4 rounded-lg shadow-md max-w-md mx-auto mt-4">*/}
-                {/* Back Button */}
                 <button onClick={() => router.back()} className={`text-2xl p-2 focus:outline-none ${textColor}`}>
                     &larr;
                 </button>
                  <h1 className={`text-2xl font-semibold ${textColor} mb-4`}>Admin Content Management</h1>
-                {/*<div className="relative mb-4">*/}
-                {/*    <div className="flex items-center space-x-2 mb-2">*/}
-                {/*        /!* input bar *!/*/}
-                {/*        <div className="relative w-full">*/}
-                {/*            <input*/}
-                {/*                type="text"*/}
-                {/*                placeholder="Search Requests..."*/}
-                {/*                value={searchTerm}*/}
-                {/*                onChange={(e) => setSearchTerm(e.target.value)}*/}
-                {/*                onKeyDown={handleKeyDown}*/}
-                {/*                className="flex-grow p-2 border rounded-lg w-full pl-10"*/}
-                {/*            />*/}
-                {/*            <svg*/}
-                {/*                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5"*/}
-                {/*                fill="none"*/}
-                {/*                stroke="currentColor"*/}
-                {/*                viewBox="0 0 24 24"*/}
-                {/*                xmlns="http://www.w3.org/2000/svg"*/}
-                {/*            >*/}
-                {/*                <path*/}
-                {/*                    strokeLinecap="round"*/}
-                {/*                    strokeLinejoin="round"*/}
-                {/*                    strokeWidth="2"*/}
-                {/*                    d="M21 21l-4.35-4.35M5 11a6 6 0 1112 0 6 6 0 01-12 0z"*/}
-                {/*                />*/}
-                {/*            </svg>*/}
-                {/*            /!* clear button *!/*/}
-                {/*            <button*/}
-                {/*                onClick={handleClear}*/}
-                {/*                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">*/}
-                {/*                ✕*/}
-                {/*            </button>*/}
-                {/*        </div>*/}
-                {/*        <button*/}
-                {/*            onClick={handleSearch}*/}
-                {/*            className="bg-blue-500 text-white p-2 rounded-lg">*/}
-                {/*            Search*/}
-                {/*        </button>*/}
-                {/*    </div>*/}
-                {/*    {error && <p className="text-red-500">{error}</p>}*/}
-                {/*</div>*/}
 
 
                 <div className="space-y-4 mt-4">
