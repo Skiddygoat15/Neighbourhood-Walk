@@ -20,7 +20,6 @@ export default function MyRequest() {
   const [parentId, setParentId] = useState();
 
   useEffect(() => {
-    // 从 sessionStorage 获取 userId 并更新 parentId
     const storedUserId = sessionStorage.getItem('userId');
     if (storedUserId) {
       setParentId(storedUserId);
@@ -29,7 +28,7 @@ export default function MyRequest() {
 
   useEffect(() => {
       if (parentId) {
-        getRequestsList(); // 在 parentId 更新后调用 API
+        getRequestsList(); // Call API after parentId is updated
       }
     }, [parentId]);
 
@@ -78,10 +77,10 @@ export default function MyRequest() {
   function deleteRequest(requestId) {
     console.log('requestId', requestId);
     fetch(`${apiUrl}/requests/${requestId}`, {
-      method: 'DELETE', // DELETE 方法用于删除请求
+      method: 'DELETE',
       credentials: 'include',
       headers: {
-        'Content-Type': 'application/json', // 设置请求头为 JSON 类型
+        'Content-Type': 'application/json',
         'Authorization': 'Bearer ' + sessionStorage.getItem('token')
       },
     })
@@ -93,7 +92,6 @@ export default function MyRequest() {
             });
           }
           alert('Request deleted successfully');
-          // 成功删除后，你可以刷新请求列表
           getRequestsList();
         })
         .catch(err => {

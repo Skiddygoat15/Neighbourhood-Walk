@@ -20,11 +20,11 @@ public class PreMeetDTO {
     private Date time;
     private boolean newOrNot;
 
-    // 构造函数：从 PreMeet 实体中提取数据
+
     public PreMeetDTO(PreMeet preMeet) {
         this.preMeetId = preMeet.getPreMeetId();
-        this.parentName = preMeet.getParent().getName(); // 从实体提取 parent 名字
-        this.walkerName = preMeet.getWalker().getName(); // 从实体提取 walker 名字
+        this.parentName = preMeet.getParent().getName();
+        this.walkerName = preMeet.getWalker().getName();
         this.preMeetType = preMeet.getPreMeetType();
         this.contactApproach = preMeet.getContactApproach();
         this.urlOrAddress = preMeet.getUrlOrAddress();

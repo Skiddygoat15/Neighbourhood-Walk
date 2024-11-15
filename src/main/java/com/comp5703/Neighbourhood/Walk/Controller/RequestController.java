@@ -24,7 +24,7 @@ public class RequestController {
     @Autowired
     private RequestService requestService;
 
-    //todo getRequest(), getAllRequests()
+
     @GetMapping("/getRequestsByParentId/{parentId}")
     public ResponseEntity<List<Request>> getRequestsByParentId(@PathVariable Long parentId) {
         List<Request> requests = requestService.getRequestsByUserId(parentId);
@@ -89,11 +89,7 @@ public class RequestController {
         }
     }
 
-    /**
-     * walker创建request
-     * @param request
-     * @return
-     */
+
     @PostMapping
     public ResponseEntity<?> addRequest(@RequestBody Request request) {
         try {
@@ -107,12 +103,8 @@ public class RequestController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-    /**
-     * walker更新request
-     * @param requestId
-     * @param request
-     * @return
-     */
+
+
     @PutMapping("/update/{requestId}")
     public ResponseEntity<?> updateRequest(@PathVariable int requestId, @RequestBody Request request) {
         try {
@@ -143,11 +135,7 @@ public class RequestController {
         }
     }
 
-    /**
-     * walker删除request
-     * @param requestId
-     * @return
-     */
+
     @DeleteMapping("/{requestId}")
     public ResponseEntity<String> deleteRequest(@PathVariable int requestId) {
         try {
@@ -160,12 +148,7 @@ public class RequestController {
         }
     }
 
-    /**
-     * parent接受request
-     * @param requestId
-     * @param walkerId
-     * @return
-     */
+
     @PostMapping("/{requestId}/accept")
 
     public ResponseEntity<?> acceptRequest(@PathVariable int requestId, @RequestParam long walkerId) {
@@ -183,12 +166,7 @@ public class RequestController {
         }
     }
 
-    /**
-     * parent拒绝request
-     * @param requestId
-     * @param walkerId
-     * @return
-     */
+
     @PostMapping("/{requestId}/reject")
     public ResponseEntity<?> rejectRequest(@PathVariable int requestId, @RequestParam long walkerId) {
         if (requestService.rejectWalkerRequest(requestId, walkerId) == null){
@@ -198,12 +176,7 @@ public class RequestController {
         return new ResponseEntity<>("The request has been rejected successfully by parent, whose walkerId is  " + walkerId, HttpStatus.OK);
     }
 
-    /**
-     * parent应用request
-     * @param requestId
-     * @param walkerId
-     * @return
-     */
+
     @PostMapping("{requestId}/apply")
 //    public ResponseEntity<WalkerRequest> applyRequest(@PathVariable int requestId, @RequestParam int parentId) {
 //        WalkerRequest walkerRequest = requestService.applyRequest(requestId, parentId);
@@ -219,23 +192,16 @@ public class RequestController {
             walkerRequestDTO.setWalkerId(walkerRequest.getWalker().getId());
             return new ResponseEntity<>(walkerRequestDTO, HttpStatus.CREATED);
         } catch (IllegalStateException  e) {
-            // 409状态码 表示冲突 已经申请过
             return new ResponseEntity<>("You have already applied for this request.", HttpStatus.CONFLICT);
         } catch (ResourceNotFoundException e) {
-            // 404 没找到request
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            // 捕获其他异常并返回 400 状态码
+
             return new ResponseEntity<>("An error occurred while processing your request: " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
-    /**
-     * parent取消应用request
-     * @param requestId
-     * @param walkerId
-     * @return
-     */
+
     @PostMapping("{requestId}/cancelApply")
     public ResponseEntity<String> cancelApply(@PathVariable int requestId, @RequestParam long walkerId) {
         requestService.cancelApply(requestId, walkerId);

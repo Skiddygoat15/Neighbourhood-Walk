@@ -22,8 +22,6 @@ const RequestStatus = () => {
 
     const textColor = useTextColor();
 
-
-
         useEffect(() => {
 
             if (!walkerId || !token) {

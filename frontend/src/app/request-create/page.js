@@ -17,7 +17,6 @@ export default function WalkRequestManagementParent() {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
     useEffect(() => {
-        // 从 sessionStorage 获取 userId 并更新 parentId
         const storedUserId = sessionStorage.getItem('userId');
         if (storedUserId) {
             setParentId(storedUserId);
@@ -98,12 +97,12 @@ export default function WalkRequestManagementParent() {
                 throw new Error("Arrival time must be later than departure time.");
             }
 
-            // 获取 departure 的经纬度
+            // Get the latitude and longitude of departure
             const departureCoords = await geocodeAddress(`${sendBody.departure}, ${sendBody.departureZip}`);
-            // 获取 destination 的经纬度
+            // Get the latitude and longitude of the destination
             const destinationCoords = await geocodeAddress(`${sendBody.destination}, ${sendBody.destinationZip}`);
 
-            // 构造最终的请求体
+
             const finalSendBody = {
                 departure: departureCoords.formatted_address,
                 departureLatitude: departureCoords.lat,

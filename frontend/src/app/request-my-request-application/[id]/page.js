@@ -12,8 +12,8 @@ export default function MyRequestApplication({ params }) {
   const [walkers, setWalkers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [request, setRequest] = useState(null); // 使用 useState 管理 request
-  const [acceptedWalker, setAcceptedWalker] = useState(null); // 用于管理被接受的 walker
+  const [request, setRequest] = useState(null);
+  const [acceptedWalker, setAcceptedWalker] = useState(null); // Used to manage the accepted walker
   const textColor = useTextColor();
   const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
@@ -36,21 +36,12 @@ export default function MyRequestApplication({ params }) {
     const formattedDateTime = new Intl.DateTimeFormat('en-AU', options).format(dateTime);
     return `${formattedDateTime}`;
   };
-  // 第一次渲染时，获取 sessionStorage 中的 request 数据
-  // useEffect(() => {
-  //   const storedRequest = sessionStorage.getItem('clickedRequest');
-  //   //console.log("storedRequest: ", storedRequest);
-  //   if (storedRequest) {
-  //     setRequest(JSON.parse(storedRequest));
-  //     console.log("clickedRequest", request);
-  //   }
-  // }, []); // 空数组作为依赖，确保只在组件挂载时执行一次
+
 
 
   useEffect(() => {
     // console.log("request: ", request)
     // if (!request || !request.requestId) {
-    //   // 如果 request 为空或 requestId 不存在，不执行 API 调用
     //   return;
     // }
 
@@ -80,10 +71,10 @@ export default function MyRequestApplication({ params }) {
         })
         .then(data => {
           console.log("get request:", data);
-          setRequest(data); // 更新 request 数据
+          setRequest(data);
           if (data.walker) {
             console.log("accepted-walker:", data.walker);
-            setAcceptedWalker(data.walker); // 设置被接受的 walker
+            setAcceptedWalker(data.walker);
             sessionStorage.setItem("preMeetIds", [data.parent.id,data.walker.id,id])
             console.log("preMeetIds 1:", sessionStorage.getItem("preMeetIds"))
             setLoading(false);
@@ -94,9 +85,9 @@ export default function MyRequestApplication({ params }) {
           setError('Failed to get request details. Please try again.');
           setLoading(false);
         });
-  }, [id]); // 根据 requestId 触发
+  }, [id]);
 
-  // 获取申请者列表
+  // Get a list of applicants
   useEffect(() => {
     if (!request || !request.requestId || acceptedWalker) {
       return;
@@ -128,7 +119,7 @@ export default function MyRequestApplication({ params }) {
         })
         .then(data => {
           console.log("get walkers: ", data)
-          setWalkers(data); // 设置 walkers 数据
+          setWalkers(data);
           setLoading(false);
         })
         .catch(err => {
@@ -136,16 +127,16 @@ export default function MyRequestApplication({ params }) {
           setError('Failed to get walker list. Please try again.');
           setLoading(false);
         });
-  }, [request, acceptedWalker]); // 根据 request 和 acceptedWalker 触发
+  }, [request, acceptedWalker]);
 
-  // 监听 walkers 状态的变化
+  // Listen for changes in the state of walkers
   useEffect(() => {
     if (walkers && walkers.length > 0) {
       console.log("Updated walkers:", walkers);
     }
   }, [walkers]);
 
-  // 处理接受 walker 的请求
+  // Handle the request to accept the walker
   const acceptWalker = (walkerId) => {
     const acceptAPI = `${apiUrl}/requests/${id}/accept?walkerId=${walkerId}`;
     console.log("acceptAPI: " + acceptAPI)

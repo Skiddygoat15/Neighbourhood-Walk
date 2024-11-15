@@ -76,22 +76,6 @@ public class Request {
     @OneToMany(mappedBy = "request", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<WalkerRequest> walkerRequests = new ArrayList<>();
 
-//    public Long getWalkerId() {
-//        return walkerId;
-//    }
-//
-//    public void setWalkerId(Long walkerId) {
-//        this.walkerId = walkerId;
-//    }
-//
-//    public Long getParentId() {
-//        return parentId;
-//    }
-//
-//    public void setParentId(Long parentId) {
-//        this.parentId = parentId;
-//    }
-
 
     @Override
     public String toString() {

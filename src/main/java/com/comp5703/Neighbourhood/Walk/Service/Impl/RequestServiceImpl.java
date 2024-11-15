@@ -38,11 +38,6 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public List<Request> getRequestsByUserId(Long userId) {
         List<Request> requests = requestRepository.findByParentId(userId);
-//        if (requests.isEmpty()) {
-//            // 可以选择返回一个自定义的异常，或者在控制器里处理
-//            throw new ResourceNotFoundException("No requests found for userId: " + userId);
-//        }
-
         return requests;
     }
 
@@ -64,13 +59,12 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public List<RequestDTO> getAllRequests() {
         // List<Request> requests = requestRepository.findAll();
-        // 获取所有的 Request 列表
         List<Request> requests = requestRepository.findAll();
 
-        // 将每个 Request 转换为 RequestDTO
+        // Convert each Request to RequestDTO
         List<RequestDTO> requestDTOs = requests.stream().map(request -> new RequestDTO(
                 request.getRequestId(),
-                request.getWalker(),  // 这里 Walker 可能是一个实体类，你可以根据需要将其转换为DTO或直接返回
+                request.getWalker(),
                 request.getParent(),
                 request.getPublishDate(),
                 request.getStartTime(),
@@ -132,7 +126,7 @@ public class RequestServiceImpl implements RequestService {
 
     @Override
     public Request createRequest(Request request) {
-        // 确保 departure 和 destination 不为空
+        // Make sure departure and destination are not empty
         if (request.getDeparture() == null || request.getDeparture().isEmpty()) {
             throw new IllegalArgumentException("Departure cannot be null or empty.");
         }
@@ -149,7 +143,7 @@ public class RequestServiceImpl implements RequestService {
         }
 
         Date currentDate = new Date();
-        // 验证开始时间和结束时间的逻辑
+        // logic to validate start and end times
         if (request.getStartTime() == null || request.getArriveTime() == null || request.getStartTime().toString().contains("NaN") || request.getArriveTime().toString().contains("NaN")) {
             throw new IllegalArgumentException("Invalid time format. Please ensure all fields are filled correctly.");
         }
@@ -180,7 +174,7 @@ public class RequestServiceImpl implements RequestService {
     @Override
     public Request updateRequest(int requestId, Request updatedRequest) {
         Date currentDate = new Date();
-        // 验证开始时间和结束时间的逻辑
+        // logic to validate start and end times
 
         if (updatedRequest.getStartTime().before(currentDate) || updatedRequest.getArriveTime().before(currentDate)) {
             throw new IllegalArgumentException("Start time and end time must be in the future.");
@@ -425,26 +419,26 @@ public class RequestServiceImpl implements RequestService {
         double walkerLatitude = currentWalker.getLatitude();
         double walkerLongitude = currentWalker.getLongitude();
 
-        // 距离筛选
+        // Distance filter
         if (distance != null && !distance.isEmpty()) {
             double maxDistanceKm = distance.equals("1km") ? 1 : 2;
 
-            // 使用 Haversine 公式计算距离并过滤
+            // Calculate distance using Haversine formula and filter
             requests = requests.stream()
                     .filter(request -> {
-                        // 检查是否有出发点的经纬度
+                        // Check if there is the latitude and longitude of the starting point
                         Double requestLatitude = request.getDepartureLatitude();
                         Double requestLongitude = request.getDepartureLongitude();
 
-                        // 如果出发点的经纬度为空，跳过此请求
+                        // If the latitude and longitude of the starting point is empty, skip this request
                         if (requestLatitude == null || requestLongitude == null) {
-                            return false; // 过滤掉这个请求
+                            return false; // Filter this request
                         }
 
-                        // 计算两个经纬度之间的距离
+                        // Calculate the distance between two latitude and longitude
                         double calculatedDistance = calculateDistance(walkerLatitude, walkerLongitude, requestLatitude, requestLongitude);
 
-                        // 只保留在距离范围内的请求
+                        // Only keep requests that are within distance
                         return calculatedDistance <= maxDistanceKm;
                     })
                     .collect(Collectors.toList());

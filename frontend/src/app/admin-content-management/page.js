@@ -16,19 +16,19 @@ export default function AdminContentManagement() {
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-    // 每次搜索框内容变化时触发
+    // Fires every time the search box content changes
     useEffect(() => {
         if (searchTerm === '') {
-            fetchAllRequests();  // 当搜索框为空时，获取所有请求
+            fetchAllRequests();  // When the search box is empty, get all requests
         }
     }, [searchTerm]);
 
-    // 清除搜索内容
+
     const handleClear = () => {
         setSearchTerm('');
     };
 
-    // 处理搜索功能
+
     const handleSearch = async () => {
         setLoading(true);  // 开始加载时设置 loading 状态
         setRequests([]);
@@ -58,13 +58,13 @@ export default function AdminContentManagement() {
 
             const data = await response.json();
             setRequests(data);
-            setError(null);  // 清空错误信息
+            setError(null);
         } catch (error) {
             console.error("Search requests failed:", error);
             setError(error.message || 'An unknown error occurred.');
             setRequests([]);
         } finally {
-            setLoading(false);  // 请求结束后关闭 loading 状态
+            setLoading(false);
         }
     };
 
@@ -110,7 +110,7 @@ export default function AdminContentManagement() {
     function deleteRequest(requestId) {
         console.log('requestId', requestId);
         fetch(`${apiUrl}/requests/${requestId}`, {
-            method: 'DELETE', // DELETE 方法用于删除请求
+            method: 'DELETE',
             credentials: 'include',
             headers: {
                 'Content-Type': 'application/json', // 设置请求头为 JSON 类型
@@ -125,7 +125,6 @@ export default function AdminContentManagement() {
                     });
                 }
                 alert('Request deleted successfully');
-                // 成功删除后，你可以刷新请求列表
                 fetchAllRequests();
             })
             .catch(err => {
@@ -134,7 +133,6 @@ export default function AdminContentManagement() {
             });
     }
 
-    // 键盘回车时触发搜索
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
             handleSearch();
@@ -159,7 +157,7 @@ export default function AdminContentManagement() {
         }
     };
 
-    // 显示 walker 的信息（如果存在）
+    // Display walker information (if present)
     const renderWalkerInfo = (walker) => {
         return walker ? `Assigned walker: ${walker.name}` : "No walker assigned";
     };
@@ -173,49 +171,49 @@ export default function AdminContentManagement() {
                     &larr;
                 </button>
                  <h1 className={`text-2xl font-semibold ${textColor} mb-4`}>Admin Content Management</h1>
-                <div className="relative mb-4">
-                    <div className="flex items-center space-x-2 mb-2">
-                        {/* input bar */}
-                        <div className="relative w-full">
-                            <input
-                                type="text"
-                                placeholder="Search Requests..."
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                                onKeyDown={handleKeyDown}
-                                className="flex-grow p-2 border rounded-lg w-full pl-10"
-                            />
-                            <svg
-                                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="2"
-                                    d="M21 21l-4.35-4.35M5 11a6 6 0 1112 0 6 6 0 01-12 0z"
-                                />
-                            </svg>
-                            {/* clear button */}
-                            <button
-                                onClick={handleClear}
-                                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">
-                                ✕
-                            </button>
-                        </div>
-                        <button
-                            onClick={handleSearch}
-                            className="bg-blue-500 text-white p-2 rounded-lg">
-                            Search
-                        </button>
-                    </div>
-                    {error && <p className="text-red-500">{error}</p>}
-                </div>
+                {/*<div className="relative mb-4">*/}
+                {/*    <div className="flex items-center space-x-2 mb-2">*/}
+                {/*        /!* input bar *!/*/}
+                {/*        <div className="relative w-full">*/}
+                {/*            <input*/}
+                {/*                type="text"*/}
+                {/*                placeholder="Search Requests..."*/}
+                {/*                value={searchTerm}*/}
+                {/*                onChange={(e) => setSearchTerm(e.target.value)}*/}
+                {/*                onKeyDown={handleKeyDown}*/}
+                {/*                className="flex-grow p-2 border rounded-lg w-full pl-10"*/}
+                {/*            />*/}
+                {/*            <svg*/}
+                {/*                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5"*/}
+                {/*                fill="none"*/}
+                {/*                stroke="currentColor"*/}
+                {/*                viewBox="0 0 24 24"*/}
+                {/*                xmlns="http://www.w3.org/2000/svg"*/}
+                {/*            >*/}
+                {/*                <path*/}
+                {/*                    strokeLinecap="round"*/}
+                {/*                    strokeLinejoin="round"*/}
+                {/*                    strokeWidth="2"*/}
+                {/*                    d="M21 21l-4.35-4.35M5 11a6 6 0 1112 0 6 6 0 01-12 0z"*/}
+                {/*                />*/}
+                {/*            </svg>*/}
+                {/*            /!* clear button *!/*/}
+                {/*            <button*/}
+                {/*                onClick={handleClear}*/}
+                {/*                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700">*/}
+                {/*                ✕*/}
+                {/*            </button>*/}
+                {/*        </div>*/}
+                {/*        <button*/}
+                {/*            onClick={handleSearch}*/}
+                {/*            className="bg-blue-500 text-white p-2 rounded-lg">*/}
+                {/*            Search*/}
+                {/*        </button>*/}
+                {/*    </div>*/}
+                {/*    {error && <p className="text-red-500">{error}</p>}*/}
+                {/*</div>*/}
 
-                {/* 显示请求列表 */}
+
                 <div className="space-y-4 mt-4">
                     {loading ? (
                         <p className="text-center">Loading...</p>

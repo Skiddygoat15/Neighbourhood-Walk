@@ -18,21 +18,21 @@ public class PreMeetController {
     @Autowired
     private PreMeetService preMeetService;
 
-    // 1. 根据 parentId 获取所有与该 parent 关联的 PreMeet
+    // Get all premeets associated with that parent according to parentId
     @GetMapping("/parent/{parentId}")
     public ResponseEntity<List<PreMeetDTO>> getPreMeetsByParentId(@PathVariable("parentId") long parentId) {
         List<PreMeetDTO> preMeets = preMeetService.getPreMeetsByParentId(parentId);
         return new ResponseEntity<>(preMeets, HttpStatus.OK);
     }
 
-    // 2. 根据 walkerId 获取所有与该 walker 关联的 PreMeet
+    // Get all premeets associated with a walker based on its walkerId
     @GetMapping("/walker/{walkerId}")
     public ResponseEntity<List<PreMeetDTO>> getPreMeetsByWalkerId(@PathVariable("walkerId") long walkerId) {
         List<PreMeetDTO> preMeets = preMeetService.getPreMeetsByWalkerId(walkerId);
         return new ResponseEntity<>(preMeets, HttpStatus.OK);
     }
 
-    // 3. 创建 PreMeet
+
     @PostMapping("/create/{parentId}/{walkerId}/{requestId}")
     public ResponseEntity<PreMeet> createPreMeet(
             @PathVariable long parentId,
@@ -40,7 +40,7 @@ public class PreMeetController {
             @PathVariable int requestId,
             @RequestBody PreMeet preMeetRequest) {
 
-        // 创建 PreMeet 实体并设置字段
+
         System.out.println("preMeetRequest:" + preMeetRequest.getTime());
         PreMeet preMeet = new PreMeet();
         preMeet.setTime(preMeetRequest.getTime());
@@ -49,13 +49,13 @@ public class PreMeetController {
         preMeet.setUrlOrAddress(preMeetRequest.getUrlOrAddress());
         preMeet.setNewOrNot(preMeetRequest.isNewOrNot());
 
-        // 调用 service 来保存 PreMeet 实体
+
         PreMeet createdPreMeet = preMeetService.createPreMeet(preMeet, parentId, walkerId, requestId);
         return ResponseEntity.ok(createdPreMeet);
     }
 
 
-    // 4. 根据 requestId 获取该 request 相关的 PreMeet
+    // Get the relevant PreMeet for the request based on requestId
     @GetMapping("/request/{requestId}")
     public ResponseEntity<PreMeetDTO> getPreMeetByRequestId(@PathVariable("requestId") int requestId) {
         Optional<PreMeetDTO> preMeet = preMeetService.getPreMeetByRequestId(requestId);
@@ -63,7 +63,7 @@ public class PreMeetController {
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    // 5. 设置 PreMeet 中的 newOrNot 字段为 false
+    // Set the newOrNot field in PreMeet to false
     @PutMapping("/update/{preMeetId}")
     public ResponseEntity<Void> updateNewOrNotStatus(@PathVariable("preMeetId") long preMeetId) {
         try {
@@ -74,7 +74,7 @@ public class PreMeetController {
         }
     }
 
-    // 6. 检查是否存在某个 walkerId 的 PreMeet，newOrNot 字段为 true
+    // Check if there is a PreMeet for a walkerId with the newOrNot field set to true
     @GetMapping("/walker/{walkerId}/newOrNot")
     public ResponseEntity<Boolean> checkNewPreMeetByWalkerId(@PathVariable("walkerId") long walkerId) {
         boolean hasNewPreMeet = preMeetService.checkNewPreMeetByWalkerId(walkerId);

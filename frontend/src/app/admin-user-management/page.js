@@ -16,21 +16,21 @@ export default function AdminUserManagement() {
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-    // 每次输入框内容变化时触发搜索
+
     useEffect(() => {
         if (searchTerm === '') {
-            fetchUsers();  // 当搜索框为空时，获取所有用户
+            fetchUsers();
         }
     }, [searchTerm]);
 
-    // 清除搜索内容
+
     const handleClear = () => {
         setSearchTerm('');
     };
 
-    // 处理搜索功能
+
     const handleSearch = async () => {
-        setLoading(true);  // 开始加载时设置 loading 状态
+        setLoading(true);
         setUsers([]);
         setError(null);
 
@@ -58,17 +58,17 @@ export default function AdminUserManagement() {
 
             const data = await response.json();
             setUsers(data);
-            setError(null);  // 清空错误信息
+            setError(null);
         } catch (error) {
             console.error("Search users failed:", error);
             setError(error.message || 'An unknown error occurred.');
             setUsers([]);
         } finally {
-            setLoading(false);  // 请求结束后关闭 loading 状态
+            setLoading(false);
         }
     };
 
-    // 获取所有用户
+
     const fetchUsers = () => {
         setLoading(true);
         const getAllUsersAPI = `${apiUrl}/Users/allUsers`;
@@ -95,7 +95,6 @@ export default function AdminUserManagement() {
                 return response.json();
             })
             .then(async data => {
-                // 并行获取每个用户的 roleType
                 const usersWithRoles = await Promise.all(data.map(async (user) => {
                     const roleResponse = await fetch(`${apiUrl}/roles/user/${user.id}`, {
                         method: 'get',
@@ -112,7 +111,7 @@ export default function AdminUserManagement() {
 
                     const roleData = await roleResponse.json();
                     //console.log('roleData:', roleData);
-                    return {...user, role: roleData[0].roleType}; // 合并用户数据和角色类型
+                    return {...user, role: roleData[0].roleType}; // Merge user data and role types
                 }));
                 console.log('Users with roles:', usersWithRoles);
                 setUsers(usersWithRoles);
@@ -126,14 +125,14 @@ export default function AdminUserManagement() {
             });
     };
 
-    // 键盘回车时触发搜索
+
     const handleKeyDown = (e) => {
         if (e.key === 'Enter') {
             handleSearch();
         }
     };
 
-    // 激活用户
+
     const handleActivate = async (userId) => {
         const activateUserAPI = `${apiUrl}/Users/activeUser/${userId}`;
         try {
@@ -145,7 +144,7 @@ export default function AdminUserManagement() {
                 }
             });
             if (response.ok) {
-                fetchUsers();  // 更新用户列表
+                fetchUsers();
             } else {
                 const data = await response.json();
                 setError(data.message || 'Failed to activate user.');
@@ -167,7 +166,7 @@ export default function AdminUserManagement() {
                 }
             });
             if (response.ok) {
-                fetchUsers();  // 更新用户列表
+                fetchUsers();
             } else {
                 const data = await response.json();
                 setError(data.message || 'Failed to block user.');
@@ -177,7 +176,7 @@ export default function AdminUserManagement() {
         }
     };
 
-    // 删除用户
+
     const handleDelete = async (userId) => {
         const deleteUserAPI = `${apiUrl}/Users/${userId}`;
         try {
@@ -189,7 +188,7 @@ export default function AdminUserManagement() {
                 }
             });
             if (response.ok) {
-                fetchUsers();  // 更新用户列表
+                fetchUsers();
             } else {
                 const data = await response.json();
                 setError(data.message || 'Failed to delete user.');
@@ -221,52 +220,52 @@ export default function AdminUserManagement() {
                 </button>
                 <h1 className={`text-2xl font-semibold ${textColor} mb-4`}>Admin User Management</h1>
 
-                <div className="relative mb-4">
-                    <div className="flex items-center space-x-2 mb-2">
+                {/*<div className="relative mb-4">*/}
+                {/*    <div className="flex items-center space-x-2 mb-2">*/}
 
-                        <div className="relative w-full">
-                            <input
-                                type="text"
-                                placeholder="Search Users.."
-                                value={searchTerm}
-                                onChange={(e) => setSearchTerm(e.target.value)}
-                                onKeyDown={handleKeyDown}
-                                className="flex-grow p-2 border rounded-lg w-full pl-10"
-                            />
+                {/*        <div className="relative w-full">*/}
+                {/*            <input*/}
+                {/*                type="text"*/}
+                {/*                placeholder="Search Users.."*/}
+                {/*                value={searchTerm}*/}
+                {/*                onChange={(e) => setSearchTerm(e.target.value)}*/}
+                {/*                onKeyDown={handleKeyDown}*/}
+                {/*                className="flex-grow p-2 border rounded-lg w-full pl-10"*/}
+                {/*            />*/}
 
-                            <svg
-                                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5"
-                                fill="none"
-                                stroke="currentColor"
-                                viewBox="0 0 24 24"
-                                xmlns="http://www.w3.org/2000/svg"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="2"
-                                    d="M21 21l-4.35-4.35M5 11a6 6 0 1112 0 6 6 0 01-12 0z"
-                                />
-                            </svg>
+                {/*            <svg*/}
+                {/*                className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5"*/}
+                {/*                fill="none"*/}
+                {/*                stroke="currentColor"*/}
+                {/*                viewBox="0 0 24 24"*/}
+                {/*                xmlns="http://www.w3.org/2000/svg"*/}
+                {/*            >*/}
+                {/*                <path*/}
+                {/*                    strokeLinecap="round"*/}
+                {/*                    strokeLinejoin="round"*/}
+                {/*                    strokeWidth="2"*/}
+                {/*                    d="M21 21l-4.35-4.35M5 11a6 6 0 1112 0 6 6 0 01-12 0z"*/}
+                {/*                />*/}
+                {/*            </svg>*/}
 
-                            <button
-                                onClick={handleClear}
-                                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
-                            >
-                                ✕
-                            </button>
-                        </div>
+                {/*            <button*/}
+                {/*                onClick={handleClear}*/}
+                {/*                className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"*/}
+                {/*            >*/}
+                {/*                ✕*/}
+                {/*            </button>*/}
+                {/*        </div>*/}
 
-                        <button
-                            onClick={handleSearch}
-                            className="bg-blue-500 text-white p-2 rounded-lg"
-                        >
-                            Search
-                        </button>
-                    </div>
+                {/*        <button*/}
+                {/*            onClick={handleSearch}*/}
+                {/*            className="bg-blue-500 text-white p-2 rounded-lg"*/}
+                {/*        >*/}
+                {/*            Search*/}
+                {/*        </button>*/}
+                {/*    </div>*/}
 
-                    {error && <p className="text-red-500">{error}</p>}
-                </div>
+                {/*    {error && <p className="text-red-500">{error}</p>}*/}
+                {/*</div>*/}
 
                 <div className="space-y-4 mt-4">
                     {loading ? (
